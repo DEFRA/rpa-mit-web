@@ -1,0 +1,36 @@
+<section class="govuk-width-container @Class">
+	<div class="govuk-grid-row govuk-!-padding-top-3">
+		<div class="govuk-grid-column-one-quarter">
+			<h4 class="govuk-heading-s">
+				Account Type
+			</h4>
+			<div class="govuk-hint">
+				@if(Invoice != null){ @Invoice.AccountType }
+			</div>
+		</div>
+		<div class="govuk-grid-column-one-quarter">
+			<h4 class="govuk-heading-s">
+				Payment Type
+			</h4>
+			<div class="govuk-hint">
+				@if(Invoice != null){@Invoice.PaymentType }
+			</div>
+		</div>
+		<div class="govuk-grid-column-one-quarter">
+			<h4 class="govuk-heading-s">
+				Organisation
+			</h4>
+			<div class="govuk-hint">
+				@if(Invoice != null){@Invoice.Organisation }
+			</div>
+		</div>
+		<div class="govuk-grid-column-one-quarter">
+			<h4 class="govuk-heading-s">
+				Scheme Type
+			</h4>
+			<div class="govuk-hint">
+				@if(Invoice != null){@Invoice.SchemeType }
+			</div>
+		</div>
+	</div>
+</section>

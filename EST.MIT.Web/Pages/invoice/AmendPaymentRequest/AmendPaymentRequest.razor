@@ -1,0 +1,75 @@
+@page "/invoice/amend-payment-request/{PaymentRequestId}"
+@using Helpers
+
+@if(!paymentRequest.IsNull())
+{
+    <section class="govuk-width-container govuk-!-padding-top-3">
+        <a class="govuk-back-link" href="/invoice/summary/@invoice.SchemeType/@invoice.Id">Back</a>
+        <h1 class="govuk-heading-l">
+            Amend Payment Request
+        </h1>
+    </section>
+
+
+    <section class="govuk-width-container govuk-!-padding-top-3">
+
+        <button id="update-payment-request" class="govuk-button" @onclick="UpdatePaymentRequest">Update Payment
+            Request</button>
+
+        <dl class="govuk-summary-list">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">FRN</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.FRN</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Marketing Year</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.MarketingYear</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Payment Request Number</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.PaymentRequestNumber</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Agreement Number</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.AgreementNumber</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Currency</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.Currency</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Due Date</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.DueDate</dd>
+            </div>
+        </dl>
+
+    </section>
+
+    <section class="govuk-width-container">
+        <button id="add-invoice-line" class="govuk-button" @onclick="AddInvoiceLine">Add Invoice Line</button>
+
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Scheme Code</th>
+                    <th scope="col" class="govuk-table__header">Delivery Body</th>
+                    <th scope="col" class="govuk-table__header">Line Value</th>
+                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">Description</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                @foreach (var line in paymentRequest.InvoiceLines)
+                {
+                    <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">@line.SchemeCode</td>
+                        <td class="govuk-table__cell">@line.DeliveryBody</td>
+                        <td class="govuk-table__cell">@line.Value</td>
+                        <td class="govuk-table__cell">@line.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </section>
+
+}

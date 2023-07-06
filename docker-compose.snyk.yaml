@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  est-mit-web:
+    build:
+      context: .
+      target: development
+    image: est-mit-web-snyk
+    command: extract-project-assets.sh
+    entrypoint: /bin/sh
+    volumes:
+      - ./scripts/extract-project-assets.sh:/home/dotnet/extract-project-assets.sh
+      - ./EST.MIT.Web/obj:/home/dotnet/snyk

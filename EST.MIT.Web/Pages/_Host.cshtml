@@ -1,0 +1,28 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Components.Web
+@namespace EST.MIT.Web.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="~/" />
+    <link rel="stylesheet" href="css/govuk-frontend-4.6.0.min.css">
+    <link rel="stylesheet" href="css/est-frontend.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon.png"/>
+    <component type="typeof(HeadOutlet)" render-mode="ServerPrerendered" />
+</head>
+
+<body class="js-enabled">
+    <component type="typeof(App)" render-mode="ServerPrerendered" />
+    <script src="js/govuk-frontend-4.6.0.min.js"></script>
+    <script src="js/govuk-init.js"></script>
+    <script src="_framework/blazor.server.js"></script>
+</body>
+</html>

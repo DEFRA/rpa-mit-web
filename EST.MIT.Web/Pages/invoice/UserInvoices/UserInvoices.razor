@@ -1,0 +1,38 @@
+﻿@page "/user-invoices"
+@using EST.MIT.Web.Shared.Components.GDSInputText
+@using EST.MIT.Web.Shared.Components.UserInvoicesCard
+@using Entities
+
+<section class="page__header-wrapper govuk-!-margin-bottom-6">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h2 class="page__heading govuk-heading-l">My Invoices</h2>
+                <p class="page__heading govuk-body">Any of your current and closed invoices are displayed on this page. </p>
+                
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div class="govuk-width-container govuk-!-padding-top-1">
+    <h1 class="govuk-label-wrapper">
+        <a href="/" class="govuk-back-link">Back</a>
+     </h1>      
+</div>
+
+@if (invoices != null)
+{
+    <section class="govuk-width-container govuk-!-padding-top-5">
+
+
+        @foreach (var invoice in invoices)
+        {
+            <UserInvoicesCard invoice=invoice />
+        }
+    </section>
+}
+
+
+

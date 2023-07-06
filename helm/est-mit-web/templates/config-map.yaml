@@ -1,0 +1,6 @@
+{{- include "ffc-helm-library.container-config-map" (list . "est-mit-web.config-map") -}}
+{{- define "est-mit-web.config-map" -}}
+data:
+  COMPlus_EnableDiagnostics: {{ .Values.container.comPlusEnableDiagnostics | quote }}
+  PORT: {{ .Values.container.port | quote }}
+{{- end -}}

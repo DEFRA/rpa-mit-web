@@ -1,0 +1,47 @@
+﻿@page "/find"
+@using EST.MIT.Web.Shared.Components.GDSInputText
+
+    <section class="page__header-wrapper govuk-!-margin-bottom-6">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                    <h2 class="page__heading govuk-heading-l">Find an invoice</h2>
+                <p class="page__heading govuk-body">Enter an Inovice number and then pick a scheme from the drop down list to find an invoice.</p>
+                <p class="page__heading govuk-body"><strong>Important: </strong>Scheme names appear in the list written as both an acronym and the full name - BPS and Basic payment scheme. </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="govuk-width-container govuk-!-padding-top-2">
+    @if (NotFound)
+    {
+                   <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div role="alert">
+        <h2 class="govuk-error-summary__title">
+          There is a problem
+        </h2>
+        <div class="govuk-error-summary__body">
+          <ul class="govuk-list govuk-error-summary__list">
+            <li>
+              <a href="#">No invoice was found that matched the given criteria</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    }
+
+    <EditForm  Model="_searchCriteria" OnValidSubmit="@Search" OnInvalidSubmit="@ValidationFailed">
+        <DataAnnotationsValidator />
+        <GDSInputText Label="Invoice Number" @bind-Data="_searchCriteria.InvoiceNumber" Key="InvoiceNumber" Errors="errors"/>
+        <GDSInputText Label="Scheme" @bind-Data="_searchCriteria.Scheme" Key="Scheme" Errors="errors" />
+
+        <div class="govuk-button-group">
+            <button class="govuk-button" data-module="govuk-button" type="submit">Search</button>              
+            <a class="govuk-link" href="/">Cancel</a>
+        </div>
+
+    </EditForm>
+</div>
+

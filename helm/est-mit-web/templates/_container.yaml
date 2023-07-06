@@ -1,0 +1,7 @@
+{{- define "est-mit-web.container" -}}
+ports:
+- containerPort: {{ .Values.container.port }}
+volumeMounts:
+- mountPath: {{ .Values.volumeMounts.mountPath }}
+  name: {{ .Values.volumeMounts.name }}
+{{- end -}}

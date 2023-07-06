@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  est-mit-web:
+    build:
+      context: .
+      target: production
+    image: est-mit-web
+    container_name: est-mit-web
+    environment:
+      COMPlus_EnableDiagnostics: 0

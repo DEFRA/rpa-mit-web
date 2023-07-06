@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  est-mit-web:
+    build:
+      target: development
+    image: est-mit-web
+    container_name: est-mit-web-test
+    entrypoint: dotnet test ./EST.MIT.Web.Test/EST.MIT.Web.Api.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='./test-output/'
+    volumes:
+      - ./test-output:/home/dotnet/EST.MIT.Web.Test/test-output

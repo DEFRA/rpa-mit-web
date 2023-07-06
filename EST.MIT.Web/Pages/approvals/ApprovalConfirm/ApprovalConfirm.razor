@@ -1,0 +1,62 @@
+@page "/approval/confirm/approve"
+@page "/approval/confirm/reject"
+@using EST.MIT.Web.Shared.Components.GDSTextArea
+@using EST.MIT.Web.Shared.Components.InvoiceMetaData
+
+<section class="govuk-width-container govuk-!-padding-top-9 govuk-!-padding-bottom-3">
+    <h1 class="govuk-heading-l">
+        Confirmation
+    </h1>
+</section>
+
+<section class="govuk-width-container">
+
+    <h2 class="govuk-heading-m">Are you sure you want to @(IsRejectEndpoint ? "reject" : "approve") this Invoice?</h2>
+    <h2 class="govuk-hint">@invoice.Id.ToString()</h2>
+    <InvoiceMetaData Invoice=invoice Class="govuk-!-margin-bottom-6" />
+
+    @if(IsErrored)
+    {
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+                <h2 class="govuk-error-summary__title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        @foreach(var error in Errors)
+                        {
+                            <li>
+                                <a href="#@(error.Key)">@error.Value</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    }
+
+
+    @if(IsRejectEndpoint)
+    {
+        <EditForm Model=_approval OnValidSubmit="@RejectConfirmed" OnInvalidSubmit="RejectValidationFailed">
+            <DataAnnotationsValidator />
+            <GDSTextArea @bind-Data="_approval.Justification" Label="Can you provide more detail?" Hint="This will be shared with the submitter of the invoice." Key="Justification" Errors=Errors/>
+
+            <div class="govuk-button-group">
+                <button type=submit class="govuk-button" data-module="govuk-button">Submit</button>
+                <a class="govuk-link" href="/approval/mine">Cancel</a>
+            </div>
+        </EditForm>
+    }
+
+    @if(!IsRejectEndpoint)
+    {
+        <div class="govuk-button-group">
+            <button class="govuk-button" data-module="govuk-button" @onclick="ApproveConfirmed">Submit</button>
+            <a class="govuk-link" href="/approval/mine">Cancel</a>
+        </div>
+    }
+
+</section>

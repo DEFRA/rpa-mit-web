@@ -1,0 +1,100 @@
+using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
+using Entities;
+using EST.MIT.Web.Pages.invoice.Summary;
+using EST.MIT.Web.Shared;
+using Services;
+
+namespace Pages.Tests;
+
+public class SummaryTests : TestContext
+{
+    private readonly Invoice _invoice;
+    private readonly Mock<IInvoiceAPI> _mockApiService;
+
+    public SummaryTests()
+    {
+        _invoice = new Invoice();
+        _invoice.PaymentRequests.Add(new PaymentRequest()
+        {
+            FRN = 1234567890,
+            SourceSystem = "",
+            MarketingYear = 0,
+            PaymentRequestNumber = 0,
+            AgreementNumber = "",
+            Value = 0,
+            DueDate = "",
+            Currency = "GBP",
+            InvoiceLines = new List<InvoiceLine>()
+        });
+
+        _invoice.PaymentRequests[0].InvoiceLines.Add(new InvoiceLine()
+        {
+            Value = 0,
+            DeliveryBody = "RP00",
+            SchemeCode = "BPS",
+            Description = "G00 - Gross Value"
+        });
+
+
+        _mockApiService = new Mock<IInvoiceAPI>();
+        Services.AddSingleton<IInvoiceAPI>(_mockApiService.Object);
+        Services.AddSingleton<IInvoiceStateContainer, InvoiceStateContainer>();
+    }
+
+    [Fact]
+    public void PaymentRequests_Are_Displayed()
+    {
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+
+        var component = RenderComponent<Summary>(parameters =>
+            parameters.Add(p => p.invoiceId, _invoice.Id.ToString()));
+
+        var paymentRequests = component.FindAll("div.govuk-summary-card");
+
+        paymentRequests.Should().NotBeEmpty();
+        paymentRequests.Should().HaveCount(1);
+
+    }
+
+    [Fact]
+    public void No_PaymentRequests_Warning_Is_Displayed_When_PaymentRequest_Count_Is_Zero()
+    {
+        _invoice.PaymentRequests = new List<PaymentRequest>();
+
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+
+        var component = RenderComponent<Summary>(parameters =>
+            parameters.Add(p => p.invoiceId, _invoice.Id.ToString()));
+
+        var warning = component.FindAll("div#no-payment-request-warning");
+
+        warning.Should().NotBeEmpty();
+        warning.Should().HaveCount(1);
+    }
+
+    [Fact]
+    public void AddPaymentRequest_Navigates_To_Add_PaymentRequest_Page()
+    {
+        var component = RenderComponent<Summary>();
+        var button = component.FindAll("button.govuk-button");
+
+        button[0].Click();
+
+        var navigationManager = Services.GetService<NavigationManager>();
+        navigationManager?.Uri.Should().Be("http://localhost/invoice/add-payment-request");
+    }
+
+    [Fact]
+    public void SendForApproval_Navigates_To_Select_Approval_Page()
+    {
+        var component = RenderComponent<Summary>(parameters =>
+            parameters.Add(p => p.invoiceId, _invoice.Id.ToString()));
+
+        component.FindAll("button#send-approval")[0].Click();
+
+        var navigationManager = Services.GetService<NavigationManager>();
+        navigationManager?.Uri.Should().Be("http://localhost/approval/select");
+
+    }
+}

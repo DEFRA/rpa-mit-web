@@ -1,0 +1,38 @@
+@page "/invoice/summary/{scheme}/{invoiceId}"
+@using EST.MIT.Web.Shared.Components.SummaryPaymentRequest
+@using EST.MIT.Web.Shared.Components.InvoiceMetaData
+
+<section class="govuk-width-container govuk-!-padding-top-3">
+	<a href="/" class="govuk-back-link">Back</a>
+	<h1 class="govuk-heading-l">Invoice Summary</h1>
+</section>
+
+<InvoiceMetaData Invoice=invoice/>
+
+<section class="govuk-width-container govuk-!-padding-top-3">
+
+	<button id="add-payment-request" class="govuk-button" data-module="govuk-button" @onclick="AddPaymentRequest">Add Payment Request</button>
+	<button id="send-approval" class="govuk-button" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
+
+	@if(invoice != null)
+	{
+		@if(!invoice.PaymentRequests.Any())
+		{
+
+			<div id="no-payment-request-warning" class="govuk-form-group--error">
+				<h1 class="govuk-heading-l">This Invoice currently has no payment requests</h1>
+				<div class="govuk-hint">You can select Add Payment Request to include one with this invoice.</div>
+			</div>
+		}
+		else
+		{
+			@foreach (var request in invoice.PaymentRequests)
+			{
+				<CascadingValue Value="this">
+					<SummaryPaymentRequest PaymentRequest=request />
+				</CascadingValue>
+			}
+		}
+	}
+
+</section>

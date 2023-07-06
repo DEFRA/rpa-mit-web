@@ -1,0 +1,35 @@
+using Entities;
+using Helpers;
+using Microsoft.AspNetCore.Components;
+
+namespace EST.MIT.Web.Shared.Components.ApprovalCard;
+
+public partial class ApprovalCard : ComponentBase
+{
+    [Parameter] public Invoice invoice { get; set; }
+    [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
+    [Inject] private NavigationManager _nav { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+
+    private void Approve()
+    {
+        _invoiceStateContainer.SetValue(invoice);
+        _nav.NavigateTo("/approval/confirm/approve");
+    }
+
+    private void Reject()
+    {
+        _invoiceStateContainer.SetValue(invoice);
+        _nav.NavigateTo("/approval/confirm/reject");
+    }
+
+}

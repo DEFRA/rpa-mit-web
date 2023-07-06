@@ -1,0 +1,41 @@
+@page "/bulk"
+
+<section class="page__header-wrapper govuk-!-margin-bottom-6">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h2 class="page__heading govuk-heading-l">Bulk Upload Files</h2>
+                <p class="page__heading govuk-body">Upload a CSV file to bulk upload invoice headers and details</p>
+                <p class="page__heading govuk-body"><strong>Important: </strong>Please make sure that the data you are uploading is correct as there is no way to undo this action once it has been completed</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="govuk-width-container">
+
+    <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Information</span>
+            A sample file in the correct format can be downloaded <a href="/">here</a>
+        </strong>
+    </div>
+
+    <EditForm Model="fileToLoadSummary" OnSubmit="UploadFile">
+        <div class="govuk-form-group @(error ? "govuk-form-group--error" : "")">
+            <label class="govuk-label" for="bulk-file-upload">
+                <strong>Upload a file</strong>
+            </label>
+            @if(error)
+            {
+                <p id="file-upload-1-error" class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> @errorMessage
+                </p>
+            }
+            <InputFile OnChange="@FileLoaded" class="govuk-file-upload" id="bulk-file-upload" name="bulk-file-upload" accept=".xlsm" />
+            <button class="govuk-button" type="submit">Upload</button>
+        </div>
+    </EditForm>
+
+</section>

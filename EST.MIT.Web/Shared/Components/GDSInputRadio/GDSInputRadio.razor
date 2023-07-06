@@ -1,0 +1,29 @@
+@foreach(var opt in Options)
+{
+    @if(UseKeys)
+    {
+        <div class="govuk-radios__item">
+            <InputRadio class="govuk-radios__input" id="@opt.Value" Value="@opt.Key" />
+            <label class="govuk-label govuk-radios__label" for="@opt.Value">@opt.Key</label>
+            @if(ShowDescriptions)
+            {
+                <div id="@opt.Key-hint" class="govuk-hint govuk-radios__hint">
+                    @opt.Value
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="govuk-radios__item">
+            <InputRadio class="govuk-radios__input" id="@opt.Value" Value="@opt.Key" />
+            <label class="govuk-label govuk-radios__label" for="@opt.Value">@opt.Value</label>
+            @if(ShowDescriptions)
+            {
+                <div id="@opt.Key-hint" class="govuk-hint govuk-radios__hint">
+                    @opt.Key
+                </div>
+            }
+        </div>
+    }
+}

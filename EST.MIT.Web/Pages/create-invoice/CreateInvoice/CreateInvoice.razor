@@ -1,0 +1,46 @@
+@page "/create-invoice"
+
+<section class="page__header-wrapper govuk-!-margin-bottom-6">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h2 class="page__heading govuk-heading-l">Create New Invoice</h2>
+                <p class="page__heading govuk-body">Use this service to create a single new Manual Invoice</p>
+                <p class="page__heading govuk-body">If you need to create invoices in bulk, please use the <a class="govuk-link--no-visited-state" href="/bulk">Bulk Upload Service</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="govuk-width-container">
+
+    <p class="govuk-body">This service will take you through the basics required to create a new Manual Invoice.</p>
+    <p class="govuk-body">You are requried to provide the following information:</p>
+
+    <dl class="govuk-summary-list">
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Account Type</dt>
+        <dd class="govuk-summary-list__value">Is this a Payable or Receivable invoice?</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Organisation</dt>
+            <dd class="govuk-summary-list__value">Which defra agency is responsible?</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Scheme Type</dt>
+            <dd class="govuk-summary-list__value">What scheme is this Manual Payment being made under?</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key">Payment Type</dt>
+            <dd class="govuk-summary-list__value">Is this payment to be made using EU or UK funds?</dd>
+        </div>
+    </dl>
+
+</section>
+
+<section class="govuk-width-container">
+    <div class="govuk-button-group">
+        <button class="govuk-button" @onclick="Start" href>Start</button>
+        <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
+    </div>
+</section>

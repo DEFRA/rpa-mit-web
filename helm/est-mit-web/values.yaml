@@ -1,0 +1,43 @@
+environment: development
+name: est-mit-web
+namespace: ffc-rpa
+workstream: ffc-rpa
+image: est-mit-web
+
+labels: {}
+ 
+azureIdentity:
+  resourceID: dummy
+  clientID: dummy
+
+appInsights:
+  connectionString:
+
+containerConfigMap:
+  name: est-mit-web-config-map
+
+containerSecret:
+  name: est-mit-web-container-secret
+  type: Opaque
+
+deployment:
+  restartPolicy: Always
+  priorityClassName: low
+  replicas: 1
+  minReadySeconds: 5
+  imagePullSecret:
+
+container:
+  imagePullPolicy: IfNotPresent
+  requestMemory: 120Mi
+  requestCpu: 5m
+  limitMemory: 120Mi
+  limitCpu: 120m
+  port: 3000
+  comPlusEnableDiagnostics: 0
+
+volumeMounts:
+  mountPath: /var/www/
+  name: core-app-dir
+
+aadPodIdentity: true

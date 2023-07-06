@@ -1,0 +1,40 @@
+@page "/approval/select"
+@using EST.MIT.Web.Shared.Components.GDSInputRadio
+
+<section class="govuk-width-container govuk-!-padding-top-9">
+    <h1 class="govuk-heading-l">
+        Select Approver
+    </h1>
+</section>
+
+<section class="govuk-width-container govuk-!-padding-top-3">
+    <EditForm Model="approver" OnValidSubmit="@SubmitApproval" OnInvalidSubmit="@ValidationFailed">
+        <DataAnnotationsValidator />
+        <div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
+            <fieldset class="govuk-fieldset">
+                @if(IsErrored)
+                {
+                    <p class="govuk-error-message">
+                        @foreach(var error in errors)
+                        {
+                            <span class="govuk-visually-hidden">Error:</span> @error.Value
+                        }
+                    </p>
+                }
+
+                <InputRadioGroup @bind-Value="approver.Name" class="govuk-radios" data-module="govuk-radios" Name="select-approver" Label="Select approver">
+                    <GDSInputRadio Options="approvers" UseKeys=false />
+                </InputRadioGroup>
+
+            </fieldset>
+        </div>
+
+        <div class="govuk-form-group">
+            <div class="govuk-button-group">
+                <button type=submit class="govuk-button" data-module="govuk-button">Submit</button>
+                <a class="govuk-link" href="/">Cancel</a>
+            </div>
+        </div>
+
+    </EditForm>
+</section>

@@ -1,0 +1,33 @@
+@page "/approval/mine"
+@using EST.MIT.Web.Shared.Components.ApprovalCard
+
+<section class="page__header-wrapper govuk-!-margin-bottom-9">
+    <div class="govuk-width-container">
+        <div class="govuk-grid-row">
+            <div class="govuk-grid-column-full">
+                <h2 class="page__heading govuk-heading-l">Invoice Approvals</h2>
+                <p class="page__heading govuk-body">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ea, consectetur!</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="govuk-width-container">
+
+    @if(!_approvals.Any())
+    {
+        <div class="govuk-warning-text">
+        <span class="govuk-warning-text__icon" aria-hidden="true">ℹ️</span>
+        <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Warning</span>
+            You have no invoices to approve
+        </strong>
+        </div>
+    }
+
+    @foreach (var invoice in _approvals)
+    {
+        <ApprovalCard invoice=invoice />
+    }
+
+</section >

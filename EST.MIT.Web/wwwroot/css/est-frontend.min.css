@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;700&display=swap");
+* {
+  font-family: "Noto Sans", sans-serif !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.topic-container-grid {
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
+
+.chevron-card {
+  border-top: 1px solid #b1b4b6;
+  margin: 0 15px;
+  padding: 5px 0 20px 0;
+}
+
+.chevron-card__wrapper {
+  padding: 10px 30px 10px 0;
+  position: relative;
+}
+
+.chevron-card__description {
+  margin: 0 -30px 0 0;
+}
+
+.govuk-body {
+  color: #0b0c0c;
+  font-family: "Noto Sans", arial, sans-serif;
+  font-weight: 400;
+}
+
+.homepage-services-and-info__list {
+  list-style: none;
+  margin: 0 -15px;
+  padding: 0;
+}
+
+.chevron-card__link:before {
+  border-right: 3px solid #1d70b8;
+  border-top: 3px solid #1d70b8;
+  content: "";
+  display: block;
+  height: 7px;
+  position: absolute;
+  right: 5px;
+  top: 15px;
+  transform: translateY(0) rotate(45deg) scale(1);
+  width: 7px;
+}
+.chevron-card__link:after {
+  bottom: 0;
+  content: "";
+  display: block;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.homepage-section {
+  padding: 20px 0 30px;
+}
+
+.homepage-section--welcome {
+  background: #f3f2f1;
+  padding: 30px 0 50px;
+}
+
+.homepage-section {
+  padding: 20px 0 30px;
+}
+
+.page__header-wrapper {
+  color: govuk-colour("white");
+  background-color: #263135;
+  /* padding-bottom: 40px; */
+  border-top: 1px solid #263135;
+  margin-top: -1px;
+  padding: 30px 0 50px;
+}
+
+.page__heading {
+  color: #fff;
+  margin-bottom: 30px;
+}
