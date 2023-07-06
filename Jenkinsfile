@@ -1,3 +1,2 @@
-@Library('defra-library@add-dotnet-function-deploy') _
-
-buildDotNetFunction project: 'EST.MIT.Web'
+@Library('defra-library@v-9') _
+buildDotNetCore project: 'est-mit-web'
