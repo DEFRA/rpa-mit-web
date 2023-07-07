@@ -158,7 +158,7 @@ public class ApprovalConfirmTests : TestContext
     public void RejectConfirmed_Fails_Validation()
     {
         _mockApprovalService.Setup(x => x.RejectInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<string>())).ReturnsAsync(true);
-        _mockPageServices.Setup(x => x.Validation(It.IsAny<Approver>(), out It.Ref<bool>.IsAny, out It.Ref<Dictionary<string, string>>.IsAny))
+        _mockPageServices.Setup(x => x.Validation(It.IsAny<ApproverSelect>(), out It.Ref<bool>.IsAny, out It.Ref<Dictionary<string, List<string>>>.IsAny))
             .Returns(false);
 
         var nav = new FakeNavigationManager();

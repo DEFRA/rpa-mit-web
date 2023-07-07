@@ -2,9 +2,12 @@
     <label class="govuk-label" for="@Key">@Label</label>
     @if(IsErrored)
     {
-        <p class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span> @err
-        </p>
+        @foreach(var error in err)
+        {
+            <p class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> @error
+            </p>
+        }
         <InputNumber class="govuk-input govuk-input--error" id="@Key" name="@Key" @bind-Value="Data" />
     }
     else

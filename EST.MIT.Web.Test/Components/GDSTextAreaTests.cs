@@ -10,8 +10,10 @@ public class GDSTextAreaTests : TestContext
     [Fact]
     public void GDSTextArea_Parameters_Are_Set_To_Error()
     {
-        var errors = new Dictionary<string, string>();
-        errors.Add("testkey", "TestError");
+        var errors = new Dictionary<string, List<string>>
+        {
+            { "testkey", new List<string>() { "TestError" } }
+        };
 
         RenderTree.Add<CascadingValue<EditContext>>(parameters =>
         {

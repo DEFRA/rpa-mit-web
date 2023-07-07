@@ -27,11 +27,11 @@ public partial class GDSInputDouble : ComponentBase
         set => _key = value.ToLower();
     }
     [Parameter] public EventCallback<double> DataChanged { get; set; }
-    [Parameter] public Dictionary<string, string> Errors { get; set; } = new();
+    [Parameter] public Dictionary<string, List<string>> Errors { get; set; } = new();
     [Parameter] public string Label { get; set; } = default!;
 
     private bool IsErrored { get; set; }
-    private string err { get; set; } = default!;
+    private IEnumerable<string> err { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
     {

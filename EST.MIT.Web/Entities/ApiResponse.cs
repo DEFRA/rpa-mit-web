@@ -25,10 +25,15 @@ public class ApiResponse
 
 public class ApiResponse<T> where T : class
 {
-    public Dictionary<string, string> Errors { get; set; } = new();
+    public Dictionary<string, List<string>> Errors { get; set; } = new();
     public T Data { get; set; } = default!;
     public bool IsSuccess { get; set; }
     public HttpStatusCode StatusCode { get; set; }
+
+    public ApiResponse(bool success)
+    {
+        this.IsSuccess = success;
+    }
 
     public ApiResponse(HttpStatusCode StatusCode)
     {
@@ -36,7 +41,7 @@ public class ApiResponse<T> where T : class
         this.StatusCode = StatusCode;
     }
 
-    public ApiResponse(HttpStatusCode StatusCode, Dictionary<string, string> Errors)
+    public ApiResponse(HttpStatusCode StatusCode, Dictionary<string, List<string>> Errors)
     {
         this.IsSuccess = StatusCode == HttpStatusCode.OK;
         this.StatusCode = StatusCode;

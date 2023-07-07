@@ -17,7 +17,7 @@ public partial class UpdatePaymentRequest : ComponentBase
     private Invoice invoice => _invoiceStateContainer.Value;
     private PaymentRequest paymentRequest = default!;
     private bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
 
     protected override async Task OnInitializedAsync()
     {

@@ -17,7 +17,8 @@ public partial class SchemeMetaSelection : ComponentBase
     private SchemeSelect schemeSelect = new();
     private Dictionary<string, string> schemes = new();
     bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
+    private List<string> viewErrors = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,6 +60,7 @@ public partial class SchemeMetaSelection : ComponentBase
     private void ValidationFailed()
     {
         _pageServices.Validation(schemeSelect, out IsErrored, out errors);
+        viewErrors = errors[nameof(schemeSelect.Scheme).ToLower()];
     }
 
     private void Cancel()

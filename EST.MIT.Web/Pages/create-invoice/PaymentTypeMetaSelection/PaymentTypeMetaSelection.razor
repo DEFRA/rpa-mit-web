@@ -18,9 +18,9 @@
                     @if(IsErrored)
                     {
                         <p class="govuk-error-message">
-                            @foreach(var error in errors)
+                            @foreach(var error in viewErrors)
                             {
-                                <span class="govuk-visually-hidden">Error:</span> @error.Value
+                                <span class="govuk-visually-hidden">Error:</span> @error
                             }
                         </p>
                     }

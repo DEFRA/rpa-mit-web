@@ -11,11 +11,10 @@
 
 <section class="govuk-width-container govuk-!-padding-top-3">
 
-	<button id="add-payment-request" class="govuk-button" data-module="govuk-button" @onclick="AddPaymentRequest">Add Payment Request</button>
-	<button id="send-approval" class="govuk-button" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
-
 	@if(invoice != null)
 	{
+		<button id="add-payment-request" class="govuk-button" data-module="govuk-button" @onclick="AddPaymentRequest">Add Payment Request</button>
+
 		@if(!invoice.PaymentRequests.Any())
 		{
 
@@ -26,6 +25,11 @@
 		}
 		else
 		{
+			@if(invoice.Status == "new")
+			{
+				<button id="send-approval" class="govuk-button govuk-!-margin-left-1" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
+			}
+			
 			@foreach (var request in invoice.PaymentRequests)
 			{
 				<CascadingValue Value="this">

@@ -17,7 +17,7 @@ public partial class AddPaymentRequest : ComponentBase
 
     private readonly PaymentRequest paymentRequest = new();
     private bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
 
     protected override async Task OnInitializedAsync()
     {

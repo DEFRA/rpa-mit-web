@@ -19,7 +19,7 @@ public partial class AddInvoiceLine : ComponentBase
     private PaymentRequest paymentRequest;
     private readonly InvoiceLine invoiceLine = new();
     private bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
 
     protected override async Task OnInitializedAsync()
     {

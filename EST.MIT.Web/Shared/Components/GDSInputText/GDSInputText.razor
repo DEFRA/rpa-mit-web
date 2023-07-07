@@ -5,12 +5,15 @@
     @if(IsErrored)
     {
         <p class="govuk-error-message">
-            <span class="govuk-visually-hidden">Error:</span> @err
+            @foreach(var error in err)
+            {
+                <span class="govuk-visually-hidden">Error:</span> @error <br />
+            }
         </p>
-        <InputText class="govuk-input govuk-input--error" id="@Key" name="@Key" @bind-Value="Data" />
+        <InputText type="text" class="govuk-input govuk-input--error" id="@Key" name="@Key" @bind-Value="Data" />
     }
     else
     {
-        <InputText class="govuk-input" id="@Key" name="@Key" @bind-Value="Data" />
+        <InputText type="text" class="govuk-input" id="@Key" name="@Key" @bind-Value="Data" />
     }
 </div>

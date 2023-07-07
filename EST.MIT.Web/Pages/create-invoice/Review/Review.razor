@@ -13,15 +13,15 @@
         @if(IsErrored)
         {
             <div class="govuk-form-group--error">
-                @foreach(var err in errors)
+                @foreach (var error in errors.Values.SelectMany(x => x))
                 {
-                    <p class="govuk-error-message">@err.Value</p>
+                    <p class="govuk-error-message">@error</p>
                 }
             </div>
         }
 
-        <EditForm Model="invoice">
-
+        <EditForm Model="invoice" OnValidSubmit="@SaveAndContinue" OnInvalidSubmit="@ValidationFailed">
+            <DataAnnotationsValidator />
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Account Type</dt>
@@ -55,7 +55,7 @@
 
             <div class="govuk-form-group">
                 <div class="govuk-button-group">
-                    <button type=submit class="govuk-button" data-module="govuk-button" @onclick="SaveAndContinue">Save and Continue</button>
+                    <button type=submit class="govuk-button" data-module="govuk-button">Save and Continue</button>
                     <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
                 </div>
             </div>

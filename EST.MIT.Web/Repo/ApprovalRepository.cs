@@ -1,9 +1,11 @@
+using System.Net;
+
 namespace Repositories;
 
 public interface IApprovalRepository
 {
     Task<HttpResponseMessage> GetApproversAsync(string scheme, string value);
-    Task<HttpResponseMessage> ValidateApproverAsync();
+    Task<HttpResponseMessage> ValidateApproverAsync(string approver);
 }
 
 public class ApprovalRepository : IApprovalRepository
@@ -17,7 +19,7 @@ public class ApprovalRepository : IApprovalRepository
 
     public async Task<HttpResponseMessage> GetApproversAsync(string scheme, string value)
         => await GetApprovers(scheme, value);
-    public async Task<HttpResponseMessage> ValidateApproverAsync() => await ValidateApprover();
+    public async Task<HttpResponseMessage> ValidateApproverAsync(string approver) => await ValidateApprover(approver);
 
     private async Task<HttpResponseMessage> GetApprovers(string scheme, string value)
     {
@@ -30,11 +32,11 @@ public class ApprovalRepository : IApprovalRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> ValidateApprover()
+    private async Task<HttpResponseMessage> ValidateApprover(string approver)
     {
         var client = _clientFactory.CreateClient("ApproversAPI");
 
-        var response = await client.GetAsync($"/approvals/approver/validate");
+        var response = await client.GetAsync($"/approvals/approver/validate/{approver}");
 
         await HandleHttpResponseError(response);
 

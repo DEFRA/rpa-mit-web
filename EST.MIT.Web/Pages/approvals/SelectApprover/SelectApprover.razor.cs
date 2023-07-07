@@ -13,35 +13,61 @@ public partial class SelectApprover : ComponentBase
     [Inject] public NavigationManager _nav { get; set; } = default!;
 
     private Invoice invoice = default!;
-    private Approver approver = new();
-    Dictionary<string, string> approvers = new Dictionary<string, string>
-    {
-        {"Peter@defra.gov.uk", "Peter"},
-        {"Bjorn@apha.gov.uk", "Bjorn"},
-        {"John@rpa.gov.uk", "John"}
-    };
-    bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private readonly ApproverSelect approverSelect = new();
+    private bool IsErrored = false;
+    private Dictionary<string, List<string>> errors = new();
+    private bool ShowErrorSummary = false;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        invoice = _invoiceStateContainer.Value;
+        invoice ??= _invoiceStateContainer.Value;
     }
 
     private void ValidationFailed()
     {
-        _pageServices.Validation(approver, out IsErrored, out errors);
+        ShowErrorSummary = false;
+        _pageServices.Validation(approverSelect, out IsErrored, out errors);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (_invoiceStateContainer.Value == null)
+        {
+            _invoiceStateContainer.SetValue(null);
+            _nav.NavigateTo("/");
+        }
+    }
+
+    private void Cancel()
+    {
+        _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
     }
 
     private async Task SubmitApproval()
     {
-        invoice.Approver = approver.Name;
+        IsErrored = false;
+        var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail);
+
+        if (!validate.IsSuccess || !validate.Data.Value)
+        {
+            ShowErrorSummary = IsErrored == false;
+            errors = validate.Errors;
+            return;
+        }
+
+        invoice.Approver = approverSelect.ApproverEmail;
 
         var response = await _approvalService.SubmitApprovalAsync(invoice);
-        if (response)
+        if (!response.IsSuccess)
         {
-            _nav.NavigateTo($"/approval/confirmation/{invoice.Id}");
+            ShowErrorSummary = true;
+            errors = response.Errors;
+            return;
         }
+
+        _nav.NavigateTo($"/approval/confirmation/{invoice.Id}");
+
     }
 }

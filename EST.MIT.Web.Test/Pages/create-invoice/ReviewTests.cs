@@ -101,9 +101,7 @@ public class ReviewPageTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<Review>();
-        var saveAndContinueButton = component.FindAll("button[type='submit']");
-
-        saveAndContinueButton[0].Click();
+        component.FindAll("button[type='submit']")[0].Click();
 
         component.WaitForElements("p.govuk-error-message");
 

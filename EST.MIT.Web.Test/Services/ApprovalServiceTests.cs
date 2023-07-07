@@ -1,5 +1,6 @@
 using System.Net;
 using Entities;
+using Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -63,7 +64,7 @@ public class ApprovalServiceTests
     {
         var apiResponse = new ApiResponse<Invoice>(HttpStatusCode.BadRequest)
         {
-            Errors = new Dictionary<string, string> { { "Error", "Error" } }
+            Errors = new Dictionary<string, List<string>> { { "Error", new List<string> { "Error" } } }
         };
 
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>())).ReturnsAsync(apiResponse);
@@ -116,7 +117,7 @@ public class ApprovalServiceTests
         var response = service.SubmitApprovalAsync(new Invoice() { SchemeType = "BPS" });
         response.Wait();
 
-        response.Result.Should().BeTrue();
+        response.Result.Should().BeEquivalentTo(new ApiResponse<Invoice>(HttpStatusCode.OK));
     }
 
     [Fact]
@@ -146,7 +147,7 @@ public class ApprovalServiceTests
         var response = service.SubmitApprovalAsync(invoice);
         response.Wait();
 
-        response.Result.Should().BeTrue();
+        response.Result.Should().BeEquivalentTo(new ApiResponse<Invoice>(HttpStatusCode.OK));
     }
 
     [Fact]
@@ -160,7 +161,7 @@ public class ApprovalServiceTests
 
         var response = service.SubmitApprovalAsync(new Invoice() { SchemeType = "BPS" });
 
-        response.Result.Should().BeFalse();
+        response.Result.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
@@ -243,5 +244,15 @@ public class ApprovalServiceTests
         response.Result.Count().Should().Be(1);
     }
 
+    [Fact]
+    public void ValidateApproverAsync_Returns_True()
+    {
+        _mockApprovalApi.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
+
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var response = service.ValidateApproverAsync("Loid.Forger@defra.gov.uk");
+
+        response.Result.Data.Value.Should().BeTrue();
+    }
 
 }

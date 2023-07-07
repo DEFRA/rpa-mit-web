@@ -11,7 +11,7 @@ public partial class Find : ComponentBase
     [Inject] private IFindService _findService { get; set; }
     [Inject] private IPageServices _pageService { get; set; }
 
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
     private bool IsErrored, NotFound = false;
     public Invoice invoice = default!;
     public SearchCriteria _searchCriteria = new();

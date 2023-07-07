@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using Entities;
+using Helpers;
 using Microsoft.Extensions.Logging;
 using Repositories;
 
@@ -69,10 +70,103 @@ public class ApprovalAPITests
         {
             Data = new Dictionary<string, string>()
         });
-
-
-
     }
+
+    [Fact]
+    public async Task ValidateApprover_ReturnsApiResponseOK_WithBoolRefTrue()
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent("true")
+        };
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+
+        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.OK)
+        {
+            Data = new BoolRef(true)
+        });
+    }
+
+    [Fact]
+    public async Task ValidateApprover_ReturnsApiResponseOK_WithBoolRefFalse()
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent("false")
+        };
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+
+        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.OK)
+        {
+            Data = new BoolRef(false),
+            Errors = new Dictionary<string, List<string>>
+            {
+                {$"ApproverEmail", new List<string> { "testapprover is not a valid approver" } }
+            }
+        });
+    }
+
+    [Fact]
+    public async Task ValidateApprover_ReturnsApiResponseNoContent_WithBoolRefFalse()
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.NoContent)
+        {
+            Content = new StringContent("false")
+        };
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+
+        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.NoContent)
+        {
+            Data = new BoolRef(false),
+            Errors = new Dictionary<string, List<string>>()
+            {
+                {$"{HttpStatusCode.NoContent}", new List<string> { "No content returned from API" }}
+            }
+        });
+    }
+
+    [Fact]
+    public async Task ValidateApprover_ReturnsApiResponseBadRequest_WithBoolRefNull()
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+
+        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.BadRequest)
+        {
+            Errors = new Dictionary<string, List<string>>()
+            {
+                {$"{HttpStatusCode.BadRequest}", new List<string> { "Invalid request was sent to API" }}
+            }
+        });
+    }
+
+    [Fact]
+    public async Task ValidateApprover_ReturnsApiResponseUnknown_WithBoolRefNull()
+    {
+        var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
+
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+
+        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.InternalServerError)
+        {
+            Errors = new Dictionary<string, List<string>>()
+            {
+                {$"{response.StatusCode}", new List<string> { "Unknown response from API" }}
+            }
+        });
+    }
+
 
 
 }

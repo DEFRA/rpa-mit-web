@@ -28,7 +28,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
     private async Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisations(string InvoiceType)
     {
-        var error = new Dictionary<string, string>();
+        var error = new Dictionary<string, List<string>>();
 
         _logger.LogInformation($"Calling Reference Data API for Organisations - params {InvoiceType}");
         var response = await _referenceDataRepository.GetOrganisationsListAsync();
@@ -58,7 +58,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
             }
             catch (Exception ex)
             {
-                error.Add("deserializing", ex.Message);
+                error.Add("deserializing", new List<string>() { ex.Message });
                 return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.InternalServerError, error)
                 {
                     Data = new List<Organisation>()
@@ -75,18 +75,18 @@ public class ReferenceDataAPI : IReferenceDataAPI
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             _logger.LogError("Invalid request was sent to API");
-            error.Add($"{HttpStatusCode.BadRequest}", "Invalid request was sent to API");
+            error.Add($"{HttpStatusCode.BadRequest}", new List<string>() { "Invalid request was sent to API" });
             return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.BadRequest, error);
         }
 
         _logger.LogError("Unknown response from API");
-        error.Add($"{HttpStatusCode.InternalServerError}", "Unknown response from API");
+        error.Add($"{HttpStatusCode.InternalServerError}", new List<string>() { "Unknown response from API" });
         return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.InternalServerError, error);
     }
 
     private async Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemes(string InvoiceType, string Organisation)
     {
-        var error = new Dictionary<string, string>();
+        var error = new Dictionary<string, List<string>>();
 
         _logger.LogInformation($"Calling Reference Data API for Schemes - params {InvoiceType}, {Organisation}");
         var response = await _referenceDataRepository.GetSchemesListAsync(InvoiceType, Organisation);
@@ -116,7 +116,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
             }
             catch (Exception ex)
             {
-                error.Add("deserializing", ex.Message);
+                error.Add("deserializing", new List<string>() { ex.Message });
                 return new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.InternalServerError, error)
                 {
                     Data = new List<PaymentScheme>()
@@ -133,13 +133,13 @@ public class ReferenceDataAPI : IReferenceDataAPI
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             _logger.LogError("Invalid request was sent to API");
-            error.Add($"{HttpStatusCode.BadRequest}", "Invalid request was sent to API");
+            error.Add($"{HttpStatusCode.BadRequest}", new List<string>() { "Invalid request was sent to API" });
 
             return new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.BadRequest, error);
         }
 
         _logger.LogError("Unknown response from API");
-        error.Add($"{HttpStatusCode.InternalServerError}", "Unknown response from API");
+        error.Add($"{HttpStatusCode.InternalServerError}", new List<string>() { "Unknown response from API" });
         return new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.InternalServerError, error);
     }
 

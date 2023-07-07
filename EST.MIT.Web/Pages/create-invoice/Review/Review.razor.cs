@@ -15,7 +15,7 @@ public partial class Review : ComponentBase
 
     private Invoice invoice = default!;
     private bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,10 +33,13 @@ public partial class Review : ComponentBase
         }
     }
 
+    private void ValidationFailed()
+    {
+        _pageServices.Validation(invoice, out IsErrored, out errors);
+    }
+
     private async Task SaveAndContinue()
     {
-        if (!_pageServices.Validation(invoice, out IsErrored, out errors)) return;
-
         var response = await _api.SaveInvoiceAsync(invoice);
 
         if (response.IsSuccess)

@@ -76,8 +76,10 @@ public class SummaryTests : TestContext
     [Fact]
     public void AddPaymentRequest_Navigates_To_Add_PaymentRequest_Page()
     {
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+
         var component = RenderComponent<Summary>();
-        var button = component.FindAll("button.govuk-button");
+        var button = component.FindAll("button#add-payment-request");
 
         button[0].Click();
 
@@ -88,6 +90,8 @@ public class SummaryTests : TestContext
     [Fact]
     public void SendForApproval_Navigates_To_Select_Approval_Page()
     {
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+
         var component = RenderComponent<Summary>(parameters =>
             parameters.Add(p => p.invoiceId, _invoice.Id.ToString()));
 

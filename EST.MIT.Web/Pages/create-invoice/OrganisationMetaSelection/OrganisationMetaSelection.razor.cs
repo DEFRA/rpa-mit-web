@@ -17,7 +17,8 @@ public partial class OrganisationMetaSelection : ComponentBase
     private OrganisationSelect organisationSelect = new();
     private Dictionary<string, string> organisations = new();
     bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
+    private List<string> viewErrors = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -58,6 +59,7 @@ public partial class OrganisationMetaSelection : ComponentBase
     private void ValidationFailed()
     {
         _pageServices.Validation(organisationSelect, out IsErrored, out errors);
+        viewErrors = errors[nameof(organisationSelect.Organisation).ToLower()];
     }
 
     private void Cancel()

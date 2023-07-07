@@ -20,7 +20,8 @@ public partial class AccountMetaSelection : ComponentBase
         { "AP", "Accounts Payable" }
     };
     bool IsErrored = false;
-    private Dictionary<string, string> errors = new();
+    private Dictionary<string, List<string>> errors = new();
+    private List<string> viewErrors = new();
 
     protected override void OnInitialized()
     {
@@ -48,6 +49,7 @@ public partial class AccountMetaSelection : ComponentBase
     private void ValidationFailed()
     {
         _pageServices.Validation(accountSelect, out IsErrored, out errors);
+        viewErrors = errors[nameof(accountSelect.Account).ToLower()];
     }
 
     private void Cancel()

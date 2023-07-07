@@ -4,14 +4,15 @@ namespace Services;
 
 public interface IPageServices
 {
-    bool Validation(dynamic model, out bool IsErrored, out Dictionary<string, string> errors);
+    // bool Validation(dynamic model, out bool IsErrored, out Dictionary<string, string> errors);
+    bool Validation(dynamic model, out bool IsErrored, out Dictionary<string, List<string>> errors);
 }
 
 public class PageServices : IPageServices
 {
-    public bool Validation(object model, out bool IsErrored, out Dictionary<string, string> errors) => Validate(model, out IsErrored, out errors);
+    public bool Validation(object model, out bool IsErrored, out Dictionary<string, List<string>> errors) => Validate(model, out IsErrored, out errors);
 
-    private static bool Validate<T>(T model, out bool IsErrored, out Dictionary<string, string> errors)
+    private static bool Validate<T>(T model, out bool IsErrored, out Dictionary<string, List<string>> errors)
     {
         if (model == null)
         {
@@ -21,14 +22,20 @@ public class PageServices : IPageServices
         }
 
         var validationResults = model.Validate();
-        Dictionary<string, string> failures = new();
+        Dictionary<string, List<string>> failures = new();
 
         if (validationResults.Any())
         {
             IsErrored = true;
             foreach (var result in validationResults)
             {
-                failures.Add(result.MemberNames.First().ToLower(), result?.ErrorMessage ?? "Unknown error");
+                if (failures.ContainsKey(result.MemberNames.First().ToLower()))
+                {
+                    failures[result.MemberNames.First().ToLower()].Add(result?.ErrorMessage ?? "Unknown error");
+                    continue;
+                }
+
+                failures.Add(result.MemberNames.First().ToLower(), new List<string> { result?.ErrorMessage ?? "Unknown error" });
             }
             errors = failures;
 
@@ -39,5 +46,6 @@ public class PageServices : IPageServices
         errors = new();
         return true;
     }
+
 }
 

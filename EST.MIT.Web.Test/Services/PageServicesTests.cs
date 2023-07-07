@@ -17,7 +17,7 @@ public class PageServicesTests
             PaymentType = "First"
         };
 
-        var result = pageServices.Validation(invoice, out bool IsErrored, out Dictionary<string, string> errors);
+        var result = pageServices.Validation(invoice, out bool IsErrored, out Dictionary<string, List<string>> errors);
 
         result.Should().BeTrue();
         IsErrored.Should().BeFalse();
@@ -32,7 +32,7 @@ public class PageServicesTests
         var invoice = new Invoice();
         var pageServices = new PageServices();
 
-        var result = pageServices.Validation(invoice, out var IsErrored, out var errors);
+        var result = pageServices.Validation(invoice, out var IsErrored, out Dictionary<string, List<string>> errors);
 
         result.Should().BeFalse();
         IsErrored.Should().BeTrue();
@@ -57,7 +57,7 @@ public class PageServicesTests
 
         var pageServices = new PageServices();
 
-        var result = pageServices.Validation(invoice.PaymentRequests[0], out var IsErrored, out var errors);
+        var result = pageServices.Validation(invoice.PaymentRequests[0], out var IsErrored, out Dictionary<string, List<string>> errors);
 
         result.Should().BeTrue();
         IsErrored.Should().BeFalse();
@@ -83,7 +83,7 @@ public class PageServicesTests
 
         var pageServices = new PageServices();
 
-        var result = pageServices.Validation(paymentRequest, out var IsErrored, out var errors);
+        var result = pageServices.Validation(paymentRequest, out var IsErrored, out Dictionary<string, List<string>> errors);
 
         result.Should().BeFalse();
         IsErrored.Should().BeTrue();
@@ -116,7 +116,7 @@ public class PageServicesTests
 
         var pageServices = new PageServices();
 
-        var result = pageServices.Validation(paymentRequest.InvoiceLines[0], out var IsErrored, out var errors);
+        var result = pageServices.Validation(paymentRequest.InvoiceLines[0], out var IsErrored, out Dictionary<string, List<string>> errors);
 
         result.Should().BeTrue();
         IsErrored.Should().BeFalse();
@@ -129,7 +129,7 @@ public class PageServicesTests
         Invoice invoice = default!;
         var pageServices = new PageServices();
 
-        var result = pageServices.Validation(invoice, out var IsErrored, out var errors);
+        var result = pageServices.Validation(invoice, out var IsErrored, out Dictionary<string, List<string>> errors);
 
         result.Should().BeFalse();
         IsErrored.Should().BeTrue();

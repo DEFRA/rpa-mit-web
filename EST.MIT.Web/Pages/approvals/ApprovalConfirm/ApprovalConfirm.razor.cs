@@ -15,7 +15,7 @@ public partial class ApprovalConfirm : ComponentBase
     private Invoice invoice;
     private Approval _approval = new();
     private bool IsErrored;
-    private Dictionary<string, string> Errors = new();
+    private Dictionary<string, List<string>> Errors = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,7 +34,7 @@ public partial class ApprovalConfirm : ComponentBase
             else
             {
                 IsErrored = true;
-                Errors.Add("Error", "Error");
+                Errors.Add("Error", new List<string> { x.Exception?.Message ?? "Unknown Error" });
             }
         });
     }
@@ -50,7 +50,7 @@ public partial class ApprovalConfirm : ComponentBase
             else
             {
                 IsErrored = true;
-                Errors.Add("Error", "Error");
+                Errors.Add("Error", new List<string> { x.Exception?.Message ?? "Unknown Error" });
             }
         });
     }

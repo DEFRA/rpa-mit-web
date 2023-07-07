@@ -68,7 +68,7 @@ public class InvoiceAPI : IInvoiceAPI
 
     private async Task<ApiResponse<Invoice>> SaveInvoice(Invoice invoice)
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new Dictionary<string, List<string>>();
         var response = await _invoiceRepository.PostInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
@@ -79,15 +79,14 @@ public class InvoiceAPI : IInvoiceAPI
 
         if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
 
-        errors.Add(response.StatusCode.ToString(), $"Unexpected response from API: ({(int)response.StatusCode})");
+        errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
 
     }
 
     private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice)
     {
-        var errors = new Dictionary<string, string>();
-
+        var errors = new Dictionary<string, List<string>>();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
@@ -98,13 +97,13 @@ public class InvoiceAPI : IInvoiceAPI
 
         if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
 
-        errors.Add(response.StatusCode.ToString(), $"Unexpected response from API: ({(int)response.StatusCode})");
+        errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
     }
 
     private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice, PaymentRequest paymentRequest)
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new Dictionary<string, List<string>>();
 
         paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
         invoice.PaymentRequests.Add(paymentRequest);
@@ -119,13 +118,13 @@ public class InvoiceAPI : IInvoiceAPI
 
         if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
 
-        errors.Add(response.StatusCode.ToString(), $"Unexpected response from API: ({(int)response.StatusCode})");
+        errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
     }
 
     private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine)
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new Dictionary<string, List<string>>();
 
         invoice.PaymentRequests
                 .First(x => x.PaymentRequestId == paymentRequest.PaymentRequestId).InvoiceLines
@@ -141,13 +140,13 @@ public class InvoiceAPI : IInvoiceAPI
 
         if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
 
-        errors.Add(response.StatusCode.ToString(), $"Unexpected response from API: ({(int)response.StatusCode})");
+        errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
     }
 
     private async Task<ApiResponse<Invoice>> DeletePaymentRequest(Invoice invoice, string paymentRequestId)
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new Dictionary<string, List<string>>();
         invoice.PaymentRequests.RemoveAll(x => x.PaymentRequestId == paymentRequestId);
 
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
@@ -164,7 +163,7 @@ public class InvoiceAPI : IInvoiceAPI
 
         if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
 
-        errors.Add(response.StatusCode.ToString(), $"Unexpected response from API: ({(int)response.StatusCode})");
+        errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
 
     }
@@ -206,10 +205,10 @@ public class InvoiceAPI : IInvoiceAPI
 
     private async Task<ApiResponse<T>> BadRequestResponse<T>(HttpResponseMessage response, string id) where T : class
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new Dictionary<string, List<string>>();
         var message = await response.Content.ReadAsStringAsync();
 
-        errors.Add(response.StatusCode.ToString(), message);
+        errors.Add(response.StatusCode.ToString(), new List<string> { $"{message}" });
         _logger.LogError($"Invoice {id}: {message}");
 
         return new ApiResponse<T>(response.StatusCode, errors);
