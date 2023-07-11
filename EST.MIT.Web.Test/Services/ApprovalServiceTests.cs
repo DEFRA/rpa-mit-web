@@ -194,7 +194,10 @@ public class ApprovalServiceTests
     [Fact]
     public void GetApprovalAsync_Returns_Invoice()
     {
-        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Invoice() { Status = "approval" });
+        var _invoice = new Invoice();
+        _invoice.Update("approval");
+
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
 
         var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
@@ -221,8 +224,11 @@ public class ApprovalServiceTests
     [Fact]
     public void GetApprovalAsync_Invoice_Not_Approval_Status()
     {
+        var _invoice = new Invoice();
+        _invoice.Update("notapproval");
+
         _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new Invoice() { Status = "notapproval" });
+            .ReturnsAsync(_invoice);
 
         var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
@@ -235,7 +241,10 @@ public class ApprovalServiceTests
     [Fact]
     public void GetOutstandingApprovalsAsync_Returns_Invoices()
     {
-        _mockApiService.Setup(x => x.GetApprovalsAsync()).ReturnsAsync(new List<Invoice> { new Invoice() { Status = "approval" } });
+        var _invoice = new Invoice();
+        _invoice.Update("approval");
+
+        _mockApiService.Setup(x => x.GetApprovalsAsync()).ReturnsAsync(new List<Invoice> { _invoice });
 
         var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
         var response = service.GetOutstandingApprovalsAsync();

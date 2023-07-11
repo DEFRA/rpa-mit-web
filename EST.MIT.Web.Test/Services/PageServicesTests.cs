@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Entities;
 
 namespace Services.Tests;
@@ -135,4 +136,34 @@ public class PageServicesTests
         IsErrored.Should().BeTrue();
         errors.Should().BeEmpty();
     }
+
+    [Fact]
+    public void Validate_Returns_Multiple_Errors_By_Key()
+    {
+        var testClass = new ErrorTestClass()
+        {
+            Test = "test"
+        };
+
+        var pageServices = new PageServices();
+
+        var result = pageServices.Validation(testClass, out var IsErrored, out Dictionary<string, List<string>> errors);
+
+        result.Should().BeFalse();
+        IsErrored.Should().BeTrue();
+        errors.Should().NotBeEmpty();
+        errors.Should().HaveCount(1);
+        errors.Should().ContainKey("test");
+        errors["test"].Should().HaveCount(2);
+
+    }
+
+    public class ErrorTestClass
+    {
+        [Required]
+        [EmailFormatCheck]
+        [DomainCheck]
+        public string Test { get; set; } = default!;
+    }
+
 }

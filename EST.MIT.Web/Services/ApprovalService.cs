@@ -94,7 +94,6 @@ public class ApprovalService : IApprovalService
     private async Task<ApiResponse<Invoice>> SubmitApproval(Invoice invoice)
     {
         var errors = new Dictionary<string, List<string>>();
-
         var notification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
@@ -126,9 +125,7 @@ public class ApprovalService : IApprovalService
     {
         try
         {
-            invoice.Status = status;
-            invoice.UpdatedBy = "user";
-            invoice.Updated = DateTimeOffset.Now;
+            invoice.Update(status);
 
             var response = await _invoiceAPI.UpdateInvoiceAsync(invoice);
 

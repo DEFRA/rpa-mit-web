@@ -23,7 +23,7 @@ public class ApprovalRepository : IApprovalRepository
 
     private async Task<HttpResponseMessage> GetApprovers(string scheme, string value)
     {
-        var client = _clientFactory.CreateClient("ApproversAPI");
+        var client = _clientFactory.CreateClient("ApprovalAPI");
 
         var response = await client.GetAsync($"/approvals/invoiceapprovers/{scheme}/{value}");
 
@@ -34,9 +34,15 @@ public class ApprovalRepository : IApprovalRepository
 
     private async Task<HttpResponseMessage> ValidateApprover(string approver)
     {
-        var client = _clientFactory.CreateClient("ApproversAPI");
+        var client = _clientFactory.CreateClient("ApprovalAPI");
 
-        var response = await client.GetAsync($"/approvals/approver/validate/{approver}");
+        var body = new ValidateBody
+        {
+            scheme = "BPS",
+            approverEmailAddress = approver
+        };
+
+        var response = await client.PostAsJsonAsync("/approvals/approver/validate", body);
 
         await HandleHttpResponseError(response);
 
@@ -49,6 +55,12 @@ public class ApprovalRepository : IApprovalRepository
         {
             response.Content = new StringContent(await response.Content.ReadAsStringAsync());
         }
+    }
+
+    private struct ValidateBody
+    {
+        public string scheme { get; set; }
+        public string approverEmailAddress { get; set; }
     }
 
 }

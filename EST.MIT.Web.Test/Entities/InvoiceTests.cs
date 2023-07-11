@@ -54,15 +54,7 @@ public class InvoiceTests
     {
         var invoice = new Invoice();
 
-        invoice.Created.Should().Be(DateTimeOffset.MinValue);
-    }
-
-    [Fact]
-    public void Updated_Should_Be_Set_To_Now_By_Default()
-    {
-        var invoice = new Invoice();
-
-        invoice.Updated.Should().Be(DateTimeOffset.MinValue);
+        invoice.Created.Should().BeCloseTo(DateTimeOffset.Now, TimeSpan.FromMinutes(1));
     }
 
     [Fact]

@@ -102,7 +102,6 @@ public class InvoiceRepository : IInvoiceRepository
         invoices.Add(new Invoice
         {
             SchemeType = "scheme",
-            Status = "new",
             Approver = "approver",
             PaymentType = "invoice",
             AccountType = "account",
@@ -112,15 +111,12 @@ public class InvoiceRepository : IInvoiceRepository
                     FRN = 1234567890,
                     Value = 420
                 }
-            },
-            Updated = DateTimeOffset.Now,
-            UpdatedBy = "user"
+            }
         });
 
         invoices.Add(new Invoice
         {
             SchemeType = "scheme",
-            Status = "approval",
             Approver = "approver",
             PaymentType = "invoice",
             AccountType = "account",
@@ -130,9 +126,7 @@ public class InvoiceRepository : IInvoiceRepository
                     FRN = 1122334455,
                     Value = 6969
                 }
-            },
-            Updated = DateTimeOffset.Now,
-            UpdatedBy = "user"
+            }
         });
 
 

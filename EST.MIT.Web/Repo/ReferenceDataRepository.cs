@@ -3,7 +3,7 @@ namespace Repositories;
 public interface IReferenceDataRepository
 {
     Task<HttpResponseMessage> GetOrganisationsListAsync();
-    Task<HttpResponseMessage> GetSchemesListAsync(string InvoiceType, string Organisation);
+    Task<HttpResponseMessage> GetSchemesListAsync(string? InvoiceType = null, string? Organisation = null);
     Task<HttpResponseMessage> GetFundListAsync
         (string InvoiceType, string Organisation, string Scheme, string PaymentType);
 }
@@ -19,7 +19,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
 
     public async Task<HttpResponseMessage> GetOrganisationsListAsync()
         => await GetOrganisationsList();
-    public async Task<HttpResponseMessage> GetSchemesListAsync(string InvoiceType, string Organisation)
+    public async Task<HttpResponseMessage> GetSchemesListAsync(string? InvoiceType, string? Organisation)
         => await GetSchemesList(InvoiceType, Organisation);
     public async Task<HttpResponseMessage> GetFundListAsync
         (string InvoiceType, string Organisation, string Scheme, string PaymentType)
@@ -29,19 +29,20 @@ public class ReferenceDataRepository : IReferenceDataRepository
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
-        var response = await client.GetAsync($"/organisations?invoiceType=AP");
+        var response = await client.GetAsync($"/organisations");
 
         await HandleHttpResponseError(response);
 
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetSchemesList(string InvoiceType, string Organisation)
+    private async Task<HttpResponseMessage> GetSchemesList(string? InvoiceType, string? Organisation)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
-        var response =
-            await client.GetAsync($"/schemeTypes?invoiceType={InvoiceType}&organisation={Organisation}");
+        var response = (string.IsNullOrEmpty(InvoiceType) && string.IsNullOrEmpty(Organisation))
+                    ? await client.GetAsync($"/schemeTypes")
+                    : await client.GetAsync($"/schemeTypes?invoiceType={InvoiceType}&organisation={Organisation}");
 
         await HandleHttpResponseError(response);
 

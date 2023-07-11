@@ -17,16 +17,47 @@ public class Invoice
     [Required(ErrorMessage = "Scheme Type is required")]
     public string SchemeType { get; set; } = default!;
     public List<PaymentRequest> PaymentRequests { get; set; } = new List<PaymentRequest>();
-    public string Status { get; set; } = "new";
+    public string Status { get; private set; } = "new";
     public string Reference { get; set; } = default!;
-    public DateTimeOffset Created { get; set; }
-    public DateTimeOffset Updated { get; set; }
-    public string CreatedBy { get; set; } = "";
-    public string UpdatedBy { get; set; } = "";
-    public string Approver { get; set; } = "";
+    public DateTimeOffset Created { get; private set; } = DateTimeOffset.Now;
+    public DateTimeOffset Updated { get; private set; }
+    public string CreatedBy { get; private set; } = default!;
+    public string UpdatedBy { get; set; } = default!;
+    public string Approver { get; set; } = default!;
 
     public Invoice()
     {
         Id = Guid.NewGuid();
     }
+
+    [JsonConstructor]
+    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approver)
+    {
+        Id = id;
+        PaymentType = paymentType;
+        AccountType = accountType;
+        Organisation = organisation;
+        SchemeType = schemeType;
+        PaymentRequests = paymentRequests;
+        Status = status;
+        Reference = reference;
+        Created = created;
+        Updated = updated;
+        CreatedBy = createdBy;
+        UpdatedBy = updatedBy;
+        Approver = approver;
+    }
+
+    public void Update(string? status = null)
+    {
+        Updated = DateTimeOffset.Now;
+        UpdatedBy = "user";
+        if (status != null)
+        {
+            Status = status;
+        }
+    }
+
+
+
 }

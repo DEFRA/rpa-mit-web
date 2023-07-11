@@ -7,7 +7,7 @@ namespace Services;
 public interface IReferenceDataAPI
 {
     Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisationsAsync(string InvoiceType);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemesAsync(string InvoiceType, string Organisation);
+    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemesAsync(string? InvoiceType = null, string? Organisation = null);
 }
 
 public class ReferenceDataAPI : IReferenceDataAPI
@@ -23,7 +23,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
     public async Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisationsAsync(string InvoiceType)
         => await GetOrganisations(InvoiceType);
-    public async Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemesAsync(string InvoiceType, string Organisation)
+    public async Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemesAsync(string? InvoiceType, string? Organisation)
         => await GetSchemes(InvoiceType, Organisation);
 
     private async Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisations(string InvoiceType)
@@ -84,12 +84,12 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemes(string InvoiceType, string Organisation)
+    private async Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemes(string? InvoiceType, string? Organisation)
     {
         var error = new Dictionary<string, List<string>>();
+        var response = await _referenceDataRepository.GetSchemesListAsync(InvoiceType, Organisation);
 
         _logger.LogInformation($"Calling Reference Data API for Schemes - params {InvoiceType}, {Organisation}");
-        var response = await _referenceDataRepository.GetSchemesListAsync(InvoiceType, Organisation);
 
         if (response.StatusCode == HttpStatusCode.OK)
         {

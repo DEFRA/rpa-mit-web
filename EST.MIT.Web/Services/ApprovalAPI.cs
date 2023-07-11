@@ -58,22 +58,16 @@ public class ApprovalAPI : IApprovalAPI
 
         if (response.StatusCode == HttpStatusCode.OK)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            if (!bool.Parse(content))
-            {
-                _logger.LogError($"ApprovalAPI.ValidateApprover: {approver} is not a valid approver");
-                reply.Data = new BoolRef(false);
-                reply.Errors.Add("ApproverEmail", new List<string> { $"{approver} is not a valid approver" });
-            }
-
+            _logger.LogError($"ApprovalAPI.ValidateApprover: {approver} is a valid approver");
+            reply.Data = new BoolRef(true);
             return reply;
         }
 
-        if (response.StatusCode == HttpStatusCode.NoContent)
+        if (response.StatusCode == HttpStatusCode.NotFound)
         {
-            _logger.LogWarning($"No content returned from API");
+            _logger.LogError($"ApprovalAPI.ValidateApprover: {approver} is not a valid approver");
             reply.Data = new BoolRef(false);
-            reply.Errors.Add($"{HttpStatusCode.NoContent}", new List<string> { $"No content returned from API" });
+            reply.Errors.Add("ApproverEmail", new List<string> { $"{approver} is not a valid approver" });
             return reply;
         }
 

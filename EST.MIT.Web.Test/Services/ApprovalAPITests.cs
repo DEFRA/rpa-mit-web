@@ -90,9 +90,9 @@ public class ApprovalAPITests
     }
 
     [Fact]
-    public async Task ValidateApprover_ReturnsApiResponseOK_WithBoolRefFalse()
+    public async Task ValidateApprover_ReturnsApiResponseNotFound_WithBoolRefFalse()
     {
-        var response = new HttpResponseMessage(HttpStatusCode.OK)
+        var response = new HttpResponseMessage(HttpStatusCode.NotFound)
         {
             Content = new StringContent("false")
         };
@@ -100,33 +100,12 @@ public class ApprovalAPITests
 
         var result = await _approvalAPI.ValidateApproverAsync("testApprover");
 
-        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.OK)
+        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.NotFound)
         {
             Data = new BoolRef(false),
             Errors = new Dictionary<string, List<string>>
             {
                 {$"ApproverEmail", new List<string> { "testapprover is not a valid approver" } }
-            }
-        });
-    }
-
-    [Fact]
-    public async Task ValidateApprover_ReturnsApiResponseNoContent_WithBoolRefFalse()
-    {
-        var response = new HttpResponseMessage(HttpStatusCode.NoContent)
-        {
-            Content = new StringContent("false")
-        };
-        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
-
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
-
-        result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.NoContent)
-        {
-            Data = new BoolRef(false),
-            Errors = new Dictionary<string, List<string>>()
-            {
-                {$"{HttpStatusCode.NoContent}", new List<string> { "No content returned from API" }}
             }
         });
     }

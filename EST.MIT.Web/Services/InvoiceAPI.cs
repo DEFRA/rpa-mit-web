@@ -69,6 +69,7 @@ public class InvoiceAPI : IInvoiceAPI
     private async Task<ApiResponse<Invoice>> SaveInvoice(Invoice invoice)
     {
         var errors = new Dictionary<string, List<string>>();
+        invoice.Update();
         var response = await _invoiceRepository.PostInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
@@ -87,6 +88,7 @@ public class InvoiceAPI : IInvoiceAPI
     private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice)
     {
         var errors = new Dictionary<string, List<string>>();
+        invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
@@ -107,7 +109,7 @@ public class InvoiceAPI : IInvoiceAPI
 
         paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
         invoice.PaymentRequests.Add(paymentRequest);
-
+        invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
@@ -129,7 +131,7 @@ public class InvoiceAPI : IInvoiceAPI
         invoice.PaymentRequests
                 .First(x => x.PaymentRequestId == paymentRequest.PaymentRequestId).InvoiceLines
                 .Add(invoiceLine);
-
+        invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
@@ -148,7 +150,7 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
         invoice.PaymentRequests.RemoveAll(x => x.PaymentRequestId == paymentRequestId);
-
+        invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 

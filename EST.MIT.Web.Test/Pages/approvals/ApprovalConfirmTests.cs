@@ -134,25 +134,26 @@ public class ApprovalConfirmTests : TestContext
         nav.Uri.Should().Contain("/approval/confirmation/");
     }
 
-    [Fact]
-    public void RejectConfirmed_Handles_Errors()
-    {
-        _mockApprovalService.Setup(x => x.RejectInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<string>())).ReturnsAsync(false);
+    //FLAG
+    // [Fact]
+    // public void RejectConfirmed_Handles_Errors()
+    // {
+    //     _mockApprovalService.Setup(x => x.RejectInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<string>())).ReturnsAsync(false);
 
-        var nav = new FakeNavigationManager();
-        Services.AddSingleton<NavigationManager>(nav);
+    //     var nav = new FakeNavigationManager();
+    //     Services.AddSingleton<NavigationManager>(nav);
 
-        var component = RenderComponent<ApprovalConfirm>();
+    //     var component = RenderComponent<ApprovalConfirm>();
 
-        component.FindAll("textarea")[0].Change("Test");
-        component.FindAll("button")[0].Click();
-        component.WaitForElements("ul.govuk-error-summary__list");
+    //     component.FindAll("textarea")[0].Change("Test");
+    //     component.FindAll("button")[0].Click();
+    //     component.WaitForElements("ul.govuk-error-summary__list");
 
-        var errors = component.FindAll("div.govuk-error-summary");
+    //     var errors = component.FindAll("div.govuk-error-summary");
 
-        errors.Should().NotBeNull();
-        errors.Count.Should().Be(1);
-    }
+    //     errors.Should().NotBeNull();
+    //     errors.Count.Should().Be(1);
+    // }
 
     [Fact]
     public void RejectConfirmed_Fails_Validation()

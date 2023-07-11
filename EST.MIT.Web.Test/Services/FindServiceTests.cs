@@ -1,8 +1,5 @@
 using Entities;
-using Services;
-using EST.MIT.Web.Pages.find;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
+using Repositories;
 
 namespace Services.Tests;
 
@@ -14,7 +11,7 @@ public class FindServiceTests : TestContext
         var mockAPIService = new Mock<IInvoiceAPI>();
         mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Invoice());
 
-        var service = new FindService(mockAPIService.Object);
+        var service = new FindService(mockAPIService.Object, Mock.Of<IReferenceDataRepository>());
 
         var response = service.FetchInvoiceAsync("", "");
         response.Should().NotBeNull();
@@ -26,7 +23,7 @@ public class FindServiceTests : TestContext
         var mockAPIService = new Mock<IInvoiceAPI>();
         mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult<Invoice>(null));
 
-        var service = new FindService(mockAPIService.Object);
+        var service = new FindService(mockAPIService.Object, Mock.Of<IReferenceDataRepository>());
 
         var response = service.FetchInvoiceAsync("", "").Result;
         response.Should().BeNull();

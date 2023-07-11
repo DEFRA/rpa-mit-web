@@ -1,5 +1,7 @@
 ﻿using Helpers;
 using Entities;
+using Repositories;
+using EST.MIT.Web.Pages.create_invoice.SchemeMetaSelection;
 
 namespace Services;
 
@@ -11,10 +13,12 @@ public interface IFindService
 public class FindService : IFindService
 {
     private readonly IInvoiceAPI _apiService;
+    private readonly IReferenceDataRepository _referenceDataRepository;
 
-    public FindService(IInvoiceAPI ApiService)
+    public FindService(IInvoiceAPI apiService, IReferenceDataRepository referenceDataRepository)
     {
-        _apiService = ApiService;
+        _apiService = apiService;
+        _referenceDataRepository = referenceDataRepository;
     }
 
     public async Task<Invoice> FetchInvoiceAsync(string invoiceNumber, string scheme)
@@ -27,5 +31,4 @@ public class FindService : IFindService
         }
         return invoice;
     }
-
 }

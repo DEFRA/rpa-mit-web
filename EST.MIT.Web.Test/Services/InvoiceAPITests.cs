@@ -271,10 +271,13 @@ public class InvoiceAPITests
     [Fact]
     public async void GetApprovalsAsync_ReturnsOK()
     {
+        var _invoice = new Invoice();
+        _invoice.Update("approval");
+
         _mockRepository.Setup(x => x.GetApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonSerializer.Serialize(new List<Invoice>() { new Invoice() { Status = "approval" } }), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonSerializer.Serialize(new List<Invoice>() { _invoice }), Encoding.UTF8, "application/json")
             });
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object);
