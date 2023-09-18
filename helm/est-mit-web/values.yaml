@@ -37,7 +37,9 @@ container:
   comPlusEnableDiagnostics: 0
 
 ingress:
+  class: nginx
   endpoint: est-mit-web
+  server: example.com
 
 volumeMounts:
   mountPath: /var/www/
