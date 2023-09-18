@@ -36,6 +36,9 @@ container:
   port: 3000
   comPlusEnableDiagnostics: 0
 
+ingress:
+  endpoint: est-mit-web
+
 volumeMounts:
   mountPath: /var/www/
   name: core-app-dir
