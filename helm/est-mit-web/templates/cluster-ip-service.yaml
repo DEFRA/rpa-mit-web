@@ -1,3 +1,0 @@
-{{- include "ffc-helm-library.cluster-ip-service" (list . "est-mit-web.cluster-ip-service") -}}
-{{- define "est-mit-web.cluster-ip-service" -}}
-{{- end -}}
