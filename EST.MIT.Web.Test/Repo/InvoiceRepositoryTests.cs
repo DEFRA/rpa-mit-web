@@ -1,4 +1,5 @@
 using System.Net;
+using AutoMapper;
 using Entities;
 using Moq.Contrib.HttpClient;
 
@@ -7,9 +8,21 @@ namespace Repositories.Tests;
 public class InvoiceRepositoryTests : TestContext
 {
     private readonly Mock<HttpMessageHandler> _mockHttpMessageHandler;
+    private readonly Mock<IMapper> _mockAutoMapper;
     public InvoiceRepositoryTests()
     {
         _mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+        _mockAutoMapper = new Mock<IMapper>();
+
+        // If you wanted to use the real mapper, you could do this:
+        // var mapperConfig = new MapperConfiguration(mc =>
+        // {
+        //     mc.AddProfile(new InvoiceAPIMapper());
+        // });
+        // IMapper mapper = mapperConfig.CreateMapper();
+        //
+        // And then pass the mapper into the repository
+        // var repo = new InvoiceRepository(factory, mapper);
     }
 
     [Fact]
@@ -26,7 +39,7 @@ public class InvoiceRepositoryTests : TestContext
             return client;
         });
 
-        var repo = new InvoiceRepository(factory);
+        var repo = new InvoiceRepository(factory, this._mockAutoMapper.Object);
 
         var response = await repo.GetInvoiceAsync("BLK-1234567", "test");
 
@@ -47,7 +60,7 @@ public class InvoiceRepositoryTests : TestContext
             return client;
         });
 
-        var repo = new InvoiceRepository(factory);
+        var repo = new InvoiceRepository(factory, this._mockAutoMapper.Object);
 
         var response = await repo.PostInvoiceAsync(new Invoice());
 
@@ -68,7 +81,7 @@ public class InvoiceRepositoryTests : TestContext
             return client;
         });
 
-        var repo = new InvoiceRepository(factory);
+        var repo = new InvoiceRepository(factory, this._mockAutoMapper.Object);
 
         var response = await repo.PutInvoiceAsync(new Invoice());
 
@@ -89,7 +102,7 @@ public class InvoiceRepositoryTests : TestContext
             return client;
         });
 
-        var repo = new InvoiceRepository(factory);
+        var repo = new InvoiceRepository(factory, this._mockAutoMapper.Object);
 
         var response = await repo.DeleteHeaderAsync(new PaymentRequest());
 
@@ -110,7 +123,7 @@ public class InvoiceRepositoryTests : TestContext
             return client;
         });
 
-        var repo = new InvoiceRepository(factory);
+        var repo = new InvoiceRepository(factory, this._mockAutoMapper.Object);
 
         var response = await repo.GetApprovalAsync("BLK-1234567", "test");
 
@@ -131,7 +144,7 @@ public class InvoiceRepositoryTests : TestContext
             return client;
         });
 
-        var repo = new InvoiceRepository(factory);
+        var repo = new InvoiceRepository(factory, this._mockAutoMapper.Object);
 
         var response = await repo.GetApprovalsAsync();
 
@@ -152,15 +165,11 @@ public class InvoiceRepositoryTests : TestContext
             return client;
         });
 
-        var repo = new InvoiceRepository(factory);
+        var repo = new InvoiceRepository(factory, this._mockAutoMapper.Object);
 
         var response = await repo.PostInvoiceAsync(new Invoice());
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         response.Content.ReadAsStringAsync().Result.Should().Be("Test BadRequest");
-
     }
-
-
-
 }

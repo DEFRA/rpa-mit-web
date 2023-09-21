@@ -1,4 +1,6 @@
+using AutoMapper;
 using Collections;
+using EST.MIT.Web.AutoMapperProfiles;
 using EST.MIT.Web.Shared;
 using Repositories;
 using Services;
@@ -18,6 +20,13 @@ builder.Services.AddSingleton<IUploadService, UploadService>();
 builder.Services.AddSingleton<IPageServices, PageServices>();
 builder.Services.AddSingleton<IFindService, FindService>();
 builder.Services.AddSingleton<IApprovalService, ApprovalService>();
+
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new InvoiceAPIMapper());
+});
+IMapper autoMapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(autoMapper);
 
 builder.Services.AddHttpClient("InvoiceAPI", client =>
 {
