@@ -46,13 +46,9 @@ public class PageServicesTests
         var invoice = new Invoice();
         invoice.PaymentRequests.Add(new PaymentRequest()
         {
-            FRN = 1234567890,
-            SourceSystem = "Manual",
-            MarketingYear = 2020,
-            PaymentRequestNumber = 1,
-            AgreementNumber = "AGR0000001",
+            CustomerId = "1234567890",
+            ClaimReferenceNumber = "C123",
             Value = 123.45,
-            DueDate = "24/03/1990",
             Currency = "GBP"
         });
 
@@ -71,13 +67,8 @@ public class PageServicesTests
 
         var paymentRequest = new PaymentRequest()
         {
-            FRN = 1234567890,
-            SourceSystem = "",
-            MarketingYear = 0,
-            PaymentRequestNumber = 0,
-            AgreementNumber = "",
+            CustomerId = "1234567890",
             Value = 0,
-            DueDate = "",
             InvoiceLines = new List<InvoiceLine>(),
             Currency = "GBP"
         };
@@ -96,13 +87,9 @@ public class PageServicesTests
     {
         var paymentRequest = new PaymentRequest()
         {
-            FRN = 1234567890,
-            SourceSystem = "Manual",
-            MarketingYear = 2020,
-            PaymentRequestNumber = 1,
-            AgreementNumber = "AGR0000001",
+            CustomerId = "1234567890",
+            ClaimReferenceNumber = "C123",
             Value = 123.45,
-            DueDate = "24/03/1990",
             InvoiceLines = new List<InvoiceLine>(),
             Currency = "GBP"
         };
@@ -112,7 +99,8 @@ public class PageServicesTests
             Value = 123.45,
             Description = "Payment",
             SchemeCode = "Test",
-            DeliveryBody = "RP00"
+            DeliveryBody = "RP00",
+            MarketingYear = 2023
         });
 
         var pageServices = new PageServices();

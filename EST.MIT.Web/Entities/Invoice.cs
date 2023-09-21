@@ -11,7 +11,7 @@ public class Invoice
     public string AccountType { get; set; } = default!;
     [Required(ErrorMessage = "Organisation is required")]
     public string Organisation { get; set; } = default!;
-    [Required(ErrorMessage = "Payment Type is required")]
+    [Required(ErrorMessage = "Invoice Type is required")]
     [JsonPropertyName("InvoiceType")]
     public string PaymentType { get; set; } = default!;
     [Required(ErrorMessage = "Scheme Type is required")]

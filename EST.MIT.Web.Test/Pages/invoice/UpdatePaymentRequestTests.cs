@@ -20,13 +20,8 @@ public class UpdatePaymentRequestTests : TestContext
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
             PaymentRequestId = "1",
-            FRN = 1234567890,
-            SourceSystem = "Manual",
-            MarketingYear = 2020,
-            PaymentRequestNumber = 1,
-            AgreementNumber = "123",
+            CustomerId = "1234567890",
             Value = 123.45,
-            DueDate = "24/03/1990",
             InvoiceLines = new List<InvoiceLine>(),
             Currency = "GBP"
         });
@@ -66,7 +61,7 @@ public class UpdatePaymentRequestTests : TestContext
         var IsErrored = false;
         var Errors = new Dictionary<string, List<string>>();
 
-        _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<PaymentRequest>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
+        _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
         _mockPageServices.Setup(x => x.Validation(It.IsAny<PaymentRequest>(), out IsErrored, out Errors)).Returns(true);
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 

@@ -11,13 +11,8 @@ public class SummaryPaymentRequestTests : TestContext
     {
         _paymentRequest = new PaymentRequest()
         {
-            FRN = 1234567890,
-            SourceSystem = "",
-            MarketingYear = 0,
-            PaymentRequestNumber = 0,
-            AgreementNumber = "",
+            CustomerId = "1234567890",
             Value = 0,
-            DueDate = "",
             Currency = "GBP",
             InvoiceLines = new List<InvoiceLine>()
         };
@@ -42,14 +37,9 @@ public class SummaryPaymentRequestTests : TestContext
 
 
         component.Instance.PaymentRequest.Should().NotBeNull();
-        component.Instance.PaymentRequest.FRN = _paymentRequest.FRN;
-        component.Instance.PaymentRequest.SourceSystem = _paymentRequest.SourceSystem;
-        component.Instance.PaymentRequest.MarketingYear = _paymentRequest.MarketingYear;
-        component.Instance.PaymentRequest.PaymentRequestNumber = _paymentRequest.PaymentRequestNumber;
-        component.Instance.PaymentRequest.AgreementNumber = _paymentRequest.AgreementNumber;
+        component.Instance.PaymentRequest.CustomerId = _paymentRequest.CustomerId;
         component.Instance.PaymentRequest.Currency = _paymentRequest.Currency;
         component.Instance.PaymentRequest.Value = _paymentRequest.Value;
-        component.Instance.PaymentRequest.DueDate = _paymentRequest.DueDate;
 
         component.Instance.PaymentRequest.InvoiceLines.Should().NotBeNull();
         component.Instance.PaymentRequest.InvoiceLines.Count.Should().Be(1);

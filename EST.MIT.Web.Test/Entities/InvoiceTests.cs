@@ -10,7 +10,7 @@ public class InvoiceTests
     {
         var invoice = new Invoice();
 
-        invoice.Id.Should().NotBe(Guid.Empty);
+        invoice.Id.Should().NotBe(Guid.Empty.ToString());
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class InvoiceTests
     [Fact]
     public void Properties_Should_Be_Set_Correctly()
     {
-        var id = new Guid("12345678-1234-1234-1234-123456789012");
+        var id = new Guid("12345678-1234-1234-1234-123456789012").ToString();
         var paymentType = "Test Payment Type";
         var accountType = "Test Account Type";
         var organisation = "Test Organisation";

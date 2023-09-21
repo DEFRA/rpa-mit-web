@@ -18,7 +18,7 @@ public class DeletePaymentRequestConfirmationTests : TestContext
     {
         _invoice = new Invoice()
         {
-            Id = Guid.NewGuid(),
+            Id = Guid.NewGuid().ToString(),
             PaymentRequests = new List<PaymentRequest>()
         };
 

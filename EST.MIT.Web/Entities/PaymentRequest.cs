@@ -10,7 +10,7 @@ public class PaymentRequest
     public string ClaimReferenceNumber { get; set; }
     public string ClaimReference { get; set; }
     [Required]
-    public int CustomerId { get; set; }
+    public string CustomerId { get; set; }
     public double Value { get; set; } = 0.00;
     [Required]
     [RegularExpression("GBP|EUR", ErrorMessage = "The Currency must be either GBP or EUR")]

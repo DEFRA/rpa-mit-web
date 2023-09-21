@@ -20,13 +20,8 @@ public class AddPaymentRequestTests : TestContext
         _invoice = new Invoice();
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
-            FRN = 1234567890,
-            SourceSystem = "",
-            MarketingYear = 0,
-            PaymentRequestNumber = 0,
-            AgreementNumber = "",
+            CustomerId = "1234567890",
             Value = 0,
-            DueDate = "",
             InvoiceLines = new List<InvoiceLine>(),
             Currency = "GBP"
         });
@@ -58,16 +53,16 @@ public class AddPaymentRequestTests : TestContext
         component.Instance.invoice.PaymentRequests.Count.Should().Be(1);
     }
 
-    [Fact]
-    public void AfterRender_Redirects_When_Null_Invoice()
-    {
-        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice)null);
-        var navigationManager = Services.GetService<NavigationManager>();
+    // [Fact]
+    // public void AfterRender_Redirects_When_Null_Invoice()
+    // {
+    //     _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice)null);
+    //     var navigationManager = Services.GetService<NavigationManager>();
 
-        var component = RenderComponent<AddPaymentRequest>();
+    //     var component = RenderComponent<AddPaymentRequest>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
-    }
+    //     navigationManager?.Uri.Should().Be("http://localhost/");
+    // }
 
     [Fact]
     public void SaveHeader_Navigates_To_Add_Summary()

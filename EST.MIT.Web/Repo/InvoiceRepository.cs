@@ -116,7 +116,7 @@ public class InvoiceRepository : IInvoiceRepository
             Organisation = "organisation",
             PaymentRequests = new List<PaymentRequest> {
                 new PaymentRequest {
-                    CustomerId = 1234567890,
+                    CustomerId = "1234567890",
                     Value = 420
                 }
             }
@@ -131,7 +131,7 @@ public class InvoiceRepository : IInvoiceRepository
             Organisation = "organisation",
             PaymentRequests = new List<PaymentRequest> {
                 new PaymentRequest {
-                    CustomerId = 1122334455,
+                    CustomerId = "1122334455",
                     Value = 6969
                 }
             }

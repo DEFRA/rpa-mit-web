@@ -21,13 +21,8 @@ public class AddInvoiceLineTests : TestContext
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
             PaymentRequestId = "1",
-            FRN = 1234567890,
-            SourceSystem = "Manual",
-            MarketingYear = 2020,
-            PaymentRequestNumber = 1,
-            AgreementNumber = "123",
+            CustomerId = "1234567890",
             Value = 123.45,
-            DueDate = "24/03/1990",
             InvoiceLines = new List<InvoiceLine>(),
             Currency = "GBP"
         });
