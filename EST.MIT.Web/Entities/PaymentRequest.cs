@@ -5,26 +5,26 @@ namespace Entities;
 public class PaymentRequest
 {
     public string PaymentRequestId { get; set; }
+    public string AccountType { get; set; }
     [Required]
-    public string SourceSystem { get; set; } = "Manual";
+    public string ClaimReferenceNumber { get; set; }
+    public string ClaimReference { get; set; }
     [Required]
-    [RegularExpression("(\\d{10})", ErrorMessage = "The FRN must be 10 digits")]
-    public int FRN { get; set; }
-    [Range(2014, int.MaxValue, ErrorMessage = "The Marketing Year must be after than 2014")]
-    public int MarketingYear { get; set; }
-    [Required]
-    [Range(1, int.MaxValue, ErrorMessage = "The Payment Request Number must be greater than 0")]
-    public int PaymentRequestNumber { get; set; }
-    //Invoice Number
-    [Required(ErrorMessage = "The Agreement Number is required")]
-    public string AgreementNumber { get; set; } = string.Empty;
+    public int CustomerId { get; set; }
+    public double Value { get; set; } = 0.00;
     [Required]
     [RegularExpression("GBP|EUR", ErrorMessage = "The Currency must be either GBP or EUR")]
     public string Currency { get; set; } = "GBP";
-    public string DueDate { get; set; } = string.Empty;
+    public string Description { get; set; }
+    [RequiredIfAR]
+    public string OriginalClaimReference { get; set; }
+    [RequiredIfAR]
+    public string OriginalSettlementDate { get; set; }
+    [RequiredIfAR]
+    public string RecoveryIdentified { get; set; }
+    [RequiredIfAR]
+    public string InvoiceCorrectionReference { get; set; }
     [Required]
-    [RegularExpression("(^(0|\\d+\\.\\d{2})$)", ErrorMessage = "The Value must be in the format 0.00")]
-    public double Value { get; set; } = 0.00;
     public List<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
 
 }

@@ -6,14 +6,14 @@ namespace Entities;
 public class Invoice
 {
     [Required]
-    public Guid Id { get; set; }
-    [Required(ErrorMessage = "Invoice Type is required")]
-    [JsonPropertyName("InvoiceType")]
-    public string PaymentType { get; set; } = default!;
+    public string Id { get; set; }
     [Required(ErrorMessage = "Account Type is required")]
     public string AccountType { get; set; } = default!;
     [Required(ErrorMessage = "Organisation is required")]
     public string Organisation { get; set; } = default!;
+    [Required(ErrorMessage = "Payment Type is required")]
+    [JsonPropertyName("InvoiceType")]
+    public string PaymentType { get; set; } = default!;
     [Required(ErrorMessage = "Scheme Type is required")]
     public string SchemeType { get; set; } = default!;
     public List<PaymentRequest> PaymentRequests { get; set; } = new List<PaymentRequest>();
@@ -27,11 +27,11 @@ public class Invoice
 
     public Invoice()
     {
-        Id = Guid.NewGuid();
+        Id = Guid.NewGuid().ToString();
     }
 
     [JsonConstructor]
-    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approver)
+    public Invoice(string id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approver)
     {
         Id = id;
         PaymentType = paymentType;

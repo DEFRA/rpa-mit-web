@@ -3,36 +3,65 @@
         <dl class="govuk-summary-list">
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key govuk-!-width-two-thirds">FRN</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.FRN</dd>
+                <dd class="govuk-summary-list__value">@PaymentRequest.CustomerId</dd>
             </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Agreement Number</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.AgreementNumber</dd>
+                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Claim Reference Number</dt>
+                <dd class="govuk-summary-list__value">@PaymentRequest.ClaimReferenceNumber</dd>
             </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Marketing Year</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.MarketingYear</dd>
+                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Claim Reference</dt>
+                <dd class="govuk-summary-list__value">@PaymentRequest.ClaimReference</dd>
             </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Payment Request Number</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.PaymentRequestNumber</dd>
+                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Description</dt>
+                <dd class="govuk-summary-list__value">@PaymentRequest.Description</dd>
             </div>
+            @if(@PaymentRequest.AccountType == "AR")
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Currency</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.Currency</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Value</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.Value</dd>
+                </div>
+            }
         </dl>
     </div>
     <div class="govuk-grid-column-one-half">
         <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Currency</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.Currency</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Due Date</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.DueDate</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Value</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.Value</dd>
-            </div>
+            @if(@PaymentRequest.AccountType == "AP")
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Currency</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.Currency</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Value</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.Value</dd>
+                </div>
+            }
+            @if(@PaymentRequest.AccountType == "AR")
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">OriginalClaimReference</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.OriginalClaimReference</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Original Settlement</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.OriginalSettlementDate</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Recovery Identified</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.RecoveryIdentified</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Correction Reference</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.InvoiceCorrectionReference</dd>
+                </div>
+            }
         </dl>
     </div>
 </div>

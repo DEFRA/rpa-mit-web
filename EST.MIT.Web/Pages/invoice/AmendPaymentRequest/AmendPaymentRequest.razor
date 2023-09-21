@@ -1,4 +1,5 @@
 @page "/invoice/amend-payment-request/{PaymentRequestId}"
+@using EST.MIT.Web.Shared.Components.ReadonlyInvoicePR
 @using Helpers
 
 @if(!paymentRequest.IsNull())
@@ -10,38 +11,13 @@
         </h1>
     </section>
 
-
     <section class="govuk-width-container govuk-!-padding-top-3">
 
-        <button id="update-payment-request" class="govuk-button" @onclick="UpdatePaymentRequest">Update Payment
-            Request</button>
+        <button id="update-payment-request" class="govuk-button" @onclick="UpdatePaymentRequest">
+            Update Payment Request
+        </button>
 
-        <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">FRN</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.FRN</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Marketing Year</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.MarketingYear</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Payment Request Number</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.PaymentRequestNumber</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Agreement Number</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.AgreementNumber</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Currency</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.Currency</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Due Date</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.DueDate</dd>
-            </div>
-        </dl>
+        <ReadonlyInvoicePR PaymentRequest="@paymentRequest" />
 
     </section>
 

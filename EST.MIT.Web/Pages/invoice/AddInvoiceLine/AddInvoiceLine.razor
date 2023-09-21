@@ -2,6 +2,7 @@
 @using EST.MIT.Web.Shared.Components.SummaryPaymentRequest
 @using EST.MIT.Web.Shared.Components.GDSInputDouble
 @using EST.MIT.Web.Shared.Components.GDSInputText
+@using EST.MIT.Web.Shared.Components.GDSInputInt
 @using Helpers
 
 @if(!paymentRequest.IsNull())
@@ -20,6 +21,12 @@
 
             <GDSInputDouble Label="Line Value" @bind-Data="invoiceLine.Value" Key="Value" Errors=errors/>
 
+            <GDSInputText Label="Fund" @bind-Data="invoiceLine.FundCode" Key="Fund" Errors=errors/>
+            <GDSInputText Label="Main Account" @bind-Data="invoiceLine.MainAccount" Key="MainAccount" Errors=errors/>
+            <GDSInputText Label="Scheme Code" @bind-Data="invoiceLine.SchemeCode" Key="SchemeCode" Errors=errors/>
+            <GDSInputInt Label="Marking Year" @bind-Data="invoiceLine.MarketingYear" Key="MarketingYear" Errors=errors/>
+            <GDSInputText Label="Delivery Body" @bind-Data="invoiceLine.DeliveryBody" Key="DeliveryBody" Errors=errors/>
+
             <div class="govuk-form-group">
                 <label class="govuk-label" for="description">Description</label>
                 <InputSelect class="govuk-select" for="description" @bind-Value="invoiceLine.Description">
@@ -33,9 +40,6 @@
                     <option value="P24 - Over Declaration reduction">P24 - Over Declaration reduction</option>
                 </InputSelect>
             </div>
-
-            <GDSInputText Label="Scheme Code" @bind-Data="invoiceLine.SchemeCode" Key="SchemeCode" Errors=errors/>
-            <GDSInputText Label="Delivery Body" @bind-Data="invoiceLine.DeliveryBody" Key="DeliveryBody" Errors=errors/>
 
             <div class="govuk-form-group">
                 <div class="govuk-button-group">

@@ -107,7 +107,7 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
 
-        paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
+        paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.ClaimReferenceNumber);
         invoice.PaymentRequests.Add(paymentRequest);
         invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);

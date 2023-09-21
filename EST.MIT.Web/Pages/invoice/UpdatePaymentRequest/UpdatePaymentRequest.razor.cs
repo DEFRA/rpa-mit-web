@@ -29,8 +29,7 @@ public partial class UpdatePaymentRequest : ComponentBase
     {
         if (!_pageServices.Validation(paymentRequest, out IsErrored, out errors)) return;
 
-        invoice.PaymentRequests.Add(paymentRequest);
-        var response = await _api.UpdateInvoiceAsync(invoice, paymentRequest);
+        var response = await _api.UpdateInvoiceAsync(invoice);
 
         if (response.IsSuccess)
         {
