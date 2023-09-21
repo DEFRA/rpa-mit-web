@@ -54,9 +54,6 @@ public class PaymentRequestDTO
     [JsonProperty("dueDate")]
     public string DueDate { get; init; } = default!;
 
-    [JsonProperty("appendixReferences")]
-    public AppendixReferencesDTO AppendixReferences { get; init; } = default!;
-
     [JsonProperty("sbi")]
     public int SBI { get; init; } = default!;
 

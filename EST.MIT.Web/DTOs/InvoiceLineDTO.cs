@@ -26,7 +26,4 @@ public class InvoiceLineDTO
 
     [JsonProperty("description")]
     public string Description { get; init; } = default!;
-
-    [JsonProperty("currency")]
-    public string Currency { get; init; } = default!;
 }
