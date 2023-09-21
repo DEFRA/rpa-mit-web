@@ -2,6 +2,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Entities;
 using System.Text.Json;
+using AutoMapper;
+using EST.MIT.Web.DTOs;
 
 namespace Repositories;
 
@@ -18,10 +20,12 @@ public interface IInvoiceRepository
 public class InvoiceRepository : IInvoiceRepository
 {
     private readonly IHttpClientFactory _clientFactory;
+    private readonly IMapper _autoMapper;
 
-    public InvoiceRepository(IHttpClientFactory clientFactory)
+    public InvoiceRepository(IHttpClientFactory clientFactory, IMapper autoMapper)
     {
         _clientFactory = clientFactory;
+        _autoMapper = autoMapper;
     }
 
     public async Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme) => await GetInvoice(id, scheme);
@@ -45,6 +49,10 @@ public class InvoiceRepository : IInvoiceRepository
 
     private async Task<HttpResponseMessage> PostInvoice(Invoice invoice)
     {
+        // Do the mapping from the entity to the DTO here
+        // var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+        // and then post the DTO instead of the entity
+
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
         var response = await client.PostAsJsonAsync($"/invoice", invoice);
