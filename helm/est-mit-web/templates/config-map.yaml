@@ -3,4 +3,7 @@
 data:
   COMPlus_EnableDiagnostics: {{ .Values.container.comPlusEnableDiagnostics | quote }}
   PORT: {{ .Values.container.port | quote }}
+  InvoiceAPIBaseURI: {{ .Values.container.InvoiceAPIBaseURI | quote }}
+  ApprovalAPIBaseURI: {{ .Values.container.ApprovalAPIBaseURI | quote }}
+  ReferenceDataAPIBaseURI: {{ .Values.container.ReferenceDataAPIBaseURI | quote }}
 {{- end -}}
