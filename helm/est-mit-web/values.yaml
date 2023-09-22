@@ -39,7 +39,7 @@ container:
 ingress:
   class: nginx
   endpoint: est-mit-web
-  server: example.com
+  server: value.replaced.from.app.config
 
 volumeMounts:
   mountPath: /var/www/
