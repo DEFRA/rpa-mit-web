@@ -35,6 +35,14 @@ container:
   limitCpu: 120m
   port: 3000
   comPlusEnableDiagnostics: 0
+  InvoiceAPIBaseURI: value.replaced.from.app.config
+  ApprovalAPIBaseURI: value.replaced.from.app.config
+  ReferenceDataAPIBaseURI: value.replaced.from.app.config
+
+ingress:
+  class: nginx
+  endpoint: est-mit-web
+  server: value.replaced.from.app.config
 
 volumeMounts:
   mountPath: /var/www/
