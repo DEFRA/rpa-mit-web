@@ -11,22 +11,33 @@ public partial class PaymentTypeMetaSelection : ComponentBase
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] public IPageServices _pageServices { get; set; }
+    [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
 
     private Invoice invoice = default!;
     private PaymentTypeSelect paymentTypeSelect = new();
-    private readonly Dictionary<string, string> paymentTypes = new()
-    {
-         { "EU", "EU Funds"},
-         { "DOM", "Domestic Funds" }
-    };
+    private readonly Dictionary<string, string> paymentTypes = new();
     bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
     private List<string> viewErrors = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
         invoice = _invoiceStateContainer.Value;
+
+        if (!invoice.IsNull())
+        {
+            await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType).ContinueWith(x =>
+            {
+                if (x.Result.IsSuccess)
+                {
+                    foreach (var paymentType in x.Result.Data)
+                    {
+                        paymentTypes.Add(paymentType.code, paymentType.description);
+                    }
+                }
+            });
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
