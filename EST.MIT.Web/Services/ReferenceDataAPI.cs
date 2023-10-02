@@ -9,7 +9,6 @@ public interface IReferenceDataAPI
     Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisationsAsync(string InvoiceType);
     Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemesAsync(string? InvoiceType = null, string? Organisation = null);
     Task<ApiResponse<IEnumerable<PaymentScheme>>> GetPaymentTypesAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null);
-
 }
 
 public class ReferenceDataAPI : IReferenceDataAPI
@@ -29,7 +28,6 @@ public class ReferenceDataAPI : IReferenceDataAPI
         => await GetSchemes(InvoiceType, Organisation);
     public async Task<ApiResponse<IEnumerable<PaymentScheme>>> GetPaymentTypesAsync(string? InvoiceType, string? Organisation, string? SchemeType)
        => await GetPaymentTypes(InvoiceType, Organisation, SchemeType);
-
     private async Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisations(string InvoiceType)
     {
         var error = new Dictionary<string, List<string>>();
