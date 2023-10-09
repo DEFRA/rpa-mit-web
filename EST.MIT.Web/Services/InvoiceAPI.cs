@@ -94,7 +94,7 @@ public class InvoiceAPI : IInvoiceAPI
 
         if (response.StatusCode == HttpStatusCode.OK)
         {
-            return new ApiResponse<Invoice>(response.StatusCode);
+            return new ApiResponse<Invoice>(response.StatusCode) { Data = invoice };
         }
 
         if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
@@ -109,6 +109,7 @@ public class InvoiceAPI : IInvoiceAPI
 
         paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
         invoice.PaymentRequests.Add(paymentRequest);
+
         invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
@@ -144,7 +145,7 @@ public class InvoiceAPI : IInvoiceAPI
 
         errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
-    }
+    }  
 
     private async Task<ApiResponse<Invoice>> DeletePaymentRequest(Invoice invoice, string paymentRequestId)
     {
