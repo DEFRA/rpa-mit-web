@@ -14,8 +14,7 @@
     <section class="govuk-width-container govuk-!-padding-top-3">
 
         <button id="update-payment-request" class="govuk-button" @onclick="UpdatePaymentRequest">
-            Update Payment
-            Request
+            Update Payment Request
         </button>
 
         <dl class="govuk-summary-list">
@@ -68,7 +67,10 @@
                         <td class="govuk-table__cell">@line.DeliveryBody</td>
                         <td class="govuk-table__cell">@line.Value</td>
                         <td class="govuk-table__cell">@line.Description</td>
-                        <td class="govuk-table__cell"><a id="delete-invoice-line" class="govuk-link" href="" @onclick="() => DeleteInvoiceLine(paymentRequest.InvoiceLines.IndexOf(line))">Delete</a></td>
+                        <td class="govuk-table__cell">
+                            <a id="delete-invoice-line" class="govuk-link" href=""
+                            @onclick="() => DeleteInvoiceLine(paymentRequest.InvoiceLines.IndexOf(line))">Delete</a>
+                        </td>
                     </tr>
                 }
             </tbody>

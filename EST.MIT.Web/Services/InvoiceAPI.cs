@@ -109,7 +109,6 @@ public class InvoiceAPI : IInvoiceAPI
 
         paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
         invoice.PaymentRequests.Add(paymentRequest);
-
         invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
