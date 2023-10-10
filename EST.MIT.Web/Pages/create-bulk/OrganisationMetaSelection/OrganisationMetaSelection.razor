@@ -1,0 +1,44 @@
+@page "/create-bulk/organisation"
+@using EST.MIT.Web.Shared.Components.GDSInputRadio
+@using Helpers
+
+@if(!invoice.IsNull())
+{
+    <section class="govuk-width-container govuk-!-padding-top-9">
+        <h1 class="govuk-heading-l">
+            Select Organisation
+        </h1>
+    </section>
+
+    <section class="govuk-form-group govuk-width-container govuk-!-padding-top-3">
+        <EditForm Model="organisationSelect" OnValidSubmit="@SaveAndContinue" OnInvalidSubmit="@ValidationFailed">
+            <DataAnnotationsValidator />
+                <div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
+                <fieldset class="govuk-fieldset">
+                    @if(IsErrored)
+                    {
+                        <p class="govuk-error-message">
+                            @foreach(var error in viewErrors)
+                            {
+                                <span class="govuk-visually-hidden">Error:</span> @error
+                            }
+                        </p>
+                    }
+
+                    <InputRadioGroup @bind-Value="organisationSelect.Organisation" class="govuk-radios" data-module="govuk-radios" Name="select-organisation" Label="Select Organisation" >
+                        <GDSInputRadio Options="organisations" ShowDescriptions />    
+                    </InputRadioGroup>
+                    
+                </fieldset>
+            </div>
+
+            <div class="govuk-form-group">
+                <div class="govuk-button-group">
+                    <button type=submit class="govuk-button" data-module="govuk-button">Save and Continue</button>
+                    <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
+                </div>
+            </div>
+
+        </EditForm>
+    </section>
+}

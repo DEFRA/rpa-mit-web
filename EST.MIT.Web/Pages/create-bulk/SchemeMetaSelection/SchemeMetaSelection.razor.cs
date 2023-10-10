@@ -1,0 +1,71 @@
+using Entities;
+using Services;
+using EST.MIT.Web.Shared;
+using Microsoft.AspNetCore.Components;
+using Helpers;
+
+namespace EST.MIT.Web.Pages.create_bulk.SchemeMetaSelection;
+
+public partial class SchemeMetaSelection : ComponentBase
+{
+    [Inject] private NavigationManager _nav { get; set; }
+    [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
+    [Inject] public IPageServices _pageServices { get; set; }
+    [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
+
+    private Invoice invoice = default!;
+    private SchemeSelect schemeSelect = new();
+    private Dictionary<string, string> schemes = new();
+    bool IsErrored = false;
+    private Dictionary<string, List<string>> errors = new();
+    private List<string> viewErrors = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        invoice = _invoiceStateContainer.Value;
+
+        if (!invoice.IsNull())
+        {
+            await _referenceDataAPI.GetSchemesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
+            {
+                if (x.Result.IsSuccess)
+                {
+                    foreach (var scheme in x.Result.Data)
+                    {
+                        schemes.Add(scheme.code, scheme.description);
+                    }
+                }
+            });
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (_invoiceStateContainer.Value.IsNull())
+        {
+            _invoiceStateContainer.SetValue(null);
+            _nav.NavigateTo("/create-bulk");
+        }
+    }
+
+    private void SaveAndContinue()
+    {
+        invoice.SchemeType = schemeSelect.Scheme;
+        _invoiceStateContainer.SetValue(invoice);
+        _nav.NavigateTo("/create-bulk/payment-type");
+    }
+
+    private void ValidationFailed()
+    {
+        _pageServices.Validation(schemeSelect, out IsErrored, out errors);
+        viewErrors = errors[nameof(schemeSelect.Scheme).ToLower()];
+    }
+
+    private void Cancel()
+    {
+        _invoiceStateContainer.SetValue(null);
+        _nav.NavigateTo("/");
+    }
+}
