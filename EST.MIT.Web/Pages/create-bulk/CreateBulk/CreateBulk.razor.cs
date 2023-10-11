@@ -12,7 +12,7 @@ namespace EST.MIT.Web.Pages.create_bulk.CreateBulk
         private void Start()
         {
             _invoiceStateContainer.SetValue(new Invoice());
-            _nav.NavigateTo("/create-invoice/account");
+            _nav.NavigateTo("/create-bulk/account");
         }
 
         private void Cancel()
