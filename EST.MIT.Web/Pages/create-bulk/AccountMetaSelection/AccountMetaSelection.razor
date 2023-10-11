@@ -2,7 +2,7 @@
 @using EST.MIT.Web.Shared.Components.GDSInputRadio
 @using Helpers
 
-@if(!invoice.IsNull())
+@if (!invoice.IsNull())
 {
     <section class="govuk-width-container govuk-!-padding-top-9">
         <h1 class="govuk-heading-l">
@@ -15,10 +15,10 @@
             <DataAnnotationsValidator />
             <div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-                    @if(IsErrored)
+                    @if (IsErrored)
                     {
                         <p class="govuk-error-message">
-                            @foreach(var error in viewErrors)
+                            @foreach (var error in viewErrors)
                             {
                                 <span class="govuk-visually-hidden">Error:</span> @error
                             }
@@ -26,7 +26,7 @@
                     }
 
                     <InputRadioGroup @bind-Value="accountSelect.Account" class="govuk-radios" data-module="govuk-radios" Name="select-account-type" Label="Select account type">
-                        <GDSInputRadio Options="accountTypes" UseKeys=false />                                
+                        <GDSInputRadio Options="accountTypes" UseKeys=false />
                     </InputRadioGroup>
 
                 </fieldset>
@@ -40,5 +40,5 @@
             </div>
 
         </EditForm>
-    </section> 
+    </section>
 }

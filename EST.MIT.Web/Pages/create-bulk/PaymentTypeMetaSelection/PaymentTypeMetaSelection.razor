@@ -2,7 +2,7 @@
 @using EST.MIT.Web.Shared.Components.GDSInputRadio
 @using Helpers
 
-@if(!invoice.IsNull())
+@if (!invoice.IsNull())
 {
     <section class="govuk-width-container govuk-!-padding-top-9">
         <h1 class="govuk-heading-l">
@@ -15,17 +15,17 @@
             <DataAnnotationsValidator />
             <div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-                    @if(IsErrored)
+                    @if (IsErrored)
                     {
                         <p class="govuk-error-message">
-                            @foreach(var error in viewErrors)
+                            @foreach (var error in viewErrors)
                             {
                                 <span class="govuk-visually-hidden">Error:</span> @error
                             }
                         </p>
                     }
 
-                    <InputRadioGroup @bind-Value="paymentTypeSelect.PaymentType" class="govuk-radios" data-module="govuk-radios" Name="select-payment-type" Label="Select Payment Type" >
+                    <InputRadioGroup @bind-Value="paymentTypeSelect.PaymentType" class="govuk-radios" data-module="govuk-radios" Name="select-payment-type" Label="Select Payment Type">
                         <GDSInputRadio Options=paymentTypes UseKeys=false />
                     </InputRadioGroup>
 

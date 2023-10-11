@@ -2,7 +2,7 @@
 @using EST.MIT.Web.Shared.Components.GDSInputRadio
 @using Helpers
 
-@if(!invoice.IsNull())
+@if (!invoice.IsNull())
 {
     <section class="govuk-width-container govuk-!-padding-top-9">
         <h1 class="govuk-heading-l">
@@ -13,12 +13,12 @@
     <section class="govuk-form-group govuk-width-container govuk-!-padding-top-3">
         <EditForm Model="schemeSelect" OnValidSubmit="@SaveAndContinue" OnInvalidSubmit="@ValidationFailed">
             <DataAnnotationsValidator />
-                <div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
+            <div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset">
-                    @if(IsErrored)
+                    @if (IsErrored)
                     {
                         <p class="govuk-error-message">
-                            @foreach(var error in viewErrors)
+                            @foreach (var error in viewErrors)
                             {
                                 <span class="govuk-visually-hidden">Error:</span> @error
                             }
@@ -26,7 +26,7 @@
                     }
 
                     <InputRadioGroup @bind-Value="schemeSelect.Scheme" class="govuk-radios" data-module="govuk-radios" Name="select-scheme" Label="Select Scheme Type">
-                        <GDSInputRadio Options="schemes" ShowDescriptions />    
+                        <GDSInputRadio Options="schemes" ShowDescriptions />
                     </InputRadioGroup>
 
                 </fieldset>
