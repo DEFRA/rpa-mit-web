@@ -4,6 +4,7 @@ using EST.MIT.Web.Pages.create_invoice.PaymentTypeMetaSelection;
 using EST.MIT.Web.Shared;
 using Services;
 using Entities;
+using System.Net;
 
 namespace Pages.Tests;
 
@@ -11,12 +12,15 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
 {
     private readonly Mock<IPageServices> _mockPageServices;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
+    private readonly Mock<IReferenceDataAPI> _mockReferenceDataAPI;
 
     public PaymentTypeMetaSelectionPageTests()
     {
         _mockPageServices = new Mock<IPageServices>();
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
+        _mockReferenceDataAPI = new Mock<IReferenceDataAPI>();
 
+        Services.AddSingleton<IReferenceDataAPI>(_mockReferenceDataAPI.Object);
         Services.AddSingleton<IPageServices>(_mockPageServices.Object);
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
     }
@@ -25,6 +29,16 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     public void AfterRender_Redirects_When_Null_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice)null);
+
+        _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        {
+            Data = new List<PaymentScheme>
+            {
+               new PaymentScheme { code = "EU", description = "EU" }
+            }
+        }));
+
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
@@ -67,14 +81,22 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
+        _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        {
+            Data = new List<PaymentScheme>
+            {
+               new PaymentScheme { code = "EU", description = "EU" }
+            }
+        }));
+
         var component = RenderComponent<PaymentTypeMetaSelection>();
         component.WaitForElements("input[type='radio']");
         var radioButtons = component.FindAll("input[type='radio']");
 
         radioButtons.Should().NotBeEmpty();
-        radioButtons.Should().HaveCount(2);
+        radioButtons.Should().HaveCount(1);
         radioButtons[0].GetAttribute("value").Should().Be("EU");
-        radioButtons[1].GetAttribute("value").Should().Be("DOM");
     }
 
     [Fact]
@@ -82,6 +104,15 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
         var navigationManager = Services.GetService<NavigationManager>();
+
+        _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        {
+            Data = new List<PaymentScheme>
+            {
+              new PaymentScheme { code = "EU", description = "EU" }
+            }
+        }));
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
         var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='EU']");
@@ -98,6 +129,15 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
         var navigationManager = Services.GetService<NavigationManager>();
+
+        _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        {
+            Data = new List<PaymentScheme>
+            {
+               new PaymentScheme { code = "EU", description = "EU" }
+            }
+        }));
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
         var cancelButton = component.FindAll("a.govuk-link");
