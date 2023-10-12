@@ -43,9 +43,14 @@ public partial class AmendPaymentRequest : ComponentBase
         _nav.NavigateTo($"/invoice/add-invoice-line/{PaymentRequestId}");
     }
 
-    private async Task DeleteInvoiceLine(int index)
+    private void UpdateInvoiceLine(Guid invoiceLineId)
     {
-        paymentRequest.InvoiceLines.RemoveAt(index);
+        _nav.NavigateTo($"/invoice/amend-invoice-line/{PaymentRequestId}/{invoiceLineId}");
+    }
+
+    private async Task DeleteInvoiceLine(Guid invoiceLineId)
+    {
+        paymentRequest.InvoiceLines = paymentRequest.InvoiceLines.Where(x => x.InvoiceLineId != invoiceLineId).ToList();
 
         var response = await _api.UpdateInvoiceAsync(invoice);
 

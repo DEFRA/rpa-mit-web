@@ -55,7 +55,7 @@
                     <th scope="col" class="govuk-table__header">Scheme Code</th>
                     <th scope="col" class="govuk-table__header">Delivery Body</th>
                     <th scope="col" class="govuk-table__header">Line Value</th>
-                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">Description</th>
+                    <th scope="col" class="govuk-table__header">Description</th>
                     <th scope="col" class="govuk-table__header">Action</th>
                 </tr>
             </thead>
@@ -68,8 +68,10 @@
                         <td class="govuk-table__cell">@line.Value</td>
                         <td class="govuk-table__cell">@line.Description</td>
                         <td class="govuk-table__cell">
+                            <a id="update-invoice-line" class="govuk-link" href=""
+                            @onclick="@(() => UpdateInvoiceLine(@line.InvoiceLineId))">Amend</a> | 
                             <a id="delete-invoice-line" class="govuk-link" href=""
-                            @onclick="() => DeleteInvoiceLine(paymentRequest.InvoiceLines.IndexOf(line))">Delete</a>
+                            @onclick="@(() => DeleteInvoiceLine(@line.InvoiceLineId))">Delete</a>
                         </td>
                     </tr>
                 }
