@@ -128,7 +128,7 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
 
-        invoiceLine.InvoiceLineId = Guid.NewGuid();
+        invoiceLine.Id = Guid.NewGuid();
         invoice.PaymentRequests
                 .First(x => x.PaymentRequestId == paymentRequest.PaymentRequestId).InvoiceLines
                 .Add(invoiceLine);

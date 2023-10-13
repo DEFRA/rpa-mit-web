@@ -69,9 +69,9 @@
                         <td class="govuk-table__cell">@line.Description</td>
                         <td class="govuk-table__cell">
                             <a id="update-invoice-line" class="govuk-link" href=""
-                            @onclick="@(() => UpdateInvoiceLine(@line.InvoiceLineId))">Amend</a> | 
+                            @onclick="@(() => UpdateInvoiceLine(@line.Id))">Amend</a> | 
                             <a id="delete-invoice-line" class="govuk-link" href=""
-                            @onclick="@(() => DeleteInvoiceLine(@line.InvoiceLineId))">Delete</a>
+                            @onclick="@(() => DeleteInvoiceLine(@line.Id))">Delete</a>
                         </td>
                     </tr>
                 }

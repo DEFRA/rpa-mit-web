@@ -50,7 +50,7 @@ public partial class AmendPaymentRequest : ComponentBase
 
     private async Task DeleteInvoiceLine(Guid invoiceLineId)
     {
-        paymentRequest.InvoiceLines = paymentRequest.InvoiceLines.Where(x => x.InvoiceLineId != invoiceLineId).ToList();
+        paymentRequest.InvoiceLines = paymentRequest.InvoiceLines.Where(x => x.Id != invoiceLineId).ToList();
 
         var response = await _api.UpdateInvoiceAsync(invoice);
 

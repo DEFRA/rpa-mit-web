@@ -27,7 +27,7 @@ public partial class AmendInvoiceLine : ComponentBase
         await base.OnInitializedAsync();
         invoice ??= _invoiceStateContainer.Value;
         paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
-        invoiceLine ??= paymentRequest?.InvoiceLines.First(x => x.InvoiceLineId.ToString() == InvoiceLineId);
+        invoiceLine ??= paymentRequest?.InvoiceLines.First(x => x.Id.ToString() == InvoiceLineId);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -44,7 +44,7 @@ public partial class AmendInvoiceLine : ComponentBase
     {
         if (!_pageServices.Validation(invoiceLine, out IsErrored, out errors)) return;
 
-        paymentRequest.InvoiceLines = paymentRequest.InvoiceLines.Where(x => x.InvoiceLineId.ToString() != InvoiceLineId).ToList();
+        paymentRequest.InvoiceLines = paymentRequest.InvoiceLines.Where(x => x.Id.ToString() != InvoiceLineId).ToList();
         paymentRequest.InvoiceLines.Add(invoiceLine);
 
         var response = await _api.UpdateInvoiceAsync(invoice);

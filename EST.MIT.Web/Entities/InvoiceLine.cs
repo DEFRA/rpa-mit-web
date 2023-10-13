@@ -4,7 +4,7 @@ namespace Entities;
 
 public class InvoiceLine
 {
-    public Guid InvoiceLineId { get; set; }
+    public Guid Id { get; set; }
     [Required]
     [RegularExpression("(^\\d+\\.\\d{2}$)", ErrorMessage = "The Value must be in the format 0.00")]
     public double Value { get; set; }
