@@ -76,6 +76,28 @@ public class ReviewPageBulkTests : TestContext
 
         navigationManager?.Uri.Should().Be("http://localhost/");
     }
+
+    [Fact]
+    public void Validation_Returns_Errors()
+    {
+        _invoice.AccountType = default!;
+        _mockApiService.Setup(x => x.SaveInvoiceAsync(It.IsAny<Invoice>()))
+            .ReturnsAsync(new ApiResponse<Invoice>(System.Net.HttpStatusCode.Created));
+
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+        var navigationManager = Services.GetService<NavigationManager>();
+
+        var component = RenderComponent<Review>();
+        component.FindAll("button[type='submit']")[0].Click();
+
+        component.WaitForElements("p.govuk-error-message");
+
+        var errorMessages = component.FindAll("p.govuk-error-message");
+
+        errorMessages.Should().NotBeEmpty();
+        errorMessages.Should().HaveCount(1);
+        errorMessages[0].TextContent.Should().Be("Account Type is required");
+    }
 }
 
  
