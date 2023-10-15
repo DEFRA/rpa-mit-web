@@ -33,24 +33,24 @@ public partial class Review : ComponentBase
         }
     }
 
-    private void ValidationFailed()
-    {
-        _pageServices.Validation(invoice, out IsErrored, out errors);
-    }
+    //private void ValidationFailed()
+    //{
+    //    _pageServices.Validation(invoice, out IsErrored, out errors);
+    //}
 
-    private async Task SaveAndContinue()
-    {
-        var response = await _api.SaveInvoiceAsync(invoice);
+    //private async Task SaveAndContinue()
+    //{
+    //    var response = await _api.SaveInvoiceAsync(invoice);
 
-        if (response.IsSuccess)
-        {
-            _invoiceStateContainer.SetValue(invoice);
-            _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
-        }
+    //    if (response.IsSuccess)
+    //    {
+    //        _invoiceStateContainer.SetValue(invoice);
+    //        _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
+    //    }
 
-        IsErrored = true;
-        errors = response.Errors;
-    }
+    //    IsErrored = true;
+    //    errors = response.Errors;
+    //}
 
     private void Cancel()
     {

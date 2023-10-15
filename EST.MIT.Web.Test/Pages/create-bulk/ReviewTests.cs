@@ -62,6 +62,20 @@ public class ReviewPageBulkTests : TestContext
         reviewInvoiceValues[2].TextContent.Should().Be("BPS");
         reviewInvoiceValues[3].TextContent.Should().Be("DOM");
     }
+
+    [Fact]
+    public void Cancels_Invoice_Navigates_To_HomePage()
+    {
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+        var navigationManager = Services.GetService<NavigationManager>();
+
+        var component = RenderComponent<Review>();
+        var cancelButton = component.FindAll("a.govuk-link:contains('Cancel')");
+
+        cancelButton[0].Click();
+
+        navigationManager?.Uri.Should().Be("http://localhost/");
+    }
 }
 
  
