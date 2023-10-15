@@ -110,7 +110,8 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         {
             Data = new List<PaymentScheme>
             {
-              new PaymentScheme { code = "EU", description = "EU" }
+              new PaymentScheme { code = "EU", description = "EU" },
+              new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" },
             }
         }));
 
