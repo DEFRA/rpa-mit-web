@@ -1,0 +1,50 @@
+@page "/invoice/amend-invoice-line/{PaymentRequestId}/{InvoiceLineId}"
+@using EST.MIT.Web.Shared.Components.SummaryPaymentRequest
+@using EST.MIT.Web.Shared.Components.GDSInputDouble
+@using EST.MIT.Web.Shared.Components.GDSInputText
+@using Helpers
+
+@if(!paymentRequest.IsNull())
+{
+    <section class="govuk-width-container govuk-!-padding-top-9">
+        <h1 class="govuk-heading-l">
+            Amend Invoice Line
+        </h1>
+    </section>
+
+
+    <section class="govuk-width-container">
+        <SummaryPaymentRequest PaymentRequest="paymentRequest" HideActions=true/>
+
+        <EditForm Model="invoiceLine">
+
+            <GDSInputDouble Label="Line Value" @bind-Data="invoiceLine.Value" Key="Value" Errors=errors/>
+
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="description">Description</label>
+                <InputSelect class="govuk-select" for="description" @bind-Value="invoiceLine.Description">
+                    <option>Select</option>
+                    <option value="G00 - Gross value of claim">G00 - Gross value of claim</option>
+                    <option value="P05 - Late claim submission penalty">P05 - Late claim submission penalty</option>
+                    <option value="P06 - Late change penalty">P06 - Late change penalty</option>
+                    <option value="P08 - Non declaration of land penalty">P08 - Non declaration of land penalty</option>
+                    <option value="P22 - Rural Development refusals">P22 - Rural Development refusals</option>
+                    <option value="P23 - Rural Development withdrawals">P23 - Rural Development withdrawals</option>
+                    <option value="P24 - Over Declaration reduction">P24 - Over Declaration reduction</option>
+                </InputSelect>
+            </div>
+
+            <GDSInputText Label="Scheme Code" @bind-Data="invoiceLine.SchemeCode" Key="SchemeCode" Errors=errors/>
+            <GDSInputText Label="Delivery Body" @bind-Data="invoiceLine.DeliveryBody" Key="DeliveryBody" Errors=errors/>
+
+            <div class="govuk-form-group">
+                <div class="govuk-button-group">
+                    <button type=submit class="govuk-button" data-module="govuk-button" @onclick="UpdateInvoiceLine">Save and Continue</button>
+                    <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
+                </div>
+            </div>    
+
+        </EditForm>
+
+    </section>
+}

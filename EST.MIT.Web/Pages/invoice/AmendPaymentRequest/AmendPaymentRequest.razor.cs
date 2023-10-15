@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Shared;
 using Entities;
 using Helpers;
+using Services;
 
 namespace EST.MIT.Web.Pages.invoice.AmendPaymentRequest;
 
 public partial class AmendPaymentRequest : ComponentBase
 {
+    [Inject] private IInvoiceAPI _api { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
@@ -41,4 +43,23 @@ public partial class AmendPaymentRequest : ComponentBase
         _nav.NavigateTo($"/invoice/add-invoice-line/{PaymentRequestId}");
     }
 
+    private void UpdateInvoiceLine(Guid invoiceLineId)
+    {
+        _nav.NavigateTo($"/invoice/amend-invoice-line/{PaymentRequestId}/{invoiceLineId}");
+    }
+
+    private async Task DeleteInvoiceLine(Guid invoiceLineId)
+    {
+        paymentRequest.InvoiceLines = paymentRequest.InvoiceLines.Where(x => x.Id != invoiceLineId).ToList();
+
+        var response = await _api.UpdateInvoiceAsync(invoice);
+
+        if (response.IsSuccess)
+        {
+            _invoiceStateContainer.SetValue(response.Data);
+            _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+        }
+
+        _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+    }
 }
