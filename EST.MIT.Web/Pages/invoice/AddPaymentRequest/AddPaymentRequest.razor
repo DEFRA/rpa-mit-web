@@ -16,19 +16,29 @@
 
     <section class="govuk-width-container">
         
+        @if(IsErrored)
+        {
+            <div class="govuk-form-group--error">
+                @foreach (var error in errors.Values.SelectMany(x => x))
+                {
+                    <p class="govuk-error-message">@error</p>
+                }
+            </div>
+        }
+
         <EditForm Model="paymentRequest" OnSubmit="SaveHeader" class="govuk-!-padding-top-6">
 
-            <GDSInputInt @bind-Data="paymentRequest.FRN" Label="FRN" Key="FRN" Errors="errors" />
+            <GDSInputInt @bind-Data="paymentRequest.FRN" Label="FRN" Key="FRN" Errors="errors"/>
 
-            <GDSInputInt @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors" />
+            <GDSInputInt @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors"/>
 
-            <GDSInputInt @bind-Data="paymentRequest.PaymentRequestNumber" Label="Payment Request Number" Key="PaymentRequestNumber" Errors="errors" />
+            <GDSInputInt @bind-Data="paymentRequest.PaymentRequestNumber" Label="Payment Request Number" Key="PaymentRequestNumber" Errors="errors"/>
 
-            <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors" />
+            <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors"/>
 
-            <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors" />
+            <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors"/>
 
-            <GDSInputText @bind-Data="paymentRequest.DueDate" Label="Due Date" Key="DueDate" Errors="errors" />
+            <GDSInputText @bind-Data="paymentRequest.DueDate" Label="Due Date" Key="DueDate" Errors="errors"/>
 
             <div class="govuk-form-group">
                 <div class="govuk-button-group">
