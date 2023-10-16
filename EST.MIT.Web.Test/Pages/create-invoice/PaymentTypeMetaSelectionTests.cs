@@ -109,9 +109,9 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
         {
             Data = new List<PaymentScheme>
-            {
-              new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" },
+            { 
               new PaymentScheme { code = "EU", description = "EU" }, 
+              new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" },
               new PaymentScheme {code = "GB", description = "GB"}
             }
         }));
@@ -120,7 +120,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='EU']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
 
-        selectPaymentTypeRadioButton[0].Change("DOMESTIC");
+        selectPaymentTypeRadioButton[0].Change("EU");
         saveAndContinueButton[0].Click();
 
         navigationManager?.Uri.Should().Be("http://localhost/create-invoice/review");
