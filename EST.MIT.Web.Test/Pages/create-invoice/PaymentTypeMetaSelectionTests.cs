@@ -122,7 +122,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         selectPaymentTypeRadioButton[0].Change("EU");
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        navigationManager?.Uri.Should().Be("http://localhost/create-invoice/review");
     }
 
     [Fact]
