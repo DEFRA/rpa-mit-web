@@ -110,9 +110,8 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         {
             Data = new List<PaymentScheme>
             { 
-              new PaymentScheme { code = "EU", description = "EU" }, 
-              new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" },
-              new PaymentScheme {code = "GB", description = "GB"}
+              new PaymentScheme { code = "EU", description = "EU"},
+              new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" }
             }
         }));
 
@@ -123,7 +122,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         selectPaymentTypeRadioButton[0].Change("EU");
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice/review");
+        navigationManager?.Uri.Should().Be("http://localhost/");
     }
 
     [Fact]

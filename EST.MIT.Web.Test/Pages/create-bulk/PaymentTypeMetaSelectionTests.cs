@@ -99,30 +99,29 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
         radioButtons[0].GetAttribute("value").Should().Be("EU");
     }
 
-    //[Fact]
-    //public void Saves_Selected_PaymentType_Navigates_To_Review()
-    //{
-    //    _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
-    //    var navigationManager = Services.GetService<NavigationManager>();
+    [Fact]
+    public void Saves_Selected_PaymentType_Navigates_To_Review()
+    {
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
+        var navigationManager = Services.GetService<NavigationManager>();
 
-    //    _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-    //    .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
-    //    {
-    //        Data = new List<PaymentScheme>
-    //        {
-    //          new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" },
-    //          new PaymentScheme{code = "EU", description = "EU"}
-    //        }
-    //    }));
+        _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        {
+            Data = new List<PaymentScheme>
+            {
+              new PaymentScheme { code = "DESCRIPTION", description = "DESCRIPTION" }
+            }
+        }));
 
-    //    var component = RenderComponent<PaymentTypeMetaSelection>();
-    //    var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='EU']");
-    //    var saveAndContinueButton = component.FindAll("button[type='submit']");
+        var component = RenderComponent<PaymentTypeMetaSelection>();
+        var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='DESCRIPTION']");
+        var saveAndContinueButton = component.FindAll("button[type='submit']");
 
-    //    selectPaymentTypeRadioButton[0].Change("DOMESTIC");
-    //    saveAndContinueButton[0].Click();
-    //    navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
-    //}
+        selectPaymentTypeRadioButton[0].Change("DESCRIPTION");
+        saveAndContinueButton[0].Click();
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
+    }
 
     [Fact]
     public void Cancels_Invoice_Navigates_To_HomePage()
