@@ -64,6 +64,23 @@ public class ReviewPageBulkTests : TestContext
     }
 
     [Fact]
+    public void Saves_Invoice_Navigates_To_Summary()
+    {
+        _mockApiService.Setup(x => x.SaveInvoiceAsync(It.IsAny<Invoice>()))
+            .ReturnsAsync(new ApiResponse<Invoice>(System.Net.HttpStatusCode.Created));
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+        var navigationManager = Services.GetService<NavigationManager>();
+
+        var component = RenderComponent<Review>();
+        var saveAndContinueButton = component.FindAll("button[type='submit']");
+
+        saveAndContinueButton[0].Click();
+
+        navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
+    }
+
+
+    [Fact]
     public void Cancels_Invoice_Navigates_To_HomePage()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
@@ -100,4 +117,3 @@ public class ReviewPageBulkTests : TestContext
     }
 }
 
- 
