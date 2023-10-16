@@ -112,6 +112,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
             {
               new PaymentScheme { code = "EU", description = "EU" },
               new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" },
+              new PaymentScheme{code = "GB", description = "GB"}
             }
         }));
 
