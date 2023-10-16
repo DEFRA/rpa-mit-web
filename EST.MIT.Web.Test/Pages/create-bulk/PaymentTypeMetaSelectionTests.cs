@@ -120,7 +120,7 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
 
         selectPaymentTypeRadioButton[0].Change("DESCRIPTION");
         saveAndContinueButton[0].Click();
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
     }
 
     [Fact]
