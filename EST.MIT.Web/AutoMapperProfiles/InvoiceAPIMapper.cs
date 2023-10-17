@@ -14,10 +14,10 @@ public class InvoiceAPIMapper : Profile
     {
         CreateMap<(PaymentRequestDTO, InvoiceLine), InvoiceLineDTO>()
             .ForMember(dest => dest.Value, act => act.MapFrom(src => src.Item2.Value))
-            .ForMember(dest => dest.FundCode, act => act.MapFrom(src => "NOTMAPPED"))
-            .ForMember(dest => dest.MainAccount, act => act.MapFrom(src => "NOTMAPPED"))
+            .ForMember(dest => dest.FundCode, act => act.MapFrom(src => "NOTMAPPED")) // need to capture these maybe using the combinations endpoint show as dropdown
+            .ForMember(dest => dest.MainAccount, act => act.MapFrom(src => "NOTMAPPED")) // need to capture these maybe using the combinations endpoint show as dropdown
             .ForMember(dest => dest.SchemeCode, act => act.MapFrom(src => src.Item2.SchemeCode))
-            .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => src.Item1.MarketingYear))
+            .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => src.Item1.MarketingYear)) // bring to this level from the header
             .ForMember(dest => dest.DeliveryBody, act => act.MapFrom(src => src.Item2.DeliveryBody))
             .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Item2.Description))
             ;
@@ -27,18 +27,18 @@ public class InvoiceAPIMapper : Profile
             .ForMember(dest => dest.SourceSystem, act => act.MapFrom(src => src.SourceSystem))
             .ForMember(dest => dest.Value, act => act.MapFrom(src => src.Value))
             .ForMember(dest => dest.Currency, act => act.MapFrom(src => src.Currency))
-            .ForMember(dest => dest.Description, act => act.MapFrom(src => src.InvoiceLines.Any() ? src.InvoiceLines.First().Description : "NOTMAPPED"))
-            .ForMember(dest => dest.OriginalInvoiceNumber, act => act.MapFrom(src => "NOTMAPPED"))
-            .ForMember(dest => dest.OriginalSettlementDate, act => act.MapFrom(src => DateTime.Now)) // TODO: NOTMAPPED
-            .ForMember(dest => dest.RecoveryDate, act => act.MapFrom(src => DateTime.Now)) // TODO: NOTMAPPED
-            .ForMember(dest => dest.InvoiceCorrectionReference, act => act.MapFrom(src => "NOTMAPPED"))
+            .ForMember(dest => dest.Description, act => act.MapFrom(src => src.InvoiceLines.Any() ? src.InvoiceLines.First().Description : "NOTMAPPED")) // should be at the line level
+            .ForMember(dest => dest.OriginalInvoiceNumber, act => act.MapFrom(src => "NOTMAPPED")) // AR fields potentially
+            .ForMember(dest => dest.OriginalSettlementDate, act => act.MapFrom(src => DateTime.Now)) // TODO: NOTMAPPED // AR fields potentially
+            .ForMember(dest => dest.RecoveryDate, act => act.MapFrom(src => DateTime.Now)) // TODO: NOTMAPPED // AR fields potentially
+            .ForMember(dest => dest.InvoiceCorrectionReference, act => act.MapFrom(src => "NOTMAPPED")) // AR fields potentially
             .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => src.MarketingYear))
             .ForMember(dest => dest.PaymentRequestNumber, act => act.MapFrom(src => src.PaymentRequestNumber))
             .ForMember(dest => dest.AgreementNumber, act => act.MapFrom(src => src.AgreementNumber))
             .ForMember(dest => dest.DueDate, act => act.MapFrom(src => src.DueDate))
             .ForMember(dest => dest.FRN, act => act.MapFrom(src => src.FRN.ToString().Length == 10 ? src.FRN : 0))
             .ForMember(dest => dest.Vendor, act => act.MapFrom(src => src.FRN.ToString().Length == 6 ? src.FRN.ToString() : ""))
-            .ForMember(dest => dest.FRN, act => act.MapFrom(src => src.FRN >= 105000000 && src.FRN <= 999999999 ? src.FRN : 0));
+            .ForMember(dest => dest.SBI, act => act.MapFrom(src => src.FRN >= 105000000 && src.FRN <= 999999999 ? src.FRN : 0));
 
         CreateMap<Invoice, PaymentRequestsBatchDTO>()
             .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id))
@@ -50,56 +50,3 @@ public class InvoiceAPIMapper : Profile
             .ForMember(dest => dest.Reference, act => act.MapFrom(src => src.Reference));
     }
 }
-
-
-//[JsonProperty("paymentRequestId")]
-//public string PaymentRequestId { get; init; } = default!;
-
-//[JsonProperty("sourceSystem")]
-//public string SourceSystem { get; init; } = default!;
-
-//[JsonProperty("frn")]
-//public long FRN { get; init; } = default!;
-
-//[JsonProperty("value")]
-//public decimal Value { get; init; }
-
-//[JsonProperty("currency")]
-//public string Currency { get; init; } = default!;
-
-//[JsonProperty("description")]
-//public string Description { get; init; } = default!;
-
-//[JsonProperty("originalInvoiceNumber")]
-//public string OriginalInvoiceNumber { get; init; } = default!;
-
-//[JsonProperty("originalSettlementDate")]
-//public DateTime OriginalSettlementDate { get; init; } = default!;
-
-//[JsonProperty("recoveryDate")]
-//public DateTime RecoveryDate { get; init; } = default!;
-
-//[JsonProperty("invoiceCorrectionReference")]
-//public string InvoiceCorrectionReference { get; init; } = default!;
-
-//[JsonProperty("invoiceLines")]
-//public List<InvoiceLineDTO> InvoiceLines { get; init; } = default!;
-
-//[JsonProperty("marketingYear")]
-//[Range(2021, 2099, ErrorMessage = "Marketing Year must be between 2021 and 2099 ")]
-//public int MarketingYear { get; init; }
-
-//[JsonProperty("paymentRequestNumber")]
-//public int PaymentRequestNumber { get; init; }
-
-//[JsonProperty("agreementNumber")]
-//public string AgreementNumber { get; init; } = default!;
-
-//[JsonProperty("dueDate")]
-//public string DueDate { get; init; } = default!;
-
-//[JsonProperty("sbi")]
-//public int SBI { get; init; } = default!;
-
-//[JsonProperty("vendor")]
-//public string Vendor { get; init; } = default!;
