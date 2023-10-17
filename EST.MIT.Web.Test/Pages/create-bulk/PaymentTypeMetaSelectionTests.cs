@@ -110,15 +110,15 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
         {
             Data = new List<PaymentScheme>
             {
-              new PaymentScheme { code = "DESCRIPTION", description = "DESCRIPTION" }
+              new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" }
             }
         }));
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
-        var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='DESCRIPTION']");
+        var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='DOMESTIC']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
 
-        selectPaymentTypeRadioButton[0].Change("DESCRIPTION");
+        selectPaymentTypeRadioButton[0].Change("DOMESTIC");
         saveAndContinueButton[0].Click();
         navigationManager?.Uri.Should().Be("http://localhost/");
     }
