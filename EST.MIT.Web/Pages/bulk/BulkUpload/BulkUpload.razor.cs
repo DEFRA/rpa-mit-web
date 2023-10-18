@@ -15,6 +15,12 @@ public partial class BulkUpload : ComponentBase
     public bool error = false;
     public string errorMessage = String.Empty;
 
+    [Parameter] public string schemeType { get; set; }
+    [Parameter] public string organisation { get; set; }
+    [Parameter] public string paymentType { get; set; }
+    [Parameter] public string accountType { get; set; }
+    [Parameter] public string createdBy { get; set; }   
+
     protected override void OnInitialized()
     {
         fileToLoadSummary = new BulkUploadFileSummary();
@@ -39,7 +45,7 @@ public partial class BulkUpload : ComponentBase
     {
         if (fileToLoadSummary.IsValidFile)
         {
-            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File);
+            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File,);
             fileToLoadSummary.IsUploaded = fileToLoadSummary.UploadResponse.IsSuccessStatusCode;
 
             if (!fileToLoadSummary.IsUploaded)
