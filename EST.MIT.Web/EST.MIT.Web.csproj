@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>1.0.8</Version>
+    <Version>1.0.9</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -22,6 +22,7 @@
 
   <PropertyGroup>
     <NoWarn>CS8618;CS8603;CS8619;CS8601;IDE1006</NoWarn>
+    <UserSecretsId>ea510ae7-0063-4a91-aa9e-c6c2feb23e35</UserSecretsId>
   </PropertyGroup>
   
 </Project>

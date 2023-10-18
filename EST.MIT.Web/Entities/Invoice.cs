@@ -7,7 +7,10 @@ public class Invoice
 {
     [Required]
     public Guid Id { get; set; }
-    [Required(ErrorMessage = "Invoice Type is required")]
+
+    // fxs commented out/changed these attributes
+    [Required(ErrorMessage = "Payment Type is required")]
+    // [JsonPropertyName("InvoiceType")]
     public string PaymentType { get; set; } = default!;
     [Required(ErrorMessage = "Account Type is required")]
     public string AccountType { get; set; } = default!;
