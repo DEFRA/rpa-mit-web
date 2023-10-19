@@ -100,7 +100,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     }
 
     [Fact]
-    public void Saves_Selected_PaymentType_Navigates_To_Review()
+    public void Saves_Selected_PaymentType_Navigates_To_Review_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
         var navigationManager = Services.GetService<NavigationManager>();
@@ -116,6 +116,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         }));
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
+        component.WaitForElements("input[type='radio']");
         var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='EU']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
 
