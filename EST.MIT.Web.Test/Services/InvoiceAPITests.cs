@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using Entities;
+using EST.MIT.Web.Entities;
 using Microsoft.Extensions.Logging;
 using Repositories;
 using Services;

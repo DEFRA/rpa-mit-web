@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Entities;
+using EST.MIT.Web.Entities;
 
 namespace Services.Tests;
 

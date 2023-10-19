@@ -33,7 +33,7 @@
 			@foreach (var request in invoice.PaymentRequests)
 			{
 				<CascadingValue Value="this">
-					<SummaryPaymentRequest PaymentRequest=request />
+					<SummaryPaymentRequest PaymentRequest=request AccountType=invoice.AccountType />
 				</CascadingValue>
 			}
 		}

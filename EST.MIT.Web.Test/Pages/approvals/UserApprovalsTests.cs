@@ -1,4 +1,5 @@
 using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.approvals.UserApprovals;
 using EST.MIT.Web.Shared;
 using EST.MIT.Web.Shared.Components.ApprovalCard;

@@ -26,6 +26,14 @@
         <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors" />
 
         <GDSInputText @bind-Data="paymentRequest.DueDate" Label="Due Date" Key="DueDate" Errors="errors" />
+        
+        @if(invoice.AccountType == "AR")
+        {
+            <GDSInputText @bind-Data="paymentRequest.OriginalInvoiceNumber" Label="Original Claim Reference" Key="OriginalInvoiceNumber" Errors="errors" />
+            <GDSInputText @bind-Data="paymentRequest.OriginalSettlementDate" Label="Original AP Invoice Settlement Date" Key="OriginalSettlementDate" Errors="errors" />
+            <GDSInputText @bind-Data="paymentRequest.RecoveryDate" Label="Earliest date possible recovery first identified" Key="RecoveryDate" Errors="errors" />
+            <GDSInputText @bind-Data="paymentRequest.InvoiceCorrectionReference" Label="Correction Reference - Previous AR Invoice ID" Key="InvoiceCorrectionReference" Errors="errors" />
+        }
 
         <div class="govuk-form-group">
             <div class="govuk-button-group">

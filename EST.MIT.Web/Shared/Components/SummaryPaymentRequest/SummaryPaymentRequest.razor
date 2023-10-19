@@ -41,11 +41,32 @@
 				<dt class="govuk-summary-list__key">Currency</dt>
 				<dd class="govuk-summary-list__value">@PaymentRequest.Currency</dd>
 			</div>
-			<div class="govuk-summary-list__row">
-				<dt class="govuk-summary-list__key">Due Date</dt>
-				<dd class="govuk-summary-list__value">@PaymentRequest.DueDate</dd>
-			</div>
-			<div class="govuk-summary-list__row">
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Due Date</dt>
+                <dd class="govuk-summary-list__value">@PaymentRequest.DueDate</dd>
+            </div>
+			
+            @if (AccountType == "AR")
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Original Claim Reference</dt>
+					<dd class="govuk-summary-list__value">@PaymentRequest.OriginalInvoiceNumber</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Original AP Invoice Settlement Date</dt>
+					<dd class="govuk-summary-list__value">@PaymentRequest.OriginalSettlementDate</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Earliest date possible recovery first identified</dt>
+					<dd class="govuk-summary-list__value">@PaymentRequest.RecoveryDate</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Correction Reference - Previous AR Invoice ID</dt>
+					<dd class="govuk-summary-list__value">@PaymentRequest.InvoiceCorrectionReference</dd>
+                </div>
+            }
+
+            <div class="govuk-summary-list__row">
 				<dt class="govuk-summary-list__key">Value</dt>
 				<dd class="govuk-summary-list__value">@PaymentRequest.Value</dd>
 			</div>

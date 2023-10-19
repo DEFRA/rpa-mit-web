@@ -4,6 +4,7 @@ using Entities;
 using System.Text.Json;
 using AutoMapper;
 using EST.MIT.Web.DTOs;
+using EST.MIT.Web.Entities;
 
 namespace Repositories;
 

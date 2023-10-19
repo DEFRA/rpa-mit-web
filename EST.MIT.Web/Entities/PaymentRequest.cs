@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
+using Entities;
+using EST.MIT.Web.Attributes;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public class PaymentRequest
 {
@@ -27,4 +29,15 @@ public class PaymentRequest
     public double Value { get; set; } = 0.00;
     public List<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
 
+    [RequiredIfAR]
+    public string OriginalInvoiceNumber { get; set; } = string.Empty;
+
+    [RequiredIfAR]
+    public string OriginalSettlementDate { get; set; } = string.Empty; // TODO: Change to DateTime after new date component is added
+
+	[RequiredIfAR]
+	public string RecoveryDate { get; set; } = string.Empty; // TODO: Change to DateTime after new date component is added
+
+	[RequiredIfAR]
+    public string InvoiceCorrectionReference { get; set; } = string.Empty;
 }
