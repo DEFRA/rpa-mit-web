@@ -45,7 +45,7 @@ public partial class BulkUpload : ComponentBase
     {
         if (fileToLoadSummary.IsValidFile)
         {
-            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File,);
+            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File,schemeType,organisation,paymentType,accountType,createdBy);
             fileToLoadSummary.IsUploaded = fileToLoadSummary.UploadResponse.IsSuccessStatusCode;
 
             if (!fileToLoadSummary.IsUploaded)
