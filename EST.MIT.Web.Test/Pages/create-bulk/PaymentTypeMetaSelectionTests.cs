@@ -100,7 +100,7 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
     }
 
     [Fact]
-    public void Saves_Selected_PaymentType_Navigates_To_Review()
+    public void Saves_Selected_PaymentType_Navigates_To_Review_Bulk()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
         var navigationManager = Services.GetService<NavigationManager>();
@@ -115,12 +115,13 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
         }));
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
+        component.WaitForElements("input[type='radio']");
         var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='DOMESTIC']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
 
         selectPaymentTypeRadioButton[0].Change("DOMESTIC");
         saveAndContinueButton[0].Click();
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
     }
 
     [Fact]
