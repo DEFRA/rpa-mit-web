@@ -39,7 +39,7 @@ public class ReviewPageBulkTests : TestContext
     [Fact]
     public void AfterRender_Redirects_When_Null_Invoice()
     {
-        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice)null);
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<Review>();

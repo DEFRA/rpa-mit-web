@@ -43,7 +43,7 @@ public partial class OrganisationMetaSelection : ComponentBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value.IsNull())
+        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
         {
             _nav.NavigateTo("/create-invoice");
         }

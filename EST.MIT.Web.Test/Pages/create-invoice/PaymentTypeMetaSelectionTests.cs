@@ -28,7 +28,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     [Fact]
     public void AfterRender_Redirects_When_Null_Invoice()
     {
-        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice)null);
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
 
         _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
         .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
@@ -100,7 +100,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     }
 
     [Fact]
-    public void Saves_Selected_PaymentType_Navigates_To_Review()
+    public void Saves_Selected_PaymentType_Navigates_To_Review_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
         var navigationManager = Services.GetService<NavigationManager>();
@@ -116,6 +116,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         }));
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
+        component.WaitForElements("input[type='radio']");
         var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='EU']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
 

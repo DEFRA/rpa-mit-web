@@ -11,5 +11,5 @@ public class SearchCriteria
 
 
     [Required]
-    public string Scheme { get; set; } = "";
+    public string Scheme { get; set; } = ""; // related to cosmos db (partition id/key)
 }
