@@ -5,7 +5,7 @@ namespace Services;
 
 public interface IQueueService
 {
-    Task<bool> AddMessageToQueueAsync(string queueName, string message);
+    Task<bool> AddMessageToQueueAsync(string queueName, string message, string schemeType, string organisation, string paymentType, string accountType, string createdBy);
 }
 
 public class QueueService : IQueueService
@@ -25,7 +25,7 @@ public class QueueService : IQueueService
 
     private QueueClient GetQueueClient(string queueName) => _queueServiceClient.GetQueueClient(queueName);
 
-    public async Task<bool> AddMessageToQueueAsync(string queueName, string message)
+    public async Task<bool> AddMessageToQueueAsync(string queueName, string message, string schemeType, string organisation, string paymentType, string accountType, string createdBy)
     {
         var client = GetQueueClient(queueName);
         await client.CreateIfNotExistsAsync();
