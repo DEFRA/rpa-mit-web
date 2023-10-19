@@ -4,7 +4,7 @@ using Helpers;
 using Microsoft.AspNetCore.Components;
 using Services;
 
-namespace EST.MIT.Web.Pages.create_invoice.AccountMetaSelection;
+namespace EST.MIT.Web.Pages.create_bulk.AccountMetaSelection;
 
 public partial class AccountMetaSelection : ComponentBase
 {
@@ -35,7 +35,7 @@ public partial class AccountMetaSelection : ComponentBase
         if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
         {
             _invoiceStateContainer.SetValue(null);
-            _nav.NavigateTo("/create-invoice");
+            _nav.NavigateTo("/create-bulk");
         }
     }
 
@@ -43,7 +43,7 @@ public partial class AccountMetaSelection : ComponentBase
     {
         invoice.AccountType = accountSelect.Account;
         _invoiceStateContainer.SetValue(invoice);
-        _nav.NavigateTo("/create-invoice/organisation");
+        _nav.NavigateTo("/create-bulk/organisation");
     }
 
     private void ValidationFailed()

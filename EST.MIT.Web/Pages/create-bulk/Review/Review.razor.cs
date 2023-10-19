@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Shared;
 using Helpers;
 
-namespace EST.MIT.Web.Pages.create_invoice.Review;
+namespace EST.MIT.Web.Pages.create_bulk.Review;
 
 public partial class Review : ComponentBase
 {
@@ -29,7 +29,7 @@ public partial class Review : ComponentBase
         if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
         {
             _invoiceStateContainer.SetValue(null);
-            _nav.NavigateTo("/create-invoice");
+            _nav.NavigateTo("/create-bulk");
         }
     }
 

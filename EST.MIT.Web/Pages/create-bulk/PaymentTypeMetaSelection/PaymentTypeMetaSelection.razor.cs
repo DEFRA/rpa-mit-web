@@ -1,21 +1,21 @@
 using Entities;
-using Services;
 using EST.MIT.Web.Shared;
-using Microsoft.AspNetCore.Components;
 using Helpers;
+using Microsoft.AspNetCore.Components;
+using Services;
 
-namespace EST.MIT.Web.Pages.create_invoice.OrganisationMetaSelection;
+namespace EST.MIT.Web.Pages.create_bulk.PaymentTypeMetaSelection;
 
-public partial class OrganisationMetaSelection : ComponentBase
+public partial class PaymentTypeMetaSelection : ComponentBase
 {
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
-    [Inject] public IPageServices _pageServices { get; set; } = default!;
+    [Inject] public IPageServices _pageServices { get; set; }
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
 
     private Invoice invoice = default!;
-    private OrganisationSelect organisationSelect = new();
-    private Dictionary<string, string> organisations = new();
+    private PaymentTypeSelect paymentTypeSelect = new();
+    private readonly Dictionary<string, string> paymentTypes = new();
     bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
     private List<string> viewErrors = new();
@@ -25,15 +25,15 @@ public partial class OrganisationMetaSelection : ComponentBase
         await base.OnInitializedAsync();
         invoice = _invoiceStateContainer.Value;
 
-        if (!invoice.IsNull())
+        if (invoice != null && !invoice.IsNull())
         {
-            await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
+            await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType).ContinueWith(x =>
             {
                 if (x.Result.IsSuccess)
                 {
-                    foreach (var org in x.Result.Data)
+                    foreach (var paymentType in x.Result.Data)
                     {
-                        organisations.Add(org.code, org.description);
+                        paymentTypes.Add(paymentType.code, paymentType.description);
                     }
                 }
             });
@@ -45,21 +45,21 @@ public partial class OrganisationMetaSelection : ComponentBase
         await base.OnAfterRenderAsync(firstRender);
         if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
         {
-            _nav.NavigateTo("/create-invoice");
+            _invoiceStateContainer.SetValue(null);
+            _nav.NavigateTo("/create-bulk");
         }
     }
-
     private void SaveAndContinue()
     {
-        invoice.Organisation = organisationSelect.Organisation;
+        invoice.PaymentType = paymentTypeSelect.PaymentType;
         _invoiceStateContainer.SetValue(invoice);
-        _nav.NavigateTo("/create-invoice/scheme");
+        _nav.NavigateTo("/create-bulk/review");
     }
 
     private void ValidationFailed()
     {
-        _pageServices.Validation(organisationSelect, out IsErrored, out errors);
-        viewErrors = errors[nameof(organisationSelect.Organisation).ToLower()];
+        _pageServices.Validation(paymentTypeSelect, out IsErrored, out errors);
+        viewErrors = errors[nameof(paymentTypeSelect.PaymentType).ToLower()];
     }
 
     private void Cancel()

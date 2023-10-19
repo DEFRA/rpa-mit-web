@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using EST.MIT.Web.Pages.create_invoice.PaymentTypeMetaSelection;
+using EST.MIT.Web.Pages.create_bulk.PaymentTypeMetaSelection;
 using EST.MIT.Web.Shared;
 using Services;
 using Entities;
@@ -8,13 +8,13 @@ using System.Net;
 
 namespace Pages.Tests;
 
-public class PaymentTypeMetaSelectionPageTests : TestContext
+public class PaymentTypeMetaSelectionPageBulkTests : TestContext
 {
     private readonly Mock<IPageServices> _mockPageServices;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
     private readonly Mock<IReferenceDataAPI> _mockReferenceDataAPI;
 
-    public PaymentTypeMetaSelectionPageTests()
+    public PaymentTypeMetaSelectionPageBulkTests()
     {
         _mockPageServices = new Mock<IPageServices>();
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
@@ -43,7 +43,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
     }
 
     // [Fact]
@@ -100,7 +100,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
     }
 
     [Fact]
-    public void Saves_Selected_PaymentType_Navigates_To_Review_Invoice()
+    public void Saves_Selected_PaymentType_Navigates_To_Review_Bulk()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
         var navigationManager = Services.GetService<NavigationManager>();
@@ -109,21 +109,19 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
         {
             Data = new List<PaymentScheme>
-            { 
-              new PaymentScheme { code = "EU", description = "EU"},
+            {
               new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" }
             }
         }));
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
         component.WaitForElements("input[type='radio']");
-        var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='EU']");
+        var selectPaymentTypeRadioButton = component.FindAll("input[type='radio'][value='DOMESTIC']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
 
-        selectPaymentTypeRadioButton[0].Change("EU");
+        selectPaymentTypeRadioButton[0].Change("DOMESTIC");
         saveAndContinueButton[0].Click();
-
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice/review");
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
     }
 
     [Fact]

@@ -2,21 +2,21 @@ using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Entities;
-using EST.MIT.Web.Pages.create_invoice.Review;
+using EST.MIT.Web.Pages.create_bulk.Review;
 using EST.MIT.Web.Shared;
 using Repositories;
 using Services;
 
 namespace Pages.Tests;
 
-public class ReviewPageTests : TestContext
+public class ReviewPageBulkTests : TestContext
 {
 
     private readonly Invoice _invoice;
     private readonly Mock<IInvoiceAPI> _mockApiService;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
     private readonly Mock<IMapper> _mockAutoMapper;
-    public ReviewPageTests()
+    public ReviewPageBulkTests()
     {
         _mockApiService = new Mock<IInvoiceAPI>();
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
@@ -44,7 +44,7 @@ public class ReviewPageTests : TestContext
 
         var component = RenderComponent<Review>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
     }
 
     [Fact]
@@ -78,6 +78,7 @@ public class ReviewPageTests : TestContext
 
         navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
     }
+
 
     [Fact]
     public void Cancels_Invoice_Navigates_To_HomePage()
@@ -114,5 +115,5 @@ public class ReviewPageTests : TestContext
         errorMessages.Should().HaveCount(1);
         errorMessages[0].TextContent.Should().Be("Account Type is required");
     }
-
 }
+

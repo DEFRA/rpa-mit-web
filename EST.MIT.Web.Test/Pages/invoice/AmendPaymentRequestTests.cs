@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Entities;
 using EST.MIT.Web.Pages.invoice.AmendPaymentRequest;
 using EST.MIT.Web.Shared;
+using Services;
 
 namespace Pages.Tests;
 
@@ -10,6 +11,7 @@ public class AmendPaymentRequestTests : TestContext
 {
     private readonly Invoice _invoice;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
+    private readonly Mock<IInvoiceAPI> _mockInvoiceApi;
 
     public AmendPaymentRequestTests()
     {
@@ -37,13 +39,15 @@ public class AmendPaymentRequestTests : TestContext
         });
 
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
+        _mockInvoiceApi = new Mock<IInvoiceAPI>();  
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
+        Services.AddSingleton<IInvoiceAPI>(_mockInvoiceApi.Object);
     }
 
     [Fact]
     public void AfterRender_Redirects_When_Null_Invoice()
     {
-        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice)null);
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<AmendPaymentRequest>();
