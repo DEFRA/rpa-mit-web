@@ -28,7 +28,7 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
     [Fact]
     public void AfterRender_Redirects_When_Null_Invoice()
     {
-        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice)null);
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
 
         _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
         .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
