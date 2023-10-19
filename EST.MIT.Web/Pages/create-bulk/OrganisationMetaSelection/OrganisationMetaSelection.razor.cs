@@ -25,7 +25,7 @@ public partial class OrganisationMetaSelection : ComponentBase
         await base.OnInitializedAsync();
         invoice = _invoiceStateContainer.Value;
 
-        if (!invoice.IsNull())
+        if (invoice != null && !invoice.IsNull())
         {
             await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
             {
@@ -43,7 +43,7 @@ public partial class OrganisationMetaSelection : ComponentBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value.IsNull())
+        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
         {
             _nav.NavigateTo("/create-bulk");
         }

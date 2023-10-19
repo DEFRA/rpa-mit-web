@@ -25,7 +25,7 @@ public partial class SchemeMetaSelection : ComponentBase
         await base.OnInitializedAsync();
         invoice = _invoiceStateContainer.Value;
 
-        if (!invoice.IsNull())
+        if (invoice != null && !invoice.IsNull())
         {
             await _referenceDataAPI.GetSchemesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
             {
@@ -43,7 +43,7 @@ public partial class SchemeMetaSelection : ComponentBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value.IsNull())
+        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
         {
             _invoiceStateContainer.SetValue(null);
             _nav.NavigateTo("/create-bulk");
