@@ -1,4 +1,5 @@
 using System.Net;
+using Entities;
 using FluentAssertions;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,15 @@ public class UploadServiceTests : TestContext
     private Mock<IBlobService> _blobServiceMock;
     private Mock<IQueueService> _queueServiceMock;
     private Mock<ILogger<UploadService>> _logger;
+
+    public RouteFields routeFields = new()
+    {
+        AccountType = "AC",
+        Organisation = "ORG",
+        PaymentType = "GB",
+        SchemeType = "SchemeA",
+        UserID = "henry.adetunji@defra.gov.uk"
+    };
 
     public UploadServiceTests()
     {
@@ -32,7 +42,7 @@ public class UploadServiceTests : TestContext
 
         var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _queueServiceMock.Object);
 
-        var response = await uploadService.UploadFileAsync(fileMock.Object);
+        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, routeFields.UserID);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -46,7 +56,7 @@ public class UploadServiceTests : TestContext
 
         var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _queueServiceMock.Object);
 
-        var response = await uploadService.UploadFileAsync(fileMock.Object);
+        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, routeFields.UserID);
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
 
