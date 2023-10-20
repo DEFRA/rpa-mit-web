@@ -1,0 +1,46 @@
+<div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
+    <fieldset class="govuk-fieldset" role="group"
+              aria-describedby="@(IsErrored ? $"{Key}-error" : null )">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <h1 class="govuk-fieldset__heading">
+                @Label
+            </h1>
+        </legend>
+        @if (IsErrored)
+        {
+            <p id="@($"{Key}-error")" class="govuk-error-message">
+                @foreach(var error in err)
+                {
+                    <span class="govuk-visually-hidden">Error:</span> @error <br />
+                }
+            </p>
+        }
+
+        <div class="govuk-date-input" id="@Key">
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label" for="@($"{Key}-day")">
+                        Day
+                    </label>
+                    <InputText @onchange="UpdateData" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-day")" name="@($"{Key}-day")" type="text" @bind-Value="DateDay" inputmode="numeric" />
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label" for="@($"{Key}-month")">
+                        Month
+                    </label>
+                    <InputText @onchange="UpdateData" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-month")" name="@($"{Key}-month")" type="text" @bind-Value="DateMonth" inputmode="numeric" />
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label" for="@($"{Key}-year")">
+                        Year
+                    </label>
+                    <InputText @onchange="UpdateData" class="govuk-input govuk-date-input__input govuk-input--width-4" id="@($"{Key}-year")" name="@($"{Key}-year")" type="text" @bind-Value="DateYear" inputmode="numeric" />
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

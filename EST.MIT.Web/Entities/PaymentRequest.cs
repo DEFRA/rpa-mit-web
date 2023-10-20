@@ -33,10 +33,10 @@ public class PaymentRequest
     public string OriginalInvoiceNumber { get; set; } = string.Empty;
 
     [RequiredIfAR]
-    public string OriginalSettlementDate { get; set; } = string.Empty; // TODO: Change to DateTime after new date component is added
+    public DateTime OriginalSettlementDate { get; set; } = default!;
 
-	[RequiredIfAR]
-	public string RecoveryDate { get; set; } = string.Empty; // TODO: Change to DateTime after new date component is added
+[RequiredIfAR]
+	public DateTime RecoveryDate { get; set; } = default!;
 
 	[RequiredIfAR]
     public string InvoiceCorrectionReference { get; set; } = string.Empty;
