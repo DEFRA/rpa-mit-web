@@ -54,11 +54,11 @@ public class InvoiceRepository : IInvoiceRepository
         // and then post the DTO instead of the entity
         // might need to break it down into the individual DTOs
         
-        var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+        // var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
 
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.PostAsJsonAsync($"/invoice", payload);
+        var response = await client.PostAsJsonAsync($"/invoice", invoice);
 
         await HandleHttpResponseError(response);
 
