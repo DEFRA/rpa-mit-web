@@ -14,12 +14,12 @@ public class InvoiceTests
     }
 
     [Fact]
-    public void InvoiceType_Is_Required()
+    public void PaymentType_Is_Required()
     {
         var invoice = new Invoice();
         var validationResults = ValidateModel(invoice);
 
-        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "Invoice Type is required");
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "Payment Type is required");
     }
 
     [Fact]

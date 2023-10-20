@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using EST.MIT.Web.Pages.create_invoice.AccountMetaSelection;
+using EST.MIT.Web.Pages.create_bulk.AccountMetaSelection;
 using EST.MIT.Web.Shared;
 using Entities;
 using Services;
 
 namespace Pages.Tests;
 
-public class AccountMetaSelectionPageTests : TestContext
+public class AccountMetaSelectionPageBulkTests : TestContext
 {
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
     private readonly Mock<IPageServices> _mockPageServices;
-    public AccountMetaSelectionPageTests()
+    public AccountMetaSelectionPageBulkTests()
     {
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
         _mockPageServices = new Mock<IPageServices>();
@@ -28,7 +28,7 @@ public class AccountMetaSelectionPageTests : TestContext
 
         var component = RenderComponent<AccountMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
     }
 
     // [Fact]
@@ -92,7 +92,7 @@ public class AccountMetaSelectionPageTests : TestContext
 
         invoiceStateContainer?.Value.Should().NotBeNull();
         invoiceStateContainer?.Value.AccountType.Should().Be("AR");
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice/organisation");
+        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/organisation");
     }
 
     [Fact]

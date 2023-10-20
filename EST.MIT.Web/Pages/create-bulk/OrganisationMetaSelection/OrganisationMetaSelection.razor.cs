@@ -4,7 +4,7 @@ using EST.MIT.Web.Shared;
 using Microsoft.AspNetCore.Components;
 using Helpers;
 
-namespace EST.MIT.Web.Pages.create_invoice.OrganisationMetaSelection;
+namespace EST.MIT.Web.Pages.create_bulk.OrganisationMetaSelection;
 
 public partial class OrganisationMetaSelection : ComponentBase
 {
@@ -25,7 +25,7 @@ public partial class OrganisationMetaSelection : ComponentBase
         await base.OnInitializedAsync();
         invoice = _invoiceStateContainer.Value;
 
-        if (!invoice.IsNull())
+        if (invoice != null && !invoice.IsNull())
         {
             await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
             {
@@ -45,7 +45,7 @@ public partial class OrganisationMetaSelection : ComponentBase
         await base.OnAfterRenderAsync(firstRender);
         if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
         {
-            _nav.NavigateTo("/create-invoice");
+            _nav.NavigateTo("/create-bulk");
         }
     }
 
@@ -53,7 +53,7 @@ public partial class OrganisationMetaSelection : ComponentBase
     {
         invoice.Organisation = organisationSelect.Organisation;
         _invoiceStateContainer.SetValue(invoice);
-        _nav.NavigateTo("/create-invoice/scheme");
+        _nav.NavigateTo("/create-bulk/scheme");
     }
 
     private void ValidationFailed()
