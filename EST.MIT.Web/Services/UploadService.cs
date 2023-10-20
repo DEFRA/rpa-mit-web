@@ -29,9 +29,9 @@ public class UploadService : IUploadService
         try
         {
             await _blobService.AddFileToBlobAsync(summary.FileName, "invoices", file, "import");
-            await _queueService.AddMessageToQueueAsync("invoice-importer", summary.ToMessage(),summary.SchemeType,summary.Organisation,summary.PaymentType,summary.AccountType, summary.UserID);
+            await _queueService.AddMessageToQueueAsync("invoice-importer", summary.ToMessage());
             // TODO: implement bulk upload confirmation await _invoiceRepository.SaveBulkUploadConfirmation(summary);
-            await _queueService.AddMessageToQueueAsync("confirmation-notification-queue", summary.ToMessage(), summary.SchemeType,summary.Organisation, summary.PaymentType, summary.AccountType, summary.UserID);
+            await _queueService.AddMessageToQueueAsync("confirmation-notification-queue", summary.ToMessage());
 
             var response = new HttpResponseMessage(HttpStatusCode.OK)
             {
@@ -64,5 +64,4 @@ public class UploadService : IUploadService
             UserID = createdBy
         };
     }
-
 }
