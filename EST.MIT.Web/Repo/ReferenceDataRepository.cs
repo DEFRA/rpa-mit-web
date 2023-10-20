@@ -1,12 +1,24 @@
+using System.Data;
+
 namespace Repositories;
 
 public interface IReferenceDataRepository
 {
     Task<HttpResponseMessage> GetOrganisationsListAsync();
-    Task<HttpResponseMessage> GetSchemesListAsync(string? InvoiceType = null, string? Organisation = null);
+    Task<HttpResponseMessage> GetSchemeTypesListAsync(string? InvoiceType = null, string? Organisation = null);
     Task<HttpResponseMessage> GetPaymentTypesListAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null);
-    Task<HttpResponseMessage> GetFundListAsync
-        (string InvoiceType, string Organisation, string Scheme, string PaymentType);
+    Task<HttpResponseMessage> GetAccountsListAsync
+       (string InvoiceType, string Organisation, string SchemeType, string PaymentType); 
+    Task<HttpResponseMessage> GetDeliveryBodiesListAsync
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
+    Task<HttpResponseMessage> GetFundsListAsync
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
+    Task<HttpResponseMessage> GetMarketingYearsListAsync
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
+    Task<HttpResponseMessage> GetSchemesListAsync
+      (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
+
+
 }
 
 public class ReferenceDataRepository : IReferenceDataRepository
@@ -20,13 +32,25 @@ public class ReferenceDataRepository : IReferenceDataRepository
 
     public async Task<HttpResponseMessage> GetOrganisationsListAsync()
         => await GetOrganisationsList();
-    public async Task<HttpResponseMessage> GetSchemesListAsync(string? InvoiceType, string? Organisation)
-        => await GetSchemesList(InvoiceType, Organisation);
+    public async Task<HttpResponseMessage> GetSchemeTypesListAsync(string? InvoiceType, string? Organisation)
+        => await GetSchemeTypesList(InvoiceType, Organisation);
     public async Task<HttpResponseMessage> GetPaymentTypesListAsync(string? InvoiceType, string? Organisation, string? SchemeType)
         => await GetPaymentTypesList(InvoiceType, Organisation, SchemeType);
-    public async Task<HttpResponseMessage> GetFundListAsync
-        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
-        => await GetFundsList(InvoiceType, Organisation, Scheme, PaymentType);
+    public async Task<HttpResponseMessage> GetAccountsListAsync
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
+        => await GetAccountsList(InvoiceType, Organisation, SchemeType, PaymentType);
+    public async Task<HttpResponseMessage> GetDeliveryBodiesListAsync
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
+        => await GetDeliveryBodiesList(InvoiceType, Organisation, SchemeType, PaymentType);
+    public async Task<HttpResponseMessage> GetFundsListAsync
+       (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
+       => await GetFundsList(InvoiceType, Organisation, SchemeType, PaymentType);
+    public async Task<HttpResponseMessage> GetMarketingYearsListAsync
+       (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
+       => await GetMarketingYearsList(InvoiceType, Organisation, SchemeType, PaymentType);
+    public async Task<HttpResponseMessage> GetSchemesListAsync
+       (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
+       => await GetSchemesList(InvoiceType, Organisation, SchemeType, PaymentType);
 
     private async Task<HttpResponseMessage> GetOrganisationsList()
     {
@@ -39,7 +63,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetSchemesList(string? InvoiceType, string? Organisation)
+    private async Task<HttpResponseMessage> GetSchemeTypesList(string? InvoiceType, string? Organisation)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
@@ -65,6 +89,30 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
+    private async Task<HttpResponseMessage> GetAccountsList
+       (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+    {
+        var client = _clientFactory.CreateClient("ReferenceDataAPI");
+
+        var response = await client.GetAsync($"/accounts/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+
+        await HandleHttpResponseError(response);
+
+        return response;
+    }
+
+    private async Task<HttpResponseMessage> GetDeliveryBodiesList
+        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+    {
+        var client = _clientFactory.CreateClient("ReferenceDataAPI");
+
+        var response = await client.GetAsync($"/deliveryBodies/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+
+        await HandleHttpResponseError(response);
+
+        return response;
+    }
+
     private async Task<HttpResponseMessage> GetFundsList
         (string InvoiceType, string Organisation, string Scheme, string PaymentType)
     {
@@ -76,6 +124,31 @@ public class ReferenceDataRepository : IReferenceDataRepository
 
         return response;
     }
+
+    private async Task<HttpResponseMessage> GetMarketingYearsList
+        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+    {
+        var client = _clientFactory.CreateClient("ReferenceDataAPI");
+
+        var response = await client.GetAsync($"/marketingYears/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+
+        await HandleHttpResponseError(response);
+
+        return response;
+    }
+
+    private async Task<HttpResponseMessage> GetSchemesList
+        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+    {
+        var client = _clientFactory.CreateClient("ReferenceDataAPI");
+
+        var response = await client.GetAsync($"/schemes/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+
+        await HandleHttpResponseError(response);
+
+        return response;
+    }
+
 
     private async static Task HandleHttpResponseError(HttpResponseMessage response)
     {

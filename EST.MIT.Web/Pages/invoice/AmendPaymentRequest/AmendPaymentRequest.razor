@@ -52,7 +52,10 @@
         <table class="govuk-table">
             <thead class="govuk-table__head">
                 <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Fund Code</th>
+                    <th scope="col" class="govuk-table__header">Main Account</th>
                     <th scope="col" class="govuk-table__header">Scheme Code</th>
+                    <th scope="col" class="govuk-table__header">Marketing Year</th>
                     <th scope="col" class="govuk-table__header">Delivery Body</th>
                     <th scope="col" class="govuk-table__header">Line Value</th>
                     <th scope="col" class="govuk-table__header">Description</th>
@@ -63,7 +66,10 @@
                 @foreach (var line in paymentRequest.InvoiceLines)
                 {
                     <tr class="govuk-table__row">
+                        <td class="govuk-table__cell">@line.FundCode</td>
+                        <td class="govuk-table__cell">@line.MainAccount</td>
                         <td class="govuk-table__cell">@line.SchemeCode</td>
+                        <td class="govuk-table__cell">@line.MarketingYear</td>
                         <td class="govuk-table__cell">@line.DeliveryBody</td>
                         <td class="govuk-table__cell">@line.Value</td>
                         <td class="govuk-table__cell">@line.Description</td>
