@@ -27,7 +27,7 @@ public partial class SchemeMetaSelection : ComponentBase
 
         if (invoice != null && !invoice.IsNull())
         {
-            await _referenceDataAPI.GetSchemesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
+            await _referenceDataAPI.GetSchemeTypesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
             {
                 if (x.Result.IsSuccess)
                 {
