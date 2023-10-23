@@ -57,7 +57,6 @@ public partial class BulkUpload : ComponentBase
 
             var confirmationNumber = await fileToLoadSummary.UploadResponse.Content.ReadAsStringAsync();
             _nav.NavigateTo($"/bulk/confirmation/{confirmationNumber}");
-
         }
     }
 }
