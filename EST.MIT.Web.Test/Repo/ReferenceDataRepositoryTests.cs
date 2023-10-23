@@ -34,7 +34,7 @@ public class ReferenceDataRepositoryTests
     }
 
     [Fact]
-    public void GetSchemesListAsync_Returns_200()
+    public void GetSchemeTypesListAsync_Returns_200()
     {
         _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);
 
@@ -49,7 +49,7 @@ public class ReferenceDataRepositoryTests
 
         var repo = new ReferenceDataRepository(factory);
 
-        var response = repo.GetSchemesListAsync("test", "test");
+        var response = repo.GetSchemeTypesListAsync("test", "test");
 
         response.Result.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -70,7 +70,7 @@ public class ReferenceDataRepositoryTests
 
         var repo = new ReferenceDataRepository(factory);
 
-        var response = repo.GetFundListAsync("test", "test", "test", "test");
+        var response = repo.GetFundsListAsync("test", "test", "test", "test");
 
         response.Result.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -91,7 +91,7 @@ public class ReferenceDataRepositoryTests
 
         var repo = new ReferenceDataRepository(factory);
 
-        var response = repo.GetSchemesListAsync("test", "test");
+        var response = repo.GetSchemeTypesListAsync("test", "test");
 
         response.Result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         response.Result.Content.ReadAsStringAsync().Result.Should().Be("Test BadRequest");

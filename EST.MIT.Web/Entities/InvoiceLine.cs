@@ -8,8 +8,16 @@ public class InvoiceLine
     [Required]
     [RegularExpression("(^\\d+\\.\\d{2}$)", ErrorMessage = "The Value must be in the format 0.00")]
     public double Value { get; set; }
+    [Required]
     public string Description { get; set; } = default!;
-    public string SchemeCode { get; set; } = default!;
-    public string DeliveryBody { get; set; } = "RP00";
-
+    [Required]
+    public string FundCode { get; set; } = "";
+    [Required]
+    public string MainAccount { get; set; } = "";
+    [Required]
+    public string SchemeCode { get; set; } = "";
+    [Required]
+    public string MarketingYear { get; set; } = "";
+    [Required]
+    public string DeliveryBody { get; set; } = "";
 }
