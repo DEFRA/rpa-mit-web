@@ -90,11 +90,11 @@ public class ReferenceDataRepository : IReferenceDataRepository
     }
 
     private async Task<HttpResponseMessage> GetAccountsList
-       (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+       (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
-        var response = await client.GetAsync($"/accounts/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+        var response = await client.GetAsync($"/accounts/{InvoiceType}/{Organisation}/{SchemeType}/{PaymentType}");
 
         await HandleHttpResponseError(response);
 
@@ -102,11 +102,11 @@ public class ReferenceDataRepository : IReferenceDataRepository
     }
 
     private async Task<HttpResponseMessage> GetDeliveryBodiesList
-        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
-        var response = await client.GetAsync($"/deliveryBodies/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+        var response = await client.GetAsync($"/deliveryBodies/{InvoiceType}/{Organisation}/{SchemeType}/{PaymentType}");
 
         await HandleHttpResponseError(response);
 
@@ -114,11 +114,11 @@ public class ReferenceDataRepository : IReferenceDataRepository
     }
 
     private async Task<HttpResponseMessage> GetFundsList
-        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
-        var response = await client.GetAsync($"/funds/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+        var response = await client.GetAsync($"/funds/{InvoiceType}/{Organisation}/{SchemeType}/{PaymentType}");
 
         await HandleHttpResponseError(response);
 
@@ -126,11 +126,11 @@ public class ReferenceDataRepository : IReferenceDataRepository
     }
 
     private async Task<HttpResponseMessage> GetMarketingYearsList
-        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
-        var response = await client.GetAsync($"/marketingYears/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+        var response = await client.GetAsync($"/marketingYears/{InvoiceType}/{Organisation}/{SchemeType}/{PaymentType}");
 
         await HandleHttpResponseError(response);
 
@@ -138,11 +138,11 @@ public class ReferenceDataRepository : IReferenceDataRepository
     }
 
     private async Task<HttpResponseMessage> GetSchemesList
-        (string InvoiceType, string Organisation, string Scheme, string PaymentType)
+        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
-        var response = await client.GetAsync($"/schemes/{InvoiceType}/{Organisation}/{Scheme}/{PaymentType}");
+        var response = await client.GetAsync($"/schemes/{InvoiceType}/{Organisation}/{SchemeType}/{PaymentType}");
 
         await HandleHttpResponseError(response);
 
