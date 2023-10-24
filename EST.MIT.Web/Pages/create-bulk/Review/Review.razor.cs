@@ -26,7 +26,7 @@ public partial class Review : ComponentBase
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())// TODO:READ
         {
             _invoiceStateContainer.SetValue(null);
             _nav.NavigateTo("/create-bulk");
@@ -40,8 +40,7 @@ public partial class Review : ComponentBase
 
     private void Continue()
     {
-        var createdBy = "user";
-        _nav.NavigateTo($"/bulk/{invoice.SchemeType}/{invoice.Organisation}/{invoice.PaymentType}/{invoice.AccountType}/{createdBy}");
+        _nav.NavigateTo($"/bulk/");
     }
 
     private void Cancel()

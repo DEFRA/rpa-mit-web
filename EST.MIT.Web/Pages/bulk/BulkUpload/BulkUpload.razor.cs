@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Services;
 using Entities;
+using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Pages.bulk.BulkUpload;
 
@@ -9,21 +10,21 @@ public partial class BulkUpload : ComponentBase
 {
     [Inject] private IUploadService _uploadService { get; set; }
     [Inject] private ILogger<BulkUpload> _logger { get; set; }
+
+    [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
+
+
     [Inject] private NavigationManager _nav { get; set; }
 
     public BulkUploadFileSummary fileToLoadSummary = default!;
     public bool error = false;
     public string errorMessage = String.Empty;
-
-    [Parameter] public string schemeType { get; set; }
-    [Parameter] public string organisation { get; set; }
-    [Parameter] public string paymentType { get; set; }
-    [Parameter] public string accountType { get; set; }
-    [Parameter] public string createdBy { get; set; }   
+    private Invoice invoice { get; set; }
 
     protected override void OnInitialized()
     {
         fileToLoadSummary = new BulkUploadFileSummary();
+        invoice = _invoiceStateContainer.Value;
     }
 
     private void FileLoaded(InputFileChangeEventArgs e)
@@ -43,9 +44,10 @@ public partial class BulkUpload : ComponentBase
 
     private async Task UploadFile()
     {
+        var createdBy = "user";
         if (fileToLoadSummary.IsValidFile)
         {
-            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File,schemeType,organisation,paymentType,accountType,createdBy);
+            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, createdBy);
             fileToLoadSummary.IsUploaded = fileToLoadSummary.UploadResponse.IsSuccessStatusCode;
 
             if (!fileToLoadSummary.IsUploaded)

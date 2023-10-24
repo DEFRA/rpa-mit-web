@@ -1,4 +1,4 @@
-@page "/bulk/{schemeType}/{organisation}/{paymentType}/{accountType}/{createdBy}"
+@page "/bulk/"
 
 <section class="page__header-wrapper govuk-!-margin-bottom-6">
     <div class="govuk-width-container">
@@ -27,7 +27,7 @@
             <label class="govuk-label" for="bulk-file-upload">
                 <strong>Upload a file</strong>
             </label>
-            @if(error)
+            @if (error)
             {
                 <p id="file-upload-1-error" class="govuk-error-message">
                     <span class="govuk-visually-hidden">Error:</span> @errorMessage
