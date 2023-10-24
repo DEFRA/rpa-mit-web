@@ -14,7 +14,8 @@ public class BulkUploadFileSummary
     public bool IsValid()
     {
         string[] allowedFileTypes = new string[]
-        { "application/vnd.ms-excel.sheet.macroEnabled.12",
+        {
+          "application/vnd.ms-excel.sheet.macroEnabled.12",
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         };
 
