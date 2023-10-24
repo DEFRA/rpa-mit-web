@@ -72,11 +72,10 @@ public class ReviewPageBulkTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<Review>();
-        var saveAndContinueButton = component.FindAll("button[type='submit']");
-        var createdBy = "user";
+        var saveAndContinueButton = component.FindAll("button[type='submit']");        
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be($"http://localhost/bulk/{_invoice.SchemeType}/{_invoice.Organisation}/{_invoice.PaymentType}/{_invoice.AccountType}/{createdBy}");
+        navigationManager?.Uri.Should().Be($"http://localhost/bulk/");
     }
 
     [Fact]

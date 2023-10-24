@@ -18,7 +18,14 @@ public class AddInvoiceLineTests : TestContext
 
     public AddInvoiceLineTests()
     {
-        _invoice = new Invoice();
+        _invoice = new Invoice()
+        {
+            SchemeType = "AC",
+            Organisation = "RPA",
+            PaymentType = "DOM",
+            AccountType =  "AR"
+        };
+
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
             PaymentRequestId = "1",
