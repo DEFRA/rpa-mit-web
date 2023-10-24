@@ -64,7 +64,7 @@ public class ReviewPageBulkTests : TestContext
     }
 
     [Fact]
-    public void Save_And_Continue_Navigates_To_Bulk_Upload_Page()
+    public void Continue_Navigates_To_Bulk_Upload_Page()
     {
         _mockApiService.Setup(x => x.SaveInvoiceAsync(It.IsAny<Invoice>()))
             .ReturnsAsync(new ApiResponse<Invoice>(System.Net.HttpStatusCode.Created));
