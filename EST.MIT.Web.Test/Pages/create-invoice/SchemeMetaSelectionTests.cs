@@ -50,7 +50,7 @@ public class SchemeMetaSelectionPageTests : TestContext
                 };
             });
 
-        _mockReferenceDataAPI.Setup(x => x.GetSchemesAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _mockReferenceDataAPI.Setup(x => x.GetSchemeTypesAsync(It.IsAny<string>(), It.IsAny<string>()))
             .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
             {
                 Data = new List<PaymentScheme>
@@ -82,7 +82,7 @@ public class SchemeMetaSelectionPageTests : TestContext
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
-        _mockReferenceDataAPI.Setup(x => x.GetSchemesAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _mockReferenceDataAPI.Setup(x => x.GetSchemeTypesAsync(It.IsAny<string>(), It.IsAny<string>()))
             .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
             {
                 Data = new List<PaymentScheme>
@@ -148,7 +148,7 @@ public class SchemeMetaSelectionPageTests : TestContext
         // var invoiceStateContainer = Services.GetService<IInvoiceStateContainer>();
         var navigationManager = Services.GetService<NavigationManager>();
 
-        _mockReferenceDataAPI.Setup(x => x.GetSchemesAsync(It.IsAny<string>(), It.IsAny<string>()))
+        _mockReferenceDataAPI.Setup(x => x.GetSchemeTypesAsync(It.IsAny<string>(), It.IsAny<string>()))
             .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
             {
                 Data = new List<PaymentScheme>

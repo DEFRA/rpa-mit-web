@@ -13,6 +13,7 @@ public class AddInvoiceLineTests : TestContext
     private readonly Invoice _invoice;
     private readonly Mock<IInvoiceAPI> _mockApiService;
     private readonly Mock<IPageServices> _mockPageServices;
+    private readonly Mock<IReferenceDataAPI> _mockReferenceDataServices;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
 
     public AddInvoiceLineTests()
@@ -42,10 +43,12 @@ public class AddInvoiceLineTests : TestContext
 
         _mockApiService = new Mock<IInvoiceAPI>();
         _mockPageServices = new Mock<IPageServices>();
+        _mockReferenceDataServices = new Mock<IReferenceDataAPI>();
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
 
         Services.AddSingleton<IInvoiceAPI>(_mockApiService.Object);
         Services.AddSingleton<IPageServices>(_mockPageServices.Object);
+        Services.AddSingleton<IReferenceDataAPI>(_mockReferenceDataServices.Object);
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
     }
 

@@ -12,6 +12,7 @@ public partial class AmendInvoiceLine : ComponentBase
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IPageServices _pageServices { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
+    [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
 
     [Parameter] public string PaymentRequestId { get; set; } = "";
     [Parameter] public string InvoiceLineId { get; set; } = "";
@@ -21,6 +22,11 @@ public partial class AmendInvoiceLine : ComponentBase
     private InvoiceLine invoiceLine;
     private bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
+    private readonly Dictionary<string, string> allFundCodes = new();
+    private readonly Dictionary<string, string> allAccounts = new();
+    private readonly Dictionary<string, string> allSchemeCodes = new();
+    private readonly Dictionary<string, string> allMarketingYears = new();
+    private readonly Dictionary<string, string> allDeliveryBodies = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,6 +34,61 @@ public partial class AmendInvoiceLine : ComponentBase
         invoice ??= _invoiceStateContainer.Value;
         paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
         invoiceLine ??= paymentRequest?.InvoiceLines.First(x => x.Id.ToString() == InvoiceLineId);
+
+        await _referenceDataAPI.GetAccountsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        {
+            if (x.Result.IsSuccess)
+            {
+                foreach (var account in x.Result.Data)
+                {
+                    allAccounts.Add(account.code, account.description);
+                }
+            }
+        });
+
+        await _referenceDataAPI.GetDeliveryBodiesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        {
+            if (x.Result.IsSuccess)
+            {
+                foreach (var deliveryBody in x.Result.Data)
+                {
+                    allDeliveryBodies.Add(deliveryBody.code, deliveryBody.description);
+                }
+            }
+        });
+
+        await _referenceDataAPI.GetSchemesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        {
+            if (x.Result.IsSuccess)
+            {
+                foreach (var scheme in x.Result.Data)
+                {
+                    allSchemeCodes.Add(scheme.code, scheme.description);
+                }
+            }
+        });
+
+        await _referenceDataAPI.GetMarketingYearsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        {
+            if (x.Result.IsSuccess)
+            {
+                foreach (var marketingYear in x.Result.Data)
+                {
+                    allMarketingYears.Add(marketingYear.code, marketingYear.description);
+                }
+            }
+        });
+
+        await _referenceDataAPI.GetFundsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        {
+            if (x.Result.IsSuccess)
+            {
+                foreach (var fund in x.Result.Data)
+                {
+                    allFundCodes.Add(fund.code, fund.description);
+                }
+            }
+        });
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

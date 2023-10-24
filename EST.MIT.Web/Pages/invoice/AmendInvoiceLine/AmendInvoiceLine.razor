@@ -20,22 +20,89 @@
 
             <GDSInputDouble Label="Line Value" @bind-Data="invoiceLine.Value" Key="Value" Errors=errors/>
 
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="description">Description</label>
-                <InputSelect class="govuk-select" for="description" @bind-Value="invoiceLine.Description">
-                    <option>Select</option>
-                    <option value="G00 - Gross value of claim">G00 - Gross value of claim</option>
-                    <option value="P05 - Late claim submission penalty">P05 - Late claim submission penalty</option>
-                    <option value="P06 - Late change penalty">P06 - Late change penalty</option>
-                    <option value="P08 - Non declaration of land penalty">P08 - Non declaration of land penalty</option>
-                    <option value="P22 - Rural Development refusals">P22 - Rural Development refusals</option>
-                    <option value="P23 - Rural Development withdrawals">P23 - Rural Development withdrawals</option>
-                    <option value="P24 - Over Declaration reduction">P24 - Over Declaration reduction</option>
-                </InputSelect>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-half">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="description">Description</label>
+                        <InputSelect class="govuk-select govuk-!-width-three-quarters" for="description" @bind-Value="invoiceLine.Description">
+                            <option>Select</option>
+                            <option value="G00 - Gross value of claim">G00 - Gross value of claim</option>
+                            <option value="P05 - Late claim submission penalty">P05 - Late claim submission penalty</option>
+                            <option value="P06 - Late change penalty">P06 - Late change penalty</option>
+                            <option value="P08 - Non declaration of land penalty">P08 - Non declaration of land penalty</option>
+                            <option value="P22 - Rural Development refusals">P22 - Rural Development refusals</option>
+                            <option value="P23 - Rural Development withdrawals">P23 - Rural Development withdrawals</option>
+                            <option value="P24 - Over Declaration reduction">P24 - Over Declaration reduction</option>
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="govuk-grid-column-one-half">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="delivery-body">Delivery Body</label>
+                        <InputSelect class="govuk-select govuk-!-width-full" for="delivery-body" @bind-Value="invoiceLine.DeliveryBody">
+                            <option>Select</option>
+                            @foreach (var deliveryBody in allDeliveryBodies)
+                            {
+                                <option value="@deliveryBody.Key">@deliveryBody.Key</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
             </div>
 
-            <GDSInputText Label="Scheme Code" @bind-Data="invoiceLine.SchemeCode" Key="SchemeCode" Errors=errors/>
-            <GDSInputText Label="Delivery Body" @bind-Data="invoiceLine.DeliveryBody" Key="DeliveryBody" Errors=errors/>
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-half">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="fund-code">Fund Code</label>
+                        <InputSelect class="govuk-select govuk-!-width-full" for="fund-code" @bind-Value="invoiceLine.FundCode">
+                            <option>Select</option>
+                            @foreach (var fundCode in allFundCodes)
+                            {
+                                <option value="@fundCode.Key">@fundCode.Key</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="govuk-grid-column-one-half">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="main-account">Main Account</label>
+                        <InputSelect class="govuk-select govuk-!-width-full" for="main-account" @bind-Value="invoiceLine.MainAccount">
+                            <option>Select</option>
+                            @foreach (var mainAccount in allAccounts)
+                            {
+                                <option value="@mainAccount.Key">@mainAccount.Key</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
+
+            <div class="govuk-grid-row">
+                <div class="govuk-grid-column-one-half">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="scheme-code">Scheme Code</label>
+                        <InputSelect class="govuk-select govuk-!-width-full" for="scheme-code" @bind-Value="invoiceLine.SchemeCode">
+                            <option>Select</option>
+                            @foreach (var schemeCode in allSchemeCodes)
+                            {
+                                <option value="@schemeCode.Key">@schemeCode.Key</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="govuk-grid-column-one-half">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="marketing-year">Marketing Year</label>
+                        <InputSelect class="govuk-select govuk-!-width-full" for="marketing-year" @bind-Value="invoiceLine.MarketingYear">
+                            <option>Select</option>
+                            @foreach (var marketingYear in allMarketingYears)
+                            {
+                                <option value="@marketingYear.Key">@marketingYear.Key</option>
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+            </div>
 
             <div class="govuk-form-group">
                 <div class="govuk-button-group">
