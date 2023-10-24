@@ -38,7 +38,7 @@ public partial class Review : ComponentBase
         _pageServices.Validation(invoice, out IsErrored, out errors);
     }
 
-    private void SaveAndContinue()
+    private void Continue()
     {
         var createdBy = "user";
         _nav.NavigateTo($"/bulk/{invoice.SchemeType}/{invoice.Organisation}/{invoice.PaymentType}/{invoice.AccountType}/{createdBy}");
