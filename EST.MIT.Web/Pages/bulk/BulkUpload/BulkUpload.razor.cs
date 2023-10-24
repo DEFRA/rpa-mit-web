@@ -10,10 +10,7 @@ public partial class BulkUpload : ComponentBase
 {
     [Inject] private IUploadService _uploadService { get; set; }
     [Inject] private ILogger<BulkUpload> _logger { get; set; }
-
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
-
-
     [Inject] private NavigationManager _nav { get; set; }
 
     public BulkUploadFileSummary fileToLoadSummary = default!;
@@ -43,11 +40,10 @@ public partial class BulkUpload : ComponentBase
     }
 
     private async Task UploadFile()
-    {
-        var createdBy = "user";
+    {      
         if (fileToLoadSummary.IsValidFile)
         {
-            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, createdBy);
+            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, "createdBy");
             fileToLoadSummary.IsUploaded = fileToLoadSummary.UploadResponse.IsSuccessStatusCode;
 
             if (!fileToLoadSummary.IsUploaded)
