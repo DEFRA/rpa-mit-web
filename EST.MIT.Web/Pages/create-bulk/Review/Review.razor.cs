@@ -13,7 +13,7 @@ public partial class Review : ComponentBase
     [Inject] private IPageServices _pageServices { get; set; }
     [Inject] private IInvoiceAPI _api { get; set; }
 
-    private Invoice invoice = default!;
+    private Invoice invoice { get; set; }
     private bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
 
@@ -38,18 +38,9 @@ public partial class Review : ComponentBase
         _pageServices.Validation(invoice, out IsErrored, out errors);
     }
 
-    private async Task SaveAndContinue()
+    private void Continue()
     {
-        var response = await _api.SaveInvoiceAsync(invoice);
-
-        if (response.IsSuccess)
-        {
-            _invoiceStateContainer.SetValue(invoice);
-            _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
-        }
-
-        IsErrored = true;
-        errors = response.Errors;
+        _nav.NavigateTo($"/bulk/");
     }
 
     private void Cancel()

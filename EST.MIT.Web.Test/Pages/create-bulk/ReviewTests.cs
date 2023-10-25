@@ -64,7 +64,7 @@ public class ReviewPageBulkTests : TestContext
     }
 
     [Fact]
-    public void Saves_Invoice_Navigates_To_Summary()
+    public void Continue_Navigates_To_Bulk_Upload_Page()
     {
         _mockApiService.Setup(x => x.SaveInvoiceAsync(It.IsAny<Invoice>()))
             .ReturnsAsync(new ApiResponse<Invoice>(System.Net.HttpStatusCode.Created));
@@ -72,13 +72,11 @@ public class ReviewPageBulkTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<Review>();
-        var saveAndContinueButton = component.FindAll("button[type='submit']");
-
+        var saveAndContinueButton = component.FindAll("button[type='submit']");        
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
+        navigationManager?.Uri.Should().Be($"http://localhost/bulk/");
     }
-
 
     [Fact]
     public void Cancels_Invoice_Navigates_To_HomePage()

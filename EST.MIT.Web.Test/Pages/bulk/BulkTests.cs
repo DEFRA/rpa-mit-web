@@ -7,12 +7,16 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Repositories;
 using EST.MIT.Web.Pages.bulk.BulkUpload;
+using EST.MIT.Web.Shared;
+using Entities;
 
 namespace Pages.Tests;
 
 public class BulkUploadPageTests : TestContext
 {
     private IConfiguration _configuration;
+    private readonly Invoice _invoice;
+
     public BulkUploadPageTests()
     {
         var configMock = new Mock<IConfiguration>();
@@ -21,6 +25,14 @@ public class BulkUploadPageTests : TestContext
         configMock.Setup(x => x.GetSection(It.Is<string>(s => s == "ConnectionStrings:PrimaryConnection"))).Returns(configSectionMock.Object);
         _configuration = configMock.Object;
 
+        _invoice = new()
+        {
+            AccountType = "AR",
+            PaymentType = "DOM",
+            Organisation = "RPA",
+            SchemeType = "BPS"
+        };
+        var mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
         var mockBlobService = new Mock<IBlobService>();
         var mockBlobServiceClient = new Mock<BlobServiceClient>();
         var mockBlobContainerClient = new Mock<BlobContainerClient>();
@@ -37,6 +49,7 @@ public class BulkUploadPageTests : TestContext
 
         mockAzureQueueService.Setup(x => x.queueServiceClient).Returns(mockQueueServiceClient.Object);
         mockQueueServiceClient.Setup(x => x.GetQueueClient(It.IsAny<string>())).Returns(mockQueueClient.Object);
+        mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 
         Services.AddSingleton<IConfiguration>(_configuration);
         Services.AddSingleton<IUploadService, UploadService>();
@@ -44,7 +57,7 @@ public class BulkUploadPageTests : TestContext
         Services.AddSingleton<IBlobService>(mockBlobService.Object);
         Services.AddSingleton<IAzureBlobService>(mockAzureBlobService.Object);
         Services.AddSingleton<IInvoiceRepository>(mockInvoiceRepository.Object);
-
+        Services.AddSingleton<IInvoiceStateContainer>(mockInvoiceStateContainer.Object);
     }
 
     [Fact]
@@ -74,7 +87,6 @@ public class BulkUploadPageTests : TestContext
         component.Instance.error.Should().BeTrue();
         component.Instance.errorMessage.Should().Be("File is not a valid type");
     }
-
 
     [Fact]
     public void Change_Validates_Wrong_Filesize()
@@ -113,7 +125,7 @@ public class BulkUploadPageTests : TestContext
     public void Validated_File_Not_Added_To_Blob()
     {
         Mock<IUploadService> uploadServiceMock = new Mock<IUploadService>();
-        uploadServiceMock.Setup(x => x.UploadFileAsync(It.IsAny<IBrowserFile>())).Returns(Task.FromResult(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }));
+        uploadServiceMock.Setup(x => x.UploadFileAsync(It.IsAny<IBrowserFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }));
 
         Services.AddSingleton<IConfiguration>(_configuration);
         Services.AddSingleton<IUploadService>(uploadServiceMock.Object);
@@ -132,5 +144,4 @@ public class BulkUploadPageTests : TestContext
         component.Instance.fileToLoadSummary.IsUploaded.Should().BeFalse();
         component.Instance.error.Should().BeTrue();
     }
-
 }

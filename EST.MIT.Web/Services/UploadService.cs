@@ -6,7 +6,7 @@ namespace Services;
 
 public interface IUploadService
 {
-    Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file);
+    Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy);
 }
 
 public class UploadService : IUploadService
@@ -22,9 +22,9 @@ public class UploadService : IUploadService
         _queueService = queueService;
     }
 
-    public async Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file)
+    public async Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy)
     {
-        var summary = GenerateMessage(file);
+        var summary = GenerateMessage(file, schemeType, organisation, paymentType, accountType, createdBy);
 
         try
         {
@@ -49,15 +49,19 @@ public class UploadService : IUploadService
 
     public static string GenerateConfirmationNumber() => $"BLK-{Guid.NewGuid().ToString().Substring(0, 8)}";
 
-    private static UploadFileSummary GenerateMessage(IBrowserFile file)
+    private static UploadFileSummary GenerateMessage(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy)
     {
         return new UploadFileSummary(GenerateConfirmationNumber())
         {
             FileName = Path.GetRandomFileName().Split('.').First(),
             FileSize = file.Size,
             FileType = file.Name?.Split('.').Last() ?? string.Empty,
-            Timestamp = DateTimeOffset.Now
+            Timestamp = DateTimeOffset.Now,
+            AccountType = accountType,
+            SchemeType = schemeType,
+            Organisation = organisation,
+            PaymentType = paymentType,
+            UserID = createdBy
         };
     }
-
 }

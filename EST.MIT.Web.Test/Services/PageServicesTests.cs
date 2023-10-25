@@ -112,7 +112,11 @@ public class PageServicesTests
             Value = 123.45,
             Description = "Payment",
             SchemeCode = "Test",
-            DeliveryBody = "RP00"
+            DeliveryBody = "RP00",
+            FundCode = "1234567890",
+            Id = new Guid(),
+            MainAccount = "account",
+            MarketingYear = "2023"
         });
 
         var pageServices = new PageServices();
