@@ -24,6 +24,7 @@ public partial class UpdatePaymentRequest : ComponentBase
     {
         await base.OnInitializedAsync();
         paymentRequest = invoice.PaymentRequests.FirstOrDefault(x => x.PaymentRequestId == PaymentRequestId) ?? new PaymentRequest();
+        paymentRequest.AccountType = invoice?.AccountType;
     }
 
     private async Task SavePaymentRequest()

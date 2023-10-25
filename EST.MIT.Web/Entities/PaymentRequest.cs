@@ -29,14 +29,16 @@ public class PaymentRequest
     public double Value { get; set; } = 0.00;
     public List<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
 
+    public string AccountType { get; set; } = string.Empty;
+
     [RequiredIfAR]
     public string OriginalInvoiceNumber { get; set; } = string.Empty;
 
     [RequiredIfAR]
-    public DateTime OriginalSettlementDate { get; set; } = default!;
+    public DateTimeOffset OriginalSettlementDate { get; set; } = default!;
 
-[RequiredIfAR]
-	public DateTime RecoveryDate { get; set; } = default!;
+    [RequiredIfAR]
+	public DateTimeOffset RecoveryDate { get; set; } = default!;
 
 	[RequiredIfAR]
     public string InvoiceCorrectionReference { get; set; } = string.Empty;

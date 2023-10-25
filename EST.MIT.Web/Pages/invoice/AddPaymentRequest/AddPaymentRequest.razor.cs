@@ -24,6 +24,7 @@ public partial class AddPaymentRequest : ComponentBase
     {
         await base.OnInitializedAsync();
         invoice ??= _invoiceStateContainer.Value;
+        paymentRequest.AccountType = invoice?.AccountType;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

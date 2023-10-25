@@ -1,6 +1,7 @@
 @page "/invoice/add-payment-request"
 @using EST.MIT.Web.Shared.Components.GDSInputInt
 @using EST.MIT.Web.Shared.Components.GDSInputText
+@using EST.MIT.Web.Shared.Components.GDSInputDate
 @using EST.MIT.Web.Shared.Components.InvoiceMetaData
 @using Helpers
 
@@ -44,8 +45,8 @@
             @if(invoice.AccountType == "AR")
             {
                 <GDSInputText @bind-Data="paymentRequest.OriginalInvoiceNumber" Label="Original Claim Reference" Key="OriginalInvoiceNumber" Errors="errors" />
-                <GDSInputDate @bind-Data="paymentRequest.OriginalSettlementDate" Label="Original AP Invoice Settlement Date" Key="OriginalSettlementDate" Errors="errors" />
-                <GDSInputDate @bind-Data="paymentRequest.RecoveryDate" Label="Earliest date possible recovery first identified" Key="RecoveryDate" Errors="errors" />
+                <GDSInputDate @bind-Data="paymentRequest.OriginalSettlementDate" Key="OriginalSettlementDate" />
+                <GDSInputDate @bind-Data="paymentRequest.RecoveryDate" Key="RecoveryDate" />
                 <GDSInputText @bind-Data="paymentRequest.InvoiceCorrectionReference" Label="Correction Reference - Previous AR Invoice ID" Key="InvoiceCorrectionReference" Errors="errors" />
             }
 

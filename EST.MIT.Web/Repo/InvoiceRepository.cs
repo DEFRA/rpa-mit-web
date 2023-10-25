@@ -56,6 +56,7 @@ public class InvoiceRepository : IInvoiceRepository
         // might need to break it down into the individual DTOs
         
         // var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+        var payload = invoice;
 
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
