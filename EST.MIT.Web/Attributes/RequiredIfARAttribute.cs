@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace EST.MIT.Web.Attributes;
 
@@ -15,10 +16,20 @@ public class RequiredIfARAttribute : ValidationAttribute
 
         var accountTypeValue = accountType.GetValue(validationContext.ObjectInstance, null);
 
-        if (accountTypeValue != null && accountTypeValue.ToString() == "AR" && (value == null || string.IsNullOrWhiteSpace(value.ToString())))
+        if (accountTypeValue != null && accountTypeValue.ToString() == "AR" &&
+            (value == null || string.IsNullOrWhiteSpace(value.ToString()) || value.Equals(Activator.CreateInstance(value.GetType()))))
         {
-            return new ValidationResult($"The {validationContext.MemberName} field is required when AccountType is AR.", new[] { validationContext.MemberName! });
+            string displayName = validationContext.DisplayName ?? validationContext.MemberName;
+            if (string.IsNullOrEmpty(displayName) || displayName == validationContext.MemberName)
+            {
+                var property = validationContext.ObjectType.GetProperty(validationContext.MemberName);
+                var displayAttribute = property?.GetCustomAttributes(typeof(DisplayNameAttribute), false).FirstOrDefault() as DisplayNameAttribute;
+
+                displayName = displayAttribute?.DisplayName ?? validationContext.MemberName;
+            }
+            return new ValidationResult($"The {displayName} field is required when AccountType is AR.", new[] { validationContext.MemberName! });
         }
+
 
         return ValidationResult.Success;
     }

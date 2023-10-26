@@ -116,12 +116,18 @@ public partial class GDSInputDate : ComponentBase
                         Data = newDateTimeOffset;
                     }
                 }
+                else
+                {
+                    // Handle invalid date here
+                    IsErrored = true;
+                    err = err.Concat(new[] { $"The value for {Label} is invalid" });
+                }
             }
             catch (ArgumentOutOfRangeException)
             {
                 // Handle invalid date here
                 IsErrored = true;
-                err = err.Concat(new[] { $"The value for {Key} is invalid" });
+                err = err.Concat(new[] { $"The value for {Label} is invalid" });
             }
         }
     }

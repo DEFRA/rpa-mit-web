@@ -2,9 +2,9 @@
     <fieldset class="govuk-fieldset" role="group"
               aria-describedby="@(IsErrored ? $"{Key}-error" : null )">
         <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading">
+            <label class="govuk-label" for="@Key">
                 @Label
-            </h1>
+            </label>
         </legend>
         @if (IsErrored)
         {
@@ -22,7 +22,14 @@
                     <label class="govuk-label govuk-date-input__label" for="@($"{Key}-day")">
                         Day
                     </label>
-                    <InputText @bind-Value="DateDay" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-day")" name="@($"{Key}-day")" type="number" inputmode="numeric" />
+                    @if (IsErrored)
+                    {
+                        <InputText @bind-Value="DateDay" class="govuk-input govuk-date-input__input govuk-input--width-2 gov-input--error" id="@($"{Key}-day")" name="@($"{Key}-day")" type="number" inputmode="numeric" />
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="DateDay" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-day")" name="@($"{Key}-day")" type="number" inputmode="numeric" />    
+                    }
                 </div>
             </div>
             <div class="govuk-date-input__item">
@@ -30,7 +37,14 @@
                     <label class="govuk-label govuk-date-input__label" for="@($"{Key}-month")">
                         Month
                     </label>
-                    <InputText @bind-Value="DateMonth" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-month")" name="@($"{Key}-month")" type="number" inputmode="numeric" />
+                    @if (IsErrored)
+                    {
+                        <InputText @bind-Value="DateMonth" class="govuk-input govuk-date-input__input govuk-input--width-2 gov-input--error" id="@($"{Key}-month")" name="@($"{Key}-month")" type="number" inputmode="numeric" />
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="DateMonth" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-month")" name="@($"{Key}-month")" type="number" inputmode="numeric" />
+                    }
                 </div>
             </div>
             <div class="govuk-date-input__item">
@@ -38,7 +52,14 @@
                     <label class="govuk-label govuk-date-input__label" for="@($"{Key}-year")">
                         Year
                     </label>
-                    <InputText @bind-Value="DateYear" class="govuk-input govuk-date-input__input govuk-input--width-4" id="@($"{Key}-year")" name="@($"{Key}-year")" type="number" inputmode="numeric" />
+                    @if (IsErrored)
+                    {
+                        <InputText @bind-Value="DateYear" class="govuk-input govuk-date-input__input govuk-input--width-4 gov-input--error" id="@($"{Key}-year")" name="@($"{Key}-year")" type="number" inputmode="numeric" />
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="DateYear" class="govuk-input govuk-date-input__input govuk-input--width-4" id="@($"{Key}-year")" name="@($"{Key}-year")" type="number" inputmode="numeric" />
+                    }
                 </div>
             </div>
         </div>
