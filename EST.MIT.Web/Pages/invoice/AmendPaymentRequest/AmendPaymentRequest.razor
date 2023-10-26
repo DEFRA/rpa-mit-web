@@ -51,11 +51,11 @@
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Original AP Invoice Settlement Date</dt>
-                    <dd class="govuk-summary-list__value">@paymentRequest.OriginalSettlementDate</dd>
+                    <dd class="govuk-summary-list__value">@paymentRequest.OriginalSettlementDate.ToString("dd/MM/yyyy")</dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Earliest date possible recovery first identified</dt>
-                    <dd class="govuk-summary-list__value">@paymentRequest.RecoveryDate</dd>
+                    <dd class="govuk-summary-list__value">@paymentRequest.RecoveryDate.ToString("dd/MM/yyyy")</dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Correction Reference - Previous AR Invoice ID</dt>
