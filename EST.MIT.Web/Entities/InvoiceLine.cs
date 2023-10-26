@@ -1,8 +1,9 @@
+using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace Entities;
 
-public class InvoiceLine
+public class InvoiceLine : Validatable
 {
     public Guid Id { get; set; }
     [Required]
@@ -20,4 +21,5 @@ public class InvoiceLine
     public string MarketingYear { get; set; } = "";
     [Required]
     public string DeliveryBody { get; set; } = "";
+    public Dictionary<string, List<string>> Errors { get; set; } = new Dictionary<string, List<string>>();   
 }

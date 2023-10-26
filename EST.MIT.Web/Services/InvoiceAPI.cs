@@ -2,6 +2,9 @@ using System.Net;
 using Entities;
 using Repositories;
 using System.Security.Cryptography;
+using EST.MIT.Web.Helpers;
+using System.Threading.Tasks.Dataflow;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Services;
 
@@ -78,7 +81,7 @@ public class InvoiceAPI : IInvoiceAPI
             return new ApiResponse<Invoice>(response.StatusCode);
         }
 
-        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
+        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(invoice, response, invoice.Id.ToString());
 
         errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
@@ -97,7 +100,7 @@ public class InvoiceAPI : IInvoiceAPI
             return new ApiResponse<Invoice>(response.StatusCode) { Data = invoice };
         }
 
-        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
+        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(invoice, response, invoice.Id.ToString());
 
         errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
@@ -118,7 +121,7 @@ public class InvoiceAPI : IInvoiceAPI
             return new ApiResponse<Invoice>(response.StatusCode) { Data = invoice };
         }
 
-        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
+        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(invoice, response, invoice.Id.ToString());
 
         errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
@@ -141,11 +144,11 @@ public class InvoiceAPI : IInvoiceAPI
             return new ApiResponse<Invoice>(response.StatusCode) { Data = invoice };
         }
 
-        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
+        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(invoice, response, invoice.Id.ToString());
 
         errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
-    }  
+    }
 
     private async Task<ApiResponse<Invoice>> DeletePaymentRequest(Invoice invoice, string paymentRequestId)
     {
@@ -164,7 +167,7 @@ public class InvoiceAPI : IInvoiceAPI
             };
         }
 
-        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(response, invoice.Id.ToString());
+        if (response.StatusCode == HttpStatusCode.BadRequest) return await BadRequestResponse<Invoice>(invoice, response, invoice.Id.ToString());
 
         errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
@@ -206,15 +209,30 @@ public class InvoiceAPI : IInvoiceAPI
 
     }
 
-    private async Task<ApiResponse<T>> BadRequestResponse<T>(HttpResponseMessage response, string id) where T : class
+    private async Task<ApiResponse<T>> BadRequestResponse<T>(T validatable, HttpResponseMessage response, string id) where T : Validatable
     {
-        var errors = new Dictionary<string, List<string>>();
+        var errors = new Dictionary<string, string>();
         var message = await response.Content.ReadAsStringAsync();
+        var validationErrors = Newtonsoft.Json.JsonConvert.DeserializeObject<ValidationProblemDetails>(message);
 
-        errors.Add(response.StatusCode.ToString(), new List<string> { $"{message}" });
-        _logger.LogError($"Invoice {id}: {message}");
+        foreach (var error in validationErrors.Errors)
+        {
+            foreach (var errorValue in error.Value)
+            {
+                errors.Add(error.Key, errorValue);
+            }
+        }
 
-        return new ApiResponse<T>(response.StatusCode, errors);
+        if (errors.Count > 0)
+        {
+            validatable.AddErrors(errors);
+        }
+        _logger.LogError($"Invoice {id}: {errors}");
+
+        return new ApiResponse<T>(response.StatusCode)
+        {
+            Data = validatable
+        };
     }
 
     private static string IdGenerator(string agreementNumber)
