@@ -16,8 +16,30 @@ public class RequiredIfARAttribute : ValidationAttribute
 
         var accountTypeValue = accountType.GetValue(validationContext.ObjectInstance, null);
 
-        if (accountTypeValue != null && accountTypeValue.ToString() == "AR" &&
-            (value == null || string.IsNullOrWhiteSpace(value.ToString()) || value.Equals(Activator.CreateInstance(value.GetType()))))
+        bool isDefaultValue = false;
+
+        if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
+        {
+            isDefaultValue = true;
+        }
+        else if (value is string)
+        {
+            isDefaultValue = string.IsNullOrEmpty((string)value);
+        }
+        else
+        {
+            try
+            {
+                isDefaultValue = value.Equals(Activator.CreateInstance(value.GetType()));
+            }
+            catch (MissingMethodException)
+            {
+                // Handle types that cannot be created with a parameterless constructor
+                isDefaultValue = false;
+            }
+        }
+
+        if (accountTypeValue != null && accountTypeValue.ToString() == "AR" && isDefaultValue)
         {
             string displayName = validationContext.DisplayName ?? validationContext.MemberName;
             if (string.IsNullOrEmpty(displayName) || displayName == validationContext.MemberName)
@@ -30,7 +52,7 @@ public class RequiredIfARAttribute : ValidationAttribute
             return new ValidationResult($"The {displayName} field is required when AccountType is AR.", new[] { validationContext.MemberName! });
         }
 
-
         return ValidationResult.Success;
     }
+
 }

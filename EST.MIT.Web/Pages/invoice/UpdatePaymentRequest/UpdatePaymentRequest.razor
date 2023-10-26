@@ -31,8 +31,8 @@
         @if(invoice.AccountType == "AR")
         {
             <GDSInputText @bind-Data="paymentRequest.OriginalInvoiceNumber" Label="Original Claim Reference" Key="OriginalInvoiceNumber" Errors="errors" />
-            <GDSInputDate @bind-Data="paymentRequest.OriginalSettlementDate" Key="OriginalSettlementDate" />
-            <GDSInputDate @bind-Data="paymentRequest.RecoveryDate" Key="RecoveryDate" />
+            <GDSInputDate @bind-Data="paymentRequest.OriginalSettlementDate" Key="OriginalSettlementDate" Errors="errors" Label="Original AP Invoice Settlement Date" />
+            <GDSInputDate @bind-Data="paymentRequest.RecoveryDate" Key="RecoveryDate" Errors="errors" Label="Earliest date possible recovery first identified" />
             <GDSInputText @bind-Data="paymentRequest.InvoiceCorrectionReference" Label="Correction Reference - Previous AR Invoice ID" Key="InvoiceCorrectionReference" Errors="errors" />
         }
 

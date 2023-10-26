@@ -33,6 +33,26 @@
                 <dt class="govuk-summary-list__key govuk-!-width-two-thirds">Value</dt>
                 <dd class="govuk-summary-list__value">@PaymentRequest.Value</dd>
             </div>
+
+            @if (Invoice.AccountType == "AR")
+            {
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Original Claim Reference</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.OriginalInvoiceNumber</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Original AP Invoice Settlement Date</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.OriginalSettlementDate.ToString("dd/MM/yyyy")</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Earliest date possible recovery first identified</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.RecoveryDate.ToString("dd/MM/yyyy")</dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Correction Reference - Previous AR Invoice ID</dt>
+                    <dd class="govuk-summary-list__value">@PaymentRequest.InvoiceCorrectionReference</dd>
+                </div>
+            }
         </dl>
     </div>
 </div>
