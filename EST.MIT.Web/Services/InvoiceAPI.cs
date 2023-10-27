@@ -211,24 +211,21 @@ public class InvoiceAPI : IInvoiceAPI
 
     private async Task<ApiResponse<T>> BadRequestResponse<T>(T validatable, HttpResponseMessage response, string id) where T : Validatable
     {
-        var errors = new Dictionary<string, string>();
+        var errors = new Dictionary<string, List<string>>();
         var message = await response.Content.ReadAsStringAsync();
         var validationErrors = Newtonsoft.Json.JsonConvert.DeserializeObject<ValidationProblemDetails>(message);
-
-        foreach (var error in validationErrors.Errors)
+        if (validationErrors is not null)
         {
-            foreach (var errorValue in error.Value)
+            foreach (var error in validationErrors.Errors)
             {
-                errors.Add(error.Key, errorValue);
+                errors.Add(error.Key, error.Value.ToList());
             }
+            if (errors.Count > 0)
+            {
+                validatable.AddErrors(errors);
+            }
+            _logger.LogError($"Invoice {id}: {errors}");
         }
-
-        if (errors.Count > 0)
-        {
-            validatable.AddErrors(errors);
-        }
-        _logger.LogError($"Invoice {id}: {errors}");
-
         return new ApiResponse<T>(response.StatusCode)
         {
             Data = validatable

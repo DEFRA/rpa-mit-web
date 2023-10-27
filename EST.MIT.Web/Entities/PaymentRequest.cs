@@ -27,12 +27,12 @@ public class PaymentRequest : Validatable
     [RegularExpression("(^(0|\\d+\\.\\d{2})$)", ErrorMessage = "The Value must be in the format 0.00")]
     public double Value { get; set; } = 0.00;
     public List<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
-    public override Dictionary<string, string> AddErrors(Dictionary<string, string> errors)
+    public override Dictionary<string, List<string>> AddErrors(Dictionary<string, List<string>> errors)
     {
         for (int invoiceLineIndex = 0; invoiceLineIndex < InvoiceLines.Count; invoiceLineIndex++)
         {
             InvoiceLine invoiceLine = InvoiceLines[invoiceLineIndex];
-            invoiceLine.ErrorPath = string.Concat(ErrorPath, "InvoiceLines[", invoiceLineIndex, "].");
+            invoiceLine.ErrorPath = string.Concat(ErrorPath, $"{nameof(InvoiceLine)}s[", invoiceLineIndex, "].");
             invoiceLine.AddErrors(errors);
         }
         return base.AddErrors(errors);

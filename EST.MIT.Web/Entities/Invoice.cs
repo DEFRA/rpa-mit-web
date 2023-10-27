@@ -27,8 +27,6 @@ public class Invoice : Validatable
     public string CreatedBy { get; private set; } = default!;
     public string UpdatedBy { get; set; } = default!;
     public string Approver { get; set; } = default!;
-    public Dictionary<string, List<string>> Errors { get; set; } = new Dictionary<string, List<string>>();
-
     public Invoice()
     {
         Id = Guid.NewGuid();
@@ -61,12 +59,12 @@ public class Invoice : Validatable
             Status = status;
         }
     }
-    public override Dictionary<string, string> AddErrors(Dictionary<string, string> errors)
+    public override Dictionary<string, List<string>> AddErrors(Dictionary<string, List<string>> errors)
     {
         for (int paymentRequestIndex = 0; paymentRequestIndex < PaymentRequests.Count; paymentRequestIndex++)
         {
             PaymentRequest paymentRequest = PaymentRequests[paymentRequestIndex];
-            paymentRequest.ErrorPath = string.Concat(ErrorPath, "PaymentRequests[", paymentRequestIndex, "].");
+            paymentRequest.ErrorPath = string.Concat(ErrorPath, $"{nameof(PaymentRequest)}s[", paymentRequestIndex, "].");
             paymentRequest.AddErrors(errors);
         }
         return base.AddErrors(errors);
