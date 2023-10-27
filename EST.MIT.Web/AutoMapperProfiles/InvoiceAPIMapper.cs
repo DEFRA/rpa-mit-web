@@ -3,6 +3,7 @@ using System.Drawing;
 using AutoMapper;
 using Entities;
 using EST.MIT.Web.DTOs;
+using EST.MIT.Web.Entities;
 using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace EST.MIT.Web.AutoMapperProfiles;

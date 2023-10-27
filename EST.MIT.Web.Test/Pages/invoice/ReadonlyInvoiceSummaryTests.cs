@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.invoice.ReadonlyInvoiceSummary;
 using Repositories;
 using Services;

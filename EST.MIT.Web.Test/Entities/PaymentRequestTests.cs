@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using EST.MIT.Web.Entities;
 using FluentAssertions;
 
 namespace Entities.Tests;

@@ -1,6 +1,7 @@
 using System.Net;
 using AutoMapper;
 using Entities;
+using EST.MIT.Web.Entities;
 using Moq.Contrib.HttpClient;
 
 namespace Repositories.Tests;

@@ -1,0 +1,67 @@
+<div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
+    <fieldset class="govuk-fieldset" role="group"
+              aria-describedby="@(IsErrored ? $"{Key}-error" : null )">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+            <label class="govuk-label" for="@Key">
+                @Label
+            </label>
+        </legend>
+        @if (IsErrored)
+        {
+            <p id="@($"{Key}-error")" class="govuk-error-message">
+                @foreach(var error in err)
+                {
+                    <span class="govuk-visually-hidden">Error:</span> @error <br />
+                }
+            </p>
+        }
+
+        <div class="govuk-date-input" id="@Key">
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label" for="@($"{Key}-day")">
+                        Day
+                    </label>
+                    @if (IsErrored)
+                    {
+                        <InputText @bind-Value="DateDay" class="govuk-input govuk-date-input__input govuk-input--width-2 gov-input--error" id="@($"{Key}-day")" name="@($"{Key}-day")" type="number" inputmode="numeric" />
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="DateDay" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-day")" name="@($"{Key}-day")" type="number" inputmode="numeric" />    
+                    }
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label" for="@($"{Key}-month")">
+                        Month
+                    </label>
+                    @if (IsErrored)
+                    {
+                        <InputText @bind-Value="DateMonth" class="govuk-input govuk-date-input__input govuk-input--width-2 gov-input--error" id="@($"{Key}-month")" name="@($"{Key}-month")" type="number" inputmode="numeric" />
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="DateMonth" class="govuk-input govuk-date-input__input govuk-input--width-2" id="@($"{Key}-month")" name="@($"{Key}-month")" type="number" inputmode="numeric" />
+                    }
+                </div>
+            </div>
+            <div class="govuk-date-input__item">
+                <div class="govuk-form-group">
+                    <label class="govuk-label govuk-date-input__label" for="@($"{Key}-year")">
+                        Year
+                    </label>
+                    @if (IsErrored)
+                    {
+                        <InputText @bind-Value="DateYear" class="govuk-input govuk-date-input__input govuk-input--width-4 gov-input--error" id="@($"{Key}-year")" name="@($"{Key}-year")" type="number" inputmode="numeric" />
+                    }
+                    else
+                    {
+                        <InputText @bind-Value="DateYear" class="govuk-input govuk-date-input__input govuk-input--width-4" id="@($"{Key}-year")" name="@($"{Key}-year")" type="number" inputmode="numeric" />
+                    }
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</div>

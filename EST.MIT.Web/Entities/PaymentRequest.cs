@@ -1,6 +1,9 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Entities;
+using EST.MIT.Web.Attributes;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public class PaymentRequest
 {
@@ -27,4 +30,21 @@ public class PaymentRequest
     public double Value { get; set; } = 0.00;
     public List<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
 
+    public string AccountType { get; set; } = string.Empty;
+
+    [RequiredIfAR]
+    [DisplayName("Original Claim Reference")]
+    public string OriginalInvoiceNumber { get; set; } = string.Empty;
+
+    [RequiredIfAR]
+    [DisplayName("Original AP Invoice Settlement Date")]
+    public DateTimeOffset OriginalSettlementDate { get; set; } = default!;
+
+    [RequiredIfAR]
+    [DisplayName("Earliest date possible recovery first identified")]
+	public DateTimeOffset RecoveryDate { get; set; } = default!;
+
+	[RequiredIfAR]
+    [DisplayName("Correction Reference - Previous AR Invoice ID")]
+    public string InvoiceCorrectionReference { get; set; } = string.Empty;
 }
