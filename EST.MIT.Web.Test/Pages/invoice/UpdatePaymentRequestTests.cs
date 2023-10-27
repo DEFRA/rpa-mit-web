@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.invoice.UpdatePaymentRequest;
 using EST.MIT.Web.Shared;
 using Services;

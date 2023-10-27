@@ -1,5 +1,6 @@
 using System.Net;
 using Entities;
+using EST.MIT.Web.Entities;
 using Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

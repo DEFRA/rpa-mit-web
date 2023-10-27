@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Entities;
+using EST.MIT.Web.Entities;
 using Services;
 using EST.MIT.Web.Shared;
 using Helpers;
@@ -23,6 +24,7 @@ public partial class AddPaymentRequest : ComponentBase
     {
         await base.OnInitializedAsync();
         invoice ??= _invoiceStateContainer.Value;
+        paymentRequest.AccountType = invoice?.AccountType;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

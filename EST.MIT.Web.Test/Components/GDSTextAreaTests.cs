@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared.Components.GDSTextArea;
 
 namespace Components.Tests;

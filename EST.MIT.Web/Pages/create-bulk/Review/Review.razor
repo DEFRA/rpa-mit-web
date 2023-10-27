@@ -2,16 +2,16 @@
 @using Helpers
 @using global::Helpers;
 
-@if (!invoice.IsNull())
+@if(!invoice.IsNull())
 {
     <div class="govuk-form-group govuk-width-container govuk-!-padding-top-9">
-
+        
         <div class="govuk-!-padding-bottom-4">
             <h1 class="govuk-heading-l">Review</h1>
             <span class="govuk-caption-m">Please review and confirm the information below is correct before continuing.</span>
         </div>
 
-        @if (IsErrored)
+        @if(IsErrored)
         {
             <div class="govuk-form-group--error">
                 @foreach (var error in errors.Values.SelectMany(x => x))
@@ -21,46 +21,46 @@
             </div>
         }
 
-        <EditForm Model="invoice" OnValidSubmit="@SaveAndContinue" OnInvalidSubmit="@ValidationFailed">
+        <EditForm Model="invoice" OnValidSubmit="@Continue" OnInvalidSubmit="@ValidationFailed">
             <DataAnnotationsValidator />
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Account Type</dt>
-                <dd class="govuk-summary-list__value">@invoice.AccountType</dd>
-                <dd class="govuk-summary-list__actions">
-                    <a class="govuk-link" href="/create-invoice/account">Change<span class="govuk-visually-hidden">name</span></a>
-                </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Organisation</dt>
-        <dd class="govuk-summary-list__value">@invoice.Organisation</dd>
-        <dd class="govuk-summary-list__actions">
-            <a class="govuk-link" href="/create-invoice/organisation">Change<span class="govuk-visually-hidden">name</span></a>
-        </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Scheme Type</dt>
-        <dd class="govuk-summary-list__value">@invoice.SchemeType</dd>
-        <dd class="govuk-summary-list__actions">
-            <a class="govuk-link" href="/create-invoice/scheme">Change<span class="govuk-visually-hidden">name</span></a>
-        </dd>
-    </div>
-    <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">Payment Type</dt>
-        <dd class="govuk-summary-list__value">@invoice.PaymentType</dd>
-        <dd class="govuk-summary-list__actions">
-            <a class="govuk-link" href="/create-invoice/payment-type">Change<span class="govuk-visually-hidden">name</span></a>
-        </dd>
-    </div>
-                </dl>
+                    <dt class="govuk-summary-list__key">Account Type</dt>
+                    <dd class="govuk-summary-list__value">@invoice.AccountType</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="/create-invoice/account">Change<span class="govuk-visually-hidden">name</span></a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Organisation</dt>
+                    <dd class="govuk-summary-list__value">@invoice.Organisation</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="/create-invoice/organisation">Change<span class="govuk-visually-hidden">name</span></a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Scheme Type</dt>
+                    <dd class="govuk-summary-list__value">@invoice.SchemeType</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="/create-invoice/scheme">Change<span class="govuk-visually-hidden">name</span></a>
+                    </dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Payment Type</dt>
+                    <dd class="govuk-summary-list__value">@invoice.PaymentType</dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link" href="/create-invoice/payment-type">Change<span class="govuk-visually-hidden">name</span></a>
+                    </dd>
+                </div>
+            </dl>
 
-    <div class="govuk-form-group">
-        <div class="govuk-button-group">
-            <button disabled="disabled" type=submit class="govuk-button" data-module="govuk-button">Save and Continue</button>
-            <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
-        </div>
-    </div>
+            <div class="govuk-form-group">
+                <div class="govuk-button-group">
+                    <button type=submit class="govuk-button" data-module="govuk-button">Continue</button>
+                    <a class="govuk-link" @onclick="Cancel" href="/">Cancel</a>
+                </div>
+            </div>
 
-            </EditForm>
-        </div>
+        </EditForm>
+    </div>
 }

@@ -1,6 +1,7 @@
 using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using EST.MIT.Web.Entities;
 
 namespace Entities;
 
