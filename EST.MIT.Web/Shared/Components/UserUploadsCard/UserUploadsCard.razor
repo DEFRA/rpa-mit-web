@@ -1,0 +1,51 @@
+﻿
+@using Helpers
+@using EST.MIT.Web.Shared.Components.InvoiceMetaData
+
+@if (importRequests.IsNull())
+{
+    <div class="govuk-summary-card">
+      <div class="govuk-summary-card__title-wrapper">
+        <h2 class="govuk-summary-card__title">Error</h2>
+      </div>
+      <div class="govuk-summary-card__content">
+        <h4 class="govuk-heading-s">Nothing to Display</h4>
+        <div class="govuk-warning-text">
+          <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+          <strong class="govuk-warning-text__text">
+            <span class="govuk-warning-text__assistive">Information</span>
+            Has the user uploaded any files?
+          </strong>
+        </div>
+      </div>
+    </div>
+}
+else
+{
+  <table class="govuk-table">
+  <caption class="govuk-table__caption govuk-table__caption--l">My Uploads</caption>
+  <thead class="govuk-table__head">
+    <tr class="govuk-table__row">
+      <th scope="col" class="govuk-table__header">Date</th>
+      <th scope="col" class="govuk-table__header">Status</th>
+      <th scope="col" class="govuk-table__header">Account Type</th>
+      <th scope="col" class="govuk-table__header">Organisation</th>
+      <th scope="col" class="govuk-table__header">Scheme Type</th>
+      <th scope="col" class="govuk-table__header">Payment Type</th>
+    </tr>
+  </thead>
+  <tbody class="govuk-table__body">
+	@foreach (var importRequest in importRequests)
+      {
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">@FormatTimestamp(importRequest.Timestamp)</td>
+          <td class="govuk-table__cell">@importRequest.Status</td>
+          <td class="govuk-table__cell">@importRequest.AccountType</td>
+          <td class="govuk-table__cell">@importRequest.Organisation</td>
+          <td class="govuk-table__cell">@importRequest.SchemeType</td>
+          <td class="govuk-table__cell">@importRequest.PaymentType</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

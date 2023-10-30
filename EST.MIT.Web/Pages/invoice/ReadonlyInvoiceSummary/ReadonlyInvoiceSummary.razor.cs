@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
-using Entities;
-using Helpers;
-using Services;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Helpers;
+using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Pages.invoice.ReadonlyInvoiceSummary;
 

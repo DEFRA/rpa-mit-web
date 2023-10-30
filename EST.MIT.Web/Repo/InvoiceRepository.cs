@@ -1,10 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using Entities;
+using EST.MIT.Web.Entities;
 using System.Text.Json;
 using AutoMapper;
-using EST.MIT.Web.DTOs;
-using EST.MIT.Web.Entities;
 
 namespace Repositories;
 
@@ -54,7 +52,7 @@ public class InvoiceRepository : IInvoiceRepository
         // var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
         // and then post the DTO instead of the entity
         // might need to break it down into the individual DTOs
-        
+
         // var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
         var payload = invoice;
 
@@ -101,7 +99,7 @@ public class InvoiceRepository : IInvoiceRepository
         return response;
     }
 
-    [ExcludeFromCodeCoverageAttribute]
+    [ExcludeFromCodeCoverage]
     public async Task<HttpResponseMessage> GetApprovals()
     {
 

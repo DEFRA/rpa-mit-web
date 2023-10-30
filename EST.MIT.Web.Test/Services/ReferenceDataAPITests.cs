@@ -1,8 +1,8 @@
 using System.Net;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Entities;
-using Services;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
 
 namespace Repositories.Tests;
 

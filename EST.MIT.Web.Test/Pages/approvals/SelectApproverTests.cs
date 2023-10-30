@@ -1,13 +1,13 @@
 using System.Net;
-using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.approvals.SelectApprover;
 using EST.MIT.Web.Shared;
-using Helpers;
+using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Services;
+using EST.MIT.Web.Services;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class SelectApproverTests : TestContext
 {

@@ -1,4 +1,6 @@
-namespace Builders.Tests;
+using EST.MIT.Web.Builders;
+
+namespace EST.MIT.Web.Tests.Builders.Tests;
 
 public class NotificationBuilderTests
 {

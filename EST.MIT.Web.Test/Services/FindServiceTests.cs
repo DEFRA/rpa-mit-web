@@ -1,7 +1,8 @@
-using Entities;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
 using Repositories;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class FindServiceTests : TestContext
 {

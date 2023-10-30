@@ -1,10 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Drawing;
 using AutoMapper;
-using Entities;
-using EST.MIT.Web.DTOs;
 using EST.MIT.Web.Entities;
-using Microsoft.AspNetCore.Routing.Constraints;
+using EST.MIT.Web.DTOs;
 
 namespace EST.MIT.Web.AutoMapperProfiles;
 
@@ -22,7 +19,7 @@ public class InvoiceAPIMapper : Profile
             .ForMember(dest => dest.DeliveryBody, act => act.MapFrom(src => src.Item2.DeliveryBody))
             .ForMember(dest => dest.Description, act => act.MapFrom(src => src.Item2.Description))
             ;
-        
+
         CreateMap<PaymentRequest, PaymentRequestDTO>()
             .ForMember(dest => dest.PaymentRequestId, act => act.MapFrom(src => src.PaymentRequestId))
             .ForMember(dest => dest.SourceSystem, act => act.MapFrom(src => src.SourceSystem))

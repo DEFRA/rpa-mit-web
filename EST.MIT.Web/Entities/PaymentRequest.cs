@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Entities;
 using EST.MIT.Web.Attributes;
 
 namespace EST.MIT.Web.Entities;
@@ -42,9 +41,9 @@ public class PaymentRequest
 
     [RequiredIfAR]
     [DisplayName("Earliest date possible recovery first identified")]
-	public DateTimeOffset RecoveryDate { get; set; } = default!;
+    public DateTimeOffset RecoveryDate { get; set; } = default!;
 
-	[RequiredIfAR]
+    [RequiredIfAR]
     [DisplayName("Correction Reference - Previous AR Invoice ID")]
     public string InvoiceCorrectionReference { get; set; } = string.Empty;
 }

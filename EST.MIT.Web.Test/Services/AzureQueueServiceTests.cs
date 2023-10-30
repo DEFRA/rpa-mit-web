@@ -1,7 +1,7 @@
-using Azure.Storage.Blobs;
+using EST.MIT.Web.Services;
 using Microsoft.Extensions.Configuration;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class AzureQueueServiceTests
 {

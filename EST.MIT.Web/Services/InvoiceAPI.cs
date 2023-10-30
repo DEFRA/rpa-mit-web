@@ -1,10 +1,9 @@
 using System.Net;
-using Entities;
+using EST.MIT.Web.Entities;
 using Repositories;
 using System.Security.Cryptography;
-using EST.MIT.Web.Entities;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IInvoiceAPI
 {
@@ -150,7 +149,7 @@ public class InvoiceAPI : IInvoiceAPI
 
         errors.Add(response.StatusCode.ToString(), new List<string> { $"Unexpected response from API: ({(int)response.StatusCode})" });
         return new ApiResponse<Invoice>(response.StatusCode, errors);
-    }  
+    }
 
     private async Task<ApiResponse<Invoice>> DeletePaymentRequest(Invoice invoice, string paymentRequestId)
     {

@@ -1,6 +1,6 @@
-using Helpers;
+using EST.MIT.Web.Helpers;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IPageServices
 {

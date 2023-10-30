@@ -1,13 +1,12 @@
 using System.Net;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Entities;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.invoice.AddInvoiceLine;
 using EST.MIT.Web.Shared;
-using Services;
+using EST.MIT.Web.Services;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class AddInvoiceLineTests : TestContext
 {
@@ -24,7 +23,7 @@ public class AddInvoiceLineTests : TestContext
             SchemeType = "AC",
             Organisation = "RPA",
             PaymentType = "DOM",
-            AccountType =  "AR"
+            AccountType = "AR"
         };
 
         _invoice.PaymentRequests.Add(new PaymentRequest()

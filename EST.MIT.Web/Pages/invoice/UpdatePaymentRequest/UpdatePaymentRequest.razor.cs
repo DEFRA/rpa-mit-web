@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Shared;
-using Entities;
 using EST.MIT.Web.Entities;
-using Services;
+using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Pages.invoice.UpdatePaymentRequest;
 

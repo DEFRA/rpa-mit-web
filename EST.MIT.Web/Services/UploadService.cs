@@ -1,8 +1,8 @@
 using System.Net;
 using Microsoft.AspNetCore.Components.Forms;
-using Entities;
+using EST.MIT.Web.Entities;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IUploadService
 {

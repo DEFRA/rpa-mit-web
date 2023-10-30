@@ -1,9 +1,8 @@
-using Entities;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.invoice.Summary;
 using EST.MIT.Web.Shared.Components.SummaryPaymentRequest;
 
-namespace Components.Tests;
+namespace EST.MIT.Web.Tests.Components;
 
 public class SummaryPaymentRequestTests : TestContext
 {

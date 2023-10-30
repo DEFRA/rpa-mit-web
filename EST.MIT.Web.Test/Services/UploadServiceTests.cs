@@ -1,9 +1,10 @@
 using System.Net;
-using Entities;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class UploadServiceTests : TestContext
 {
@@ -53,7 +54,7 @@ public class UploadServiceTests : TestContext
 
         var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _queueServiceMock.Object);
 
-        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType,"user");
+        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user");
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
     }

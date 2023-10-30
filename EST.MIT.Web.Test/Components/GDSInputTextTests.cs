@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Entities;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared.Components.GDSInputText;
 
-namespace Components.Tests;
+namespace EST.MIT.Web.Tests.Components;
 
 public class GDSInputTextTests : TestContext
 {

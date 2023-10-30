@@ -1,5 +1,3 @@
-using System.Net;
-
 namespace Repositories;
 
 public interface IApprovalRepository

@@ -1,7 +1,6 @@
-using Entities;
-using EST.MIT.Web.Shared;
+using EST.MIT.Web.Entities;
 using Microsoft.AspNetCore.Components;
-using Services;
+using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Pages.invoice.UserInvoices;
 public partial class UserInvoices : ComponentBase

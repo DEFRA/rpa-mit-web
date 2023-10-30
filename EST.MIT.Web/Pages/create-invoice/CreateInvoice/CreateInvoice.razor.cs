@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Pages.create_invoice.CreateInvoice;

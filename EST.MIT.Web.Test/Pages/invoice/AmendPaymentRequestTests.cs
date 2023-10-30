@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Entities;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.invoice.AmendPaymentRequest;
 using EST.MIT.Web.Shared;
-using Services;
+using EST.MIT.Web.Services;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class AmendPaymentRequestTests : TestContext
 {
@@ -40,7 +39,7 @@ public class AmendPaymentRequestTests : TestContext
         });
 
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
-        _mockInvoiceApi = new Mock<IInvoiceAPI>();  
+        _mockInvoiceApi = new Mock<IInvoiceAPI>();
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
         Services.AddSingleton<IInvoiceAPI>(_mockInvoiceApi.Object);
     }

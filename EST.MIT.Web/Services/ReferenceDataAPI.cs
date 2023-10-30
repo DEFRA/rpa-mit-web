@@ -1,8 +1,8 @@
 using System.Net;
-using Entities;
+using EST.MIT.Web.Entities;
 using Repositories;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IReferenceDataAPI
 {
