@@ -1,13 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.create_bulk.Review;
 using EST.MIT.Web.Shared;
 using Repositories;
-using Services;
+using EST.MIT.Web.Services;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class ReviewPageBulkTests : TestContext
 {
@@ -72,7 +72,7 @@ public class ReviewPageBulkTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<Review>();
-        var saveAndContinueButton = component.FindAll("button[type='submit']");        
+        var saveAndContinueButton = component.FindAll("button[type='submit']");
         saveAndContinueButton[0].Click();
 
         navigationManager?.Uri.Should().Be($"http://localhost/bulk/");

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using Services;
-using Entities;
+using EST.MIT.Web.Services;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Pages.bulk.BulkUpload;
@@ -40,7 +40,7 @@ public partial class BulkUpload : ComponentBase
     }
 
     private async Task UploadFile()
-    {      
+    {
         if (fileToLoadSummary.IsValidFile)
         {
             fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, invoice.CreatedBy);

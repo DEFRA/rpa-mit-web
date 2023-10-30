@@ -1,12 +1,11 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Components.Forms;
 using Azure;
 using Azure.Storage.Queues;
-using FluentAssertions;
 using Azure.Storage.Queues.Models;
+using EST.MIT.Web.Services;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class QueueServiceTests : TestContext
 {

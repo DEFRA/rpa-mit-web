@@ -3,7 +3,7 @@ using EST.MIT.Web.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class CreateInvoiceTests : TestContext
 {

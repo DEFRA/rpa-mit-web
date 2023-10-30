@@ -1,8 +1,8 @@
-using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared;
-using Helpers;
+using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
-using Services;
+using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Pages.create_invoice.AccountMetaSelection;
 

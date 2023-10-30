@@ -1,14 +1,14 @@
 using System.Diagnostics.CodeAnalysis;
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
-[ExcludeFromCodeCoverageAttribute]
+[ExcludeFromCodeCoverage]
 public class Organisation
 {
     public string code { get; set; }
     public string description { get; set; }
 }
 
-[ExcludeFromCodeCoverageAttribute]
+[ExcludeFromCodeCoverage]
 public class PaymentScheme
 {
     public string code { get; set; }

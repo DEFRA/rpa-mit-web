@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Helpers;
+namespace EST.MIT.Web.Helpers;
 
 public static class ValidatorHelper
 {

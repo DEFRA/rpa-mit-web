@@ -1,13 +1,13 @@
-﻿// using Entities;
+﻿// using EST.MIT.Web.Entities;
 // using Microsoft.AspNetCore.Components;
 // using EST.MIT.Web.Pages.invoice.UserInvoices;
 // using EST.MIT.Web.Shared;
 // using EST.MIT.Web.Shared.Components.UserInvoicesCard;
 // using Microsoft.Extensions.DependencyInjection;
-// using Services;
+// using EST.MIT.Web.Services;
 
 
-// namespace Pages.Tests;
+// namespace EST.MIT.Web.Tests.Pages;
 
 // public class UserInvoicesTests : TestContext
 // {

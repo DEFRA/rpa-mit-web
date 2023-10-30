@@ -1,9 +1,9 @@
 using System.Net;
-using Entities;
-using Helpers;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Helpers;
 using Repositories;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IApprovalAPI
 {

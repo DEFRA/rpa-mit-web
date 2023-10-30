@@ -1,14 +1,12 @@
 using System.Net;
-using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using Entities;
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
 using Microsoft.Extensions.Logging;
 using Repositories;
-using Services;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class InvoiceAPITests
 {

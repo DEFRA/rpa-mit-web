@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using EST.MIT.Web.Entities;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public class Invoice
 {

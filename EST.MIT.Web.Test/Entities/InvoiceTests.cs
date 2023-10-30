@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using FluentAssertions;
+using EST.MIT.Web.Entities;
 
-namespace Entities.Tests;
+namespace EST.MIT.Web.Tests.Entities;
 
 public class InvoiceTests
 {

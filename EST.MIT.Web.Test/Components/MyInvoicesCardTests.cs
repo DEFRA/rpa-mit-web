@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
-using Entities;
+﻿using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared;
 using EST.MIT.Web.Shared.Components.UserInvoicesCard;
-using EST.MIT.Web.Shared.Components.ApprovalCard;
 
-namespace Components.Tests;
+namespace EST.MIT.Web.Tests.Components;
 
 public class UserInvoicesCardTests : TestContext
 {

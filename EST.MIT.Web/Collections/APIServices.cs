@@ -1,9 +1,9 @@
 using System.Diagnostics.CodeAnalysis;
-using Services;
+using EST.MIT.Web.Services;
 
-namespace Collections;
+namespace EST.MIT.Web.Collections;
 
-[ExcludeFromCodeCoverageAttribute]
+[ExcludeFromCodeCoverage]
 public static partial class ServiceCollectionExtensions
 {
     public static IServiceCollection AddAPIServices(this IServiceCollection services)

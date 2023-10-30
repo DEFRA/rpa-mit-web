@@ -1,5 +1,3 @@
-using System.Data;
-
 namespace Repositories;
 
 public interface IReferenceDataRepository
@@ -8,7 +6,7 @@ public interface IReferenceDataRepository
     Task<HttpResponseMessage> GetSchemeTypesListAsync(string? InvoiceType = null, string? Organisation = null);
     Task<HttpResponseMessage> GetPaymentTypesListAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null);
     Task<HttpResponseMessage> GetAccountsListAsync
-       (string InvoiceType, string Organisation, string SchemeType, string PaymentType); 
+       (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
     Task<HttpResponseMessage> GetDeliveryBodiesListAsync
         (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
     Task<HttpResponseMessage> GetFundsListAsync

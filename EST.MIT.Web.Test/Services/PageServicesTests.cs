@@ -1,8 +1,8 @@
 using System.ComponentModel.DataAnnotations;
-using Entities;
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class PageServicesTests
 {

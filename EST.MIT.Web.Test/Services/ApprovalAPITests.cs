@@ -1,12 +1,13 @@
 using System.Net;
 using System.Text;
 using System.Text.Json;
-using Entities;
-using Helpers;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
+using EST.MIT.Web.Helpers;
 using Microsoft.Extensions.Logging;
 using Repositories;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class ApprovalAPITests
 {

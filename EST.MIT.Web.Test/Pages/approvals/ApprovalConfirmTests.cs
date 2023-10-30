@@ -1,11 +1,11 @@
 using EST.MIT.Web.Pages.approvals.ApprovalConfirm;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Entities;
-using Services;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
 using EST.MIT.Web.Shared;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class ApprovalConfirmTests : TestContext
 {

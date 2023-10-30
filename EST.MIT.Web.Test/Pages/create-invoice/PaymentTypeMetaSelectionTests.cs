@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Pages.create_invoice.PaymentTypeMetaSelection;
 using EST.MIT.Web.Shared;
-using Services;
-using Entities;
+using EST.MIT.Web.Services;
+using EST.MIT.Web.Entities;
 using System.Net;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class PaymentTypeMetaSelectionPageTests : TestContext
 {
@@ -46,36 +46,6 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
     }
 
-    // [Fact]
-    // public void No_Selection_Fails_Validation()
-    // {
-    //     _mockPageServices.Setup(x => x.Validation(It.IsAny<PaymentTypeSelect>(), out It.Ref<bool>.IsAny, out It.Ref<Dictionary<string, string>>.IsAny))
-    //         .Callback((object paymentTypeSelect, out bool IsErrored, out Dictionary<string, string> errors) =>
-    //         {
-    //             IsErrored = true;
-    //             errors = new()
-    //             {
-    //                 { "Name", "Please select a payment type" }
-    //             };
-    //         });
-
-    //     _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
-
-    //     var component = RenderComponent<PaymentTypeMetaSelection>();
-    //     component.FindAll("button")[0].Click();
-
-    //     component.WaitForElements("p.govuk-error-message");
-
-    //     var errorMessages = component.FindAll("p.govuk-error-message");
-
-    //     var validation = Services.GetService<IPageServices>();
-
-    //     errorMessages.Should().NotBeEmpty();
-    //     errorMessages.Should().HaveCount(1);
-    //     errorMessages[0].TextContent.Should().Be("Error:Please select a payment type");
-
-    // }
-
     [Fact]
     public void Shows_PaymentType_RadioButtons()
     {
@@ -109,7 +79,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
         {
             Data = new List<PaymentScheme>
-            { 
+            {
               new PaymentScheme { code = "EU", description = "EU"},
               new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" }
             }
@@ -122,6 +92,8 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
 
         selectPaymentTypeRadioButton[0].Change("EU");
         saveAndContinueButton[0].Click();
+
+        component.WaitForState(() => component.Instance.IsDataLoaded);
 
         navigationManager?.Uri.Should().Be("http://localhost/create-invoice/review");
     }

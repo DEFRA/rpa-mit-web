@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Components;
-using Entities;
 using EST.MIT.Web.Entities;
 
 namespace EST.MIT.Web.Shared.Components.ReadonlyInvoiceLines;

@@ -2,15 +2,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Configuration;
 using System.Net;
-using Services;
+using EST.MIT.Web.Services;
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using Repositories;
 using EST.MIT.Web.Pages.bulk.BulkUpload;
 using EST.MIT.Web.Shared;
-using Entities;
+using EST.MIT.Web.Entities;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class BulkUploadPageTests : TestContext
 {

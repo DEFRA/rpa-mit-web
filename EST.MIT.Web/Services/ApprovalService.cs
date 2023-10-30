@@ -1,8 +1,8 @@
-using Builders;
-using Entities;
-using Helpers;
+using EST.MIT.Web.Builders;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Helpers;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IApprovalService
 {

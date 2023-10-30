@@ -4,8 +4,9 @@ using Microsoft.Extensions.Logging;
 using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using EST.MIT.Web.Services;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class BlobServiceTests : TestContext
 {

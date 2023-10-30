@@ -1,31 +1,27 @@
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
-namespace Entities
+namespace EST.MIT.Web.Entities;
+public class ApproverSelect
 {
-    public class ApproverSelect
+    private string _approverEmail;
+
+    [Required(ErrorMessage = "Please enter an email address")]
+    [EmailFormatCheck(ErrorMessage = "Invalid email format")]
+    public string ApproverEmail
     {
-        private string _approverEmail;
-
-        [Required(ErrorMessage = "Please enter an email address")]
-        [EmailFormatCheck(ErrorMessage = "Invalid email format")]
-        public string ApproverEmail
-        {
-            get => _approverEmail;
-            set => _approverEmail = value.ToLower();
-        }
+        get => _approverEmail;
+        set => _approverEmail = value.ToLower();
     }
+}
 
-    public class DomainCheck : RegularExpressionAttribute
-    {
-        private const string domainRegex = @"@(rpa|defra)\.gov\.uk$";
-        public DomainCheck() : base(domainRegex) { }
-    }
+public class DomainCheck : RegularExpressionAttribute
+{
+    private const string domainRegex = @"@(rpa|defra)\.gov\.uk$";
+    public DomainCheck() : base(domainRegex) { }
+}
 
-    public class EmailFormatCheck : RegularExpressionAttribute
-    {
-        private const string formatRegex = @"^[a-z]+\.[a-z]+@[a-z]+\.gov\.uk$";
-        public EmailFormatCheck() : base(formatRegex) { }
-    }
-
+public class EmailFormatCheck : RegularExpressionAttribute
+{
+    private const string formatRegex = @"^[a-z]+\.[a-z]+@[a-z]+\.gov\.uk$";
+    public EmailFormatCheck() : base(formatRegex) { }
 }

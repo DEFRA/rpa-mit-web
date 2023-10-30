@@ -1,7 +1,7 @@
 using System.Text;
 using Azure.Storage.Queues;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IQueueService
 {

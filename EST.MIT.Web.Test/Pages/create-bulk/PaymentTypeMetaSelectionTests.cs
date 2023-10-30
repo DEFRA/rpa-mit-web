@@ -2,11 +2,11 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Pages.create_bulk.PaymentTypeMetaSelection;
 using EST.MIT.Web.Shared;
-using Services;
-using Entities;
+using EST.MIT.Web.Services;
+using EST.MIT.Web.Entities;
 using System.Net;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class PaymentTypeMetaSelectionPageBulkTests : TestContext
 {

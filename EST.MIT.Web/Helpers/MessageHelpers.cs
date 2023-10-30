@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace Helpers;
+namespace EST.MIT.Web.Helpers;
 
 public static class QueueHandlers
 {
