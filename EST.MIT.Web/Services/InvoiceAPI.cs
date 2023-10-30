@@ -108,8 +108,12 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
 
-        paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
-        invoice.PaymentRequests.Add(paymentRequest);
+        if (string.IsNullOrEmpty(paymentRequest.PaymentRequestId))
+        {
+            paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
+            invoice.PaymentRequests.Add(paymentRequest);
+        }
+
         invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
