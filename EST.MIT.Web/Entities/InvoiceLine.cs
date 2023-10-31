@@ -1,8 +1,9 @@
+using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 
 namespace EST.MIT.Web.Entities;
 
-public class InvoiceLine
+public class InvoiceLine : Validatable
 {
     public Guid Id { get; set; }
     [Required]

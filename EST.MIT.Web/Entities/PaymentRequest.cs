@@ -1,10 +1,11 @@
 using System.ComponentModel;
+using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 using EST.MIT.Web.Attributes;
 
 namespace EST.MIT.Web.Entities;
 
-public class PaymentRequest
+public class PaymentRequest : Validatable
 {
     public string PaymentRequestId { get; set; }
     [Required]
@@ -46,4 +47,14 @@ public class PaymentRequest
     [RequiredIfAR]
     [DisplayName("Correction Reference - Previous AR Invoice ID")]
     public string InvoiceCorrectionReference { get; set; } = string.Empty;
+    public override Dictionary<string, List<string>> AddErrors(Dictionary<string, List<string>> errors)
+    {
+        for (int invoiceLineIndex = 0; invoiceLineIndex < InvoiceLines.Count; invoiceLineIndex++)
+        {
+            InvoiceLine invoiceLine = InvoiceLines[invoiceLineIndex];
+            invoiceLine.ErrorPath = string.Concat(ErrorPath, $"{nameof(PaymentRequest.InvoiceLines)}[", invoiceLineIndex, "].");
+            invoiceLine.AddErrors(errors);
+        }
+        return base.AddErrors(errors);
+    }
 }

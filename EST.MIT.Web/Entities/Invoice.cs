@@ -1,9 +1,10 @@
+using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace EST.MIT.Web.Entities;
 
-public class Invoice
+public class Invoice : Validatable
 {
     [Required]
     public Guid Id { get; set; }
@@ -26,7 +27,6 @@ public class Invoice
     public string CreatedBy { get; private set; } = default!;
     public string UpdatedBy { get; set; } = default!;
     public string Approver { get; set; } = default!;
-
     public Invoice()
     {
         Id = Guid.NewGuid();
@@ -59,7 +59,14 @@ public class Invoice
             Status = status;
         }
     }
-
-
-
+    public override Dictionary<string, List<string>> AddErrors(Dictionary<string, List<string>> errors)
+    {
+        for (int paymentRequestIndex = 0; paymentRequestIndex < PaymentRequests.Count; paymentRequestIndex++)
+        {
+            PaymentRequest paymentRequest = PaymentRequests[paymentRequestIndex];
+            paymentRequest.ErrorPath = string.Concat(ErrorPath, $"{nameof(Invoice.PaymentRequests)}[", paymentRequestIndex, "].");
+            paymentRequest.AddErrors(errors);
+        }
+        return base.AddErrors(errors);
+    }
 }

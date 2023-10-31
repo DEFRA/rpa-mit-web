@@ -20,6 +20,7 @@ public class ApiResponse
         this.IsSuccess = Success;
         this.StatusCode = StatusCode;
         this.Errors = Errors;
+        this.Data = Data;
     }
 }
 
@@ -46,5 +47,6 @@ public class ApiResponse<T> where T : class
         this.IsSuccess = StatusCode == HttpStatusCode.OK;
         this.StatusCode = StatusCode;
         this.Errors = Errors;
+        this.Data = Data;
     }
 }
