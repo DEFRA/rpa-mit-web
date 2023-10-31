@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public class Approval
 {

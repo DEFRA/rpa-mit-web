@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
+using EST.MIT.Web.Helpers;
 
-namespace Helpers.Tests;
+namespace EST.MIT.Web.Tests.Helpers;
 public class ContextHelpersTests
 {
     [Fact]

@@ -1,6 +1,6 @@
 using EST.MIT.Web.Pages.bulk.Confirmation;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class ConfirmationPageTests : TestContext
 {

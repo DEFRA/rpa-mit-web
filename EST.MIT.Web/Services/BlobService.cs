@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IBlobService
 {

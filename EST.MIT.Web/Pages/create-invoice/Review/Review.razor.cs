@@ -1,8 +1,8 @@
-using Entities;
-using Services;
+using EST.MIT.Web.Entities;
+using EST.MIT.Web.Services;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Shared;
-using Helpers;
+using EST.MIT.Web.Helpers;
 
 namespace EST.MIT.Web.Pages.create_invoice.Review;
 

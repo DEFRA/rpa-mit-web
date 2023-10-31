@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.Forms;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public class BulkUploadFileSummary
 {

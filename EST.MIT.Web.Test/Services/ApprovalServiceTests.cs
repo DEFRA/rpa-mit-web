@@ -1,11 +1,11 @@
 using System.Net;
-using Entities;
 using EST.MIT.Web.Entities;
-using Helpers;
+using EST.MIT.Web.Services;
+using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
-namespace Services.Tests;
+namespace EST.MIT.Web.Test.Services;
 
 public class ApprovalServiceTests
 {

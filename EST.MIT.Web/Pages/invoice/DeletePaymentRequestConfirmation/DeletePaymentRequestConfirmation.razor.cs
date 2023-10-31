@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Shared;
-using Services;
+using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Pages.invoice.DeletePaymentRequestConfirmation;
 

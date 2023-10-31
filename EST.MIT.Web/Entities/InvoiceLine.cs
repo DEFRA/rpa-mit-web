@@ -1,7 +1,7 @@
 using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public class InvoiceLine : Validatable
 {

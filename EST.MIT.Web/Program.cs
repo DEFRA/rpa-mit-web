@@ -1,9 +1,9 @@
 using AutoMapper;
-using Collections;
+using EST.MIT.Web.Collections;
 using EST.MIT.Web.AutoMapperProfiles;
 using EST.MIT.Web.Shared;
 using Repositories;
-using Services;
+using EST.MIT.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -20,6 +20,8 @@ builder.Services.AddSingleton<IUploadService, UploadService>();
 builder.Services.AddSingleton<IPageServices, PageServices>();
 builder.Services.AddSingleton<IFindService, FindService>();
 builder.Services.AddSingleton<IApprovalService, ApprovalService>();
+builder.Services.AddSingleton<IUploadAPI, UploadAPI>();
+builder.Services.AddSingleton<IUploadRepository, UploadRepository>();
 
 var mappingConfig = new MapperConfiguration(mc =>
 {
@@ -44,6 +46,12 @@ builder.Services.AddHttpClient("ReferenceDataAPI", client =>
 {
     //TODO: Confirm the correct base address
     client.BaseAddress = new Uri(config["ReferenceDataAPIBaseURI"]);
+});
+
+builder.Services.AddHttpClient("InvoiceImporterAPI", client =>
+{
+    //TODO: Confirm the correct base address
+    client.BaseAddress = new Uri(config["InvoiceImporterAPIBaseURI"]);
 });
 
 builder.Services.AddHttpContextAccessor();

@@ -1,6 +1,6 @@
-using Entities;
+using EST.MIT.Web.Entities;
 
-namespace Builders;
+namespace EST.MIT.Web.Builders;
 
 public class NotificationBuilder
 {

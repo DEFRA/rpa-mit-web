@@ -1,13 +1,13 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.create_invoice.Review;
 using EST.MIT.Web.Shared;
 using Repositories;
-using Services;
+using EST.MIT.Web.Services;
 
-namespace Pages.Tests;
+namespace EST.MIT.Web.Tests.Pages;
 
 public class ReviewPageTests : TestContext
 {

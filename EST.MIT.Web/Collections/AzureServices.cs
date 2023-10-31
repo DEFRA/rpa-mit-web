@@ -1,7 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
-using Services;
+using EST.MIT.Web.Services;
 
-namespace Collections;
+namespace EST.MIT.Web.Collections;
 
 public static partial class ServiceCollectionExtensions
 {

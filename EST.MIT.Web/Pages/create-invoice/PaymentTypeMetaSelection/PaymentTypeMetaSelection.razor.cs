@@ -1,8 +1,8 @@
-using Entities;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared;
-using Helpers;
+using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
-using Services;
+using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Pages.create_invoice.PaymentTypeMetaSelection;
 
@@ -19,25 +19,32 @@ public partial class PaymentTypeMetaSelection : ComponentBase
     bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
     private List<string> viewErrors = new();
+    public bool IsDataLoaded { get; private set; }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         invoice = _invoiceStateContainer.Value;
 
-        if (!invoice.IsNull())
+        if (invoice != null)
         {
-            await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType).ContinueWith(x =>
+            var result = await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType);
+            if (result.IsSuccess)
             {
-                if (x.Result.IsSuccess)
+                foreach (var paymentType in result.Data)
                 {
-                    foreach (var paymentType in x.Result.Data)
-                    {
-                        paymentTypes.Add(paymentType.code, paymentType.description);
-                    }
+                    paymentTypes.Add(paymentType.code, paymentType.description);
                 }
-            });
+
+                await InvokeAsync(OnDataLoaded);
+            }
         }
+    }
+
+    private void OnDataLoaded()
+    {
+        IsDataLoaded = true;
+        StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

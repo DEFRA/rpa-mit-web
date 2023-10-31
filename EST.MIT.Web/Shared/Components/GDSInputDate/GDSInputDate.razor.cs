@@ -10,7 +10,7 @@ public partial class GDSInputDate : ComponentBase
     private string _dateDay = default!;
     private string _dateMonth = default!;
     private string _dateYear = default!;
-    
+
 
     [Parameter]
     public string Key
@@ -87,7 +87,7 @@ public partial class GDSInputDate : ComponentBase
             }
         }
     }
-    
+
 
     [Parameter] public EventCallback<DateTimeOffset> DataChanged { get; set; }
     [Parameter] public Dictionary<string, List<string>> Errors { get; set; } = new();

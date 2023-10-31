@@ -1,6 +1,6 @@
 using Repositories;
 
-namespace Collections;
+namespace EST.MIT.Web.Collections;
 
 public static partial class ServiceCollectionExtensions
 {

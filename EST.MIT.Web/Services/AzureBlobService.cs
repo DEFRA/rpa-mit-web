@@ -1,6 +1,6 @@
 using Azure.Storage.Blobs;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IAzureBlobService
 {

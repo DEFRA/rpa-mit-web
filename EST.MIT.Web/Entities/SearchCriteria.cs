@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
-[ExcludeFromCodeCoverageAttribute]
+[ExcludeFromCodeCoverage]
 public class SearchCriteria
 {
     [Required(ErrorMessage = "The Invoice Number field is required")]

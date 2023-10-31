@@ -1,4 +1,4 @@
-namespace Helpers;
+namespace EST.MIT.Web.Helpers;
 
 public class BoolRef
 {

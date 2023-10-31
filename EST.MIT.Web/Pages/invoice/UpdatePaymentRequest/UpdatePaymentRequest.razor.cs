@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Shared;
-using Entities;
 using EST.MIT.Web.Entities;
-using Services;
+using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Pages.invoice.UpdatePaymentRequest;
 
@@ -23,15 +22,16 @@ public partial class UpdatePaymentRequest : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        paymentRequest = invoice.PaymentRequests.FirstOrDefault(x => x.PaymentRequestId == PaymentRequestId) ?? new PaymentRequest();
-        paymentRequest.AccountType = invoice?.AccountType;
+        paymentRequest ??= invoice?.PaymentRequests.FirstOrDefault(x => x.PaymentRequestId == PaymentRequestId);
     }
 
     private async Task SavePaymentRequest()
     {
         if (!_pageServices.Validation(paymentRequest, out IsErrored, out errors)) return;
 
+        invoice.PaymentRequests = invoice.PaymentRequests.Where(x => x.PaymentRequestId != PaymentRequestId).ToList();
         invoice.PaymentRequests.Add(paymentRequest);
+
         var response = await _api.UpdateInvoiceAsync(invoice, paymentRequest);
 
         if (response.IsSuccess)

@@ -1,13 +1,9 @@
 using System.Net;
-using Entities;
+using EST.MIT.Web.Entities;
 using Repositories;
 using System.Security.Cryptography;
-using EST.MIT.Web.Helpers;
-using System.Threading.Tasks.Dataflow;
-using Microsoft.AspNetCore.Mvc;
-using EST.MIT.Web.Entities;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IInvoiceAPI
 {
@@ -111,8 +107,12 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
 
-        paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
-        invoice.PaymentRequests.Add(paymentRequest);
+        if (string.IsNullOrEmpty(paymentRequest.PaymentRequestId))
+        {
+            paymentRequest.PaymentRequestId = IdGenerator(paymentRequest.AgreementNumber);
+            invoice.PaymentRequests.Add(paymentRequest);
+        }
+
         invoice.Update();
         var response = await _invoiceRepository.PutInvoiceAsync(invoice);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");

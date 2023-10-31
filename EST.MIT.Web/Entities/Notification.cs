@@ -1,4 +1,4 @@
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public enum NotificationType
 {

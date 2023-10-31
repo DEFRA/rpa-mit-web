@@ -1,11 +1,8 @@
 using System.Diagnostics;
 using EST.MIT.Web.Pages;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using Moq;
-using Xunit;
 
 namespace EST.MIT.Web.Test
 {

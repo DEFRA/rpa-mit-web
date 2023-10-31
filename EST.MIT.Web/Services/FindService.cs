@@ -1,9 +1,8 @@
-﻿using Helpers;
-using Entities;
+﻿using EST.MIT.Web.Helpers;
+using EST.MIT.Web.Entities;
 using Repositories;
-using EST.MIT.Web.Pages.create_invoice.SchemeMetaSelection;
 
-namespace Services;
+namespace EST.MIT.Web.Services;
 
 public interface IFindService
 {
