@@ -2,20 +2,28 @@ using System.ComponentModel;
 using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 using EST.MIT.Web.Attributes;
+using Newtonsoft.Json;
 
-namespace Entities;
+namespace EST.MIT.Web.Entities;
 
 public class PaymentRequest : Validatable
 {
+    public PaymentRequest()
+    {
+        this.PaymentRequestNumber = 1;
+    }
+
     public string PaymentRequestId { get; set; }
 
     [Required]
     public string SourceSystem { get; set; } = "Manual";
 
-    // fxs needs to be updated to allow for 10 digit FRN to a long
-    [Required]
-    [RegularExpression("(\\d{10})", ErrorMessage = "The FRN must be 10 digits")]
-    public int FRN { get; set; }
+    [DisplayName("FRN")]
+    [RegularExpression(@"^[0-9]*$", ErrorMessage = "The FRN must be a valid number")]
+    [MaxLength(10, ErrorMessage = "The FRN must be 10 characters")]
+    [MinLength(10, ErrorMessage = "The FRN must be 10 characters")]
+    public string FRN { get; set; }
+    
 
     [Range(2014, int.MaxValue, ErrorMessage = "The Marketing Year must be after than 2014")]
     public int MarketingYear { get; set; }
@@ -24,7 +32,6 @@ public class PaymentRequest : Validatable
     [Range(1, int.MaxValue, ErrorMessage = "The Payment Request Number must be greater than 0")]
     public int PaymentRequestNumber { get; set; }
 
-    //Invoice Number
     [Required(ErrorMessage = "The Agreement Number is required")]
     public string AgreementNumber { get; set; } = string.Empty;
 
@@ -35,12 +42,12 @@ public class PaymentRequest : Validatable
     public string DueDate { get; set; } = string.Empty;
 
     [Required]
-    [RegularExpression("(^(0|\\d+\\.\\d{2})$)", ErrorMessage = "The Value must be in the format 0.00")]
-    public double Value { get; set; } = 0.00;
+    [RegularExpression(@"^[0-9]*(\.[0-9]{1,2})?$", ErrorMessage = "The value must be valid number and have a maximum of 2 decimal places.")]
+    public decimal Value { get; set; }
 
     public List<InvoiceLine> InvoiceLines { get; set; } = new List<InvoiceLine>();
 
-    public string AccountType { get; set; } = string.Empty; // extra to dto
+    public string AccountType { get; set; } = string.Empty;
 
     [RequiredIfAR]
     [DisplayName("Original Claim Reference")]
@@ -58,16 +65,20 @@ public class PaymentRequest : Validatable
     [DisplayName("Correction Reference - Previous AR Invoice ID")]
     public string InvoiceCorrectionReference { get; set; } = string.Empty;
 
-    //Missing below
-    // FXS add
-    //[JsonProperty("sbi")]
-    //public int SBI { get; init; } = default!;
+    [DisplayName("SBI")]
+    [RegularExpression(@"^(105000000|1[0-9]{8}|[2-9][0-9]{8})$", ErrorMessage = "The SBI is not in valid range (105000000 .. 999999999)")]
+    [MaxLength(9, ErrorMessage = "The SBI must be 9 characters")]
+    [MinLength(9, ErrorMessage = "The SBI must be 9 characters")]
+    public string SBI { get; set; }
 
-    //[JsonProperty("vendor")]
-    //public string Vendor { get; init; } = default!;
+    [DisplayName("Vendor")]
+    [MaxLength(6, ErrorMessage = "The Vendor must be 6 characters")]
+    [MinLength(6, ErrorMessage = "The Vendor must be 6 characters")]
+    public string Vendor { get; set; } = string.Empty;
 
-    //[JsonProperty("description")]
-    //public string Description { get; init; } = default!;
+    [Required]
+    [DisplayName("Description")]
+    public string Description { get; set; } = string.Empty;
 
     public override Dictionary<string, List<string>> AddErrors(Dictionary<string, List<string>> errors)
     {

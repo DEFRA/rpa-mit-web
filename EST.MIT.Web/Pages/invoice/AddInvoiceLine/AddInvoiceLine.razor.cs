@@ -103,7 +103,7 @@ public partial class AddInvoiceLine : ComponentBase
     {
         if (!_pageServices.Validation(invoiceLine, out IsErrored, out errors)) return;
 
-        paymentRequest.Value += invoiceLine.Value;
+        paymentRequest.Value += Convert.ToDecimal(invoiceLine.Value);
         var response = await _api.UpdateInvoiceAsync(invoice, paymentRequest, invoiceLine);
 
         if (response.IsSuccess)

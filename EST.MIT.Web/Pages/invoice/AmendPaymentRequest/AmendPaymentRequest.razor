@@ -23,6 +23,14 @@
                 <dd class="govuk-summary-list__value">@paymentRequest.FRN</dd>
             </div>
             <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">SBI</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.SBI</dd>
+            </div>
+            <div class="govuk-summary-list__row">
+                <dt class="govuk-summary-list__key">Vendor</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.Vendor</dd>
+            </div>
+            <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Marketing Year</dt>
                 <dd class="govuk-summary-list__value">@paymentRequest.MarketingYear</dd>
             </div>
@@ -39,8 +47,8 @@
                 <dd class="govuk-summary-list__value">@paymentRequest.Currency</dd>
             </div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Due Date</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.DueDate</dd>
+                <dt class="govuk-summary-list__key">Description</dt>
+                <dd class="govuk-summary-list__value">@paymentRequest.Description</dd>
             </div>
 
             @if (invoice.AccountType == "AR")

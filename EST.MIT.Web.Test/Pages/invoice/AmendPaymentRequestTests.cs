@@ -19,7 +19,7 @@ public class AmendPaymentRequestTests : TestContext
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
             PaymentRequestId = "1",
-            FRN = 1234567890,
+            FRN = "1234567890",
             SourceSystem = "",
             MarketingYear = 0,
             PaymentRequestNumber = 0,

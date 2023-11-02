@@ -27,7 +27,7 @@ public class PaymentRequestTests : TestContext
     {
         var paymentRequest = new PaymentRequest()
         {
-            FRN = 123456789
+            FRN = "123456789"
         };
 
         var validationResults = ValidateModel(paymentRequest);
@@ -87,7 +87,7 @@ public class PaymentRequestTests : TestContext
     {
         var paymentRequest = new PaymentRequest()
         {
-            Value = 12.345
+            Value = 12.345M
         };
 
         var validationResults = ValidateModel(paymentRequest);

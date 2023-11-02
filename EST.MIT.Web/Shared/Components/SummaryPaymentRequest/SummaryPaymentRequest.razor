@@ -26,6 +26,14 @@
 				<dd class="govuk-summary-list__value">@PaymentRequest.FRN</dd>
 			</div>
 			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key">SBI</dt>
+				<dd class="govuk-summary-list__value">@PaymentRequest.SBI</dd>
+			</div>
+			<div class="govuk-summary-list__row">
+				<dt class="govuk-summary-list__key">Vendor</dt>
+				<dd class="govuk-summary-list__value">@PaymentRequest.Vendor</dd>
+			</div>
+			<div class="govuk-summary-list__row">
 				<dt class="govuk-summary-list__key">Marketing Year</dt>
 				<dd class="govuk-summary-list__value">@PaymentRequest.MarketingYear</dd>
 			</div>
@@ -42,8 +50,8 @@
 				<dd class="govuk-summary-list__value">@PaymentRequest.Currency</dd>
 			</div>
             <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Due Date</dt>
-                <dd class="govuk-summary-list__value">@PaymentRequest.DueDate</dd>
+                <dt class="govuk-summary-list__key">Description</dt>
+				<dd class="govuk-summary-list__value">@PaymentRequest.Description</dd>
             </div>
 			
             <h1>AccountType: @AccountType</h1>

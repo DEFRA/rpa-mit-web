@@ -20,12 +20,12 @@ public class UpdatePaymentRequestTests : TestContext
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
             PaymentRequestId = "1",
-            FRN = 1234567890,
+            FRN = "1234567890",
             SourceSystem = "Manual",
             MarketingYear = 2020,
             PaymentRequestNumber = 1,
             AgreementNumber = "123",
-            Value = 123.45,
+            Value = 123.45M,
             DueDate = "24/03/1990",
             InvoiceLines = new List<InvoiceLine>(),
             Currency = "GBP"

@@ -117,7 +117,7 @@ public class InvoiceRepository : IInvoiceRepository
             Organisation = "organisation",
             PaymentRequests = new List<PaymentRequest> {
                 new PaymentRequest {
-                    FRN = 1234567890,
+                    FRN = "1234567890",
                     Value = 420
                 }
             }
@@ -132,7 +132,7 @@ public class InvoiceRepository : IInvoiceRepository
             Organisation = "organisation",
             PaymentRequests = new List<PaymentRequest> {
                 new PaymentRequest {
-                    FRN = 1122334455,
+                    FRN = "1122334455",
                     Value = 6969
                 }
             }
