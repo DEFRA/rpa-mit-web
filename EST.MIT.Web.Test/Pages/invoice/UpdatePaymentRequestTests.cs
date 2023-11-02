@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.invoice.UpdatePaymentRequest;
 using EST.MIT.Web.Shared;
-using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -98,5 +98,4 @@ public class UpdatePaymentRequestTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
         navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/{component.Instance.PaymentRequestId}");
     }
-
 }

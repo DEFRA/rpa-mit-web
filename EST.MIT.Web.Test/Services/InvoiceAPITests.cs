@@ -4,7 +4,7 @@ using System.Text.Json;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Services;
 using Microsoft.Extensions.Logging;
-using Repositories;
+using EST.MIT.Web.Repositories;
 
 namespace EST.MIT.Web.Test.Services;
 
@@ -356,11 +356,4 @@ public class InvoiceAPITests
 
         response.Should().BeNull();
     }
-
 }
-
-
-
-
-
-

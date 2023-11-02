@@ -3,7 +3,7 @@ using EST.MIT.Web.Pages.approvals.UserApprovals;
 using EST.MIT.Web.Shared;
 using EST.MIT.Web.Shared.Components.ApprovalCard;
 using Microsoft.Extensions.DependencyInjection;
-using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
 

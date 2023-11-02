@@ -1,8 +1,8 @@
 using System.Net;
-using AutoMapper;
+using EST.MIT.Web.Repositories;
 using Moq.Contrib.HttpClient;
 
-namespace Repositories.Tests;
+namespace EST.MIT.Web.Test.Repositories;
 
 public class UploadRepositoryTests
 {

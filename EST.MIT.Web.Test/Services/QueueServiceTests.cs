@@ -1,66 +1,38 @@
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Azure;
 using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
 using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Test.Services;
 
 public class QueueServiceTests : TestContext
 {
 
-    private readonly IConfiguration _configuration;
-    private readonly QueueService _queueService;
-    private Mock<QueueClient> mockQueueClient;
-    private ILogger<QueueService> _logger;
-
-    public QueueServiceTests()
-    {
-        var configMock = new Mock<IConfiguration>();
-        var configSectionMock = new Mock<IConfigurationSection>();
-        configSectionMock.Setup(x => x.Value).Returns("connection_string");
-        configMock.Setup(x => x.GetSection(It.Is<string>(s => s == "ConnectionStrings:PrimaryConnection"))).Returns(configSectionMock.Object);
-        _configuration = configMock.Object;
-
-        _logger = Mock.Of<ILogger<QueueService>>();
-
-        var mockQueueServiceClient = new Mock<QueueServiceClient>();
-        mockQueueClient = new Mock<QueueClient>();
-        var mockAzureQueueService = new Mock<IAzureQueueService>();
-
-        mockAzureQueueService.Setup(x => x.queueServiceClient).Returns(mockQueueServiceClient.Object);
-        mockQueueClient.Setup(x => x.CreateIfNotExistsAsync(null, default)).ReturnsAsync(new Mock<Response>().Object);
-        mockQueueClient.Setup(x => x.SendMessageAsync(It.IsAny<string>())).ReturnsAsync(new Mock<Response<SendReceipt>>().Object);
-        mockQueueServiceClient.Setup(x => x.GetQueueClient(It.IsAny<string>())).Returns(mockQueueClient.Object);
-        _queueService = new QueueService(_configuration, _logger, mockAzureQueueService.Object);
-
-    }
-
     [Fact]
-    public async void AddMessageToQueueAsync_Successful()
+    public async Task CreateMessage_ValidArguments_CallsSendMessageAsync()
     {
-        string queueName = "test-queue";
-        string message = "test-message";
+        var logger = Mock.Of<ILogger<IEventQueueService>>();
+        var queueClientMock = new Mock<QueueClient>();
+        var eventQueueService = new EventQueueService(queueClientMock.Object, logger);
+        var expectedMessageContent = "Expected error content";
 
-        mockQueueClient.Setup(x => x.ExistsAsync(default)).ReturnsAsync(Response.FromValue(true, new Mock<Response>().Object));
+        queueClientMock
+            .Setup(qc => qc.SendMessageAsync(It.IsAny<string>()))
+            .Callback(() => throw new RequestFailedException(expectedMessageContent));
 
-        var result = await _queueService.AddMessageToQueueAsync(queueName, message);
+        Exception exception = null;
 
-        result.Should().BeTrue();
+        try
+        {
+            await eventQueueService.AddMessageToQueueAsync("message", "data");
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+        }
+
+        Assert.NotNull(exception);
+        Assert.Contains(expectedMessageContent, exception.Message);
     }
-
-    [Fact]
-    public async void AddMessageToQueueAsync_Queue_Not_Exists()
-    {
-        string queueName = "test-queue";
-        string message = "test-message";
-
-        mockQueueClient.Setup(x => x.ExistsAsync(default)).ReturnsAsync(Response.FromValue(false, new Mock<Response>().Object));
-
-        var result = await _queueService.AddMessageToQueueAsync(queueName, message);
-
-        result.Should().BeFalse();
-    }
-
 }

@@ -4,7 +4,7 @@ using EST.MIT.Web.Entities;
 using System.Text.Json;
 using AutoMapper;
 
-namespace Repositories;
+namespace EST.MIT.Web.Repositories;
 
 public interface IInvoiceRepository
 {
@@ -33,7 +33,6 @@ public class InvoiceRepository : IInvoiceRepository
     public async Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequest paymentRequest) => await DeleteHeader(paymentRequest);
     public async Task<HttpResponseMessage> GetApprovalAsync(string id, string scheme) => await GetApproval(id, scheme);
     public async Task<HttpResponseMessage> GetApprovalsAsync() => await GetApprovals();
-
 
     private async Task<HttpResponseMessage> GetInvoice(string id, string scheme)
     {
@@ -64,7 +63,6 @@ public class InvoiceRepository : IInvoiceRepository
 
         return response;
     }
-
 
     private async Task<HttpResponseMessage> PutInvoice(Invoice invoice)
     {
@@ -139,7 +137,6 @@ public class InvoiceRepository : IInvoiceRepository
                 }
             }
         });
-
 
         response.Content = new StringContent(JsonSerializer.Serialize(invoices));
         response.StatusCode = HttpStatusCode.OK;

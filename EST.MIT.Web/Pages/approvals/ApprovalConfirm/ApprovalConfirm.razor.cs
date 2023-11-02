@@ -1,5 +1,5 @@
 using EST.MIT.Web.Entities;
-using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Shared;
 using Microsoft.AspNetCore.Components;
 
@@ -68,5 +68,4 @@ public partial class ApprovalConfirm : ComponentBase
             return uri.AbsolutePath.EndsWith("reject", StringComparison.OrdinalIgnoreCase);
         }
     }
-
 }

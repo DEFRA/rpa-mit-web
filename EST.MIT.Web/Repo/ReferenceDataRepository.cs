@@ -1,4 +1,4 @@
-namespace Repositories;
+namespace EST.MIT.Web.Repositories;
 
 public interface IReferenceDataRepository
 {
@@ -15,8 +15,6 @@ public interface IReferenceDataRepository
         (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
     Task<HttpResponseMessage> GetSchemesListAsync
       (string InvoiceType, string Organisation, string SchemeType, string PaymentType);
-
-
 }
 
 public class ReferenceDataRepository : IReferenceDataRepository

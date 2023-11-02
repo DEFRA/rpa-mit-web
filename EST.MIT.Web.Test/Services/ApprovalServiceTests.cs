@@ -4,19 +4,20 @@ using EST.MIT.Web.Services;
 using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Test.Services;
 
 public class ApprovalServiceTests
 {
-    private readonly Mock<IQueueService> _mockQueueService;
+    private readonly Mock<IEventQueueService> _mockQueueService;
     private readonly Mock<IInvoiceAPI> _mockApiService;
     private readonly Mock<IApprovalService> _mockApprovalService;
     private readonly Mock<IApprovalAPI> _mockApprovalApi;
 
     public ApprovalServiceTests()
     {
-        _mockQueueService = new Mock<IQueueService>();
+        _mockQueueService = new Mock<IEventQueueService>();
         _mockApiService = new Mock<IInvoiceAPI>();
         _mockApprovalService = new Mock<IApprovalService>();
         _mockApprovalApi = new Mock<IApprovalAPI>();
@@ -264,5 +265,4 @@ public class ApprovalServiceTests
 
         response.Result.Data.Value.Should().BeTrue();
     }
-
 }

@@ -5,7 +5,7 @@ using EST.MIT.Web.Entities;
 using EST.MIT.Web.Services;
 using EST.MIT.Web.Helpers;
 using Microsoft.Extensions.Logging;
-using Repositories;
+using EST.MIT.Web.Repositories;
 
 namespace EST.MIT.Web.Test.Services;
 
@@ -146,7 +146,4 @@ public class ApprovalAPITests
             }
         });
     }
-
-
-
 }

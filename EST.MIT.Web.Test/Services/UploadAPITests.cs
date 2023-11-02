@@ -1,7 +1,7 @@
 using System.Net;
 using EST.MIT.Web.Entities;
 using Microsoft.Extensions.Logging;
-using Repositories;
+using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Services;
 
 namespace EST.MIT.Web.Test.Services;
@@ -78,5 +78,4 @@ public class UploadAPITests
             (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()),
             Times.Once);
     }
-
 }
