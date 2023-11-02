@@ -20,24 +20,22 @@
         @if(IsErrored)
         {
             <div class="govuk-form-group--error">
-                @foreach (var error in errors.Values.SelectMany(x => x))
+                @foreach (var error in errors.Values.SelectMany(x => x).Distinct())
                 {
                     <p class="govuk-error-message">@error</p>
                 }
             </div>
         }
-
+        
         <EditForm Model="paymentRequest" OnSubmit="SaveHeader" class="govuk-!-padding-top-6">
+
+            <GDSInputText @bind-Data="paymentRequest.FRN" Label="FRN" Key="FRN" CommonKeys="CustomerReferenceCommonKeys" Errors="errors" />
+
+            <GDSInputText @bind-Data="paymentRequest.SBI" Label="SBI" Key="SBI" CommonKeys="CustomerReferenceCommonKeys" Errors="errors" />
+
+            <GDSInputText @bind-Data="paymentRequest.Vendor" Label="Vendor" Key="Vendor" CommonKeys="CustomerReferenceCommonKeys" Errors="errors" />
             
-            <GDSInputText @bind-Data="paymentRequest.FRN" Label="FRN" Key="FRN" Errors="errors" />
-
-            <GDSInputText @bind-Data="paymentRequest.SBI" Label="SBI" Key="SBI" Errors="errors" />
-
-            <GDSInputText @bind-Data="paymentRequest.Vendor" Label="Vendor" Key="Vendor" Errors="errors" />
-            
-            <GDSInputInt @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors"/>
-
-            <GDSInputInt @bind-Data="paymentRequest.PaymentRequestNumber" Label="Payment Request Number" Key="PaymentRequestNumber" Errors="errors"/>
+            <GDSInputText @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors"/>
 
             <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors"/>
 

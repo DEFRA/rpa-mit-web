@@ -21,7 +21,7 @@ public class AmendPaymentRequestTests : TestContext
             PaymentRequestId = "1",
             FRN = "1234567890",
             SourceSystem = "",
-            MarketingYear = 0,
+            MarketingYear = "0",
             PaymentRequestNumber = 0,
             AgreementNumber = "",
             Value = 0,

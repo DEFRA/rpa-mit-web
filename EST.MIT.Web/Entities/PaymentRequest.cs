@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace EST.MIT.Web.Entities;
 
-public class PaymentRequest : Validatable
+public class PaymentRequest : Validatable, IValidatableObject
 {
     public PaymentRequest()
     {
@@ -19,16 +19,15 @@ public class PaymentRequest : Validatable
     public string SourceSystem { get; set; } = "Manual";
 
     [DisplayName("FRN")]
-    [RegularExpression(@"^[0-9]*$", ErrorMessage = "The FRN must be a valid number")]
-    [MaxLength(10, ErrorMessage = "The FRN must be 10 characters")]
-    [MinLength(10, ErrorMessage = "The FRN must be 10 characters")]
+    [RegularExpression(@"^([0-9]{10})?$", ErrorMessage = "The FRN must be a 10-digit number or be empty.")]
     public string FRN { get; set; }
-    
-
-    [Range(2014, int.MaxValue, ErrorMessage = "The Marketing Year must be after than 2014")]
-    public int MarketingYear { get; set; }
 
     [Required]
+    [RegularExpression(@"^(201[5-9]|20[2-9]\d|[2-9]\d{3})$", ErrorMessage = "The Marketing Year must be after than 2014")]
+    public string MarketingYear { get; set; }
+
+
+	[Required]
     [Range(1, int.MaxValue, ErrorMessage = "The Payment Request Number must be greater than 0")]
     public int PaymentRequestNumber { get; set; }
 
@@ -66,14 +65,11 @@ public class PaymentRequest : Validatable
     public string InvoiceCorrectionReference { get; set; } = string.Empty;
 
     [DisplayName("SBI")]
-    [RegularExpression(@"^(105000000|1[0-9]{8}|[2-9][0-9]{8})$", ErrorMessage = "The SBI is not in valid range (105000000 .. 999999999)")]
-    [MaxLength(9, ErrorMessage = "The SBI must be 9 characters")]
-    [MinLength(9, ErrorMessage = "The SBI must be 9 characters")]
+    [RegularExpression(@"^((105000000|1[0-9]{8}|[2-9][0-9]{8}))?$", ErrorMessage = "The SBI is not in valid range (105000000 .. 999999999) or should be empty.")]
     public string SBI { get; set; }
 
     [DisplayName("Vendor")]
-    [MaxLength(6, ErrorMessage = "The Vendor must be 6 characters")]
-    [MinLength(6, ErrorMessage = "The Vendor must be 6 characters")]
+    [RegularExpression(@"^.{6}$|^$", ErrorMessage = "The Vendor must be 6 characters or be empty.")]
     public string Vendor { get; set; } = string.Empty;
 
     [Required]
@@ -89,5 +85,27 @@ public class PaymentRequest : Validatable
             invoiceLine.AddErrors(errors);
         }
         return base.AddErrors(errors);
+    }
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var populatedFields = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(FRN)) populatedFields.Add(nameof(FRN));
+        if (!string.IsNullOrWhiteSpace(SBI)) populatedFields.Add(nameof(SBI));
+        if (!string.IsNullOrWhiteSpace(Vendor)) populatedFields.Add(nameof(Vendor));
+
+        if (populatedFields.Count == 0)
+        {
+            var errorMessage = "At least one of FRN, SBI, or Vendor must be entered";
+            yield return new ValidationResult(errorMessage, new[] { "CustomerReference" });
+        }
+        else if (populatedFields.Count > 1)
+        {
+            // Adding specific errors for each of the populated fields
+            foreach (var field in populatedFields)
+            {
+                yield return new ValidationResult($"Only one of FRN, SBI, or Vendor can be entered", new[] { field });
+            }
+        }
     }
 }

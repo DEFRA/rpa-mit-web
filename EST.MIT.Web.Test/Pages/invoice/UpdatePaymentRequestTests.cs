@@ -22,7 +22,7 @@ public class UpdatePaymentRequestTests : TestContext
             PaymentRequestId = "1",
             FRN = "1234567890",
             SourceSystem = "Manual",
-            MarketingYear = 2020,
+            MarketingYear = "2020",
             PaymentRequestNumber = 1,
             AgreementNumber = "123",
             Value = 123.45M,

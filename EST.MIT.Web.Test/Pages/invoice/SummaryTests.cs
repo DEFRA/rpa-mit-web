@@ -19,7 +19,7 @@ public class SummaryTests : TestContext
         {
             FRN = "1234567890",
             SourceSystem = "",
-            MarketingYear = 0,
+            MarketingYear = "0",
             PaymentRequestNumber = 0,
             AgreementNumber = "",
             Value = 0,

@@ -49,7 +49,7 @@ public class PageServicesTests
         {
             FRN = "1234567890",
             SourceSystem = "Manual",
-            MarketingYear = 2020,
+            MarketingYear = "2020",
             PaymentRequestNumber = 1,
             AgreementNumber = "AGR0000001",
             Value = 123.45M,
@@ -74,7 +74,7 @@ public class PageServicesTests
         {
             FRN = "1234567890",
             SourceSystem = "",
-            MarketingYear = 0,
+            MarketingYear = "0",
             PaymentRequestNumber = 0,
             AgreementNumber = "",
             Value = 0,
@@ -99,7 +99,7 @@ public class PageServicesTests
         {
             FRN = "1234567890",
             SourceSystem = "Manual",
-            MarketingYear = 2020,
+            MarketingYear = "2020",
             PaymentRequestNumber = 1,
             AgreementNumber = "AGR0000001",
             Value = 123.45M,

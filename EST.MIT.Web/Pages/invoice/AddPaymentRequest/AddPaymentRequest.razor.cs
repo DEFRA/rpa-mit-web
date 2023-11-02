@@ -19,6 +19,8 @@ public partial class AddPaymentRequest : ComponentBase
     private bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
 
+    private List<string> CustomerReferenceCommonKeys { get; } = new List<string> { "CustomerReference" };
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
