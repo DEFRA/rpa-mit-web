@@ -1,7 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
-using AutoMapper;
 
-namespace Repositories;
+namespace EST.MIT.Web.Repositories;
 
 public interface IUploadRepository
 {

@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Pages.create_bulk.OrganisationMetaSelection;
 using EST.MIT.Web.Shared;
-using EST.MIT.Web.Services;
 using EST.MIT.Web.Entities;
 using System.Net;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -115,7 +115,6 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
                 }
             }));
 
-
         var component = RenderComponent<OrganisationMetaSelection>();
         component.WaitForElements("input[type='radio']");
         var selectOrganisationRadioButton = component.FindAll("input[type='radio'][value='RPA']");
@@ -153,6 +152,4 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
 
         navigationManager?.Uri.Should().Be("http://localhost/");
     }
-
-
 }

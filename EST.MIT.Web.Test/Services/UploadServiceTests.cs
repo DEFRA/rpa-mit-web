@@ -1,5 +1,6 @@
 using System.Net;
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Services;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Logging;
@@ -9,8 +10,8 @@ namespace EST.MIT.Web.Test.Services;
 public class UploadServiceTests : TestContext
 {
     private Mock<IUploadService> _uploadServiceMock;
-    private Mock<IBlobService> _blobServiceMock;
-    private Mock<IQueueService> _queueServiceMock;
+    private Mock<IAzureBlobService> _blobServiceMock;
+    private Mock<IEventQueueService> _queueServiceMock;
     private Mock<ILogger<UploadService>> _logger;
 
     Invoice routeFields = new()
@@ -24,8 +25,8 @@ public class UploadServiceTests : TestContext
     public UploadServiceTests()
     {
         _uploadServiceMock = new Mock<IUploadService>();
-        _blobServiceMock = new Mock<IBlobService>();
-        _queueServiceMock = new Mock<IQueueService>();
+        _blobServiceMock = new Mock<IAzureBlobService>();
+        _queueServiceMock = new Mock<IEventQueueService>();
         _logger = new Mock<ILogger<UploadService>>();
     }
 

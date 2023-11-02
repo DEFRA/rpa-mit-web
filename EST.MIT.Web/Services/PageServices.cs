@@ -1,12 +1,7 @@
 using EST.MIT.Web.Helpers;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Services;
-
-public interface IPageServices
-{
-    // bool Validation(dynamic model, out bool IsErrored, out Dictionary<string, string> errors);
-    bool Validation(dynamic model, out bool IsErrored, out Dictionary<string, List<string>> errors);
-}
 
 public class PageServices : IPageServices
 {
@@ -46,6 +41,4 @@ public class PageServices : IPageServices
         errors = new();
         return true;
     }
-
 }
-

@@ -1,4 +1,4 @@
-namespace Repositories;
+namespace EST.MIT.Web.Repositories;
 
 public interface IApprovalRepository
 {
@@ -60,5 +60,4 @@ public class ApprovalRepository : IApprovalRepository
         public string scheme { get; set; }
         public string approverEmailAddress { get; set; }
     }
-
 }

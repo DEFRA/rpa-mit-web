@@ -3,6 +3,7 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Services;
+using EST.MIT.Web.Repositories;
 
 namespace Repositories.Tests;
 
@@ -15,7 +16,7 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetOrganisationsAsync_Returns_List_Organisation()
+    public async Task GetOrganisationsAsync_Returns_List_Organisation()
     {
         _mockReferenceDataRepository.Setup(x => x.GetOrganisationsListAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -32,7 +33,7 @@ public class ReferenceDataAPITests
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetOrganisationsAsync("AP").Result;
+        var response = await service.GetOrganisationsAsync("AP");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.IsSuccess.Should().BeTrue();
@@ -50,14 +51,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetOrganisationsAsync_API_Returns_NoContent()
+    public async Task GetOrganisationsAsync_API_Returns_NoContent()
     {
         _mockReferenceDataRepository.Setup(x => x.GetOrganisationsListAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetOrganisationsAsync("AP").Result;
+        var response = await service.GetOrganisationsAsync("AP");
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         response.IsSuccess.Should().BeFalse();
@@ -65,7 +66,7 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetOrganisationsAsync_Deserialise_Fail()
+    public async Task GetOrganisationsAsync_Deserialise_Fail()
     {
         _mockReferenceDataRepository.Setup(x => x.GetOrganisationsListAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -75,7 +76,7 @@ public class ReferenceDataAPITests
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetOrganisationsAsync("AP").Result;
+        var response = await service.GetOrganisationsAsync("AP");
 
         response.IsSuccess.Should().BeFalse();
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
@@ -84,14 +85,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetOrganisationsAsync_API_Returns_NotFound()
+    public async Task GetOrganisationsAsync_API_Returns_NotFound()
     {
         _mockReferenceDataRepository.Setup(x => x.GetOrganisationsListAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetOrganisationsAsync("AP").Result;
+        var response = await service.GetOrganisationsAsync("AP");
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         response.IsSuccess.Should().BeFalse();
@@ -99,14 +100,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetOrganisationsAsync_API_Returns_BadRequest()
+    public async Task GetOrganisationsAsync_API_Returns_BadRequest()
     {
         _mockReferenceDataRepository.Setup(x => x.GetOrganisationsListAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.BadRequest));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetOrganisationsAsync("AP").Result;
+        var response = await service.GetOrganisationsAsync("AP");
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         response.IsSuccess.Should().BeFalse();
@@ -115,14 +116,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetOrganisationsAsync_API_Returns_Unexpected()
+    public async Task GetOrganisationsAsync_API_Returns_Unexpected()
     {
         _mockReferenceDataRepository.Setup(x => x.GetOrganisationsListAsync())
             .ReturnsAsync(new HttpResponseMessage((HttpStatusCode)418));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetOrganisationsAsync("AP").Result;
+        var response = await service.GetOrganisationsAsync("AP");
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         response.IsSuccess.Should().BeFalse();
@@ -131,7 +132,7 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetSchemesAsync_Returns_List_Organisation()
+    public async Task GetSchemesAsync_Returns_List_Organisation()
     {
         _mockReferenceDataRepository.Setup(x => x.GetSchemeTypesListAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -148,7 +149,7 @@ public class ReferenceDataAPITests
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetSchemeTypesAsync("AP", "RPA").Result;
+        var response = await service.GetSchemeTypesAsync("AP", "RPA");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.IsSuccess.Should().BeTrue();
@@ -166,14 +167,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetSchemesAsync_API_Returns_NoContent()
+    public async Task GetSchemesAsync_API_Returns_NoContent()
     {
         _mockReferenceDataRepository.Setup(x => x.GetSchemeTypesListAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetSchemeTypesAsync("AP", "RPA").Result;
+        var response = await service.GetSchemeTypesAsync("AP", "RPA");
 
         response.StatusCode.Should().Be(HttpStatusCode.NoContent);
         response.IsSuccess.Should().BeFalse();
@@ -181,7 +182,7 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetSchemesAsync_Deserialise_Fail()
+    public async Task GetSchemesAsync_Deserialise_Fail()
     {
         _mockReferenceDataRepository.Setup(x => x.GetSchemeTypesListAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
@@ -191,7 +192,7 @@ public class ReferenceDataAPITests
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetSchemeTypesAsync("AP", "RPA").Result;
+        var response = await service.GetSchemeTypesAsync("AP", "RPA");
 
         response.IsSuccess.Should().BeFalse();
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
@@ -200,14 +201,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetSchemesAsync_API_Returns_NotFound()
+    public async Task GetSchemesAsync_API_Returns_NotFound()
     {
         _mockReferenceDataRepository.Setup(x => x.GetSchemeTypesListAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetSchemeTypesAsync("AP", "RPA").Result;
+        var response = await service.GetSchemeTypesAsync("AP", "RPA");
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         response.IsSuccess.Should().BeFalse();
@@ -215,14 +216,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetSchemesAsync_API_Returns_BadRequest()
+    public async Task GetSchemesAsync_API_Returns_BadRequest()
     {
         _mockReferenceDataRepository.Setup(x => x.GetSchemeTypesListAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.BadRequest));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetSchemeTypesAsync("AP", "RPA").Result;
+        var response = await service.GetSchemeTypesAsync("AP", "RPA");
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         response.IsSuccess.Should().BeFalse();
@@ -231,14 +232,14 @@ public class ReferenceDataAPITests
     }
 
     [Fact]
-    public void GetSchemesAsync_API_Returns_Unexpected()
+    public async Task GetSchemesAsync_API_Returns_Unexpected()
     {
         _mockReferenceDataRepository.Setup(x => x.GetSchemeTypesListAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage((HttpStatusCode)418));
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = service.GetSchemeTypesAsync("AP", "RPA").Result;
+        var response = await service.GetSchemeTypesAsync("AP", "RPA");
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         response.IsSuccess.Should().BeFalse();

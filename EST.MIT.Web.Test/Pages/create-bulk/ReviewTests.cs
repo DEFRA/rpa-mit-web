@@ -4,8 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.create_bulk.Review;
 using EST.MIT.Web.Shared;
-using Repositories;
+using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -114,4 +115,3 @@ public class ReviewPageBulkTests : TestContext
         errorMessages[0].TextContent.Should().Be("Account Type is required");
     }
 }
-

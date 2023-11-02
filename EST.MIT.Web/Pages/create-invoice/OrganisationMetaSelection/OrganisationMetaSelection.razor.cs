@@ -1,5 +1,5 @@
 using EST.MIT.Web.Entities;
-using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Shared;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Helpers;
@@ -25,7 +25,7 @@ public partial class OrganisationMetaSelection : ComponentBase
         await base.OnInitializedAsync();
         invoice = _invoiceStateContainer.Value;
 
-        if (!invoice.IsNull())
+        if (invoice != null)
         {
             await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
             {

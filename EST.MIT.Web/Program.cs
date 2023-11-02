@@ -2,8 +2,9 @@ using AutoMapper;
 using EST.MIT.Web.Collections;
 using EST.MIT.Web.AutoMapperProfiles;
 using EST.MIT.Web.Shared;
-using Repositories;
+using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -11,7 +12,7 @@ var config = builder.Configuration;
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddAzureServices();
+builder.Services.AddAzureServices(config);
 builder.Services.AddAPIServices();
 builder.Services.AddRepoServices();
 

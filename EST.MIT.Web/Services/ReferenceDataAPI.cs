@@ -1,20 +1,9 @@
 using System.Net;
 using EST.MIT.Web.Entities;
-using Repositories;
+using EST.MIT.Web.Repositories;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Services;
-
-public interface IReferenceDataAPI
-{
-    Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisationsAsync(string InvoiceType);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemeTypesAsync(string? InvoiceType = null, string? Organisation = null);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetPaymentTypesAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetAccountsAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null, string? PaymentType = null);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetDeliveryBodiesAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null, string? PaymentType = null);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetFundsAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null, string? PaymentType = null);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetMarketingYearsAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null, string? PaymentType = null);
-    Task<ApiResponse<IEnumerable<PaymentScheme>>> GetSchemesAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null, string? PaymentType = null);
-}
 
 public class ReferenceDataAPI : IReferenceDataAPI
 {
@@ -514,5 +503,4 @@ public class ReferenceDataAPI : IReferenceDataAPI
         error.Add($"{HttpStatusCode.InternalServerError}", new List<string>() { "Unknown response from API" });
         return new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.InternalServerError, error);
     }
-
 }

@@ -1,21 +1,17 @@
 using System.Net;
 using Microsoft.AspNetCore.Components.Forms;
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Services;
 
-public interface IUploadService
-{
-    Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy);
-}
-
 public class UploadService : IUploadService
 {
-    private readonly IBlobService _blobService;
-    private readonly IQueueService _queueService;
+    private readonly IAzureBlobService _blobService;
+    private readonly IEventQueueService _queueService;
     private readonly ILogger<UploadService> _logger;
 
-    public UploadService(ILogger<UploadService> logger, IBlobService blobService, IQueueService queueService)
+    public UploadService(ILogger<UploadService> logger, IAzureBlobService blobService, IEventQueueService queueService)
     {
         _logger = logger;
         _blobService = blobService;

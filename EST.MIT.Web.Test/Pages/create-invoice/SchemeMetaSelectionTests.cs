@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Pages.create_invoice.SchemeMetaSelection;
 using EST.MIT.Web.Shared;
-using EST.MIT.Web.Services;
 using EST.MIT.Web.Entities;
 using System.Net;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -168,6 +168,4 @@ public class SchemeMetaSelectionPageTests : TestContext
 
         navigationManager?.Uri.Should().Be("http://localhost/");
     }
-
-
 }
