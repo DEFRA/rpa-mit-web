@@ -3,6 +3,7 @@ using System.Net;
 using EST.MIT.Web.Entities;
 using System.Text.Json;
 using AutoMapper;
+using EST.MIT.Web.DTOs;
 
 namespace EST.MIT.Web.Repositories;
 
@@ -47,17 +48,10 @@ public class InvoiceRepository : IInvoiceRepository
 
     private async Task<HttpResponseMessage> PostInvoice(Invoice invoice)
     {
-        // Do the mapping from the entity to the DTO here
-        // var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
-        // and then post the DTO instead of the entity
-        // might need to break it down into the individual DTOs
-
-        // var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
-        var payload = invoice;
-
+        var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.PostAsJsonAsync($"/invoice", invoice);
+        var response = await client.PostAsJsonAsync($"/invoice", payload);
 
         await HandleHttpResponseError(response);
 
@@ -66,9 +60,10 @@ public class InvoiceRepository : IInvoiceRepository
 
     private async Task<HttpResponseMessage> PutInvoice(Invoice invoice)
     {
+        var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.PutAsJsonAsync($"/invoice/{invoice.Id}", invoice);
+        var response = await client.PutAsJsonAsync($"/invoice/{invoice.Id}", payload);
 
         await HandleHttpResponseError(response);
 

@@ -11,6 +11,7 @@ public class PaymentRequest : Validatable, IValidatableObject
     public PaymentRequest()
     {
         this.PaymentRequestNumber = 1;
+        this.DueDate = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd");
     }
 
     public string PaymentRequestId { get; set; }
@@ -54,11 +55,11 @@ public class PaymentRequest : Validatable, IValidatableObject
 
     [RequiredIfAR]
     [DisplayName("Original AP Invoice Settlement Date")]
-    public DateTimeOffset OriginalSettlementDate { get; set; } = default!;
+    public DateTime OriginalSettlementDate { get; set; } = default!;
 
     [RequiredIfAR]
     [DisplayName("Earliest date possible recovery first identified")]
-    public DateTimeOffset RecoveryDate { get; set; } = default!;
+    public DateTime RecoveryDate { get; set; } = default!;
 
     [RequiredIfAR]
     [DisplayName("Correction Reference - Previous AR Invoice ID")]

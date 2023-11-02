@@ -4,7 +4,7 @@ namespace EST.MIT.Web.Shared.Components.GDSInputDate;
 
 public partial class GDSInputDate : ComponentBase
 {
-    private DateTimeOffset _data = default!;
+    private DateTime _data = default!;
     private string _key = default!;
 
     private string _dateDay = default!;
@@ -20,7 +20,7 @@ public partial class GDSInputDate : ComponentBase
     }
 
     [Parameter]
-    public DateTimeOffset Data
+    public DateTime Data
     {
         get => _data;
         set
@@ -89,7 +89,7 @@ public partial class GDSInputDate : ComponentBase
     }
 
 
-    [Parameter] public EventCallback<DateTimeOffset> DataChanged { get; set; }
+    [Parameter] public EventCallback<DateTime> DataChanged { get; set; }
     [Parameter] public Dictionary<string, List<string>> Errors { get; set; } = new();
     [Parameter] public string Label { get; set; } = default!;
 
@@ -109,11 +109,9 @@ public partial class GDSInputDate : ComponentBase
                 if (DateTime.TryParse(string.Format("{0}-{1}-{2}", year, month, day), out newDate))
                 {
                     // Date was valid.
-                    // date variable now contains a value.
-                    var newDateTimeOffset = DateTime.SpecifyKind(newDate, DateTimeKind.Utc);
-                    if (newDateTimeOffset != Data) // Check to see if the date has actually changed
+                    if (newDate != Data) // Check to see if the date has actually changed
                     {
-                        Data = newDateTimeOffset;
+                        Data = newDate;
                     }
                 }
                 else
