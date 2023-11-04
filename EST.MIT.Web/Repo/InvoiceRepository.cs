@@ -10,9 +10,9 @@ namespace EST.MIT.Web.Repositories;
 public interface IInvoiceRepository
 {
     Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme);
-    Task<HttpResponseMessage> PostInvoiceAsync(Invoice invoice);
-    Task<HttpResponseMessage> PutInvoiceAsync(Invoice invoice);
-    Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequest paymentRequest);
+    Task<HttpResponseMessage> PostInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto);
+    Task<HttpResponseMessage> PutInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto);
+    Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequestDTO paymentRequestDto);
     Task<HttpResponseMessage> GetApprovalAsync(string id, string scheme);
     Task<HttpResponseMessage> GetApprovalsAsync();
 }
@@ -20,18 +20,16 @@ public interface IInvoiceRepository
 public class InvoiceRepository : IInvoiceRepository
 {
     private readonly IHttpClientFactory _clientFactory;
-    private readonly IMapper _autoMapper;
 
-    public InvoiceRepository(IHttpClientFactory clientFactory, IMapper autoMapper)
+    public InvoiceRepository(IHttpClientFactory clientFactory)
     {
         _clientFactory = clientFactory;
-        _autoMapper = autoMapper;
     }
 
     public async Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme) => await GetInvoice(id, scheme);
-    public async Task<HttpResponseMessage> PostInvoiceAsync(Invoice invoice) => await PostInvoice(invoice);
-    public async Task<HttpResponseMessage> PutInvoiceAsync(Invoice invoice) => await PutInvoice(invoice);
-    public async Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequest paymentRequest) => await DeleteHeader(paymentRequest);
+    public async Task<HttpResponseMessage> PostInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto) => await PostInvoice(paymentRequestsBatchDto);
+    public async Task<HttpResponseMessage> PutInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto) => await PutInvoice(paymentRequestsBatchDto);
+    public async Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequestDTO paymentRequestDto) => await DeleteHeader(paymentRequestDto);
     public async Task<HttpResponseMessage> GetApprovalAsync(string id, string scheme) => await GetApproval(id, scheme);
     public async Task<HttpResponseMessage> GetApprovalsAsync() => await GetApprovals();
 
@@ -46,35 +44,33 @@ public class InvoiceRepository : IInvoiceRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> PostInvoice(Invoice invoice)
+    private async Task<HttpResponseMessage> PostInvoice(PaymentRequestsBatchDTO paymentRequestsBatchDto)
     {
-        var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.PostAsJsonAsync($"/invoice", payload);
+        var response = await client.PostAsJsonAsync($"/invoice", paymentRequestsBatchDto);
 
         await HandleHttpResponseError(response);
 
         return response;
     }
 
-    private async Task<HttpResponseMessage> PutInvoice(Invoice invoice)
+    private async Task<HttpResponseMessage> PutInvoice(PaymentRequestsBatchDTO paymentRequestsBatchDto)
     {
-        var payload = _autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.PutAsJsonAsync($"/invoice/{invoice.Id}", payload);
+        var response = await client.PutAsJsonAsync($"/invoice/{paymentRequestsBatchDto.Id}", paymentRequestsBatchDto);
 
         await HandleHttpResponseError(response);
 
         return response;
     }
 
-    public async Task<HttpResponseMessage> DeleteHeader(PaymentRequest paymentRequest)
+    public async Task<HttpResponseMessage> DeleteHeader(PaymentRequestDTO paymentRequestDto)
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.DeleteAsync($"/invoice/header/{paymentRequest.PaymentRequestId}");
+        var response = await client.DeleteAsync($"/invoice/header/{paymentRequestDto.PaymentRequestId}");
 
         await HandleHttpResponseError(response);
 
