@@ -19,7 +19,7 @@ public class InvoiceLineTests : TestContext
     {
         var paymentRequest = new InvoiceLine()
         {
-            Value = 12.345
+            Value = 12.345M
         };
 
         var validationResults = ValidateModel(paymentRequest);

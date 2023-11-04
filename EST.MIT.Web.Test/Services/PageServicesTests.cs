@@ -110,7 +110,7 @@ public class PageServicesTests
 
         paymentRequest.InvoiceLines.Add(new InvoiceLine()
         {
-            Value = 123.45,
+            Value = 123.45M,
             Description = "Payment",
             SchemeCode = "Test",
             DeliveryBody = "RP00",

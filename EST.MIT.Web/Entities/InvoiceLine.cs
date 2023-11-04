@@ -12,9 +12,14 @@ public class InvoiceLine : Validatable
     //public double Value { get; set; }
 
     [Required]
+<<<<<<< Updated upstream
     [RegularExpression(@"^[0-9]*(\.[0-9]{1,2})?$", ErrorMessage = "The value must be valid number and have a maximum of 2 decimal places.")]
     public double Value { get; set; }
 
+=======
+    [RegularExpression("(^\\d+\\.\\d{2}$)", ErrorMessage = "The Value must be in the format 0.00")]
+    public decimal Value { get; set; }
+>>>>>>> Stashed changes
     [Required]
     public string Description { get; set; } = default!;
 

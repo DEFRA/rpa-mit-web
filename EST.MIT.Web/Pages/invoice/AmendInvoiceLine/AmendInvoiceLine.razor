@@ -1,6 +1,6 @@
 @page "/invoice/amend-invoice-line/{PaymentRequestId}/{InvoiceLineId}"
 @using EST.MIT.Web.Shared.Components.SummaryPaymentRequest
-@using EST.MIT.Web.Shared.Components.GDSInputDouble
+@using EST.MIT.Web.Shared.Components.GDSInputDecimal
 @using EST.MIT.Web.Shared.Components.GDSInputText
 @using Helpers
 
@@ -18,7 +18,7 @@
 
         <EditForm Model="invoiceLine">
 
-            <GDSInputDouble Label="Line Value" @bind-Data="invoiceLine.Value" Key="Value" Errors=errors/>
+            <GDSInputDecimal Label="Line Value" @bind-Data="invoiceLine.Value" Key="Value" Errors=errors />
 
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-one-half">

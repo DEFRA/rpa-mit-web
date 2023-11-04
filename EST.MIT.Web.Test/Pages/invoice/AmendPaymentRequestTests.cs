@@ -32,7 +32,7 @@ public class AmendPaymentRequestTests : TestContext
 
         _invoice.PaymentRequests[0].InvoiceLines.Add(new InvoiceLine()
         {
-            Value = 100.00,
+            Value = 100.00M,
             DeliveryBody = "RP00",
             SchemeCode = "BPS",
             Description = "G00 - Gross Value"
