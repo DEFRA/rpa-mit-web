@@ -7,15 +7,17 @@ namespace EST.MIT.Web.Services;
 
 public class ApprovalService : IApprovalService
 {
-    private readonly IEventQueueService _eventQueueService;
+    // private readonly IEventQueueService _eventQueueService;
     private readonly IInvoiceAPI _invoiceAPI;
     private readonly IApprovalAPI _approvalAPI;
     private readonly ILogger<ApprovalService> _logger;
     private readonly IHttpContextAccessor _context;
 
-    public ApprovalService(IEventQueueService queueService, IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, ILogger<ApprovalService> logger, IHttpContextAccessor context)
+    public ApprovalService(
+        //IEventQueueService queueService, 
+        IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, ILogger<ApprovalService> logger, IHttpContextAccessor context)
     {
-        _eventQueueService = queueService;
+        //_eventQueueService = queueService;
         _invoiceAPI = invoiceAPI;
         _approvalAPI = approvalAPI;
         _logger = logger;
@@ -130,14 +132,14 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Updated");
 
-            var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", notification.ToMessage());
-            if (!addedToQueue)
-            {
-                _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");
-                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to queue" });
-                response.IsSuccess = false;
-                return response;
-            }
+            //var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", notification.ToMessage());
+            //if (!addedToQueue)
+            //{
+            //    _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");
+            //    response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to queue" });
+            //    response.IsSuccess = false;
+            //    return response;
+            //}
             _logger.LogInformation($"Invoice {invoice.Id}: Added to queue");
             return response;
         }

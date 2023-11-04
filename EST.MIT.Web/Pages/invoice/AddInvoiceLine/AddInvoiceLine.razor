@@ -15,6 +15,16 @@
 
     <section class="govuk-width-container">
         <SummaryPaymentRequest PaymentRequest="paymentRequest" HideActions=true />
+        
+        @if(IsErrored)
+        {
+            <div class="govuk-form-group--error">
+                @foreach (var error in errors.Values.SelectMany(x => x).Distinct())
+                {
+                    <p class="govuk-error-message">@error</p>
+                }
+            </div>
+        }
 
         <EditForm Model="invoiceLine">
 

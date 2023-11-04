@@ -59,7 +59,6 @@ public partial class AmendPaymentRequest : ComponentBase
         if (response.IsSuccess)
         {
             _invoiceStateContainer.SetValue(response.Data);
-            _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
 
         _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");

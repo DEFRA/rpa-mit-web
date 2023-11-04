@@ -111,9 +111,11 @@ public partial class AddInvoiceLine : ComponentBase
             _invoiceStateContainer.SetValue(response.Data);
             _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
-
-        IsErrored = true;
-        errors = response.Errors;
+        else
+        {
+            IsErrored = true;
+            errors = response.Errors;  
+        }
     }
 
     private void Cancel()

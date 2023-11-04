@@ -16,16 +16,14 @@ public class ReviewPageTests : TestContext
     private readonly Invoice _invoice;
     private readonly Mock<IInvoiceAPI> _mockApiService;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
-    private readonly Mock<IMapper> _mockAutoMapper;
     public ReviewPageTests()
     {
         _mockApiService = new Mock<IInvoiceAPI>();
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
-        _mockAutoMapper = new Mock<IMapper>();
 
         Services.AddSingleton<IPageServices, PageServices>();
         Services.AddSingleton<IInvoiceAPI>(_mockApiService.Object);
-        Services.AddSingleton<IInvoiceRepository>(new InvoiceRepository(new Mock<IHttpClientFactory>().Object, _mockAutoMapper.Object));
+        Services.AddSingleton<IInvoiceRepository>(new InvoiceRepository(new Mock<IHttpClientFactory>().Object));
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
 
         _invoice = new()
