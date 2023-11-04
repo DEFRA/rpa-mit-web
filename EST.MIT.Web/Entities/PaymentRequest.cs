@@ -13,16 +13,17 @@ public class PaymentRequest : Validatable, IValidatableObject
         this.PaymentRequestNumber = 1;
         this.DueDate = DateTime.Now.AddDays(30).ToString("yyyy-MM-dd");
 
-        this.FRN = "1234567890";
-        this.MarketingYear = "2015";
-        this.AgreementNumber = "1";
-        this.Currency = "GBP";
-        this.Value = 0;
-        this.OriginalInvoiceNumber = "1";
-        this.OriginalSettlementDate = DateTime.Now;
-        this.RecoveryDate = DateTime.Now;
-        this.InvoiceCorrectionReference = "1";
-        this.Description = "DescriptionValue";
+        // TODO: fxs, Remove these defaults, helps with debugging
+        //this.FRN = "1234567890";
+        //this.MarketingYear = "2015";
+        //this.AgreementNumber = "1";
+        //this.Currency = "GBP";
+        //this.Value = 0;
+        //this.OriginalInvoiceNumber = "1";
+        //this.OriginalSettlementDate = DateTime.Now;
+        //this.RecoveryDate = DateTime.Now;
+        //this.InvoiceCorrectionReference = "1";
+        //this.Description = "DescriptionValue";
     }
 
     public string PaymentRequestId { get; set; }
