@@ -20,7 +20,7 @@
     <h2 class="govuk-hint">@PaymentRequestId.</h2>
 
     <div class="govuk-button-group">
-        <button class="govuk-button" data-module="govuk-button" @onclick="ConfirmDelete">Confirm</button>
+        <button class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="ConfirmDelete">Confirm</button>
         <a class="govuk-link" @onclick="CancelDelete" href>Cancel</a>
     </div>
 
