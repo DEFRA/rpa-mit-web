@@ -54,7 +54,8 @@ public class PageServicesTests
             AgreementNumber = "AGR0000001",
             Value = 123.45M,
             DueDate = "24/03/1990",
-            Currency = "GBP"
+            Currency = "GBP",
+            Description = "Unit test invoice"
         });
 
         var pageServices = new PageServices();

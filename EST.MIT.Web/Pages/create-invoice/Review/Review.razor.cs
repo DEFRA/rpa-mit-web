@@ -47,11 +47,9 @@ public partial class Review : ComponentBase
             _invoiceStateContainer.SetValue(invoice);
             _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
         }
-        else
-        {
-            IsErrored = true;
-            errors = response.Errors;
-        }
+
+        IsErrored = true;
+        errors = response.Errors;
     }
 
     private void Cancel()

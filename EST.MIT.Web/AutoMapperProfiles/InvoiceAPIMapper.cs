@@ -11,8 +11,11 @@ public class InvoiceAPIMapper : Profile
 {
     public InvoiceAPIMapper()
     {
-        CreateMap<InvoiceLine, InvoiceLineDTO>();
-        CreateMap<InvoiceLineDTO, InvoiceLine>();
+        CreateMap<InvoiceLine, InvoiceLineDTO>()
+            .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => !string.IsNullOrWhiteSpace(src.MarketingYear) ? Convert.ToInt32(src.MarketingYear) : 0));
+
+        CreateMap<InvoiceLineDTO, InvoiceLine>()
+            .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => src.MarketingYear <= 0 ? string.Empty : src.MarketingYear.ToString()));
 
         CreateMap<PaymentRequest, PaymentRequestDTO>()
             .ForMember(dest => dest.FRN, act => act.MapFrom(src => !string.IsNullOrWhiteSpace(src.FRN) ? Convert.ToInt64(src.FRN) : 0))

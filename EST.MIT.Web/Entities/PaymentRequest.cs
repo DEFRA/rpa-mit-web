@@ -34,8 +34,8 @@ public class PaymentRequest : Validatable, IValidatableObject
     [RegularExpression(@"^([0-9]{10})?$", ErrorMessage = "The FRN must be a 10-digit number or be empty.")]
     public string FRN { get; set; }
 
-    [Required]
-    [RegularExpression(@"^(201[5-9]|20[2-9]\d|[2-9]\d{3})$", ErrorMessage = "The Marketing Year must be after than 2014")]
+    [Required(ErrorMessage = "The Marketing Year must be after 2014")]
+    [RegularExpression(@"^(201[5-9]|20[2-9]\d|[2-9]\d{3})$", ErrorMessage = "The Marketing Year must be after 2014")]
     public string MarketingYear { get; set; }
 
     [Required]
@@ -76,7 +76,7 @@ public class PaymentRequest : Validatable, IValidatableObject
     public string InvoiceCorrectionReference { get; set; } = string.Empty;
 
     [DisplayName("SBI")]
-    [RegularExpression(@"^((105000000|1[0-9]{8}|[2-9][0-9]{8}))?$", ErrorMessage = "The SBI is not in valid range (105000000 .. 999999999) or should be empty.")]
+    [RegularExpression(@"^(1050{5}|10[5-9]\d{6}|1[1-9]\d{7}|[2-9]\d{8})?$", ErrorMessage = "The SBI is not in valid range (105000000 .. 999999999) or should be empty.")]
     public string SBI { get; set; }
 
     [DisplayName("Vendor")]

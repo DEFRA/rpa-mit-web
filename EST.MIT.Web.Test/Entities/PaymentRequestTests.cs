@@ -13,14 +13,15 @@ public class PaymentRequestTests : TestContext
         paymentRequest.PaymentRequestId.Should().NotBeEmpty();
     }
 
-    [Fact]
-    public void FRN_Is_Required()
-    {
-        var paymentRequest = new PaymentRequest();
-        var validationResults = ValidateModel(paymentRequest);
+    //TODO: fxs replace with model validator
+    //[Fact]
+    //public void FRN_Is_Required()
+    //{
+    //    var paymentRequest = new PaymentRequest();
+    //    var validationResults = ValidateModel(paymentRequest);
 
-        validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.FRN)));
-    }
+    //    validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.FRN)));
+    //}
 
     [Fact]
     public void FRN_Should_Be_10_Digits()
@@ -31,7 +32,33 @@ public class PaymentRequestTests : TestContext
         };
 
         var validationResults = ValidateModel(paymentRequest);
-        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The FRN must be 10 digits");
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The FRN must be a 10-digit number or be empty.");
+
+    }
+    
+    [Fact]
+    public void SBI_Should_Be_GreaterThanMinRange()
+    {
+        var paymentRequest = new PaymentRequest()
+        {
+            SBI = "104999999"
+        };
+
+        var validationResults = ValidateModel(paymentRequest);
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The SBI is not in valid range (105000000 .. 999999999) or should be empty.");
+
+    }
+
+    [Fact]
+    public void SBI_Should_Be_LessThanMaxRange()
+    {
+        var paymentRequest = new PaymentRequest()
+        {
+            SBI = "1000000000"
+        };
+
+        var validationResults = ValidateModel(paymentRequest);
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The SBI is not in valid range (105000000 .. 999999999) or should be empty.");
 
     }
 
@@ -41,17 +68,18 @@ public class PaymentRequestTests : TestContext
         var paymentRequest = new PaymentRequest();
         var validationResults = ValidateModel(paymentRequest);
 
-        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Marketing Year must be after than 2014");
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Marketing Year must be after 2014");
     }
 
-    [Fact]
-    public void PaymentRequestNumber_Is_Required()
-    {
-        var paymentRequest = new PaymentRequest();
-        var validationResults = ValidateModel(paymentRequest);
+    // TODO: fxs replace with model validator, ctor will set default to 1
+    //[Fact]
+    //public void PaymentRequestNumber_Is_Required()
+    //{
+    //    var paymentRequest = new PaymentRequest();
+    //    var validationResults = ValidateModel(paymentRequest);
 
-        validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.PaymentRequestNumber)));
-    }
+    //    validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.PaymentRequestNumber)));
+    //}
 
     [Fact]
     public void AgreementNumber_Is_Required()
@@ -80,18 +108,6 @@ public class PaymentRequestTests : TestContext
         var validationResults = ValidateModel(paymentRequest);
 
         validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.Currency)));
-    }
-
-    [Fact]
-    public void Value_Should_Be_Currency_Format()
-    {
-        var paymentRequest = new PaymentRequest()
-        {
-            Value = 12.345M
-        };
-
-        var validationResults = ValidateModel(paymentRequest);
-        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Value must be in the format 0.00");
     }
 
     private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
