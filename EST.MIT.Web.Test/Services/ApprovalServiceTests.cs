@@ -28,9 +28,7 @@ public class ApprovalServiceTests
     {
         _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Invoice());
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
         var response = service.GetInvoiceAsync("123", "BPS");
 
         response.Should().NotBeNull();
@@ -42,9 +40,7 @@ public class ApprovalServiceTests
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
         _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.ApproveInvoiceAsync(new Invoice() { SchemeType = "BPS" });
         response.Wait();
@@ -58,9 +54,7 @@ public class ApprovalServiceTests
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
         _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.RejectInvoiceAsync(new Invoice() { SchemeType = "BPS" }, "Justification");
 
@@ -79,9 +73,7 @@ public class ApprovalServiceTests
         _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
         var mockLogger = new Mock<ILogger<ApprovalService>>();
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.ApproveInvoiceAsync(new Invoice() { SchemeType = "BPS" });
         response.Wait();
@@ -96,9 +88,7 @@ public class ApprovalServiceTests
         _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
         var mockLogger = new Mock<ILogger<ApprovalService>>();
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.RejectInvoiceAsync(new Invoice() { SchemeType = "BPS" }, "Justification");
 
@@ -111,9 +101,7 @@ public class ApprovalServiceTests
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>())).ThrowsAsync(new Exception());
         var mockLogger = new Mock<ILogger<ApprovalService>>();
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.ApproveInvoiceAsync(new Invoice() { SchemeType = "BPS" });
 
@@ -126,9 +114,7 @@ public class ApprovalServiceTests
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
         _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.SubmitApprovalAsync(new Invoice() { SchemeType = "BPS" });
         response.Wait();
@@ -142,9 +128,7 @@ public class ApprovalServiceTests
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
         _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var invoice = new Invoice()
         {
@@ -175,9 +159,7 @@ public class ApprovalServiceTests
         _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
         var mockLogger = new Mock<ILogger<ApprovalService>>();
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.SubmitApprovalAsync(new Invoice() { SchemeType = "BPS" });
 
@@ -189,9 +171,7 @@ public class ApprovalServiceTests
     {
         _mockApprovalApi.Setup(x => x.GetApproversAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse(true, HttpStatusCode.OK) { Data = new Dictionary<string, string> { { "name", "email" } } });
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.GetApproversAsync("BPS", "123");
 
@@ -205,9 +185,7 @@ public class ApprovalServiceTests
     {
         _mockApprovalApi.Setup(x => x.GetApproversAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse(false, HttpStatusCode.OK) { Data = new Dictionary<string, string>() });
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.GetApproversAsync("BPS", "123");
 
@@ -223,9 +201,7 @@ public class ApprovalServiceTests
 
         _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.GetApprovalAsync("123", "BPS");
 
@@ -239,9 +215,7 @@ public class ApprovalServiceTests
         _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
             .Returns(Task.FromResult<Invoice>(null));
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.GetApprovalAsync("123", "BPS");
 
@@ -258,9 +232,7 @@ public class ApprovalServiceTests
         _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(_invoice);
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
         var response = service.GetApprovalAsync("123", "BPS");
 
@@ -276,9 +248,7 @@ public class ApprovalServiceTests
 
         _mockApiService.Setup(x => x.GetApprovalsAsync()).ReturnsAsync(new List<Invoice> { _invoice });
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
         var response = service.GetOutstandingApprovalsAsync();
 
         response.Result.Should().NotBeNull();
@@ -290,9 +260,7 @@ public class ApprovalServiceTests
     {
         _mockApprovalApi.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
 
-        var service = new ApprovalService(
-            //_mockQueueService.Object, 
-            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+        var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
         var response = service.ValidateApproverAsync("Loid.Forger@defra.gov.uk");
 
         response.Result.Data.Value.Should().BeTrue();
