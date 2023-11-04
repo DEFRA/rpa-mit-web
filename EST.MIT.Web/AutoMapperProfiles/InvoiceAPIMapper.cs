@@ -16,11 +16,13 @@ public class InvoiceAPIMapper : Profile
 
         CreateMap<PaymentRequest, PaymentRequestDTO>()
             .ForMember(dest => dest.FRN, act => act.MapFrom(src => !string.IsNullOrWhiteSpace(src.FRN) ? Convert.ToInt64(src.FRN) : 0))
-            .ForMember(dest => dest.SBI, act => act.MapFrom(src => !string.IsNullOrWhiteSpace(src.SBI) ? Convert.ToInt64(src.SBI) : 0));
+            .ForMember(dest => dest.SBI, act => act.MapFrom(src => !string.IsNullOrWhiteSpace(src.SBI) ? Convert.ToInt64(src.SBI) : 0))
+            .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => !string.IsNullOrWhiteSpace(src.MarketingYear) ? Convert.ToInt32(src.MarketingYear) : 0));
 
         CreateMap<PaymentRequestDTO, PaymentRequest>()
             .ForMember(dest => dest.FRN, act => act.MapFrom(src => src.FRN <= 0 ? string.Empty : src.FRN.ToString()))
-            .ForMember(dest => dest.SBI, act => act.MapFrom(src => src.SBI <= 0 ? string.Empty : src.SBI.ToString()));
+            .ForMember(dest => dest.SBI, act => act.MapFrom(src => src.SBI <= 0 ? string.Empty : src.SBI.ToString()))
+            .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => src.MarketingYear <= 0 ? string.Empty : src.MarketingYear.ToString()));
 
         CreateMap<Invoice, PaymentRequestsBatchDTO>()
             .ForMember(dest => dest.Created, act => act.MapFrom(src => src.Created.LocalDateTime))
