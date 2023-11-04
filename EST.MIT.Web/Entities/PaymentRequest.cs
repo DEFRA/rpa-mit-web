@@ -2,7 +2,6 @@ using System.ComponentModel;
 using EST.MIT.Web.Helpers;
 using System.ComponentModel.DataAnnotations;
 using EST.MIT.Web.Attributes;
-using Newtonsoft.Json;
 
 namespace EST.MIT.Web.Entities;
 
