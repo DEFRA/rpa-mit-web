@@ -1,13 +1,9 @@
 using System.Net;
 using EST.MIT.Web.Entities;
-using Repositories;
+using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.Repositories;
 
 namespace EST.MIT.Web.Services;
-
-public interface IUploadAPI
-{
-    Task<IEnumerable<ImportRequest>> GetUploadsAsync();
-}
 
 public class UploadAPI : IUploadAPI
 {

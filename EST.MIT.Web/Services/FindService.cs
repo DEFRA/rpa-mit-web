@@ -1,13 +1,9 @@
 ﻿using EST.MIT.Web.Helpers;
 using EST.MIT.Web.Entities;
-using Repositories;
+using EST.MIT.Web.Repositories;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Services;
-
-public interface IFindService
-{
-    Task<Invoice> FetchInvoiceAsync(string invoiceNumber, string scheme);
-}
 
 public class FindService : IFindService
 {

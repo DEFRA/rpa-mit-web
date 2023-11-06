@@ -1,32 +1,21 @@
 using EST.MIT.Web.Builders;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Helpers;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Services;
 
-public interface IApprovalService
-{
-    Task<Invoice> GetInvoiceAsync(string id, string scheme);
-    Task<bool> ApproveInvoiceAsync(Invoice invoice);
-    Task<bool> RejectInvoiceAsync(Invoice invoice, string justification);
-    Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice);
-    Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value);
-    Task<Invoice> GetApprovalAsync(string id, string scheme);
-    Task<IEnumerable<Invoice>> GetOutstandingApprovalsAsync();
-    Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver);
-}
-
 public class ApprovalService : IApprovalService
 {
-    private readonly IQueueService _queueService;
+    private readonly IEventQueueService _eventQueueService;
     private readonly IInvoiceAPI _invoiceAPI;
     private readonly IApprovalAPI _approvalAPI;
     private readonly ILogger<ApprovalService> _logger;
     private readonly IHttpContextAccessor _context;
 
-    public ApprovalService(IQueueService queueService, IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, ILogger<ApprovalService> logger, IHttpContextAccessor context)
+    public ApprovalService(IEventQueueService queueService, IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, ILogger<ApprovalService> logger, IHttpContextAccessor context)
     {
-        _queueService = queueService;
+        _eventQueueService = queueService;
         _invoiceAPI = invoiceAPI;
         _approvalAPI = approvalAPI;
         _logger = logger;
@@ -141,7 +130,7 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Updated");
 
-            var addedToQueue = await _queueService.AddMessageToQueueAsync("invoicenotification", notification.ToMessage());
+            var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", notification.ToMessage());
             if (!addedToQueue)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");

@@ -5,7 +5,7 @@ using EST.MIT.Web.Shared;
 using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -138,5 +138,4 @@ public class SelectApproverTests : TestContext
         component.FindAll("div.govuk-error-summary").Count.Should().Be(1);
 
     }
-
 }

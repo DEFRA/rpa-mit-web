@@ -1,6 +1,7 @@
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Services;
-using Repositories;
+using EST.MIT.Web.Repositories;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Test.Services;
 
@@ -19,15 +20,14 @@ public class FindServiceTests : TestContext
     }
 
     [Fact]
-    public void FetchInvoiceReturnsNull()
+    public async Task FetchInvoiceReturnsNull()
     {
         var mockAPIService = new Mock<IInvoiceAPI>();
         mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult<Invoice>(null));
 
         var service = new FindService(mockAPIService.Object, Mock.Of<IReferenceDataRepository>());
 
-        var response = service.FetchInvoiceAsync("", "").Result;
+        var response = await service.FetchInvoiceAsync("", "");
         response.Should().BeNull();
     }
-
 }

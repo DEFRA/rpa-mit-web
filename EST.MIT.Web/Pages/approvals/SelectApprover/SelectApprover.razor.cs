@@ -1,7 +1,7 @@
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Shared;
 using Microsoft.AspNetCore.Components;
-using EST.MIT.Web.Services;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Pages.approvals.SelectApprover;
 
@@ -68,6 +68,5 @@ public partial class SelectApprover : ComponentBase
         }
 
         _nav.NavigateTo($"/approval/confirmation/{invoice.Id}");
-
     }
 }

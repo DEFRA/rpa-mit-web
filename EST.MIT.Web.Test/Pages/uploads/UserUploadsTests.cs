@@ -1,8 +1,8 @@
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.Uploads.UserUploads;
 using EST.MIT.Web.Shared.Components.UserUploadsCard;
-using EST.MIT.Web.Services;
 using Microsoft.Extensions.DependencyInjection;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Test.Pages.Uploads;
 
