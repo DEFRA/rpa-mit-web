@@ -3,7 +3,12 @@
 public class Validatable : IValidatable
 {
     public Dictionary<string, List<string>> Errors { get; set; } = new Dictionary<string, List<string>>();
-    public string ErrorPath { get; set; }
+    private string _errorPath = string.Empty;
+    public string ErrorPath
+    {
+        get { return _errorPath ?? string.Empty; }
+        set { _errorPath = value; }
+    }
     public virtual Dictionary<string, List<string>> AddErrors(Dictionary<string, List<string>> errors)
     {
         Errors.Clear();
