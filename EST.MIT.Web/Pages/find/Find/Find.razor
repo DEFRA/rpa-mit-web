@@ -38,9 +38,9 @@
                 Sort by
             </label>
             <select class="govuk-select" id="sort" name="sort" @bind="_searchCriteria.Scheme" >
-               @foreach (var scheme in allSchemes)
+               @foreach (var schemeType in allSchemeTypes)
                 {
-                    <option value="@scheme.Key">@scheme.Value</option>
+                    <option value="@schemeType.Key">@schemeType.Value</option>
                 }
             </select>
         </div>
