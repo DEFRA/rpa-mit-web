@@ -19,9 +19,6 @@ public partial class AmendPaymentRequest : ComponentBase
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        invoice ??= _invoiceStateContainer.Value;
-        //TODO: fxs what happens when payment request is null
-        // or not found
         paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
     }
 

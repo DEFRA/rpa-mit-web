@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using EST.MIT.Web.Entities;
 
+
 namespace Entities.Tests;
 
 public class PaymentRequestTests : TestContext
@@ -70,16 +71,15 @@ public class PaymentRequestTests : TestContext
 
         validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Marketing Year must be after 2014");
     }
+    
+    [Fact]
+    public void PaymentRequestNumber_Is_SetTo1_InConstructor()
+    {
+        var paymentRequest = new PaymentRequest();
 
-    // TODO: fxs replace with model validator, ctor will set default to 1
-    //[Fact]
-    //public void PaymentRequestNumber_Is_Required()
-    //{
-    //    var paymentRequest = new PaymentRequest();
-    //    var validationResults = ValidateModel(paymentRequest);
+        Assert.Equal(1, paymentRequest.PaymentRequestNumber);
+    }
 
-    //    validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.PaymentRequestNumber)));
-    //}
 
     [Fact]
     public void AgreementNumber_Is_Required()
@@ -110,7 +110,38 @@ public class PaymentRequestTests : TestContext
         validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.Currency)));
     }
 
-    private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
+
+
+        [Fact]
+        public void Validate_ShouldGenerateError_WhenFRNSBIAndVendorAreEmpty()
+        {
+            // Arrange
+            var paymentRequest = new PaymentRequest
+            {
+                // Assume all required properties are set up correctly
+                // but FRN, SBI, and Vendor are left as null or empty
+            };
+
+            var validationContext = new ValidationContext(paymentRequest, serviceProvider: null, items: null);
+
+            // Act
+            var results = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(paymentRequest, validationContext, results, true);
+
+            // If there are more complex validations that are not checked by TryValidateObject,
+            // you should call the Validate method directly and enumerate the results.
+            var validateResults = paymentRequest.Validate(validationContext);
+
+            // Assert
+            Assert.False(isValid, "Validation should fail when FRN, SBI, and Vendor are empty.");
+
+            // Check for the specific error message
+            Assert.Contains(validateResults, v => v.ErrorMessage == "At least one of FRN, SBI, or Vendor must be entered");
+        }
+    
+
+
+private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
     {
         var validationResults = new System.Collections.Generic.List<ValidationResult>();
         var validationContext = new ValidationContext(model, null, null);
