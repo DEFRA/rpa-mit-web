@@ -13,7 +13,7 @@
 
 	@if(invoice != null)
 	{
-		<button id="add-payment-request" class="govuk-button" data-module="govuk-button" @onclick="AddPaymentRequest">Add Payment Request</button>
+		<button id="add-payment-request" class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="AddPaymentRequest">Add Payment Request</button>
 
 		@if(!invoice.PaymentRequests.Any())
 		{
@@ -27,7 +27,7 @@
 		{
 			@if(invoice.Status == "new")
 			{
-				<button id="send-approval" class="govuk-button govuk-!-margin-left-1" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
+				<button id="send-approval" class="govuk-button govuk-!-margin-left-1" data-prevent-double-click="true" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
 			}
 			
 			@foreach (var request in invoice.PaymentRequests)

@@ -19,9 +19,9 @@ public class AmendPaymentRequestTests : TestContext
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
             PaymentRequestId = "1",
-            FRN = 1234567890,
+            FRN = "1234567890",
             SourceSystem = "",
-            MarketingYear = 0,
+            MarketingYear = "0",
             PaymentRequestNumber = 0,
             AgreementNumber = "",
             Value = 0,
@@ -32,7 +32,7 @@ public class AmendPaymentRequestTests : TestContext
 
         _invoice.PaymentRequests[0].InvoiceLines.Add(new InvoiceLine()
         {
-            Value = 100.00,
+            Value = 100.00M,
             DeliveryBody = "RP00",
             SchemeCode = "BPS",
             Description = "G00 - Gross Value"
@@ -84,7 +84,7 @@ public class AmendPaymentRequestTests : TestContext
     }
 
     [Fact]
-    public void UpdatePaymentRequest_Navigates_To_UpdatePaymentRequest()
+    public void AmendPaymentRequest_Navigates_To_UpdatePaymentRequest()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 

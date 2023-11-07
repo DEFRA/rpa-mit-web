@@ -19,6 +19,8 @@ public partial class UpdatePaymentRequest : ComponentBase
     private bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
 
+    private List<string> CustomerReferenceCommonKeys { get; } = new List<string> { "CustomerReference" };
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -26,7 +28,7 @@ public partial class UpdatePaymentRequest : ComponentBase
     }
 
     private async Task SavePaymentRequest()
-    {
+    { 
         if (!_pageServices.Validation(paymentRequest, out IsErrored, out errors)) return;
 
         invoice.PaymentRequests = invoice.PaymentRequests.Where(x => x.PaymentRequestId != PaymentRequestId).ToList();
@@ -39,9 +41,11 @@ public partial class UpdatePaymentRequest : ComponentBase
             _invoiceStateContainer.SetValue(invoice);
             _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
-
-        IsErrored = true;
-        errors = response.Errors;
+        else
+        {
+            IsErrored = true;
+            errors = response.Errors;
+        }
     }
 
     private void Cancel()

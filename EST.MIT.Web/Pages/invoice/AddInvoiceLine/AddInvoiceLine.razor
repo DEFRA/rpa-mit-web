@@ -1,6 +1,6 @@
 @page "/invoice/add-invoice-line/{PaymentRequestId}"
 @using EST.MIT.Web.Shared.Components.SummaryPaymentRequest
-@using EST.MIT.Web.Shared.Components.GDSInputDouble
+@using EST.MIT.Web.Shared.Components.GDSInputDecimal
 @using EST.MIT.Web.Shared.Components.GDSInputText
 @using Helpers
 
@@ -15,10 +15,20 @@
 
     <section class="govuk-width-container">
         <SummaryPaymentRequest PaymentRequest="paymentRequest" HideActions=true />
+        
+        @if(IsErrored)
+        {
+            <div class="govuk-form-group--error">
+                @foreach (var error in errors.Values.SelectMany(x => x).Distinct())
+                {
+                    <p class="govuk-error-message">@error</p>
+                }
+            </div>
+        }
 
         <EditForm Model="invoiceLine">
 
-            <GDSInputDouble Label="Line Value" @bind-Data="invoiceLine.Value" Key="Value" Errors=errors />
+            <GDSInputDecimal Label="Line Value" @bind-Data="invoiceLine.Value" Key="Value" Errors=errors />
 
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-one-half">
@@ -106,7 +116,7 @@
 
             <div class="govuk-form-group">
                 <div class="govuk-button-group">
-                    <button type=submit class="govuk-button" data-module="govuk-button" @onclick="SaveInvoiceLine">Save and Continue</button>
+                    <button type=submit class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="SaveInvoiceLine">Save and Continue</button>
                     <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
                 </div>
             </div>

@@ -1,0 +1,17 @@
+<div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
+    <label class="govuk-label" for="@Key">@Label</label>
+    @if(IsErrored)
+    {
+        @foreach(var error in err)
+        {
+            <p class="govuk-error-message">
+                <span class="govuk-visually-hidden">Error:</span> @error
+            </p>
+        }
+        <InputNumber class="govuk-input govuk-input--error" id="@Key" name="@Key" @bind-Value="Data" />
+    }
+    else
+    {
+        <InputNumber class="govuk-input" id="@Key" name="@Key" @bind-Value="Data" />
+    }
+</div>

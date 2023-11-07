@@ -45,7 +45,7 @@
             <GDSTextArea @bind-Data="_approval.Justification" Label="Can you provide more detail?" Hint="This will be shared with the submitter of the invoice." Key="Justification" Errors=Errors/>
 
             <div class="govuk-button-group">
-                <button type=submit class="govuk-button" data-module="govuk-button">Submit</button>
+                <button type=submit class="govuk-button" data-module="govuk-button" data-prevent-double-click="true">Submit</button>
                 <a class="govuk-link" href="/approval/mine">Cancel</a>
             </div>
         </EditForm>
@@ -54,7 +54,7 @@
     @if(!IsRejectEndpoint)
     {
         <div class="govuk-button-group">
-            <button class="govuk-button" data-module="govuk-button" @onclick="ApproveConfirmed">Submit</button>
+            <button class="govuk-button" data-module="govuk-button" @onclick="ApproveConfirmed" data-prevent-double-click="true">Submit</button>
             <a class="govuk-link" href="/approval/mine">Cancel</a>
         </div>
     }

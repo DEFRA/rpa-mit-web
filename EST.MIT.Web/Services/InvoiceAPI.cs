@@ -2,6 +2,8 @@ using System.Net;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Repositories;
 using System.Security.Cryptography;
+using AutoMapper;
+using EST.MIT.Web.DTOs;
 using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using EST.MIT.Web.Interfaces;
@@ -10,11 +12,13 @@ namespace EST.MIT.Web.Services;
 public class InvoiceAPI : IInvoiceAPI
 {
     private readonly ILogger<InvoiceAPI> _logger;
+    private readonly IMapper _autoMapper;
     private readonly IInvoiceRepository _invoiceRepository;
 
-    public InvoiceAPI(IInvoiceRepository invoiceRepository, ILogger<InvoiceAPI> logger)
+    public InvoiceAPI(IInvoiceRepository invoiceRepository, ILogger<InvoiceAPI> logger, IMapper autoMapper)
     {
         _logger = logger;
+        _autoMapper = autoMapper;
         _invoiceRepository = invoiceRepository;
     }
 
@@ -39,7 +43,9 @@ public class InvoiceAPI : IInvoiceAPI
 
             try
             {
-                return await response.Content.ReadFromJsonAsync<Invoice>();
+                var dto = await response.Content.ReadFromJsonAsync<PaymentRequestsBatchDTO>();
+
+                return this._autoMapper.Map<Invoice>(dto);
             }
             catch (Exception ex)
             {
@@ -61,7 +67,10 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
         invoice.Update();
-        var response = await _invoiceRepository.PostInvoiceAsync(invoice);
+
+        var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+
+        var response = await _invoiceRepository.PostInvoiceAsync(dto);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
         if (response.StatusCode == HttpStatusCode.Created)
@@ -80,7 +89,10 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
         invoice.Update();
-        var response = await _invoiceRepository.PutInvoiceAsync(invoice);
+
+        var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+
+        var response = await _invoiceRepository.PutInvoiceAsync(dto);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
         if (response.StatusCode == HttpStatusCode.OK)
@@ -105,7 +117,10 @@ public class InvoiceAPI : IInvoiceAPI
         }
 
         invoice.Update();
-        var response = await _invoiceRepository.PutInvoiceAsync(invoice);
+
+        var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+
+        var response = await _invoiceRepository.PutInvoiceAsync(dto);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
         if (response.StatusCode == HttpStatusCode.OK)
@@ -128,7 +143,10 @@ public class InvoiceAPI : IInvoiceAPI
                 .First(x => x.PaymentRequestId == paymentRequest.PaymentRequestId).InvoiceLines
                 .Add(invoiceLine);
         invoice.Update();
-        var response = await _invoiceRepository.PutInvoiceAsync(invoice);
+
+        var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+
+        var response = await _invoiceRepository.PutInvoiceAsync(dto);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
         if (response.StatusCode == HttpStatusCode.OK)
@@ -147,7 +165,10 @@ public class InvoiceAPI : IInvoiceAPI
         var errors = new Dictionary<string, List<string>>();
         invoice.PaymentRequests.RemoveAll(x => x.PaymentRequestId == paymentRequestId);
         invoice.Update();
-        var response = await _invoiceRepository.PutInvoiceAsync(invoice);
+
+        var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
+
+        var response = await _invoiceRepository.PutInvoiceAsync(dto);
         _logger.LogInformation($"Invoice {invoice.Id}: Received code {response.StatusCode}");
 
         if (response.StatusCode == HttpStatusCode.OK)

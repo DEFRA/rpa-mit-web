@@ -20,27 +20,28 @@
         @if(IsErrored)
         {
             <div class="govuk-form-group--error">
-                @foreach (var error in errors.Values.SelectMany(x => x))
+                @foreach (var error in errors.Values.SelectMany(x => x).Distinct())
                 {
                     <p class="govuk-error-message">@error</p>
                 }
             </div>
         }
-
+        
         <EditForm Model="paymentRequest" OnSubmit="SaveHeader" class="govuk-!-padding-top-6">
 
-            <GDSInputInt @bind-Data="paymentRequest.FRN" Label="FRN" Key="FRN" Errors="errors"/>
+            <GDSInputText @bind-Data="paymentRequest.FRN" Label="FRN" Key="FRN" CommonKeys="CustomerReferenceCommonKeys" Errors="errors" />
 
-            <GDSInputInt @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors"/>
+            <GDSInputText @bind-Data="paymentRequest.SBI" Label="SBI" Key="SBI" CommonKeys="CustomerReferenceCommonKeys" Errors="errors" />
 
-            <GDSInputInt @bind-Data="paymentRequest.PaymentRequestNumber" Label="Payment Request Number" Key="PaymentRequestNumber" Errors="errors"/>
+            <GDSInputText @bind-Data="paymentRequest.Vendor" Label="Vendor" Key="Vendor" CommonKeys="CustomerReferenceCommonKeys" Errors="errors" />
+            
+            <GDSInputText @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors"/>
 
             <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors"/>
 
             <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors"/>
 
-            <GDSInputText @bind-Data="paymentRequest.DueDate" Label="Due Date" Key="DueDate" Errors="errors"/>
-
+            <GDSInputText @bind-Data="paymentRequest.Description" Label="Description" Key="Description" Errors="errors" />
             
             @if(invoice.AccountType == "AR")
             {
@@ -52,7 +53,7 @@
 
             <div class="govuk-form-group">
                 <div class="govuk-button-group">
-                    <button type=submit class="govuk-button" data-module="govuk-button">Save and Continue</button>
+                    <button type=submit class="govuk-button" data-prevent-double-click="true" data-module="govuk-button">Save and Continue</button>
                     <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
                 </div>
             </div>

@@ -55,8 +55,8 @@
         <section class="govuk-width-container govuk-!-padding-top-3">
             <div class="govuk-form-group">
                 <div class="govuk-button-group">
-                    <button id="ApproveInvoice" type=submit class="govuk-button" data-module="govuk-button" @onclick="ApproveInvoice">Approve</button>
-                    <button id="RejectInvoice" type=submit class="govuk-button" data-module="govuk-button" @onclick="RejectInvoice">Reject</button>
+                    <button id="ApproveInvoice" type=submit class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="ApproveInvoice">Approve</button>
+                    <button id="RejectInvoice" type=submit class="govuk-button" data-module="govuk-button" data-prevent-double-click="true" @onclick="RejectInvoice">Reject</button>
                 </div>
             </div>
         </section>

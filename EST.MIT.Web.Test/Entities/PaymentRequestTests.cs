@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using EST.MIT.Web.Entities;
 
+
 namespace Entities.Tests;
 
 public class PaymentRequestTests : TestContext
@@ -13,25 +14,52 @@ public class PaymentRequestTests : TestContext
         paymentRequest.PaymentRequestId.Should().NotBeEmpty();
     }
 
-    [Fact]
-    public void FRN_Is_Required()
-    {
-        var paymentRequest = new PaymentRequest();
-        var validationResults = ValidateModel(paymentRequest);
+    //TODO: fxs replace with model validator
+    //[Fact]
+    //public void FRN_Is_Required()
+    //{
+    //    var paymentRequest = new PaymentRequest();
+    //    var validationResults = ValidateModel(paymentRequest);
 
-        validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.FRN)));
-    }
+    //    validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.FRN)));
+    //}
 
     [Fact]
     public void FRN_Should_Be_10_Digits()
     {
         var paymentRequest = new PaymentRequest()
         {
-            FRN = 123456789
+            FRN = "123456789"
         };
 
         var validationResults = ValidateModel(paymentRequest);
-        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The FRN must be 10 digits");
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The FRN must be a 10-digit number or be empty.");
+
+    }
+    
+    [Fact]
+    public void SBI_Should_Be_GreaterThanMinRange()
+    {
+        var paymentRequest = new PaymentRequest()
+        {
+            SBI = "104999999"
+        };
+
+        var validationResults = ValidateModel(paymentRequest);
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The SBI is not in valid range (105000000 .. 999999999) or should be empty.");
+
+    }
+
+    [Fact]
+    public void SBI_Should_Be_LessThanMaxRange()
+    {
+        var paymentRequest = new PaymentRequest()
+        {
+            SBI = "1000000000"
+        };
+
+        var validationResults = ValidateModel(paymentRequest);
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The SBI is not in valid range (105000000 .. 999999999) or should be empty.");
 
     }
 
@@ -41,17 +69,17 @@ public class PaymentRequestTests : TestContext
         var paymentRequest = new PaymentRequest();
         var validationResults = ValidateModel(paymentRequest);
 
-        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Marketing Year must be after than 2014");
+        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Marketing Year must be after 2014");
     }
-
+    
     [Fact]
-    public void PaymentRequestNumber_Is_Required()
+    public void PaymentRequestNumber_Is_SetTo1_InConstructor()
     {
         var paymentRequest = new PaymentRequest();
-        var validationResults = ValidateModel(paymentRequest);
 
-        validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.PaymentRequestNumber)));
+        Assert.Equal(1, paymentRequest.PaymentRequestNumber);
     }
+
 
     [Fact]
     public void AgreementNumber_Is_Required()
@@ -82,19 +110,38 @@ public class PaymentRequestTests : TestContext
         validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.Currency)));
     }
 
-    [Fact]
-    public void Value_Should_Be_Currency_Format()
-    {
-        var paymentRequest = new PaymentRequest()
+
+
+        [Fact]
+        public void Validate_ShouldGenerateError_WhenFRNSBIAndVendorAreEmpty()
         {
-            Value = 12.345
-        };
+            // Arrange
+            var paymentRequest = new PaymentRequest
+            {
+                // Assume all required properties are set up correctly
+                // but FRN, SBI, and Vendor are left as null or empty
+            };
 
-        var validationResults = ValidateModel(paymentRequest);
-        validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Value must be in the format 0.00");
-    }
+            var validationContext = new ValidationContext(paymentRequest, serviceProvider: null, items: null);
 
-    private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
+            // Act
+            var results = new List<ValidationResult>();
+            var isValid = Validator.TryValidateObject(paymentRequest, validationContext, results, true);
+
+            // If there are more complex validations that are not checked by TryValidateObject,
+            // you should call the Validate method directly and enumerate the results.
+            var validateResults = paymentRequest.Validate(validationContext);
+
+            // Assert
+            Assert.False(isValid, "Validation should fail when FRN, SBI, and Vendor are empty.");
+
+            // Check for the specific error message
+            Assert.Contains(validateResults, v => v.ErrorMessage == "At least one of FRN, SBI, or Vendor must be entered");
+        }
+    
+
+
+private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
     {
         var validationResults = new System.Collections.Generic.List<ValidationResult>();
         var validationContext = new ValidationContext(model, null, null);
