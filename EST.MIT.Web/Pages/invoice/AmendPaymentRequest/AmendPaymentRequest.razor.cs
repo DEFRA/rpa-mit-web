@@ -19,6 +19,7 @@ public partial class AmendPaymentRequest : ComponentBase
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        invoice ??= _invoiceStateContainer.Value;
         paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
     }
 

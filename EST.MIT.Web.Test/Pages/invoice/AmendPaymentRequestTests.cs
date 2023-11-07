@@ -84,7 +84,7 @@ public class AmendPaymentRequestTests : TestContext
     }
 
     [Fact]
-    public void UpdatePaymentRequest_Navigates_To_UpdatePaymentRequest()
+    public void AmendPaymentRequest_Navigates_To_UpdatePaymentRequest()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 
