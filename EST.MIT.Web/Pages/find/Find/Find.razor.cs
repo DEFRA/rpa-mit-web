@@ -16,18 +16,18 @@ public partial class Find : ComponentBase
     private bool IsErrored, NotFound = false;
     private Invoice invoice = default!;
     public SearchCriteria _searchCriteria = new();
-    private readonly Dictionary<string, string> allSchemes = new();
+    private readonly Dictionary<string, string> allSchemeTypes = new();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await _referenceDataAPI.GetSchemesAsync().ContinueWith(x =>
+        await _referenceDataAPI.GetSchemeTypesAsync().ContinueWith(x =>
         {
             if (x.Result.IsSuccess)
             {
-                foreach (var scheme in x.Result.Data)
+                foreach (var schemeType in x.Result.Data)
                 {
-                    allSchemes.Add(scheme.code, scheme.description);
+                    allSchemeTypes.Add(schemeType.code, schemeType.description);
                 }
             }
         });

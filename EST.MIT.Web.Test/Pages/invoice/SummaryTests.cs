@@ -17,9 +17,9 @@ public class SummaryTests : TestContext
         _invoice = new Invoice();
         _invoice.PaymentRequests.Add(new PaymentRequest()
         {
-            FRN = 1234567890,
+            FRN = "1234567890",
             SourceSystem = "",
-            MarketingYear = 0,
+            MarketingYear = "0",
             PaymentRequestNumber = 0,
             AgreementNumber = "",
             Value = 0,

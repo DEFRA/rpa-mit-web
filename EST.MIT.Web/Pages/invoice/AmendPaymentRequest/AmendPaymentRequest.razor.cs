@@ -20,8 +20,6 @@ public partial class AmendPaymentRequest : ComponentBase
     {
         base.OnInitialized();
         invoice ??= _invoiceStateContainer.Value;
-        //TODO: fxs what happens when payment request is null
-        // or not found
         paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
     }
 
@@ -59,7 +57,6 @@ public partial class AmendPaymentRequest : ComponentBase
         if (response.IsSuccess)
         {
             _invoiceStateContainer.SetValue(response.Data);
-            _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
 
         _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");

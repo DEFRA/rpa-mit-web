@@ -8,24 +8,33 @@ public class Invoice : Validatable
 {
     [Required]
     public Guid Id { get; set; }
-
-    // fxs commented out/changed these attributes
+    
     [Required(ErrorMessage = "Payment Type is required")]
-    // [JsonPropertyName("InvoiceType")]
     public string PaymentType { get; set; } = default!;
+
     [Required(ErrorMessage = "Account Type is required")]
     public string AccountType { get; set; } = default!;
+
     [Required(ErrorMessage = "Organisation is required")]
     public string Organisation { get; set; } = default!;
+
     [Required(ErrorMessage = "Scheme Type is required")]
     public string SchemeType { get; set; } = default!;
+
     public List<PaymentRequest> PaymentRequests { get; set; } = new List<PaymentRequest>();
+
     public string Status { get; private set; } = "new";
+
     public string Reference { get; set; } = default!;
+
     public DateTimeOffset Created { get; private set; } = DateTimeOffset.Now;
+
     public DateTimeOffset Updated { get; private set; }
+
     public string CreatedBy { get; private set; } = default!;
+
     public string UpdatedBy { get; set; } = default!;
+
     public string Approver { get; set; } = default!;
     public Invoice()
     {

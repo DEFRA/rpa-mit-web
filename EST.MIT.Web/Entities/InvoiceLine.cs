@@ -6,9 +6,10 @@ namespace EST.MIT.Web.Entities;
 public class InvoiceLine : Validatable
 {
     public Guid Id { get; set; }
+
     [Required]
     [RegularExpression("(^\\d+\\.\\d{2}$)", ErrorMessage = "The Value must be in the format 0.00")]
-    public double Value { get; set; }
+    public decimal Value { get; set; }
     [Required(ErrorMessage = "Description is required")]
     public string Description { get; set; } = default!;
     [Required(ErrorMessage = "Fund code is required")]

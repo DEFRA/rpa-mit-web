@@ -14,31 +14,43 @@
 
 <section class="govuk-width-container">
     
+    @if(IsErrored)
+    {
+        <div class="govuk-form-group--error">
+            @foreach (var error in errors.Values.SelectMany(x => x).Distinct())
+            {
+                <p class="govuk-error-message">@error</p>
+            }
+        </div>
+    }
+
     <EditForm Model="paymentRequest" OnSubmit="SavePaymentRequest" class="govuk-!-padding-top-6">
 
-        <GDSInputInt @bind-Data="paymentRequest.FRN" Label="FRN" Key="FRN" Errors="errors" />
+        <GDSInputText @bind-Data="paymentRequest.FRN" Label="FRN" CommonKeys="CustomerReferenceCommonKeys" Key="FRN" Errors="errors" />
 
-        <GDSInputInt @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors" />
+        <GDSInputText @bind-Data="paymentRequest.SBI" Label="SBI" CommonKeys="CustomerReferenceCommonKeys" Key="SBI" Errors="errors" />
 
-        <GDSInputInt @bind-Data="paymentRequest.PaymentRequestNumber" Label="Payment Request Number" Key="PaymentRequestNumber" Errors="errors" />
+        <GDSInputText @bind-Data="paymentRequest.Vendor" Label="Vendor" CommonKeys="CustomerReferenceCommonKeys" Key="Vendor" Errors="errors" />
 
-        <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors" />
+        <GDSInputText @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors"/>
 
-        <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors" />
+        <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors"/>
 
-        <GDSInputText @bind-Data="paymentRequest.DueDate" Label="Due Date" Key="DueDate" Errors="errors" />
-        
-        @if(invoice.AccountType == "AR")
+        <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors"/>
+
+        <GDSInputText @bind-Data="paymentRequest.Description" Label="Description" Key="Description" Errors="errors"/>
+
+        @if (invoice.AccountType == "AR")
         {
-            <GDSInputText @bind-Data="paymentRequest.OriginalInvoiceNumber" Label="Original Claim Reference" Key="OriginalInvoiceNumber" Errors="errors" />
-            <GDSInputDate @bind-Data="paymentRequest.OriginalSettlementDate" Key="OriginalSettlementDate" Errors="errors" Label="Original AP Invoice Settlement Date" />
-            <GDSInputDate @bind-Data="paymentRequest.RecoveryDate" Key="RecoveryDate" Errors="errors" Label="Earliest date possible recovery first identified" />
-            <GDSInputText @bind-Data="paymentRequest.InvoiceCorrectionReference" Label="Correction Reference - Previous AR Invoice ID" Key="InvoiceCorrectionReference" Errors="errors" />
+            <GDSInputText @bind-Data="paymentRequest.OriginalInvoiceNumber" Label="Original Claim Reference" Key="OriginalInvoiceNumber" Errors="errors"/>
+            <GDSInputDate @bind-Data="paymentRequest.OriginalSettlementDate" Key="OriginalSettlementDate" Errors="errors" Label="Original AP Invoice Settlement Date"/>
+            <GDSInputDate @bind-Data="paymentRequest.RecoveryDate" Key="RecoveryDate" Errors="errors" Label="Earliest date possible recovery first identified"/>
+            <GDSInputText @bind-Data="paymentRequest.InvoiceCorrectionReference" Label="Correction Reference - Previous AR Invoice ID" Key="InvoiceCorrectionReference" Errors="errors"/>
         }
 
         <div class="govuk-form-group">
             <div class="govuk-button-group">
-                <button type=submit class="govuk-button" data-module="govuk-button">Save and Continue</button>
+                <button type=submit class="govuk-button" data-prevent-double-click="true" data-module="govuk-button">Save and Continue</button>
                 <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
             </div>
         </div>
