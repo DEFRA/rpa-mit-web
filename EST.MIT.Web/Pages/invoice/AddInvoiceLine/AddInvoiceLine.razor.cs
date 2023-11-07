@@ -113,7 +113,7 @@ public partial class AddInvoiceLine : ComponentBase
         }
 
         IsErrored = true;
-        errors = response.Errors;
+        errors = invoiceLine.Errors;
     }
 
     private void Cancel()

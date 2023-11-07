@@ -49,7 +49,7 @@ public partial class AddPaymentRequest : ComponentBase
         }
 
         IsErrored = true;
-        errors = response.Errors;
+        errors = paymentRequest.Errors;
 
     }
 

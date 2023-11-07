@@ -9,16 +9,16 @@ public class InvoiceLine : Validatable
     [Required]
     [RegularExpression("(^\\d+\\.\\d{2}$)", ErrorMessage = "The Value must be in the format 0.00")]
     public double Value { get; set; }
-    [Required]
+    [Required(ErrorMessage = "Description is required")]
     public string Description { get; set; } = default!;
-    [Required]
+    [Required(ErrorMessage = "Fund code is required")]
     public string FundCode { get; set; } = "";
-    [Required]
+    [Required(ErrorMessage = "Main account is required")]
     public string MainAccount { get; set; } = "";
-    [Required]
+    [Required(ErrorMessage = "Scheme code is required")]
     public string SchemeCode { get; set; } = "";
-    [Required]
+    [Required(ErrorMessage = "Marketing year is required")]
     public string MarketingYear { get; set; } = "";
-    [Required]
+    [Required(ErrorMessage = "Delivery body is required")]
     public string DeliveryBody { get; set; } = "";
 }
