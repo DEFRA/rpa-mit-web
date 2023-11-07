@@ -15,6 +15,7 @@ public class InvoiceAPIMapper : Profile
             .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => !string.IsNullOrWhiteSpace(src.MarketingYear) ? Convert.ToInt32(src.MarketingYear) : 0));
 
         CreateMap<InvoiceLineDTO, InvoiceLine>()
+            .ForMember(dest => dest.Id, act => act.MapFrom(src => Guid.NewGuid()))
             .ForMember(dest => dest.MarketingYear, act => act.MapFrom(src => src.MarketingYear <= 0 ? string.Empty : src.MarketingYear.ToString()));
 
         CreateMap<PaymentRequest, PaymentRequestDTO>()

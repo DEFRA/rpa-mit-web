@@ -218,6 +218,61 @@ public class InvoiceAPITests
     }
 
     [Fact]
+    public async void UpdateInvoiceAsync_AddInvoiceLine_SetsValueCorrectly()
+    {
+        _mockRepository.Setup(x => x.PutInvoiceAsync(It.IsAny<PaymentRequestsBatchDTO>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+
+        // Setup. NB. Deliberately start with incorrect Value for empty PaymentRequest
+        var invoice = new Invoice() { AccountType = "AP", Organisation = "RPA", SchemeType = "DA", PaymentType = "EU" };
+        var paymentRequest = new PaymentRequest() { PaymentRequestId = "1", Value = 1.23M };
+        invoice.PaymentRequests.Add(paymentRequest);
+        var invoiceLine1 = new InvoiceLine() { Value = 2.34M };
+        var invoiceLine2 = new InvoiceLine() { Value = 1.11M };
+
+        // Add First line (2.34)
+        var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
+        var response = await service.UpdateInvoiceAsync(invoice, paymentRequest, invoiceLine1);
+        var savedInvoice = response.Data;
+        savedInvoice.PaymentRequests.First(x => x.PaymentRequestId == "1").Value.Should().Be(2.34M);
+
+        // Add Second Line (1.11)
+        response = await service.UpdateInvoiceAsync(invoice, paymentRequest, invoiceLine2);
+        savedInvoice = response.Data;
+        savedInvoice.PaymentRequests.First(x => x.PaymentRequestId == "1").Value.Should().Be(3.45M);
+
+        // Amend Second Line (1.11 => 2.22)
+        invoiceLine2.Value = 2.22M;
+        response = await service.UpdateInvoiceAsync(invoice, paymentRequest, invoiceLine2);
+        savedInvoice = response.Data;
+        savedInvoice.PaymentRequests.First(x => x.PaymentRequestId == "1").Value.Should().Be(4.56M);
+    }
+
+    [Fact]
+    public async void UpdateInvoiceAsync_PaymentRequest_Values_Set_Correctly()
+    {
+        _mockRepository.Setup(x => x.PutInvoiceAsync(It.IsAny<PaymentRequestsBatchDTO>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+
+        var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
+        Invoice invoice = null!;
+        var response = await service.UpdateInvoiceAsync(invoice);
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+
+        // Setup. NB. Deliberately start with incorrect Value for PaymentRequest
+        invoice = new Invoice() { AccountType = "AP", Organisation = "RPA", SchemeType = "DA", PaymentType = "EU" };
+        var paymentRequest1 = new PaymentRequest() { PaymentRequestId = "1", Value = 1.23M };
+        var invoiceLine1 = new InvoiceLine() { Value = 2.34M };
+        var invoiceLine2 = new InvoiceLine() { Value = 1.11M };
+        paymentRequest1.InvoiceLines.Add(invoiceLine1);
+        paymentRequest1.InvoiceLines.Add(invoiceLine2);
+        invoice.PaymentRequests.Add(paymentRequest1);
+        response = await service.UpdateInvoiceAsync(invoice);
+        var savedInvoice = response.Data;
+        savedInvoice.PaymentRequests.First(x => x.PaymentRequestId == "1").Value.Should().Be(3.45M);
+    }
+
+    [Fact]
     public async void UpdateInvoiceAsync_Line_ReturnsBadRequest()
     {
         _mockRepository.Setup(x => x.PutInvoiceAsync(It.IsAny<PaymentRequestsBatchDTO>()))
