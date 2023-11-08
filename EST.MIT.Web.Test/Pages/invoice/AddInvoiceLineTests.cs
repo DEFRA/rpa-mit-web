@@ -71,6 +71,38 @@ public class AddInvoiceLineTests : TestContext
     }
 
     [Fact]
+    public void SaveInvoiceLine_Set_To_Validate()
+    {
+        var errors = new Dictionary<string, List<string>>
+        {
+            { "testkey", new List<string>() { "TestError" } }
+        };
+        var IsErrored = false;
+        var Errors = new Dictionary<string, List<string>>();
+
+        _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<PaymentRequest>(), It.IsAny<InvoiceLine>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
+        _mockPageServices.Setup(x => x.Validation(It.IsAny<InvoiceLine>(), out IsErrored, out Errors)).Returns(true);
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+
+        var component = RenderComponent<AddInvoiceLine>(parameters =>
+        {
+            parameters.Add(p => p.PaymentRequestId, "1");
+            parameters.Add(p => p., 123);
+            parameters.Add(p => p.Label, "TestLabel");
+            parameters.Add(p => p.Key, "TestKey");
+            parameters.Add(p => p.Errors, errors);
+        });
+
+        component.FindAll("button.govuk-button")[0].Click();
+
+        component.Instance.Errors.Should().NotBeEmpty();
+        component.Instance.Data.Should().Be(123);
+        component.Instance.Label.Should().Be("TestLabel");
+        component.Instance.Key.Should().Be("testkey");
+        InputErrorClass.Should().NotBeEmpty();
+    }
+
+    [Fact]
     public void SaveInvoiceLine_Navigates_To_Add_AmendHeader()
     {
         var IsErrored = false;
