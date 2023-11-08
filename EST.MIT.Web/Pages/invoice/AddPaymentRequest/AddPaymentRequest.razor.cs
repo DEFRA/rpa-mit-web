@@ -13,6 +13,9 @@ public partial class AddPaymentRequest : ComponentBase
     [Inject] private IPageServices _pageServices { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
 
+    private readonly Dictionary<string, string> currencies = new();
+
+
     [Parameter] public Invoice invoice { get; set; } = default!;
 
     private readonly PaymentRequest paymentRequest = new();
@@ -21,11 +24,18 @@ public partial class AddPaymentRequest : ComponentBase
 
     private List<string> CustomerReferenceCommonKeys { get; } = new List<string> { "CustomerReference" };
 
+    public AddPaymentRequest()
+    {
+        this.currencies.Add("GBP", "GBP");
+        this.currencies.Add("EUR", "EUR");
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         invoice ??= _invoiceStateContainer.Value;
         paymentRequest.AccountType = invoice?.AccountType;
+        this.paymentRequest.Currency = this.currencies.First().Value;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

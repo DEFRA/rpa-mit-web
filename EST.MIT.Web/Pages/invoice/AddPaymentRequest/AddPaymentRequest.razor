@@ -39,7 +39,15 @@
 
             <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors"/>
 
-            <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors"/>
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="currency">Currency</label>
+                <InputSelect class="govuk-select govuk-!-width-full" for="currency" @bind-Value="paymentRequest.Currency">
+                    @foreach (var currency in currencies)
+                    {
+                        <option value="@currency.Value">@currency.Key</option>
+                    }
+                </InputSelect>
+            </div>
 
             <GDSInputText @bind-Data="paymentRequest.Description" Label="Description" Key="Description" Errors="errors" />
             
