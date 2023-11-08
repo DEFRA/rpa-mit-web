@@ -1,0 +1,63 @@
+<div class="govuk-form-group @(IsErrored ? "govuk-form-group--error" : "")">
+    <label class="govuk-label" for="@Key">@Label</label>
+    @if (IsErrored)
+    {
+        <p class="govuk-error-message">
+            @foreach (var error in err)
+            {
+                <span class="govuk-visually-hidden">Error:</span> @error <br />
+            }
+        </p>
+        <InputSelect class="govuk-select govuk-!-width-full gov-select--error" id="@Key" name="@Key" @bind-Value="Data">
+            @if (HasChooseOption)
+            {
+                if (string.IsNullOrWhiteSpace(Data))
+                {
+                    <option value="" selected>Choose @Label.ToLower()</option>
+                }
+                else
+                {
+                    <option value="">Choose @Label.ToLower()</option>
+                }
+            }
+            @foreach (var option in Options)
+            {
+                if (Data.ToLower() == option.Value.ToLower())
+                {
+                    <option value="@option.Value" selected>@option.Key</option>
+                }
+                else
+                {
+                    <option value="@option.Value">@option.Key</option>
+                }
+            }
+        </InputSelect>
+    }
+    else
+    {
+        <InputSelect class="govuk-select govuk-!-width-full" id="@Key" name="@Key" @bind-Value="Data">
+            @if (HasChooseOption)
+            {
+                if (string.IsNullOrWhiteSpace(Data))
+                {
+                    <option value="" selected>Choose @Label.ToLower()</option>
+                }
+                else
+                {
+                    <option value="">Choose @Label.ToLower()</option>
+                }
+            }
+            @foreach (var option in Options)
+            {
+                if (Data.ToLower() == option.Value.ToLower())
+                {
+                    <option value="@option.Value" selected>@option.Key</option>
+                }
+                else
+                {
+                    <option value="@option.Value">@option.Key</option>
+                }
+            }
+        </InputSelect>
+    }
+</div>
