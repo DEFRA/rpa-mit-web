@@ -17,6 +17,7 @@ public class Validatable : IValidatable
             if (error.Key.StartsWith(ErrorPath))
             {
                 string errorKey = error.Key.Remove(0, ErrorPath.Length);
+                errorKey = errorKey.TrimStart('.');
                 if (!errorKey.Contains('.') &&
                     !Errors.ContainsKey(errorKey))
                 {

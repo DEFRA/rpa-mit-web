@@ -8,7 +8,7 @@ public class Invoice : Validatable
 {
     [Required]
     public Guid Id { get; set; }
-    
+
     [Required(ErrorMessage = "Payment Type is required")]
     public string PaymentType { get; set; } = default!;
 
@@ -73,7 +73,7 @@ public class Invoice : Validatable
         for (int paymentRequestIndex = 0; paymentRequestIndex < PaymentRequests.Count; paymentRequestIndex++)
         {
             PaymentRequest paymentRequest = PaymentRequests[paymentRequestIndex];
-            paymentRequest.ErrorPath = string.Concat(ErrorPath, $"{nameof(Invoice.PaymentRequests)}[", paymentRequestIndex, "].");
+            paymentRequest.ErrorPath = string.Concat(ErrorPath, ".", $"{nameof(Invoice.PaymentRequests)}[", paymentRequestIndex, "]");
             paymentRequest.AddErrors(errors);
         }
         return base.AddErrors(errors);
