@@ -87,8 +87,17 @@ public class InvoiceAPI : IInvoiceAPI
 
     private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice)
     {
+        if (invoice is null) {
+            return new ApiResponse<Invoice>(HttpStatusCode.BadRequest);
+        }
+
         var errors = new Dictionary<string, List<string>>();
         invoice.Update();
+
+        foreach (var paymentRequest in invoice.PaymentRequests)
+        {
+            paymentRequest.Value = paymentRequest.InvoiceLines.Sum(invoiceLine => invoiceLine.Value);
+        }
 
         var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
 
@@ -138,10 +147,16 @@ public class InvoiceAPI : IInvoiceAPI
     {
         var errors = new Dictionary<string, List<string>>();
 
-        invoiceLine.Id = Guid.NewGuid();
-        invoice.PaymentRequests
-                .First(x => x.PaymentRequestId == paymentRequest.PaymentRequestId).InvoiceLines
-                .Add(invoiceLine);
+        if (invoiceLine.Id == Guid.Empty)
+        {
+            invoiceLine.Id = Guid.NewGuid();
+        }
+
+        var updatedPaymentRequest = invoice.PaymentRequests.First(x => x.PaymentRequestId == paymentRequest.PaymentRequestId);
+        updatedPaymentRequest.InvoiceLines = updatedPaymentRequest.InvoiceLines.Where(line => line.Id != invoiceLine.Id).ToList();
+        updatedPaymentRequest.InvoiceLines.Add(invoiceLine);
+        updatedPaymentRequest.Value = updatedPaymentRequest.InvoiceLines.Sum(line => line.Value);
+
         invoice.Update();
 
         var dto = this._autoMapper.Map<PaymentRequestsBatchDTO>(invoice);
