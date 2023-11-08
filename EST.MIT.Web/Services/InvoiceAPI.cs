@@ -87,7 +87,8 @@ public class InvoiceAPI : IInvoiceAPI
 
     private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice)
     {
-        if (invoice is null) {
+        if (invoice is null)
+        {
             return new ApiResponse<Invoice>(HttpStatusCode.BadRequest);
         }
 

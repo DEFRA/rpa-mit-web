@@ -36,7 +36,7 @@ public class PaymentRequestTests : TestContext
         validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The FRN must be a 10-digit number or be empty.");
 
     }
-    
+
     [Fact]
     public void SBI_Should_Be_GreaterThanMinRange()
     {
@@ -71,7 +71,7 @@ public class PaymentRequestTests : TestContext
 
         validationResults.Should().ContainSingle(vr => vr.ErrorMessage == "The Marketing Year must be after 2014");
     }
-    
+
     [Fact]
     public void PaymentRequestNumber_Is_SetTo1_InConstructor()
     {
@@ -112,36 +112,28 @@ public class PaymentRequestTests : TestContext
 
 
 
-        [Fact]
-        public void Validate_ShouldGenerateError_WhenFRNSBIAndVendorAreEmpty()
+    [Fact]
+    public void Validate_ShouldGenerateError_WhenFRNSBIAndVendorAreEmpty()
+    {
+        var paymentRequest = new PaymentRequest
         {
-            // Arrange
-            var paymentRequest = new PaymentRequest
-            {
-                // Assume all required properties are set up correctly
-                // but FRN, SBI, and Vendor are left as null or empty
-            };
+        };
 
-            var validationContext = new ValidationContext(paymentRequest, serviceProvider: null, items: null);
+        var validationContext = new ValidationContext(paymentRequest, serviceProvider: null, items: null);
 
-            // Act
-            var results = new List<ValidationResult>();
-            var isValid = Validator.TryValidateObject(paymentRequest, validationContext, results, true);
+        var results = new List<ValidationResult>();
+        var isValid = Validator.TryValidateObject(paymentRequest, validationContext, results, true);
 
-            // If there are more complex validations that are not checked by TryValidateObject,
-            // you should call the Validate method directly and enumerate the results.
-            var validateResults = paymentRequest.Validate(validationContext);
+        var validateResults = paymentRequest.Validate(validationContext);
 
-            // Assert
-            Assert.False(isValid, "Validation should fail when FRN, SBI, and Vendor are empty.");
+        Assert.False(isValid, "Validation should fail when FRN, SBI, and Vendor are empty.");
 
-            // Check for the specific error message
-            Assert.Contains(validateResults, v => v.ErrorMessage == "At least one of FRN, SBI, or Vendor must be entered");
-        }
-    
+        Assert.Contains(validateResults, v => v.ErrorMessage == "At least one of FRN, SBI, or Vendor must be entered");
+    }
 
 
-private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
+
+    private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
     {
         var validationResults = new System.Collections.Generic.List<ValidationResult>();
         var validationContext = new ValidationContext(model, null, null);

@@ -1,11 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Repositories;
-
-public interface IUploadRepository
-{
-    Task<HttpResponseMessage> GetUploads();
-}
 
 public class UploadRepository : IUploadRepository
 {
@@ -24,6 +20,17 @@ public class UploadRepository : IUploadRepository
 
 
         var response = await client.GetAsync($"/Uploads/userid");
+
+        await HandleHttpResponseError(response);
+
+        return response;
+    }
+
+    public async Task<HttpResponseMessage> GetFileByFileNameAsync(string fileName)
+    {
+        var client = _clientFactory.CreateClient("InvoiceImporterAPI");
+
+        var response = await client.GetAsync($"/Uploads/{fileName}");
 
         await HandleHttpResponseError(response);
 
