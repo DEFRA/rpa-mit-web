@@ -4,22 +4,6 @@
 @using EST.MIT.Web.Shared.Components.GDSInputText
 @using Helpers
 
-@functions {
-    string ErrorMessagesForField(string fieldKey)
-    {
-        if (errors.Any(x => x.Key.ToLower().Contains(fieldKey.ToLower())))
-        {
-            var values = errors.FirstOrDefault(x => x.Key.ToLower().Contains(fieldKey.ToLower())).Value;
-
-            if (values.Count > 0)
-            {
-                return values[0];
-            }
-        }
-        return null;
-    }
-}
-
 @if (!paymentRequest.IsNull())
 {
     <section class="govuk-width-container govuk-!-padding-top-9">

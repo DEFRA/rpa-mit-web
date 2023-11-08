@@ -99,6 +99,20 @@ public partial class AddInvoiceLine : ComponentBase
         }
     }
 
+    private string ErrorMessagesForField(string fieldKey)
+    {
+        if (errors.Any(x => x.Key.ToLower().Contains(fieldKey.ToLower())))
+        {
+            var values = errors.FirstOrDefault(x => x.Key.ToLower().Contains(fieldKey.ToLower())).Value;
+
+            if (values.Count > 0)
+            {
+                return values[0];
+            }
+        }
+        return null;
+    }
+
     private async Task SaveInvoiceLine()
     {
         if (!_pageServices.Validation(invoiceLine, out IsErrored, out errors)) return;
