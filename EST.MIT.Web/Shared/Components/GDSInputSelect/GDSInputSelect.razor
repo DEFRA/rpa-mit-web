@@ -8,7 +8,7 @@
                 <span class="govuk-visually-hidden">Error:</span> @error <br />
             }
         </p>
-        <InputSelect class="govuk-select govuk-!-width-full gov-select--error" id="@Key" name="@Key" @bind-Value="Data">
+        <InputSelect class="govuk-select govuk-!-width-full govuk-select--error" id="@Key" name="@Key" @bind-Value="Data">
             @if (HasChooseOption)
             {
                 if (string.IsNullOrWhiteSpace(Data))
