@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http.Headers;
 using EST.MIT.Web.Repositories;
 using Moq.Contrib.HttpClient;
 
@@ -57,4 +58,58 @@ public class UploadRepositoryTests
         var content = await response.Content.ReadAsStringAsync();
         content.Should().Be("Test BadRequest");
     }
+
+    [Fact]
+    public async Task GetFileByFileNameAsync_ReturnsFileContent_WhenFileExists()
+    {
+        var fileName = "test1.xlsx";
+        var expectedContent = new ByteArrayContent(new byte[] { 1, 2, 3, 4 });
+        expectedContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        _mockHttpMessageHandler.SetupRequest(HttpMethod.Get, $"https://localhost/Uploads/{fileName}")
+                            .ReturnsResponse(HttpStatusCode.OK, expectedContent);
+
+        var factory = _mockHttpMessageHandler.CreateClientFactory();
+
+        Mock.Get(factory).Setup(x => x.CreateClient(It.IsAny<string>())).Returns(() =>
+        {
+            var client = _mockHttpMessageHandler.CreateClient();
+            client.BaseAddress = new Uri("https://localhost");
+            return client;
+        });
+
+        var repo = new UploadRepository(factory);
+
+        var response = await repo.GetFileByFileNameAsync(fileName);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var content = await response.Content.ReadAsByteArrayAsync();
+        content.Should().Equal(new byte[] { 1, 2, 3, 4 });
+        response.Content.Headers.ContentType.MediaType.Should().Be("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    }
+
+    [Fact]
+    public async Task GetFileByFileNameAsync_ReturnsNull_WhenFileNotFound()
+    {
+        var fileName = "nonexistent.xlsx";
+        _mockHttpMessageHandler.SetupRequest(HttpMethod.Get, $"https://localhost/Uploads/{fileName}")
+                            .ReturnsResponse(HttpStatusCode.NotFound);
+
+        var factory = _mockHttpMessageHandler.CreateClientFactory();
+        Mock.Get(factory).Setup(x => x.CreateClient(It.IsAny<string>())).Returns(() =>
+        {
+            var client = _mockHttpMessageHandler.CreateClient();
+            client.BaseAddress = new Uri("https://localhost");
+            return client;
+        });
+
+        var repo = new UploadRepository(factory);
+
+        var response = await repo.GetFileByFileNameAsync(fileName);
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        var content = await response.Content.ReadAsStringAsync();
+        content.Should().BeEmpty();
+    }
+
 }

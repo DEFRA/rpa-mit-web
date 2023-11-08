@@ -1,10 +1,23 @@
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Shared.Components.UserUploadsCard;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 
 namespace EST.MIT.Web.Test.Components;
 
 public class UserUploadsCardTests : TestContext
 {
+    private readonly Mock<IUploadAPI> _mockUploadAPI;
+    private readonly Mock<IJSRuntime> _mockJSRuntime;
+
+    public UserUploadsCardTests()
+    {
+        _mockUploadAPI = new Mock<IUploadAPI>();
+        _mockJSRuntime = new Mock<IJSRuntime>();
+        Services.AddSingleton(_mockUploadAPI.Object);
+        Services.AddSingleton(_mockJSRuntime.Object);
+    }
 
     [Fact]
     public void Specific_Data_Rendered_Correctly()
@@ -36,6 +49,7 @@ public class UserUploadsCardTests : TestContext
         cellTexts[3].Should().Be("RDT");
         cellTexts[4].Should().Be("CP");
         cellTexts[5].Should().Be("AR");
+        cellTexts[6] = component.FindAll(".govuk-table__cell")[6].TextContent.Trim();
     }
 
     [Fact]

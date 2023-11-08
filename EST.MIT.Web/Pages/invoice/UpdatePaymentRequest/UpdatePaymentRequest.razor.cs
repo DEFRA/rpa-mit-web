@@ -28,7 +28,7 @@ public partial class UpdatePaymentRequest : ComponentBase
     }
 
     private async Task SavePaymentRequest()
-    { 
+    {
         if (!_pageServices.Validation(paymentRequest, out IsErrored, out errors)) return;
 
         invoice.PaymentRequests = invoice.PaymentRequests.Where(x => x.PaymentRequestId != PaymentRequestId).ToList();
