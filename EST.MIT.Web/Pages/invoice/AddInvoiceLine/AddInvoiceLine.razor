@@ -5,11 +5,11 @@
 @using Helpers
 
 @functions {
-    string HasErrorMessage(string key)
+    string ErrorMessagesForField(string fieldKey)
     {
-        if (errors.Any(x => x.Key.ToLower().Contains(key.ToLower())))
+        if (errors.Any(x => x.Key.ToLower().Contains(fieldKey.ToLower())))
         {
-            var values = errors.FirstOrDefault(x => x.Key.ToLower().Contains(key.ToLower())).Value;
+            var values = errors.FirstOrDefault(x => x.Key.ToLower().Contains(fieldKey.ToLower())).Value;
 
             if (values.Count > 0)
             {
@@ -61,15 +61,15 @@
 
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-one-half">
-                    <div class="govuk-form-group @(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.Description))) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.Description))) ? "" : "govuk-form-group--error")">
                         <label class="govuk-label" for="description">Description</label>
-                        @if (!String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.Description))))
+                        @if (!String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.Description))))
                         {
                             <p id="description" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @HasErrorMessage(nameof(invoiceLine.Description))
+                                <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.Description))
                             </p>
                         }
-                        <InputSelect class="@(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.Description))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="description" @bind-Value="invoiceLine.Description">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.Description))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="description" @bind-Value="invoiceLine.Description">
                             <option value="">Select</option>
                             <option value="G00 - Gross value of claim">G00 - Gross value of claim</option>
                             <option value="P05 - Late claim submission penalty">P05 - Late claim submission penalty</option>
@@ -82,17 +82,17 @@
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half">
-                    <div class="govuk-form-group @(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.DeliveryBody))) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.DeliveryBody))) ? "" : "govuk-form-group--error")">
                         <label class="govuk-label" for="delivery-body">Delivery Body</label>
 
-                        @if (!String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.DeliveryBody))))
+                        @if (!String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.DeliveryBody))))
                         {
                             <p id="delivery-body" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @HasErrorMessage(nameof(invoiceLine.DeliveryBody))
+                                <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.DeliveryBody))
                             </p>
                         }
 
-                        <InputSelect class="@(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.DeliveryBody))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="delivery-body" @bind-Value="invoiceLine.DeliveryBody">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.DeliveryBody))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="delivery-body" @bind-Value="invoiceLine.DeliveryBody">
                             <option value="">Select</option>
                             @foreach (var deliveryBody in allDeliveryBodies)
                             {
@@ -105,15 +105,15 @@
 
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-one-half">
-                    <div class="govuk-form-group @(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.FundCode))) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.FundCode))) ? "" : "govuk-form-group--error")">
                         <label class="govuk-label" for="fund-code">Fund Code</label>
-                        @if (!String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.FundCode))))
+                        @if (!String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.FundCode))))
                         {
                             <p id="description" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @HasErrorMessage(nameof(invoiceLine.FundCode))
+                                <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.FundCode))
                             </p>
                         }
-                        <InputSelect class="@(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.FundCode))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="fund-code" @bind-Value="invoiceLine.FundCode">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.FundCode))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="fund-code" @bind-Value="invoiceLine.FundCode">
                             <option value="">Select</option>
                             @foreach (var fundCode in allFundCodes)
                             {
@@ -123,15 +123,15 @@
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half">
-                    <div class="govuk-form-group @(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.MainAccount))) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MainAccount))) ? "" : "govuk-form-group--error")">
                         <label class="govuk-label" for="main-account">Main Account</label>
-                        @if (!String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.MainAccount))))
+                        @if (!String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MainAccount))))
                         {
                             <p id="description" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @HasErrorMessage(nameof(invoiceLine.MainAccount))
+                                <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.MainAccount))
                             </p>
                         }
-                        <InputSelect class="@(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.MainAccount))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="main-account" @bind-Value="invoiceLine.MainAccount">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MainAccount))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="main-account" @bind-Value="invoiceLine.MainAccount">
                             <option value="">Select</option>
                             @foreach (var mainAccount in allAccounts)
                             {
@@ -144,15 +144,15 @@
 
             <div class="govuk-grid-row">
                 <div class="govuk-grid-column-one-half">
-                    <div class="govuk-form-group @(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.SchemeCode))) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.SchemeCode))) ? "" : "govuk-form-group--error")">
                         <label class="govuk-label" for="scheme-code">Scheme Code</label>
-                        @if (!String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.SchemeCode))))
+                        @if (!String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.SchemeCode))))
                         {
                             <p id="description" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @HasErrorMessage(nameof(invoiceLine.SchemeCode))
+                                <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.SchemeCode))
                             </p>
                         }
-                        <InputSelect class="@(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.SchemeCode))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="scheme-code" @bind-Value="invoiceLine.SchemeCode">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.SchemeCode))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="scheme-code" @bind-Value="invoiceLine.SchemeCode">
                             <option>Select</option>
                             @foreach (var schemeCode in allSchemeCodes)
                             {
@@ -162,15 +162,15 @@
                     </div>
                 </div>
                 <div class="govuk-grid-column-one-half">
-                    <div class="govuk-form-group @(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.MarketingYear))) ? "" : "govuk-form-group--error")">
+                    <div class="govuk-form-group @(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MarketingYear))) ? "" : "govuk-form-group--error")">
                         <label class="govuk-label" for="marketing-year">Marketing Year</label>
-                        @if (!String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.MarketingYear))))
+                        @if (!String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MarketingYear))))
                         {
                             <p id="description" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @HasErrorMessage(nameof(invoiceLine.MarketingYear))
+                                <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.MarketingYear))
                             </p>
                         }
-                        <InputSelect class="@(String.IsNullOrEmpty(HasErrorMessage(nameof(invoiceLine.MarketingYear))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="marketing-year" @bind-Value="invoiceLine.MarketingYear">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MarketingYear))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="marketing-year" @bind-Value="invoiceLine.MarketingYear">
                             <option value="">Select</option>
                             @foreach (var marketingYear in allMarketingYears)
                             {
