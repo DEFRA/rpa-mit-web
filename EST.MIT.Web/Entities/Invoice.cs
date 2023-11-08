@@ -8,7 +8,7 @@ public class Invoice : Validatable
 {
     [Required]
     public Guid Id { get; set; }
-    
+
     [Required(ErrorMessage = "Payment Type is required")]
     public string PaymentType { get; set; } = default!;
 

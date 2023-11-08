@@ -101,16 +101,7 @@ public partial class AddInvoiceLine : ComponentBase
 
     private string ErrorMessagesForField(string fieldKey)
     {
-        if (errors.Any(x => x.Key.ToLower().Contains(fieldKey.ToLower())))
-        {
-            var values = errors.FirstOrDefault(x => x.Key.ToLower().Contains(fieldKey.ToLower())).Value;
-
-            if (values.Count > 0)
-            {
-                return values[0];
-            }
-        }
-        return null;
+        return ErrorMessageHelper.ErrorMessagesForField(errors, fieldKey);
     }
 
     private async Task SaveInvoiceLine()
@@ -121,12 +112,16 @@ public partial class AddInvoiceLine : ComponentBase
 
         if (response.IsSuccess)
         {
+            IsErrored = false;
+            errors.Clear();
             _invoiceStateContainer.SetValue(response.Data);
             _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
-
-        IsErrored = true;
-        errors = invoiceLine.Errors;
+        else
+        {
+            IsErrored = true;
+            errors = invoiceLine.Errors;
+        }
     }
 
     private void Cancel()
