@@ -56,13 +56,16 @@ public partial class AddPaymentRequest : ComponentBase
 
         if (response.IsSuccess)
         {
+            IsErrored = false;
+            errors.Clear();
             _invoiceStateContainer.SetValue(response.Data);
             _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
         }
-
-        IsErrored = true;
-        errors = response.Errors;
-
+        else
+        {
+            IsErrored = true;
+            errors = paymentRequest.Errors;
+        }
     }
 
     private void Cancel()

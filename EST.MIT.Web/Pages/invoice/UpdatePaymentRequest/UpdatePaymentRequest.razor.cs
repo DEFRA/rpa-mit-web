@@ -47,13 +47,15 @@ public partial class UpdatePaymentRequest : ComponentBase
 
         if (response.IsSuccess)
         {
+            IsErrored = false;
+            errors.Clear();
             _invoiceStateContainer.SetValue(invoice);
             _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
         else
         {
             IsErrored = true;
-            errors = response.Errors;
+            errors = paymentRequest.Errors;
         }
     }
 
