@@ -127,9 +127,6 @@ public partial class AmendInvoiceLine : ComponentBase
             IsErrored = true;
             errors = invoiceLine.Errors;
         }
-
-        IsErrored = true;
-        errors = invoiceLine.Errors;
     }
 
     private void Cancel()
