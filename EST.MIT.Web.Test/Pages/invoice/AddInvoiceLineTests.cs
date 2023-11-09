@@ -70,7 +70,7 @@ public class AddInvoiceLineTests : TestContext
         navigationManager?.Uri.Should().Be("http://localhost/");
     }
 
-    [Fact]
+    [Fact(Timeout = 100000)]
     public void SaveInvoiceLine_Navigates_To_Add_AmendHeader()
     {
         var IsErrored = false;

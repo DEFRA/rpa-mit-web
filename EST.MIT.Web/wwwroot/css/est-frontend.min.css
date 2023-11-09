@@ -87,3 +87,7 @@
   color: #fff;
   margin-bottom: 30px;
 }
+
+a.govuk-link--no-underline:hover {
+  cursor: pointer;
+}

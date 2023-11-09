@@ -99,8 +99,8 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
         radioButtons[0].GetAttribute("value").Should().Be("EU");
     }
 
-    [Fact]
-    public void Saves_Selected_PaymentType_Navigates_To_Review_Bulk()
+    [Fact(Timeout = 100000)]
+    public void Saves_Selected_PaymentType_Navigates_To_Review_BulkAsync()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
         var navigationManager = Services.GetService<NavigationManager>();
@@ -121,6 +121,7 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
 
         selectPaymentTypeRadioButton[0].Change("DOMESTIC");
         saveAndContinueButton[0].Click();
+
         navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
     }
 

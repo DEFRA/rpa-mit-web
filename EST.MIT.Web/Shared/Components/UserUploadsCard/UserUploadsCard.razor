@@ -1,6 +1,6 @@
-﻿
-@using Helpers
+﻿@using Helpers
 @using EST.MIT.Web.Shared.Components.InvoiceMetaData
+@inject IJSRuntime JS
 
 @if (importRequests.IsNull())
 {
@@ -32,6 +32,7 @@ else
       <th scope="col" class="govuk-table__header">Organisation</th>
       <th scope="col" class="govuk-table__header">Scheme Type</th>
       <th scope="col" class="govuk-table__header">Payment Type</th>
+      <th scope="col" class="govuk-table__header">Download</th>
     </tr>
   </thead>
   <tbody class="govuk-table__body">
@@ -44,6 +45,14 @@ else
           <td class="govuk-table__cell">@importRequest.Organisation</td>
           <td class="govuk-table__cell">@importRequest.SchemeType</td>
           <td class="govuk-table__cell">@importRequest.PaymentType</td>
+         <td class="govuk-table__cell">
+          <p class="govuk-body">
+            <a @onclick="() => DownloadFile(importRequest.FileName)" class="govuk-link govuk-link--no-underline">
+              <img src="/assets/images/icon-file-download.png" alt="icon-file-download" style="height: 1em; width: auto; vertical-align: text-bottom; margin-right: 5px;">
+              @importRequest.FileName</a>
+          </p>
+        </td>
+
         </tr>
       }
     </tbody>
