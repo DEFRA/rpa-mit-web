@@ -28,7 +28,7 @@
                             @foreach (var value in error.Value)
                             {
                                 <li>
-                                    <a href="#@error.Key">@value</a>
+                                    <a href="/invoice/update-payment-request/@PaymentRequestId/#@error.Key">@value</a>
                                 </li>
                             }
                         }
