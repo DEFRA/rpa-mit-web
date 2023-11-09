@@ -129,7 +129,7 @@ public partial class AmendInvoiceLine : ComponentBase
         }
 
         IsErrored = true;
-        errors = response.Errors;
+        errors = invoiceLine.Errors;
     }
 
     private void Cancel()
