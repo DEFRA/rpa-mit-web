@@ -10,6 +10,9 @@ public partial class UpdatePaymentRequest : ComponentBase
     [Inject] private IInvoiceAPI _api { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
+
+    private readonly Dictionary<string, string> currencies = new();
+
     [Inject] private IPageServices _pageServices { get; set; }
 
     [Parameter] public string PaymentRequestId { get; set; } = default!;
@@ -20,6 +23,12 @@ public partial class UpdatePaymentRequest : ComponentBase
     private Dictionary<string, List<string>> errors = new();
 
     private List<string> CustomerReferenceCommonKeys { get; } = new List<string> { "CustomerReference" };
+
+    public UpdatePaymentRequest()
+    {
+        this.currencies.Add("GBP", "GBP");
+        this.currencies.Add("EUR", "EUR");
+    }
 
     protected override async Task OnInitializedAsync()
     {

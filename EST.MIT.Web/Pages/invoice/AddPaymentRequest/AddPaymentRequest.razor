@@ -2,6 +2,7 @@
 @using EST.MIT.Web.Shared.Components.GDSInputInt
 @using EST.MIT.Web.Shared.Components.GDSInputText
 @using EST.MIT.Web.Shared.Components.GDSInputDate
+@using EST.MIT.Web.Shared.Components.GDSInputSelect
 @using EST.MIT.Web.Shared.Components.InvoiceMetaData
 @using Helpers
 
@@ -38,8 +39,8 @@
             <GDSInputText @bind-Data="paymentRequest.MarketingYear" Label="Marketing Year" Key="MarketingYear" Errors="errors"/>
 
             <GDSInputText @bind-Data="paymentRequest.AgreementNumber" Label="Agreement Number" Key="AgreementNumber" Errors="errors"/>
-
-            <GDSInputText @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Errors="errors"/>
+            
+            <GDSInputSelect @bind-Data="paymentRequest.Currency" Label="Currency" Key="Currency" Options="currencies" Errors="errors"/>
 
             <GDSInputText @bind-Data="paymentRequest.Description" Label="Description" Key="Description" Errors="errors" />
             
