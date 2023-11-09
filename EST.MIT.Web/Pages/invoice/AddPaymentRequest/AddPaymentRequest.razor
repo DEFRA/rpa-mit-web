@@ -29,7 +29,7 @@
                         <ul class="govuk-list govuk-error-summary__list">
                             @foreach (var error in errors)
                             {
-                                @foreach (var value in error.Value)
+                                @foreach (var value in error.Value.Distinct())
                                 {
                                     <li>
                                         <a href="/invoice/add-payment-request/#@error.Key">@value</a>
