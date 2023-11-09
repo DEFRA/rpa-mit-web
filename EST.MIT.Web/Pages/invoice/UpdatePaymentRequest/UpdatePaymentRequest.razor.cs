@@ -28,7 +28,7 @@ public partial class UpdatePaymentRequest : ComponentBase
     }
 
     private async Task SavePaymentRequest()
-    { 
+    {
         if (!_pageServices.Validation(paymentRequest, out IsErrored, out errors)) return;
 
         invoice.PaymentRequests = invoice.PaymentRequests.Where(x => x.PaymentRequestId != PaymentRequestId).ToList();
@@ -38,13 +38,15 @@ public partial class UpdatePaymentRequest : ComponentBase
 
         if (response.IsSuccess)
         {
+            IsErrored = false;
+            errors.Clear();
             _invoiceStateContainer.SetValue(invoice);
             _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
         else
         {
             IsErrored = true;
-            errors = response.Errors;
+            errors = paymentRequest.Errors;
         }
     }
 
