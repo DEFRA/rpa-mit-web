@@ -4,7 +4,7 @@
 @using EST.MIT.Web.Shared.Components.ReadonlyInvoicePR
 @using EST.MIT.Web.Shared.Components.ReadonlyInvoiceLines
 
-@if(IsErrored)
+@if (IsErrored)
 {
     <section class="govuk-width-container govuk-!-padding-top-3">
         <div class="govuk-error-summary" data-module="govuk-error-summary">
@@ -14,7 +14,7 @@
                 </h2>
                 <div class="govuk-error-summary__body">
                     <ul class="govuk-list govuk-error-summary__list">
-                        @foreach(var error in Errors)
+                        @foreach (var error in Errors)
                         {
                             <li>
                                 <a href="#@(error.Key)">@error.Value</a>
@@ -27,17 +27,19 @@
     </section>
 }
 
-@if(!@invoice.IsNull()) {
+@if (!@invoice.IsNull())
+{
 
-<section class="govuk-width-container govuk-!-padding-top-3">
-    <h1 class="govuk-heading-l">
-        Invoice: @invoice.Id
-    </h1>
-</section>
+    <section class="govuk-width-container govuk-!-padding-top-3">
+        <a class="govuk-back-link" href="/invoice/summary/@invoice.SchemeType/@invoice.Id">Back</a>
+        <h1 class="govuk-heading-l">
+            Invoice: @invoice.Id
+        </h1>
+    </section>
 
-<InvoiceMetaData Invoice=invoice />
+    <InvoiceMetaData Invoice=invoice />
 
-    @foreach(var payment in invoice.PaymentRequests)
+    @foreach (var payment in invoice.PaymentRequests)
     {
         <section class="govuk-width-container govuk-!-padding-top-3">
 
@@ -50,7 +52,7 @@
         </section>
     }
 
-    @if(Approval)
+    @if (Approval)
     {
         <section class="govuk-width-container govuk-!-padding-top-3">
             <div class="govuk-form-group">
