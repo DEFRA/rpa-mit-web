@@ -18,18 +18,29 @@
         </button>
 
         <dl class="govuk-summary-list">
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">FRN</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.FRN</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">SBI</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.SBI</dd>
-            </div>
-            <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key">Vendor</dt>
-                <dd class="govuk-summary-list__value">@paymentRequest.Vendor</dd>
-            </div>
+            @{
+                if (!String.IsNullOrEmpty(@paymentRequest.FRN))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">FRN</dt>
+                        <dd class="govuk-summary-list__value">@paymentRequest.FRN</dd>
+                    </div>
+                }
+                if (!String.IsNullOrEmpty(@paymentRequest.SBI))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">SBI</dt>
+                        <dd class="govuk-summary-list__value">@paymentRequest.SBI</dd>
+                    </div>
+                }
+                if (!String.IsNullOrEmpty(@paymentRequest.Vendor))
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Vendor</dt>
+                        <dd class="govuk-summary-list__value">@paymentRequest.Vendor</dd>
+                    </div>
+                }
+            }
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key">Marketing Year</dt>
                 <dd class="govuk-summary-list__value">@paymentRequest.MarketingYear</dd>
@@ -99,7 +110,7 @@
                         <td class="govuk-table__cell">@line.Description</td>
                         <td class="govuk-table__cell">
                             <a id="update-invoice-line" class="govuk-link" href=""
-                            @onclick="@(() => UpdateInvoiceLine(@line.Id))">Amend</a> | 
+                            @onclick="@(() => UpdateInvoiceLine(@line.Id))">Amend</a> |
                             <a id="delete-invoice-line" class="govuk-link" href=""
                             @onclick="@(() => DeleteInvoiceLine(@line.Id))">Delete</a>
                         </td>
