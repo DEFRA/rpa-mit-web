@@ -8,6 +8,7 @@ using EST.MIT.Web.Entities;
 using EST.MIT.Web.Services;
 using Microsoft.Extensions.Logging;
 using EST.MIT.Web.Repositories;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Test.Services;
 
@@ -420,5 +421,81 @@ public class InvoiceAPITests
         var response = await service.GetApprovalsAsync();
 
         response.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetInvoicesAsync_ReturnsOk()
+    {
+        var mockInvoices = new List<Invoice>();
+
+        _mockRepository.Setup(x => x.GetInvoicesAsync())
+          .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+          {
+              Content = new StringContent(JsonSerializer.Serialize(mockInvoices))
+          });
+
+        var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
+        var result = await service.GetInvoicesAsync();
+
+        result.Should().Equal(mockInvoices);
+    }
+
+    [Fact]
+    public async Task GetInvoicesAsync_HandlesException()
+    {
+        _mockRepository.Setup(x => x.GetInvoicesAsync())
+          .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
+
+        var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
+        var result = await service.GetInvoicesAsync();
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetInvoicesAsync_HandlesEmptyResponse()
+    {
+        _mockRepository.Setup(x => x.GetInvoicesAsync())
+          .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+          {
+              Content = new StringContent("")
+          });
+
+        var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
+        var result = await service.GetInvoicesAsync();
+
+        result.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task GetInvoicesAsync_ReturnsOk_WhenDeserializationSucceeds()
+    {
+        var mockInvoices = new List<Invoice>();
+
+        _mockRepository.Setup(x => x.GetInvoicesAsync())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonSerializer.Serialize(mockInvoices))
+            });
+
+        var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
+        var result = await service.GetInvoicesAsync();
+
+        result.Should().Equal(mockInvoices);
+    }
+
+    [Fact]
+    public async Task GetInvoicesAsync_ReturnsNull_WhenDeserializationFails()
+    {
+        _mockRepository.Setup(x => x.GetInvoicesAsync())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("invalid JSON")
+            });
+
+        var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
+        var result = await service.GetInvoicesAsync();
+
+        result.Should().BeNull();
     }
 }

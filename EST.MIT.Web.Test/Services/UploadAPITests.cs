@@ -79,4 +79,40 @@ public class UploadAPITests
             (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()),
             Times.Exactly(2));
     }
+
+    [Fact]
+    public async Task GetFileByFileNameAsync_ReturnsFileContent_WhenApiResponseIsSuccess()
+    {
+        byte[] fileContent = { 1, 2, 3, 4 };
+        var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new ByteArrayContent(fileContent)
+        };
+        _mockUploadRepository.Setup(repo => repo.GetFileByFileNameAsync(It.IsAny<string>())).ReturnsAsync(httpResponseMessage);
+
+        var result = await _uploadAPI.GetFileByFileNameAsync("testfile.txt");
+
+        Assert.NotNull(result);
+        Assert.Equal(fileContent, result);
+    }
+
+    [Fact]
+    public async Task GetFileByFileNameAsync_LogsWarningAndReturnsNull_WhenFileNotFound()
+    {
+        var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
+        _mockUploadRepository.Setup(repo => repo.GetFileByFileNameAsync(It.IsAny<string>())).ReturnsAsync(httpResponseMessage);
+
+        var result = await _uploadAPI.GetFileByFileNameAsync("nonexistent.txt");
+
+        Assert.Null(result);
+        _mockLogger.Verify(logger => logger.Log(
+            LogLevel.Warning,
+            It.IsAny<EventId>(),
+            It.Is<It.IsAnyType>((o, t) => string.Equals($"File not found: nonexistent.txt", o.ToString())),
+            null,
+            (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()),
+        Times.Once);
+    }
+
+
 }

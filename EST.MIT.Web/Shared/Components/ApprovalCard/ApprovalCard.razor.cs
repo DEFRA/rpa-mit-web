@@ -1,4 +1,5 @@
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components;
 
 namespace EST.MIT.Web.Shared.Components.ApprovalCard;

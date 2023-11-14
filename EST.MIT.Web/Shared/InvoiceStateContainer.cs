@@ -1,13 +1,7 @@
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Shared;
-
-public interface IInvoiceStateContainer
-{
-    Invoice? Value { get; }
-    event Action OnStateChange;
-    void SetValue(Invoice? value);
-}
 
 public class InvoiceStateContainer : IInvoiceStateContainer
 {

@@ -12,6 +12,6 @@ public partial class UserInvoices : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        invoices = await _API.GetApprovalsAsync();
+        invoices = await _API.GetInvoicesAsync();
     }
 }

@@ -160,6 +160,22 @@ public class InvoiceRepositoryTests : TestContext
         var response = await repo.PostInvoiceAsync(new PaymentRequestsBatchDTO());
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        response.Content.ReadAsStringAsync().Result.Should().Be("Test BadRequest");
+        var responseContent = await response.Content.ReadAsStringAsync();
+        responseContent.Should().Be("Test BadRequest");
+    }
+
+    [Fact]
+    public async Task GetInvoicesAsync_Returns_200()
+    {
+        var clientFactoryMock = new Mock<IHttpClientFactory>();
+        clientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(new HttpClient());
+
+        var invoiceRepository = new InvoiceRepository(clientFactoryMock.Object);
+
+        var response = await invoiceRepository.GetInvoicesAsync();
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var responseContent = await response.Content.ReadAsStringAsync();
+        responseContent.Should().NotBeNull();
     }
 }

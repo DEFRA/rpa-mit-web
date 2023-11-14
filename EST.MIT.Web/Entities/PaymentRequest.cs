@@ -92,7 +92,7 @@ public class PaymentRequest : Validatable, IValidatableObject
         for (int invoiceLineIndex = 0; invoiceLineIndex < InvoiceLines.Count; invoiceLineIndex++)
         {
             InvoiceLine invoiceLine = InvoiceLines[invoiceLineIndex];
-            invoiceLine.ErrorPath = string.Concat(ErrorPath,".", $"{nameof(PaymentRequest.InvoiceLines)}[{invoiceLineIndex}]");
+            invoiceLine.ErrorPath = string.Concat(ErrorPath, ".", $"{nameof(PaymentRequest.InvoiceLines)}[{invoiceLineIndex}]");
             invoiceLine.AddErrors(errors);
         }
         return base.AddErrors(errors);
