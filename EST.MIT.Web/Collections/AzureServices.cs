@@ -40,7 +40,24 @@ public static partial class ServiceCollectionExtensions
             else
             {
                 return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, eventQueueName), logger);
+            }
+        });
 
+        services.AddSingleton<IImporterQueueService>(_ =>
+        {
+            var importerQueueName = configuration.GetSection("ImporterQueueName").Value;
+            var queueStorageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
+            var logger = _.GetService<ILogger<IImporterQueueService>>();
+
+            if (IsManagedIdentity(queueStorageAccountCredential))
+            {
+                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
+                var queueUrl = new Uri($"{queueServiceUri}{importerQueueName}");
+                return new ImporterQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()), logger);
+            }
+            else
+            {
+                return new ImporterQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, importerQueueName), logger);
             }
         });
 

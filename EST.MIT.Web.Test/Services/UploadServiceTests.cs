@@ -11,7 +11,8 @@ public class UploadServiceTests : TestContext
 {
     private Mock<IUploadService> _uploadServiceMock;
     private Mock<IAzureBlobService> _blobServiceMock;
-    private Mock<IEventQueueService> _queueServiceMock;
+    private Mock<IEventQueueService> _EventQueueServiceMock;
+    private Mock<IImporterQueueService> _ImporterQueueServiceMock;
     private Mock<ILogger<UploadService>> _logger;
 
     Invoice routeFields = new()
@@ -26,7 +27,8 @@ public class UploadServiceTests : TestContext
     {
         _uploadServiceMock = new Mock<IUploadService>();
         _blobServiceMock = new Mock<IAzureBlobService>();
-        _queueServiceMock = new Mock<IEventQueueService>();
+        _EventQueueServiceMock = new Mock<IEventQueueService>();
+        _ImporterQueueServiceMock = new Mock<IImporterQueueService>();
         _logger = new Mock<ILogger<UploadService>>();
     }
 
@@ -37,9 +39,10 @@ public class UploadServiceTests : TestContext
 
         Mock<IBrowserFile> fileMock = new Mock<IBrowserFile>();
         _blobServiceMock.Setup(x => x.AddFileToBlobAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IBrowserFile>())).Returns(Task.FromResult<bool>(true));
-        _queueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult<bool>(true));
+        _EventQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult<bool>(true));
+        _ImporterQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<ImportRequest>())).Returns(Task.FromResult<bool>(true));
 
-        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _queueServiceMock.Object);
+        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object);
 
         var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user");
 
@@ -52,8 +55,9 @@ public class UploadServiceTests : TestContext
     {
         Mock<IBrowserFile> fileMock = new Mock<IBrowserFile>();
         _blobServiceMock.Setup(x => x.AddFileToBlobAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IBrowserFile>(), It.IsAny<string>())).ThrowsAsync(new Exception("Blob Test Error"));
+        _ImporterQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<ImportRequest>())).Returns(Task.FromResult<bool>(true));
 
-        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _queueServiceMock.Object);
+        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object);
 
         var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user");
 
