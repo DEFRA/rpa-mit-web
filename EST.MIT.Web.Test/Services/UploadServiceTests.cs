@@ -38,7 +38,7 @@ public class UploadServiceTests : TestContext
 
 
         Mock<IBrowserFile> fileMock = new Mock<IBrowserFile>();
-        _blobServiceMock.Setup(x => x.AddFileToBlobAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IBrowserFile>())).Returns(Task.FromResult<bool>(true));
+        _blobServiceMock.Setup(x => x.AddFileToBlobAsync(It.IsAny<string>(), It.IsAny<IBrowserFile>())).Returns(Task.FromResult<bool>(true));
         _EventQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult<bool>(true));
         _ImporterQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<ImportRequest>())).Returns(Task.FromResult<bool>(true));
 
@@ -54,7 +54,7 @@ public class UploadServiceTests : TestContext
     public async Task UploadFileAsync_Returns_500()
     {
         Mock<IBrowserFile> fileMock = new Mock<IBrowserFile>();
-        _blobServiceMock.Setup(x => x.AddFileToBlobAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IBrowserFile>(), It.IsAny<string>())).ThrowsAsync(new Exception("Blob Test Error"));
+        _blobServiceMock.Setup(x => x.AddFileToBlobAsync(It.IsAny<string>(), It.IsAny<IBrowserFile>())).ThrowsAsync(new Exception("Blob Test Error"));
         _ImporterQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<ImportRequest>())).Returns(Task.FromResult<bool>(true));
 
         var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object);

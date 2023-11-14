@@ -35,7 +35,8 @@ public class UserUploadsCardTests : TestContext
             AccountType = "First Payment",
             CreatedBy = "test@example.com",
             Status = UploadStatus.Uploaded,
-            BlobPath = "https://defrastorageaccount.blob.core.windows.net/invoices/import/test.xlsx"
+            BlobFileName = "testblob",
+            BlobFolder= "archive"
         };
 
         var importRequests = new List<ImportRequest> { importRequest };
@@ -43,7 +44,7 @@ public class UserUploadsCardTests : TestContext
         var component = RenderComponent<UserUploadsCard>(parameters => parameters.Add(p => p.importRequests, importRequests));
 
         var cellTexts = component.FindAll(".govuk-table__cell").Select(cell => cell.TextContent).ToArray();
-        cellTexts[0].Should().Be(importRequest.Timestamp.Value.ToString("dd/MM/yyyy"));
+        cellTexts[0].Should().Be(importRequest.Timestamp.Value.ToString("dd/MM/yyyy HH:mm:ss"));
         cellTexts[1].Should().Be("Uploaded");
         cellTexts[2].Should().Be("First Payment");
         cellTexts[3].Should().Be("RDT");

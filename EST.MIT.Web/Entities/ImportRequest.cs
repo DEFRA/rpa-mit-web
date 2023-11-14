@@ -15,7 +15,8 @@ public class ImportRequest
     public string AccountType { get; set; }
     public string CreatedBy { get; init; }
     public UploadStatus Status { get; init; }
-    public string BlobPath { get; set; }
+    public string BlobFileName { get; set; }
+    public string BlobFolder { get; set; }
 }
 
 public static class ImportRequestExtentions

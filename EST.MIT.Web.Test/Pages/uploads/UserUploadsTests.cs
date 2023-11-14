@@ -29,7 +29,8 @@ public class UserUploadsTests : TestContext
                 AccountType = "First Payment",
                 CreatedBy = "test@example.com",
                 Status = UploadStatus.Uploaded,
-                BlobPath = "https://defrastorageaccount.blob.core.windows.net/invoices/import/test.xlsx"
+                BlobFileName = "testblob",
+                BlobFolder = "import"
             }
         };
 
@@ -56,7 +57,7 @@ public class UserUploadsTests : TestContext
         Assert.Equal(_mockUploads, userUploadsCard.Instance.importRequests);
 
         var cellTexts = userUploadsCard.FindAll(".govuk-table__cell").Select(cell => cell.TextContent).ToArray();
-        Assert.Equal(_mockUploads.First().Timestamp?.ToString("dd/MM/yyyy"), cellTexts[0]);
+        Assert.Equal(_mockUploads.First().Timestamp?.ToString("dd/MM/yyyy HH:mm:ss"), cellTexts[0]);
         Assert.Equal("Uploaded", cellTexts[1]);
         Assert.Equal("First Payment", cellTexts[2]);
         Assert.Equal("RDT", cellTexts[3]);

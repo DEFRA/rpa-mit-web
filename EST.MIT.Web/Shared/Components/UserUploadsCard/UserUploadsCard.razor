@@ -26,7 +26,7 @@ else
   <caption class="govuk-table__caption govuk-table__caption--l">My Uploads</caption>
   <thead class="govuk-table__head">
     <tr class="govuk-table__row">
-      <th scope="col" class="govuk-table__header">Date</th>
+      <th scope="col" class="govuk-table__header">Uploaded on</th>
       <th scope="col" class="govuk-table__header">Status</th>
       <th scope="col" class="govuk-table__header">Account Type</th>
       <th scope="col" class="govuk-table__header">Organisation</th>
@@ -47,7 +47,7 @@ else
           <td class="govuk-table__cell">@importRequest.PaymentType</td>
          <td class="govuk-table__cell">
           <p class="govuk-body">
-            <a @onclick="() => DownloadFile(importRequest.FileName)" class="govuk-link govuk-link--no-underline">
+            <a @onclick="() => DownloadFile(importRequest)" class="govuk-link govuk-link--no-underline">
               <img src="/assets/images/icon-file-download.png" alt="icon-file-download" style="height: 1em; width: auto; vertical-align: text-bottom; margin-right: 5px;">
               @importRequest.FileName</a>
           </p>

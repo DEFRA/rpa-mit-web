@@ -44,18 +44,17 @@ public class AzureBlobServiceTests : TestContext
 
         blobClientMock.Setup(x => x.GetBlobContainerClient(It.IsAny<string>())).Returns(mockBlobContainerClient.Object);
 
-        _blobService = new AzureBlobService(blobClientMock.Object, _logger);
+        _blobService = new AzureBlobService(blobClientMock.Object, _logger, AzureBlobService.default_BlobContainerName);
     }
 
     [Fact]
     public async void AddFileToBlobAsync_Upload_Successful()
     {
         string blobName = "test-blob";
-        string containerName = "test-container";
 
         mockBlobContainerClient.Setup(x => x.ExistsAsync(default)).ReturnsAsync(Response.FromValue(true, new Mock<Response>().Object));
 
-        var result = await _blobService.AddFileToBlobAsync(blobName, containerName, _file);
+        var result = await _blobService.AddFileToBlobAsync(blobName, _file);
 
         result.Should().BeTrue();
     }
@@ -64,11 +63,10 @@ public class AzureBlobServiceTests : TestContext
     public async void AddFileToBlobAsync_Container_Not_Exists()
     {
         string blobName = "test-blob";
-        string containerName = "test-container";
 
         mockBlobContainerClient.Setup(x => x.ExistsAsync(default)).ReturnsAsync(Response.FromValue(false, new Mock<Response>().Object));
 
-        var result = await _blobService.AddFileToBlobAsync(blobName, containerName, _file);
+        var result = await _blobService.AddFileToBlobAsync(blobName, _file);
 
         result.Should().BeFalse();
     }
@@ -76,13 +74,11 @@ public class AzureBlobServiceTests : TestContext
     [Fact]
     public async void AddFileToBlobAsync_Upload_With_Directory_Successful()
     {
-        string directory = "test-directory";
-        string containerName = "test-container";
-        string blobName = "test-blob";
+        string blobFileName = "folder/test-blob";
 
         mockBlobContainerClient.Setup(x => x.ExistsAsync(default)).ReturnsAsync(Response.FromValue(true, new Mock<Response>().Object));
 
-        var result = await _blobService.AddFileToBlobAsync(blobName, containerName, _file, directory);
+        var result = await _blobService.AddFileToBlobAsync(blobFileName, _file);
 
         result.Should().BeTrue();
     }

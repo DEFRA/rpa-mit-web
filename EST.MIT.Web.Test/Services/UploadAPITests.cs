@@ -81,34 +81,34 @@ public class UploadAPITests
     }
 
     [Fact]
-    public async Task GetFileByFileNameAsync_ReturnsFileContent_WhenApiResponseIsSuccess()
+    public async Task GetFileByRequestIdAsync_ReturnsFileContent_WhenApiResponseIsSuccess()
     {
         byte[] fileContent = { 1, 2, 3, 4 };
         var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK)
         {
             Content = new ByteArrayContent(fileContent)
         };
-        _mockUploadRepository.Setup(repo => repo.GetFileByFileNameAsync(It.IsAny<string>())).ReturnsAsync(httpResponseMessage);
-
-        var result = await _uploadAPI.GetFileByFileNameAsync("testfile.txt");
+        _mockUploadRepository.Setup(repo => repo.GetFileByImportRequestIdAsync(It.IsAny<Guid>())).ReturnsAsync(httpResponseMessage);
+        var requestId = Guid.NewGuid();
+        var result = await _uploadAPI.GetFileByImportRequestIdAsync(requestId);
 
         Assert.NotNull(result);
         Assert.Equal(fileContent, result);
     }
 
     [Fact]
-    public async Task GetFileByFileNameAsync_LogsWarningAndReturnsNull_WhenFileNotFound()
+    public async Task GetFileByRequestIdAsync_LogsWarningAndReturnsNull_WhenFileNotFound()
     {
         var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.NotFound);
-        _mockUploadRepository.Setup(repo => repo.GetFileByFileNameAsync(It.IsAny<string>())).ReturnsAsync(httpResponseMessage);
-
-        var result = await _uploadAPI.GetFileByFileNameAsync("nonexistent.txt");
+        _mockUploadRepository.Setup(repo => repo.GetFileByImportRequestIdAsync(It.IsAny<Guid>())).ReturnsAsync(httpResponseMessage);
+        var requestId = Guid.NewGuid();
+        var result = await _uploadAPI.GetFileByImportRequestIdAsync(requestId);
 
         Assert.Null(result);
         _mockLogger.Verify(logger => logger.Log(
             LogLevel.Warning,
             It.IsAny<EventId>(),
-            It.Is<It.IsAnyType>((o, t) => string.Equals($"File not found: nonexistent.txt", o.ToString())),
+            It.Is<It.IsAnyType>((o, t) => string.Equals($"File not found: {requestId}", o.ToString())),
             null,
             (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>()),
         Times.Once);
