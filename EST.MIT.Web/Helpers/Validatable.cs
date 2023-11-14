@@ -1,4 +1,6 @@
-﻿namespace EST.MIT.Web.Helpers;
+﻿using EST.MIT.Web.Interfaces;
+
+namespace EST.MIT.Web.Helpers;
 
 public class Validatable : IValidatable
 {

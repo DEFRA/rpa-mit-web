@@ -59,7 +59,7 @@ public class AddInvoiceLineTests : TestContext
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
     }
 
-    [Fact]
+    [Fact(Timeout = 100000)]
     public void AfterRender_Redirects_When_Null_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
@@ -88,7 +88,6 @@ public class AddInvoiceLineTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
         navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/1");
     }
-
 
     [Fact]
     public void SaveInvoiceLine_Navigates_To_Add_AmendHeader_On_Cancel()

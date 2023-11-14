@@ -277,4 +277,36 @@ public class InvoiceAPI : IInvoiceAPI
         return id;
 
     }
+
+    public async Task<IEnumerable<Invoice>> GetInvoicesAsync()
+    {
+        var response = await _invoiceRepository.GetInvoicesAsync();
+
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            if (response.Content.Headers.ContentLength == 0)
+            {
+                _logger.LogWarning("API returned no data");
+                return null;
+            }
+
+            try
+            {
+                return await response.Content.ReadFromJsonAsync<IEnumerable<Invoice>>() ?? new List<Invoice>();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deserializing API response");
+                return null;
+            }
+        }
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
+        _logger.LogError("Unknown response from API");
+        return null;
+    }
 }

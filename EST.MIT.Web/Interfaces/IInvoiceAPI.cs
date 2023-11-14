@@ -11,6 +11,7 @@ public interface IInvoiceAPI
     Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine);
     Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice? invoice, string paymentRequestId);
     Task<IEnumerable<Invoice>> GetApprovalsAsync();
+    Task<IEnumerable<Invoice>> GetInvoicesAsync();
 }
 
 

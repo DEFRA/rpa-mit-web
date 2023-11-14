@@ -1,4 +1,4 @@
-﻿namespace EST.MIT.Web.Helpers;
+﻿namespace EST.MIT.Web.Interfaces;
 
 public interface IValidatable
 {
