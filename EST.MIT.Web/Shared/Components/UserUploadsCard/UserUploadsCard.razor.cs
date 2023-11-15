@@ -20,7 +20,7 @@ public partial class UserUploadsCard : ComponentBase
         return timestamp.Value.ToString("dd/MM/yyyy");
     }
 
-    private Stream GetFileStream()
+    public Stream GetFileStream()
     {
         var binaryData = new byte[50 * 1024];
         var fileStream = new MemoryStream(binaryData);

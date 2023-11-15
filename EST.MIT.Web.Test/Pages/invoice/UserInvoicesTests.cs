@@ -42,12 +42,11 @@ public class UserInvoicesTests : TestContext
             }
         };
 
-        _mockApiService.Setup(x => x.GetApprovalsAsync()).ReturnsAsync(invoices);
+        _mockApiService.Setup(x => x.GetInvoicesAsync()).ReturnsAsync(invoices);
 
         var component = RenderComponent<UserInvoices>();
         component.WaitForElements("div.govuk-summary-card");
 
         component.FindComponents<UserInvoicesCard>().Count.Should().Be(1);
-
     }
 }

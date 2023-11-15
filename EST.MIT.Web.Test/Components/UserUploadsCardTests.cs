@@ -49,7 +49,10 @@ public class UserUploadsCardTests : TestContext
         cellTexts[3].Should().Be("RDT");
         cellTexts[4].Should().Be("CP");
         cellTexts[5].Should().Be("AR");
-        cellTexts[6] = component.FindAll(".govuk-table__cell")[6].TextContent.Trim();
+
+        var downloadLinkCell = component.FindAll(".govuk-table__cell")[6];
+        var downloadLink = downloadLinkCell.QuerySelector("a");
+        downloadLink.TextContent.Should().Contain(importRequest.FileName);
     }
 
     [Fact]
@@ -57,5 +60,15 @@ public class UserUploadsCardTests : TestContext
     {
         var component = RenderComponent<UserUploadsCard>();
         component.Markup.Should().Contain("<h4 class=\"govuk-heading-s\">Nothing to Display</h4>");
+    }
+
+    [Fact]
+    public void GetFileStream_Returns_Non_Null_Stream()
+    {
+        var component = RenderComponent<UserUploadsCard>();
+
+        var fileStream = component.Instance.GetFileStream();
+
+        fileStream.Should().NotBeNull();
     }
 }

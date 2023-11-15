@@ -1,4 +1,4 @@
-namespace EST.MIT.Web.Repositories;
+using EST.MIT.Web.Interfaces;
 
 public interface IApprovalRepository
 {

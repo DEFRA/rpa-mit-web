@@ -4,18 +4,9 @@ using EST.MIT.Web.Entities;
 using System.Text.Json;
 using AutoMapper;
 using EST.MIT.Web.DTOs;
+using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Repositories;
-
-public interface IInvoiceRepository
-{
-    Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme);
-    Task<HttpResponseMessage> PostInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto);
-    Task<HttpResponseMessage> PutInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto);
-    Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequestDTO paymentRequestDto);
-    Task<HttpResponseMessage> GetApprovalAsync(string id, string scheme);
-    Task<HttpResponseMessage> GetApprovalsAsync();
-}
 
 public class InvoiceRepository : IInvoiceRepository
 {
@@ -143,5 +134,52 @@ public class InvoiceRepository : IInvoiceRepository
         {
             response.Content = new StringContent(await response.Content.ReadAsStringAsync());
         }
+    }
+
+    public async Task<HttpResponseMessage> GetInvoicesAsync()
+    {
+        //placeholder until the API is ready
+
+        var client = _clientFactory.CreateClient("InvoiceAPI");
+
+        var response = new HttpResponseMessage();
+
+        var invoices = new List<Invoice>();
+        invoices.Add(new Invoice
+        {
+            SchemeType = "scheme",
+            Approver = "approver",
+            PaymentType = "invoice",
+            AccountType = "account",
+            Organisation = "organisation",
+            PaymentRequests = new List<PaymentRequest> {
+                new PaymentRequest {
+                    FRN = "1234567890",
+                    Value = 420
+                }
+            }
+        });
+
+        invoices.Add(new Invoice
+        {
+            SchemeType = "scheme",
+            Approver = "approver",
+            PaymentType = "invoice",
+            AccountType = "account",
+            Organisation = "organisation",
+            PaymentRequests = new List<PaymentRequest> {
+                new PaymentRequest {
+                    FRN = "1122334455",
+                    Value = 6969
+                }
+            }
+        });
+
+        response.Content = new StringContent(JsonSerializer.Serialize(invoices));
+        response.StatusCode = HttpStatusCode.OK;
+
+        await HandleHttpResponseError(response);
+
+        return response;
     }
 }
