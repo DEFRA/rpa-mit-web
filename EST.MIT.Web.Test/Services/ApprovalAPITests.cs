@@ -82,7 +82,7 @@ public class ApprovalAPITests
         };
         _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover","schemeType");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schemeType");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.OK)
         {
@@ -134,9 +134,9 @@ public class ApprovalAPITests
     {
         var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
-        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(),It.IsAny<string>())).ReturnsAsync(response);
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover","schameType");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schameType");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.InternalServerError)
         {

@@ -185,6 +185,6 @@ public class ApprovalService : IApprovalService
         return invoices;
     }
 
-    private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver,scheme);
+    private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver, scheme);
 
 }
