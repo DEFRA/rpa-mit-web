@@ -339,14 +339,14 @@ public class InvoiceAPITests
         var _invoice = new Invoice();
         _invoice.Update("approval");
 
-        _mockRepository.Setup(x => x.GetApprovalsAsync())
+        _mockRepository.Setup(x => x.GetAllApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonSerializer.Serialize(new List<Invoice>() { _invoice }), Encoding.UTF8, "application/json")
             });
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
-        var response = await service.GetApprovalsAsync();
+        var response = await service.GetAllApprovalInvoicesAsync();
 
         response.Should().NotBeNull();
         response.Count().Should().Be(1);
@@ -355,11 +355,11 @@ public class InvoiceAPITests
     [Fact]
     public async void GetApprovalsAsync_API_Has_No_Results_ReturnsNull()
     {
-        _mockRepository.Setup(x => x.GetApprovalsAsync())
+        _mockRepository.Setup(x => x.GetAllApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
-        var response = await service.GetApprovalsAsync();
+        var response = await service.GetAllApprovalInvoicesAsync();
 
         response.Should().BeNull();
     }
@@ -367,14 +367,14 @@ public class InvoiceAPITests
     [Fact]
     public async void GetApprovalsAsync_Deserialze_Fail_ReturnsNull()
     {
-        _mockRepository.Setup(x => x.GetApprovalsAsync())
+        _mockRepository.Setup(x => x.GetAllApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonSerializer.Serialize(""), Encoding.UTF8, "application/json")
             });
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
-        var response = await service.GetApprovalsAsync();
+        var response = await service.GetAllApprovalInvoicesAsync();
 
         response.Should().BeNull();
     }
@@ -382,7 +382,7 @@ public class InvoiceAPITests
     [Fact]
     public async void GetApprovalsAsync_Blank_ReturnsNull()
     {
-        _mockRepository.Setup(x => x.GetApprovalsAsync())
+        _mockRepository.Setup(x => x.GetAllApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonSerializer.Serialize(new List<Invoice>()), Encoding.UTF8, "application/json")
@@ -394,7 +394,7 @@ public class InvoiceAPITests
 
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
-        var response = await service.GetApprovalsAsync();
+        var response = await service.GetAllApprovalInvoicesAsync();
 
         response.Should().HaveCount(0);
     }
@@ -402,11 +402,11 @@ public class InvoiceAPITests
     [Fact]
     public async void GetApprovalsAsync_ReturnsNotFound()
     {
-        _mockRepository.Setup(x => x.GetApprovalsAsync())
+        _mockRepository.Setup(x => x.GetAllApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
-        var response = await service.GetApprovalsAsync();
+        var response = await service.GetAllApprovalInvoicesAsync();
 
         response.Should().BeNull();
     }
@@ -414,11 +414,11 @@ public class InvoiceAPITests
     [Fact]
     public async void GetApprovalsAsync_UnknownResponse_ReturnsNull()
     {
-        _mockRepository.Setup(x => x.GetApprovalsAsync())
+        _mockRepository.Setup(x => x.GetAllApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
-        var response = await service.GetApprovalsAsync();
+        var response = await service.GetAllApprovalInvoicesAsync();
 
         response.Should().BeNull();
     }

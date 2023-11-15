@@ -13,21 +13,27 @@
 </section>
 
 <section class="govuk-width-container">
-
-    @if(!_approvals.Any())
+    
+    @if (_approvals != null)
     {
-        <div class="govuk-warning-text">
-        <span class="govuk-warning-text__icon" aria-hidden="true">ℹ️</span>
-        <strong class="govuk-warning-text__text">
-            <span class="govuk-warning-text__assistive">Warning</span>
-            You have no invoices to approve
-        </strong>
-        </div>
+        @if(!_approvals.Any())
+        {
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">ℹ️</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-warning-text__assistive">Warning</span>
+                    You have no invoices to approve
+                </strong>
+            </div>
+        }
+        else
+        {
+            @foreach (var invoice in _approvals)
+            {
+                <ApprovalCard invoice=invoice />
+            }
+        }
     }
 
-    @foreach (var invoice in _approvals)
-    {
-        <ApprovalCard invoice=invoice />
-    }
 
 </section >

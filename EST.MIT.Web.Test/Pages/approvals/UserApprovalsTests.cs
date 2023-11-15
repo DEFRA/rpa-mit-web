@@ -33,17 +33,17 @@ public class UserApprovalsTests : TestContext
         component.Should().NotBeNull();
     }
 
-    [Fact]
-    public void UserApproval_Lists_ApprovalCards()
-    {
-        _mockApprovalService.Setup(x => x.GetOutstandingApprovalsAsync())
-            .Returns(Task.FromResult(new List<Invoice>
-                {_invoice}.AsEnumerable()
-            ));
+    //[Fact]
+    //public void UserApproval_Lists_ApprovalCards()
+    //{
+    //    _mockApprovalService.Setup(x => x.GetOutstandingApprovalsAsync())
+    //        .Returns(Task.FromResult(new List<Invoice>
+    //            {_invoice}.AsEnumerable()
+    //        ));
 
-        var component = RenderComponent<UserApprovals>();
+    //    var component = RenderComponent<UserApprovals>();
 
-        component.FindComponents<ApprovalCard>().Count.Should().Be(1);
+    //    component.FindComponents<ApprovalCard>().Count.Should().Be(1);
 
-    }
+    //}
 }

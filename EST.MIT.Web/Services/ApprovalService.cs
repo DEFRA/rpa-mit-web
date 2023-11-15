@@ -27,8 +27,6 @@ public class ApprovalService : IApprovalService
     public async Task<bool> RejectInvoiceAsync(Invoice invoice, string justification) => await RejectInvoice(invoice, justification);
     public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice) => await SubmitApproval(invoice);
     public async Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value) => await GetApprovers();
-    public async Task<Invoice> GetApprovalAsync(string id, string scheme) => await GetApproval(id, scheme);
-    public async Task<IEnumerable<Invoice>> GetOutstandingApprovalsAsync() => await GetOutstandingApprovals();
     public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver) => await ValidateApprover(approver);
 
     private async Task<bool> ApproveInvoice(Invoice invoice)
@@ -147,26 +145,7 @@ public class ApprovalService : IApprovalService
             return new ApiResponse<Invoice>(false) { Errors = new Dictionary<string, List<string>> { { "Exception", new List<string> { ex.Message } } } };
         }
     }
-
-    private async Task<Invoice> GetApproval(string id, string scheme)
-    {
-        var invoice = await GetInvoiceAsync(id, scheme);
-
-        if (invoice.IsNull())
-        {
-            _logger.LogError($"Invoice {id}: Not found");
-            return null;
-        }
-
-        if (invoice.Status != "approval")
-        {
-            _logger.LogError($"Invoice {invoice.Id}: Not in approval status");
-            return null;
-        }
-
-        return invoice;
-    }
-
+    
     private async Task<Dictionary<string, string>> GetApprovers()
     {
         var approvers = new Dictionary<string, string>();
@@ -177,12 +156,6 @@ public class ApprovalService : IApprovalService
             return (Dictionary<string, string>)response.Data;
         }
         return approvers;
-    }
-
-    private async Task<IEnumerable<Invoice>> GetOutstandingApprovals()
-    {
-        var invoices = await _invoiceAPI.GetApprovalsAsync();
-        return invoices;
     }
 
     private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver) => await _approvalAPI.ValidateApproverAsync(approver);

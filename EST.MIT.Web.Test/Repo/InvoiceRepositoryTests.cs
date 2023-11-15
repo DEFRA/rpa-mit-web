@@ -115,7 +115,7 @@ public class InvoiceRepositoryTests : TestContext
 
         var repo = new InvoiceRepository(factory);
 
-        var response = await repo.GetApprovalAsync("BLK-1234567", "test");
+        var response = await repo.GetApprovalAsync("BLK-1234567");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
@@ -136,7 +136,7 @@ public class InvoiceRepositoryTests : TestContext
 
         var repo = new InvoiceRepository(factory);
 
-        var response = await repo.GetApprovalsAsync();
+        var response = await repo.GetAllApprovalsAsync();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
