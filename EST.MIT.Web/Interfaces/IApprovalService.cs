@@ -12,5 +12,5 @@ public interface IApprovalService
     Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value);
     Task<Invoice> GetApprovalAsync(string id, string scheme);
     Task<IEnumerable<Invoice>> GetOutstandingApprovalsAsync();
-    Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver);
+    Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme);
 }

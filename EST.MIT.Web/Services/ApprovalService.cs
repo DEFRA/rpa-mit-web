@@ -29,7 +29,7 @@ public class ApprovalService : IApprovalService
     public async Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value) => await GetApprovers();
     public async Task<Invoice> GetApprovalAsync(string id, string scheme) => await GetApproval(id, scheme);
     public async Task<IEnumerable<Invoice>> GetOutstandingApprovalsAsync() => await GetOutstandingApprovals();
-    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver) => await ValidateApprover(approver);
+    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme) => await ValidateApprover(approver, scheme);
 
     private async Task<bool> ApproveInvoice(Invoice invoice)
     {
@@ -185,6 +185,6 @@ public class ApprovalService : IApprovalService
         return invoices;
     }
 
-    private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver) => await _approvalAPI.ValidateApproverAsync(approver);
+    private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver,scheme);
 
 }
