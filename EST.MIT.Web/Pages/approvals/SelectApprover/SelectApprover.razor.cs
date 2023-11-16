@@ -48,7 +48,7 @@ public partial class SelectApprover : ComponentBase
     private async Task SubmitApproval()
     {
         IsErrored = false;
-        var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail);
+        var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail, invoice.SchemeType);
 
         if (!validate.IsSuccess || !validate.Data.Value)
         {

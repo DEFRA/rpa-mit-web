@@ -81,9 +81,9 @@ public class ApprovalAPITests
         {
             Content = new StringContent("true")
         };
-        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schemeType");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.OK)
         {
@@ -98,9 +98,9 @@ public class ApprovalAPITests
         {
             Content = new StringContent("false")
         };
-        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schemeType");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.NotFound)
         {
@@ -117,9 +117,9 @@ public class ApprovalAPITests
     {
         var response = new HttpResponseMessage(HttpStatusCode.BadRequest);
 
-        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schameType");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.BadRequest)
         {
@@ -135,9 +135,9 @@ public class ApprovalAPITests
     {
         var response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
-        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(response);
+        _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schameType");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.InternalServerError)
         {

@@ -84,7 +84,7 @@ public class SelectApproverTests : TestContext
         var testInvoice = new Invoice();
 
         _mockInvoiceStateContainer.Setup(x => x.Value).Returns(testInvoice);
-        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
+        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
         _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
 
         var component = RenderComponent<SelectApprover>();
@@ -98,7 +98,7 @@ public class SelectApproverTests : TestContext
     public void SubmitApproval_Validate_Fails()
     {
         _mockInvoiceStateContainer.Setup(x => x.Value).Returns(new Invoice());
-        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(false), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
+        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(false), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
         _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
 
         var component = RenderComponent<SelectApprover>();
@@ -111,7 +111,7 @@ public class SelectApproverTests : TestContext
 
         errorMessages.Count.Should().Be(1);
 
-        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.BadRequest) { Data = new BoolRef(true), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
+        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(),It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.BadRequest) { Data = new BoolRef(true), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
         component = RenderComponent<SelectApprover>();
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
         component.FindAll("button[type=submit]")[0].Click();
@@ -128,7 +128,7 @@ public class SelectApproverTests : TestContext
     public void SubmitApproval_Submit_Fails()
     {
         _mockInvoiceStateContainer.Setup(x => x.Value).Returns(new Invoice());
-        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
+        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
         _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.BadRequest) { Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
 
         var component = RenderComponent<SelectApprover>();

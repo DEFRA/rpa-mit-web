@@ -258,10 +258,10 @@ public class ApprovalServiceTests
     [Fact]
     public void ValidateApproverAsync_Returns_True()
     {
-        _mockApprovalApi.Setup(x => x.ValidateApproverAsync(It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
+        _mockApprovalApi.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
 
         var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
-        var response = service.ValidateApproverAsync("Loid.Forger@defra.gov.uk");
+        var response = service.ValidateApproverAsync("Loid.Forger@defra.gov.uk", "schemeType");
 
         response.Result.Data.Value.Should().BeTrue();
     }
