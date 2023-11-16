@@ -6,5 +6,5 @@ namespace EST.MIT.Web.Interfaces;
 public interface IApprovalAPI
 {
     Task<ApiResponse> GetApproversAsync(string scheme, string value);
-    Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver);
+    Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme);
 }

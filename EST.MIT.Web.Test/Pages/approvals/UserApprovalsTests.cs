@@ -11,7 +11,8 @@ public class UserApprovalsTests : TestContext
 {
     private readonly Mock<IApprovalService> _mockApprovalService;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
-    private Invoice _invoice;
+    private readonly Mock<IInvoiceAPI> _mockApiService;
+    private readonly Invoice _invoice;
     public UserApprovalsTests()
     {
         _invoice = new Invoice()
@@ -21,14 +22,17 @@ public class UserApprovalsTests : TestContext
 
         _mockApprovalService = new Mock<IApprovalService>();
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
+        _mockApiService = new Mock<IInvoiceAPI>();
 
         Services.AddSingleton<IApprovalService>(_mockApprovalService.Object);
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
+        Services.AddSingleton<IInvoiceAPI>(_mockApiService.Object);
     }
 
     [Fact]
     public void UserApproval_Renders()
     {
+        _mockApiService.Setup(x => x.GetAllApprovalInvoicesAsync()).ReturnsAsync(new List<Invoice>());
         var component = RenderComponent<UserApprovals>();
         component.Should().NotBeNull();
     }

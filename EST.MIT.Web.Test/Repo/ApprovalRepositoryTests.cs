@@ -49,7 +49,7 @@ public class ApprovalRepositoryTests : TestContext
 
         var repo = new ApprovalRepository(factory);
 
-        var response = await repo.ValidateApproverAsync("Loid.Forger@defra.gov.uk");
+        var response = await repo.ValidateApproverAsync("Loid.Forger@defra.gov.uk", "schemeType");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
     }

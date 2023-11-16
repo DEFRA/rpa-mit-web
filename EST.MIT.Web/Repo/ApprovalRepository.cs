@@ -1,7 +1,6 @@
 using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Repositories;
-
 public class ApprovalRepository : IApprovalRepository
 {
     private readonly IHttpClientFactory _clientFactory;
@@ -13,7 +12,7 @@ public class ApprovalRepository : IApprovalRepository
 
     public async Task<HttpResponseMessage> GetApproversAsync(string scheme, string value)
         => await GetApprovers(scheme, value);
-    public async Task<HttpResponseMessage> ValidateApproverAsync(string approver) => await ValidateApprover(approver);
+    public async Task<HttpResponseMessage> ValidateApproverAsync(string approver, string scheme) => await ValidateApprover(approver, scheme);
 
     private async Task<HttpResponseMessage> GetApprovers(string scheme, string value)
     {
@@ -26,13 +25,13 @@ public class ApprovalRepository : IApprovalRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> ValidateApprover(string approver)
+    private async Task<HttpResponseMessage> ValidateApprover(string approver, string scheme)
     {
         var client = _clientFactory.CreateClient("ApprovalAPI");
 
         var body = new ValidateBody
         {
-            scheme = "BPS",
+            scheme = scheme,
             approverEmailAddress = approver
         };
 
