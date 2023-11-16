@@ -27,8 +27,8 @@ public class ApprovalService : IApprovalService
     public async Task<bool> RejectInvoiceAsync(Invoice invoice, string justification) => await RejectInvoice(invoice, justification);
     public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice) => await SubmitApproval(invoice);
     public async Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value) => await GetApprovers();
-    public async Task<Invoice> GetApprovalAsync(string id, string scheme) => await GetApproval(id, scheme);
-    public async Task<IEnumerable<Invoice>> GetOutstandingApprovalsAsync() => await GetOutstandingApprovals();
+    //public async Task<Invoice> GetApprovalAsync(string id, string scheme) => await GetApproval(id, scheme);
+   // public async Task<IEnumerable<Invoice>> GetOutstandingApprovalsAsync() => await GetOutstandingApprovals();
     public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme) => await ValidateApprover(approver, scheme);
 
     private async Task<bool> ApproveInvoice(Invoice invoice)
@@ -160,11 +160,11 @@ public class ApprovalService : IApprovalService
         return approvers;
     }
 
-    private async Task<IEnumerable<Invoice>> GetOutstandingApprovals()
-    {
-        var invoices = await _invoiceAPI.GetApprovalsAsync();
-        return invoices;
-    }
+    //private async Task<IEnumerable<Invoice>> GetOutstandingApprovals()
+    //{
+    //    var invoices = await _invoiceAPI.GetApprovalsAsync();
+    //    return invoices;
+    //}
 
     private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver, scheme);
 
