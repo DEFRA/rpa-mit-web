@@ -37,5 +37,11 @@ public class ImporterQueueService : IImporterQueueService
 
             return false;
         }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error {ex.Message} sending message for File {request.FileName} from {request.CreatedBy} to Invoice Importer Queue.");
+            return false;
+        }
+
     }
 }

@@ -34,7 +34,7 @@ public class UploadService : IUploadService
             Organisation = organisation,
             PaymentType = paymentType,
             CreatedBy = createdBy,
-            BlobFileName = Path.GetRandomFileName().Split('.').First(),
+            BlobFileName = Path.GetRandomFileName().Split('.')[0],
             BlobFolder = "import"
         };
 
@@ -64,20 +64,4 @@ public class UploadService : IUploadService
 
     public static string BlobPath(ImportRequest importRequest) => $"{importRequest.BlobFolder}/{importRequest.BlobFileName}";
     public static string GenerateConfirmationNumber() => $"BLK-{Guid.NewGuid().ToString().Substring(0, 8)}";
-
-    //private static UploadFileSummary CreateUploadSummaryMessage(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy)
-    //{
-    //    return new UploadFileSummary(GenerateConfirmationNumber())
-    //    {
-    //        FileName = Path.GetRandomFileName().Split('.').First(),
-    //        FileSize = file.Size,
-    //        FileType = file.Name?.Split('.').Last() ?? string.Empty,
-    //        Timestamp = DateTimeOffset.Now,
-    //        AccountType = accountType,
-    //        SchemeType = schemeType,
-    //        Organisation = organisation,
-    //        PaymentType = paymentType,
-    //        CreatedBy = createdBy
-    //    };
-    //}
 }

@@ -15,6 +15,10 @@ public static partial class ServiceCollectionExtensions
                 var blobContainerName = configuration.GetSection("BlobContainerName").Value;
                 blobContainerName = string.IsNullOrWhiteSpace(blobContainerName) ? AzureBlobService.default_BlobContainerName : blobContainerName;
                 var logger = _.GetService<ILogger<IAzureBlobService>>();
+                if (logger is null)
+                {
+                    return null;
+                }
                 if (IsManagedIdentity(blobStorageAccountCredential))
                 {
                     var blobServiceUri = new Uri(configuration.GetSection("BlobConnectionString:BlobServiceUri").Value);
@@ -32,7 +36,10 @@ public static partial class ServiceCollectionExtensions
             var eventQueueName = configuration.GetSection("EventQueueName").Value;
             var queueStorageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
             var logger = _.GetService<ILogger<IEventQueueService>>();
-
+            if (logger is null)
+            {
+                return null;
+            }
             if (IsManagedIdentity(queueStorageAccountCredential))
             {
                 var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
@@ -50,7 +57,10 @@ public static partial class ServiceCollectionExtensions
             var importerQueueName = configuration.GetSection("ImporterQueueName").Value;
             var queueStorageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
             var logger = _.GetService<ILogger<IImporterQueueService>>();
-
+            if (logger is null)
+            {
+                return null;
+            }
             if (IsManagedIdentity(queueStorageAccountCredential))
             {
                 var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
