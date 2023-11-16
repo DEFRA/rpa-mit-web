@@ -1,7 +1,6 @@
 using System.Net;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Repositories;
 
 namespace EST.MIT.Web.Services;
 
@@ -84,42 +83,4 @@ public class UploadAPI : IUploadAPI
             return null;
         }
     }
-
-
-    //public async Task<byte[]> GetFileByFileNameAsync(string fileName)
-    //{
-    //    _logger.LogError("Getting File by Filename from API");
-
-    //    var response = await _uploadRepository.GetFileByFileNameAsync(fileName);
-
-    //    if (response.StatusCode == HttpStatusCode.NotFound)
-    //    {
-    //        _logger.LogWarning($"File not found: {fileName}");
-    //        return null;
-    //    }
-    //    else if (response.StatusCode == HttpStatusCode.OK)
-    //    {
-    //        if (response.Content.Headers.ContentLength == 0)
-    //        {
-    //            _logger.LogWarning("API returned no data");
-    //            return null;
-    //        }
-
-    //        try
-    //        {
-    //            return await response.Content.ReadAsByteArrayAsync();
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            _logger.LogError(ex, "Error deserializing API response");
-    //            return null;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        _logger.LogError($"Unknown response from API: {response.StatusCode}");
-    //        return null;
-    //    }
-    //}
-
 }
