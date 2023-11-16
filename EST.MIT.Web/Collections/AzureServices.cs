@@ -12,16 +12,22 @@ public static partial class ServiceCollectionExtensions
         services.AddSingleton<IAzureBlobService>(_ =>
             {
                 var blobStorageAccountCredential = configuration.GetSection("BlobConnectionString:Credential").Value;
+                var blobContainerName = configuration.GetSection("BlobContainerName").Value;
+                blobContainerName = string.IsNullOrWhiteSpace(blobContainerName) ? AzureBlobService.default_BlobContainerName : blobContainerName;
                 var logger = _.GetService<ILogger<IAzureBlobService>>();
+                if (logger is null)
+                {
+                    return null;
+                }
                 if (IsManagedIdentity(blobStorageAccountCredential))
                 {
                     var blobServiceUri = new Uri(configuration.GetSection("BlobConnectionString:BlobServiceUri").Value);
                     Console.WriteLine($"Startup.BlobClient using Managed Identity with url {blobServiceUri}");
-                    return new AzureBlobService(new BlobServiceClient(blobServiceUri, new DefaultAzureCredential()), logger);
+                    return new AzureBlobService(new BlobServiceClient(blobServiceUri, new DefaultAzureCredential()), logger, blobContainerName);
                 }
                 else
                 {
-                    return new AzureBlobService(new BlobServiceClient(configuration.GetSection("BlobConnectionString").Value), logger);
+                    return new AzureBlobService(new BlobServiceClient(configuration.GetSection("BlobConnectionString").Value), logger, blobContainerName);
                 }
             });
 
@@ -30,7 +36,10 @@ public static partial class ServiceCollectionExtensions
             var eventQueueName = configuration.GetSection("EventQueueName").Value;
             var queueStorageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
             var logger = _.GetService<ILogger<IEventQueueService>>();
-
+            if (logger is null)
+            {
+                return null;
+            }
             if (IsManagedIdentity(queueStorageAccountCredential))
             {
                 var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
@@ -40,7 +49,27 @@ public static partial class ServiceCollectionExtensions
             else
             {
                 return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, eventQueueName), logger);
+            }
+        });
 
+        services.AddSingleton<IImporterQueueService>(_ =>
+        {
+            var importerQueueName = configuration.GetSection("ImporterQueueName").Value;
+            var queueStorageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
+            var logger = _.GetService<ILogger<IImporterQueueService>>();
+            if (logger is null)
+            {
+                return null;
+            }
+            if (IsManagedIdentity(queueStorageAccountCredential))
+            {
+                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
+                var queueUrl = new Uri($"{queueServiceUri}{importerQueueName}");
+                return new ImporterQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()), logger);
+            }
+            else
+            {
+                return new ImporterQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, importerQueueName), logger);
             }
         });
 

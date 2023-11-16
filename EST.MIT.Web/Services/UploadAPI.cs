@@ -1,7 +1,6 @@
 using System.Net;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Repositories;
 
 namespace EST.MIT.Web.Services;
 
@@ -49,15 +48,15 @@ public class UploadAPI : IUploadAPI
         return null;
     }
 
-    public async Task<byte[]> GetFileByFileNameAsync(string fileName)
+    public async Task<byte[]> GetFileByImportRequestIdAsync(Guid importRequestId)
     {
-        _logger.LogError("Getting File by Filename from API");
+        _logger.LogError("Getting File by Id from API");
 
-        var response = await _uploadRepository.GetFileByFileNameAsync(fileName);
+        var response = await _uploadRepository.GetFileByImportRequestIdAsync(importRequestId);
 
         if (response.StatusCode == HttpStatusCode.NotFound)
         {
-            _logger.LogWarning($"File not found: {fileName}");
+            _logger.LogWarning($"File not found: {importRequestId}");
             return null;
         }
         else if (response.StatusCode == HttpStatusCode.OK)
@@ -84,5 +83,4 @@ public class UploadAPI : IUploadAPI
             return null;
         }
     }
-
 }

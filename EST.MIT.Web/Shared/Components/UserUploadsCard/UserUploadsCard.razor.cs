@@ -17,7 +17,7 @@ public partial class UserUploadsCard : ComponentBase
         {
             return "N/A";
         }
-        return timestamp.Value.ToString("dd/MM/yyyy");
+        return timestamp.Value.ToString("dd/MM/yyyy HH:mm:ss");
     }
 
     public Stream GetFileStream()
@@ -27,9 +27,9 @@ public partial class UserUploadsCard : ComponentBase
         return fileStream;
     }
 
-    private async Task DownloadFile(string fileName)
+    private async Task DownloadFile(ImportRequest importRequest)
     {
-        var fileBytes = await _API.GetFileByFileNameAsync(fileName);
+        var fileBytes = await _API.GetFileByImportRequestIdAsync(importRequest.ImportRequestId);
         if (fileBytes == null || fileBytes.Length == 0)
         {
             return;
@@ -38,6 +38,6 @@ public partial class UserUploadsCard : ComponentBase
         using var fileStream = new MemoryStream(fileBytes);
         using var streamRef = new DotNetStreamReference(stream: fileStream);
 
-        await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
+        await JS.InvokeVoidAsync("downloadFileFromStream", importRequest.FileName, streamRef);
     }
 }

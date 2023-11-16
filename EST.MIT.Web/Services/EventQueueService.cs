@@ -53,5 +53,10 @@ public class EventQueueService : IEventQueueService
 
             return false;
         }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error {ex.Message} sending \"{message}\" message to Event Queue.");
+            return false;
+        }
     }
 }

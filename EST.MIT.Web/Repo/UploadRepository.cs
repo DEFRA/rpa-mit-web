@@ -26,22 +26,21 @@ public class UploadRepository : IUploadRepository
         return response;
     }
 
-    public async Task<HttpResponseMessage> GetFileByFileNameAsync(string fileName)
-    {
-        var client = _clientFactory.CreateClient("InvoiceImporterAPI");
-
-        var response = await client.GetAsync($"/Uploads/{fileName}");
-
-        await HandleHttpResponseError(response);
-
-        return response;
-    }
-
     private async static Task HandleHttpResponseError(HttpResponseMessage response)
     {
         if (!response.IsSuccessStatusCode)
         {
             response.Content = new StringContent(await response.Content.ReadAsStringAsync());
         }
+    }
+    public async Task<HttpResponseMessage> GetFileByImportRequestIdAsync(Guid importRequestId)
+    {
+        var client = _clientFactory.CreateClient("InvoiceImporterAPI");
+
+        var response = await client.GetAsync($"/UploadedFile/{importRequestId}");
+
+        await HandleHttpResponseError(response);
+
+        return response;
     }
 }

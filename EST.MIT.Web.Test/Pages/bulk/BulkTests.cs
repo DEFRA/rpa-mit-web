@@ -34,7 +34,6 @@ public class BulkUploadPageTests : TestContext
             SchemeType = "BPS"
         };
         var mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
-        var mockBlobService = new Mock<IAzureBlobService>();
         var mockBlobServiceClient = new Mock<BlobServiceClient>();
         var mockBlobContainerClient = new Mock<BlobContainerClient>();
         var mockAzureBlobService = new Mock<IAzureBlobService>();
@@ -43,7 +42,8 @@ public class BulkUploadPageTests : TestContext
         mockAzureBlobService.Setup(x => x.blobServiceClient).Returns(mockBlobServiceClient.Object);
         mockBlobServiceClient.Setup(x => x.GetBlobContainerClient(It.IsAny<string>())).Returns(mockBlobContainerClient.Object);
 
-        var mockQueueService = new Mock<IEventQueueService>();
+        var mockEventQueueService = new Mock<IEventQueueService>();
+        var mockImporterQueueService = new Mock<IImporterQueueService>();
         var mockQueueServiceClient = new Mock<QueueServiceClient>();
         var mockQueueClient = new Mock<QueueClient>();
 
@@ -52,11 +52,11 @@ public class BulkUploadPageTests : TestContext
 
         Services.AddSingleton<IConfiguration>(_configuration);
         Services.AddSingleton<IUploadService, UploadService>();
-        Services.AddSingleton<IEventQueueService>(mockQueueService.Object);
-        Services.AddSingleton<IAzureBlobService>(mockBlobService.Object);
+        Services.AddSingleton<IEventQueueService>(mockEventQueueService.Object);
         Services.AddSingleton<IAzureBlobService>(mockAzureBlobService.Object);
         Services.AddSingleton<IInvoiceRepository>(mockInvoiceRepository.Object);
         Services.AddSingleton<IInvoiceStateContainer>(mockInvoiceStateContainer.Object);
+        Services.AddSingleton<IImporterQueueService>(mockImporterQueueService.Object);
     }
 
     [Fact]

@@ -60,13 +60,13 @@ public class UploadRepositoryTests
     }
 
     [Fact]
-    public async Task GetFileByFileNameAsync_ReturnsFileContent_WhenFileExists()
+    public async Task GetFileByFileNameAsync_ReturnsFileContent_WhenFileExists()    // Need to get files by ID, not filename
     {
-        var fileName = "test1.xlsx";
+        var requestId = Guid.NewGuid();
         var expectedContent = new ByteArrayContent(new byte[] { 1, 2, 3, 4 });
         expectedContent.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
-        _mockHttpMessageHandler.SetupRequest(HttpMethod.Get, $"https://localhost/Uploads/{fileName}")
+        _mockHttpMessageHandler.SetupRequest(HttpMethod.Get, $"https://localhost/UploadedFile/{requestId}")
                             .ReturnsResponse(HttpStatusCode.OK, expectedContent);
 
         var factory = _mockHttpMessageHandler.CreateClientFactory();
@@ -80,7 +80,7 @@ public class UploadRepositoryTests
 
         var repo = new UploadRepository(factory);
 
-        var response = await repo.GetFileByFileNameAsync(fileName);
+        var response = await repo.GetFileByImportRequestIdAsync(requestId);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var content = await response.Content.ReadAsByteArrayAsync();
@@ -91,8 +91,8 @@ public class UploadRepositoryTests
     [Fact]
     public async Task GetFileByFileNameAsync_ReturnsNull_WhenFileNotFound()
     {
-        var fileName = "nonexistent.xlsx";
-        _mockHttpMessageHandler.SetupRequest(HttpMethod.Get, $"https://localhost/Uploads/{fileName}")
+        var nonExistantRequestId = Guid.NewGuid();
+        _mockHttpMessageHandler.SetupRequest(HttpMethod.Get, $"https://localhost/UploadedFile/{nonExistantRequestId}")
                             .ReturnsResponse(HttpStatusCode.NotFound);
 
         var factory = _mockHttpMessageHandler.CreateClientFactory();
@@ -102,10 +102,9 @@ public class UploadRepositoryTests
             client.BaseAddress = new Uri("https://localhost");
             return client;
         });
-
         var repo = new UploadRepository(factory);
 
-        var response = await repo.GetFileByFileNameAsync(fileName);
+        var response = await repo.GetFileByImportRequestIdAsync(nonExistantRequestId);
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
         var content = await response.Content.ReadAsStringAsync();

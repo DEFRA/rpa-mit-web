@@ -12,27 +12,38 @@ public class QueueServiceTests : TestContext
     [Fact]
     public async Task CreateMessage_ValidArguments_CallsSendMessageAsync()
     {
-        var logger = Mock.Of<ILogger<IEventQueueService>>();
+        Mock<ILogger<EventQueueService>> _mockLogger = new Mock<ILogger<EventQueueService>>();
         var queueClientMock = new Mock<QueueClient>();
-        var eventQueueService = new EventQueueService(queueClientMock.Object, logger);
+        var eventQueueService = new EventQueueService(queueClientMock.Object, _mockLogger.Object);
         var expectedMessageContent = "Expected error content";
 
         queueClientMock
             .Setup(qc => qc.SendMessageAsync(It.IsAny<string>()))
             .Callback(() => throw new RequestFailedException(expectedMessageContent));
 
-        Exception exception = null;
+        Exception exception = null!;
+        var success = false;
 
         try
         {
-            await eventQueueService.AddMessageToQueueAsync("message", "data");
+            success = await eventQueueService.AddMessageToQueueAsync("message", "data");
         }
         catch (Exception ex)
         {
             exception = ex;
         }
 
-        Assert.NotNull(exception);
-        Assert.Contains(expectedMessageContent, exception.Message);
+        var handledErrorMessage = $"Error {expectedMessageContent} sending \"message\" message to Event Queue.";
+
+        Assert.False(success);
+        Assert.Null(exception);
+
+        _mockLogger.Verify(logger => logger.Log(
+           LogLevel.Error,
+           It.IsAny<EventId>(),
+           It.Is<It.IsAnyType>((o, t) => string.Equals(handledErrorMessage, o.ToString())),
+           null,
+           (Func<It.IsAnyType, Exception?, string>)It.IsAny<object>())
+       );
     }
 }
