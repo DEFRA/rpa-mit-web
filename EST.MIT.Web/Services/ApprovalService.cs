@@ -37,7 +37,7 @@ public class ApprovalService : IApprovalService
                                 .WithAction(NotificationType.approved)
                                 .WithData(new NotificationInvoiceApprove
                                 {
-                                    Approver = "user"
+                                    ApproverEmail = "user"
                                 })
                             .Build();
 
@@ -87,7 +87,7 @@ public class ApprovalService : IApprovalService
                                 .WithAction(NotificationType.approval)
                                 .WithData(new NotificationOutstandingApproval
                                 {
-                                    Name = invoice.Approver,
+                                    Name = invoice.ApproverEmail,
                                     Link = $"{_context.HttpContext.GetBaseURI()}/invoice/details/{invoice.SchemeType}/{invoice.Id}/true",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),

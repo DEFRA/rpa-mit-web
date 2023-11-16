@@ -30,6 +30,18 @@ public class PaymentRequestsBatchDTO
     [JsonProperty("reference")]
     public string Reference { get; set; } = default!;
 
+    [JsonProperty("approverEmail")]
+    public string ApproverEmail { get; set; } = default!;
+
+    [JsonProperty("approverId")]
+    public string ApproverId { get; set; } = default!;
+
+    [JsonProperty("approvedBy")]
+    public string ApprovedBy { get; set; } = default!;
+
+    [JsonProperty("approved")]
+    public DateTime? Approved { get; set; } = default!;
+
     [JsonProperty("created")]
     public DateTime Created { get; init; } = DateTime.UtcNow;
 

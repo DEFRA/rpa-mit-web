@@ -57,7 +57,7 @@ public partial class SelectApprover : ComponentBase
             return;
         }
 
-        invoice.Approver = approverSelect.ApproverEmail;
+        invoice.ApproverEmail = approverSelect.ApproverEmail;
 
         var response = await _approvalService.SubmitApprovalAsync(invoice);
         if (!response.IsSuccess)

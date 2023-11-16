@@ -25,7 +25,7 @@ public class Notification
 
 public class NotificationInvoiceApprove
 {
-    public string Approver { get; set; } = default!;
+    public string ApproverEmail { get; set; } = default!;
     public DateTimeOffset Timestamp { get; set; } = DateTimeOffset.Now;
 }
 

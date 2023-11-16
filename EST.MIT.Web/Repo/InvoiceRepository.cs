@@ -116,7 +116,7 @@ public class InvoiceRepository : IInvoiceRepository
         invoices.Add(new Invoice
         {
             SchemeType = "scheme",
-            Approver = "approver",
+            ApproverEmail = "approverEmail",
             PaymentType = "invoice",
             AccountType = "account",
             Organisation = "organisation",
@@ -131,7 +131,7 @@ public class InvoiceRepository : IInvoiceRepository
         invoices.Add(new Invoice
         {
             SchemeType = "scheme",
-            Approver = "approver",
+            ApproverEmail = "approverEmail",
             PaymentType = "invoice",
             AccountType = "account",
             Organisation = "organisation",
