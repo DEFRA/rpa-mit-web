@@ -147,26 +147,7 @@ public class ApprovalService : IApprovalService
             return new ApiResponse<Invoice>(false) { Errors = new Dictionary<string, List<string>> { { "Exception", new List<string> { ex.Message } } } };
         }
     }
-
-    private async Task<Invoice> GetApproval(string id, string scheme)
-    {
-        var invoice = await GetInvoiceAsync(id, scheme);
-
-        if (invoice.IsNull())
-        {
-            _logger.LogError($"Invoice {id}: Not found");
-            return null;
-        }
-
-        if (invoice.Status != "approval")
-        {
-            _logger.LogError($"Invoice {invoice.Id}: Not in approval status");
-            return null;
-        }
-
-        return invoice;
-    }
-
+    
     private async Task<Dictionary<string, string>> GetApprovers()
     {
         var approvers = new Dictionary<string, string>();

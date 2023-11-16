@@ -12,6 +12,7 @@ public partial class ReadonlyInvoiceSummary : ComponentBase
     [Parameter] public bool Approval { get; set; } = false;
 
     [Inject] private IApprovalService _approvalService { get; set; }
+    [Inject] private IInvoiceAPI _invoiceApi { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
     private Invoice invoice = default!;
@@ -27,7 +28,7 @@ public partial class ReadonlyInvoiceSummary : ComponentBase
             if (!Approval)
                 invoice = await _approvalService.GetInvoiceAsync(Id, Scheme);
             else
-                invoice = await _approvalService.GetApprovalAsync(Id, Scheme);
+                invoice = await _invoiceApi.GetApprovalInvoiceAsync(Id);
         }
         catch (Exception ex)
         {

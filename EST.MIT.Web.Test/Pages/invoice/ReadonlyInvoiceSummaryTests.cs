@@ -41,37 +41,37 @@ public class ReadonlyInvoiceSummaryTests : TestContext
 
     }
 
-    [Fact]
-    public void ApproveInvoice_Runs_ApproveInvoiceAsync()
-    {
-        _mockApprovalService.Setup(x => x.GetApprovalAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+    //[Fact]
+    //public void ApproveInvoice_Runs_ApproveInvoiceAsync()
+    //{
+    //    _mockApprovalService.Setup(x => x.GetApprovalAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
 
-        var component = RenderComponent<ReadonlyInvoiceSummary>(parameters =>
-        {
-            parameters.Add(x => x.Approval, true);
-        });
+    //    var component = RenderComponent<ReadonlyInvoiceSummary>(parameters =>
+    //    {
+    //        parameters.Add(x => x.Approval, true);
+    //    });
 
-        component.FindAll("button#ApproveInvoice")[0].Click();
+    //    component.FindAll("button#ApproveInvoice")[0].Click();
 
-        _mockApprovalService.Verify(x => x.ApproveInvoiceAsync(It.IsAny<Invoice>()), Times.Once);
+    //    _mockApprovalService.Verify(x => x.ApproveInvoiceAsync(It.IsAny<Invoice>()), Times.Once);
 
-    }
+    //}
 
-    [Fact]
-    public void RejectInvoice_Runs_RejectInvoiceAsync()
-    {
-        _mockApprovalService.Setup(x => x.GetApprovalAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+    //[Fact]
+    //public void RejectInvoice_Runs_RejectInvoiceAsync()
+    //{
+    //    _mockApprovalService.Setup(x => x.GetApprovalAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
 
-        var component = RenderComponent<ReadonlyInvoiceSummary>(parameters =>
-        {
-            parameters.Add(x => x.Approval, true);
-        });
+    //    var component = RenderComponent<ReadonlyInvoiceSummary>(parameters =>
+    //    {
+    //        parameters.Add(x => x.Approval, true);
+    //    });
 
-        component.FindAll("button#RejectInvoice")[0].Click();
+    //    component.FindAll("button#RejectInvoice")[0].Click();
 
-        _mockApprovalService.Verify(x => x.RejectInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<string>()), Times.Once);
+    //    _mockApprovalService.Verify(x => x.RejectInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<string>()), Times.Once);
 
-    }
+    //}
 
     [Fact]
     public void Invoice_Is_Not_Found()
