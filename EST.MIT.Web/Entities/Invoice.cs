@@ -31,18 +31,21 @@ public class Invoice : Validatable
 
     public DateTimeOffset Updated { get; private set; }
 
+    public string ApproverId { get; set; } = default!;
+    public string ApproverEmail { get; set; } = default!;
+    public string ApprovedBy { get; set; } = default!;
+    public DateTime? Approved { get; set; }
+
     public string CreatedBy { get; private set; } = default!;
 
     public string UpdatedBy { get; set; } = default!;
-
-    public string Approver { get; set; } = default!;
     public Invoice()
     {
         Id = Guid.NewGuid();
     }
 
     [JsonConstructor]
-    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approver)
+    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approverId, string approverEmail, string approvedBy, DateTime approved)
     {
         Id = id;
         PaymentType = paymentType;
@@ -56,7 +59,10 @@ public class Invoice : Validatable
         Updated = updated;
         CreatedBy = createdBy;
         UpdatedBy = updatedBy;
-        Approver = approver;
+        ApproverId = approverId;
+        ApproverEmail = approverEmail;
+        ApprovedBy = approvedBy;
+        Approved = approved;
     }
 
     public void Update(string? status = null)
