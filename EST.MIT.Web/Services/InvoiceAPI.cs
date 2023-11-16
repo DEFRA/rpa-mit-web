@@ -28,7 +28,6 @@ public class InvoiceAPI : IInvoiceAPI
     public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest) => await UpdateInvoice(invoice, paymentRequest);
     public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine) => await UpdateInvoice(invoice, paymentRequest, invoiceLine);
     public async Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice invoice, string paymentRequestId) => await DeletePaymentRequest(invoice, paymentRequestId);
-    public async Task<IEnumerable<Invoice>> GetApprovalsAsync() => await GetApprovals();
 
     private async Task<Invoice> GetInvoice(string id, string scheme)
     {
@@ -203,9 +202,9 @@ public class InvoiceAPI : IInvoiceAPI
 
     }
 
-    private async Task<IEnumerable<Invoice>> GetApprovals()
+    public async Task<IEnumerable<Invoice>> GetAllApprovalInvoicesAsync()
     {
-        var response = await _invoiceRepository.GetApprovalsAsync();
+        var response = await _invoiceRepository.GetAllApprovalsAsync();
 
         if (response.StatusCode == HttpStatusCode.OK)
         {
@@ -217,8 +216,42 @@ public class InvoiceAPI : IInvoiceAPI
 
             try
             {
-                var invoices = await response.Content.ReadFromJsonAsync<IEnumerable<Invoice>>() ?? new List<Invoice>();
-                return invoices.Where(x => x.Status == "approval");
+                var dtos = await response.Content.ReadFromJsonAsync<IEnumerable<PaymentRequestsBatchDTO>>();
+                return this._autoMapper.Map<IEnumerable<Invoice>>(dtos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deserializing API response");
+                return null;
+            }
+        }
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
+        _logger.LogError("Unknown response from API");
+        return null;
+
+    }
+    public async Task<Invoice> GetApprovalInvoiceAsync(string id)
+    {
+        var response = await _invoiceRepository.GetApprovalAsync(id);
+
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            if (response.Content.Headers.ContentLength == 0)
+            {
+                _logger.LogWarning("API returned no data");
+                return null;
+            }
+
+            try
+            {
+                var dto = await response.Content.ReadFromJsonAsync<PaymentRequestsBatchDTO>();
+
+                return this._autoMapper.Map<Invoice>(dto);
             }
             catch (Exception ex)
             {
