@@ -70,7 +70,7 @@ public class InvoiceRepository : IInvoiceRepository
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.GetAsync($"/invoice/approval/{id}");
+        var response = await client.GetAsync($"/invoice/approvals/{id}");
 
         await HandleHttpResponseError(response);
 
@@ -83,7 +83,7 @@ public class InvoiceRepository : IInvoiceRepository
         {
             var client = _clientFactory.CreateClient("InvoiceAPI");
 
-            var response = await client.GetAsync($"/invoice/approval");
+            var response = await client.GetAsync($"/invoice/approvals");
 
             await HandleHttpResponseError(response);
 

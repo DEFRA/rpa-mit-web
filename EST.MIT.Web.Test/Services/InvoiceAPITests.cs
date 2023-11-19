@@ -9,6 +9,7 @@ using EST.MIT.Web.Services;
 using Microsoft.Extensions.Logging;
 using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.Models;
 
 namespace EST.MIT.Web.Test.Services;
 
@@ -337,7 +338,7 @@ public class InvoiceAPITests
     public async void GetApprovalsAsync_ReturnsOK()
     {
         var _invoice = new Invoice();
-        _invoice.Update("approval");
+        _invoice.Update(InvoiceStatuses.AwaitingApproval);
 
         _mockRepository.Setup(x => x.GetAllApprovalsAsync())
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
