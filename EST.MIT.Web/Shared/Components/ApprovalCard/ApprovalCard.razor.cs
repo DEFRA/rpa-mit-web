@@ -10,7 +10,9 @@ public partial class ApprovalCard : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    private string backLink = "/approval/mine";
+
+	protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
