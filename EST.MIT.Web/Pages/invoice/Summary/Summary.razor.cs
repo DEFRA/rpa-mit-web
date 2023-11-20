@@ -11,10 +11,7 @@ public partial class Summary : ComponentBase
     [Inject] private IInvoiceAPI _api { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
-
-    [Inject] private INavigationStateContainer _navigationStateContainer { get; set; }
-
-
+    
 	[Parameter] public string invoiceId { get; set; } = "";
 
     [Parameter] public string scheme { get; set; } = "";
