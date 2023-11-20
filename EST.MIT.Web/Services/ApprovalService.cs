@@ -2,6 +2,7 @@ using EST.MIT.Web.Builders;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Helpers;
 using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.Models;
 
 namespace EST.MIT.Web.Services;
 
@@ -97,7 +98,7 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotify("approval", invoice, notification).ContinueWith(x =>
+        return await UpdateAndNotify(InvoiceStatuses.AwaitingApproval, invoice, notification).ContinueWith(x =>
         {
             if (!x.Result.IsSuccess)
             {

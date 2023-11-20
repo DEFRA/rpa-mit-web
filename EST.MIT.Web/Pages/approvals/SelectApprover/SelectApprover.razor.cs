@@ -57,7 +57,8 @@ public partial class SelectApprover : ComponentBase
             return;
         }
 
-        invoice.ApproverEmail = approverSelect.ApproverEmail;
+        invoice.ApproverId = "1"; //TODO: fxs this needs to be the approver id, for now hard coded to 1
+		invoice.ApproverEmail = approverSelect.ApproverEmail;
 
         var response = await _approvalService.SubmitApprovalAsync(invoice);
         if (!response.IsSuccess)
