@@ -1,6 +1,8 @@
+using System.Net;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.Shared.Components;
 
 namespace EST.MIT.Web.Pages.invoice.Summary;
 
@@ -10,16 +12,24 @@ public partial class Summary : ComponentBase
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
 
-    [Parameter] public string invoiceId { get; set; } = "";
+    [Inject] private INavigationStateContainer _navigationStateContainer { get; set; }
+
+
+	[Parameter] public string invoiceId { get; set; } = "";
+
     [Parameter] public string scheme { get; set; } = "";
 
-    private Invoice invoice;
+    [Parameter] public string backUrl { get; set; } = "";
+
+	private Invoice invoice;
+    
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         invoice = await _api.FindInvoiceAsync(invoiceId, scheme);
         _invoiceStateContainer.SetValue(invoice);
+
     }
 
     private async Task AddPaymentRequest()
@@ -31,4 +41,13 @@ public partial class Summary : ComponentBase
     {
         _nav.NavigateTo("/approval/select");
     }
+
+    private string GetBackUrl()
+    {
+	    if (!string.IsNullOrWhiteSpace(this.backUrl))
+	    {
+		    return WebUtility.UrlDecode(this.backUrl);
+	    }
+	    return "/";
+	}
 }

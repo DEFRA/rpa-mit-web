@@ -8,6 +8,7 @@ public partial class UserApprovals : ComponentBase
 {
     [Inject] private IInvoiceAPI InvoiceApi { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
+    [Inject] private INavigationStateContainer _navigationStateContainer { get; set; }
 
     private IEnumerable<Invoice> _approvals;
 
@@ -18,5 +19,7 @@ public partial class UserApprovals : ComponentBase
         _invoiceStateContainer.SetValue(null);
 
         _approvals = await InvoiceApi.GetAllApprovalInvoicesAsync();
+
+        await this._navigationStateContainer.SetBackUrlAsync("/approval/mine");
     }
 }
