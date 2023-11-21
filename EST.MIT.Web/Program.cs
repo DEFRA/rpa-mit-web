@@ -16,7 +16,8 @@ builder.Services.AddAzureServices(config);
 builder.Services.AddAPIServices();
 builder.Services.AddRepoServices();
 
-builder.Services.AddSingleton<IInvoiceStateContainer, InvoiceStateContainer>();
+builder.Services.AddScoped<IInvoiceStateContainer, InvoiceStateContainer>();
+builder.Services.AddScoped<INavigationStateContainer, NavigationStateContainer>();
 builder.Services.AddSingleton<IUploadService, UploadService>();
 builder.Services.AddSingleton<IPageServices, PageServices>();
 builder.Services.AddSingleton<IFindService, FindService>();

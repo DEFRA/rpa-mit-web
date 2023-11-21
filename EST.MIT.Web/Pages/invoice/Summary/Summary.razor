@@ -1,9 +1,10 @@
 @page "/invoice/summary/{scheme}/{invoiceId}"
+@page "/invoice/summary/{scheme}/{invoiceId}/{backUrl}"
 @using EST.MIT.Web.Shared.Components.SummaryPaymentRequest
 @using EST.MIT.Web.Shared.Components.InvoiceMetaData
 
 <section class="govuk-width-container govuk-!-padding-top-3">
-	<a href="/" class="govuk-back-link">Back</a>
+	<a href="@GetBackUrl()" class="govuk-back-link">Back</a>
 	<h1 class="govuk-heading-l">Invoice Summary</h1>
 </section>
 
