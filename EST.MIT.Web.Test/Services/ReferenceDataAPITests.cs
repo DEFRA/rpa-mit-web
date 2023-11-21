@@ -3,7 +3,6 @@ using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Services;
-using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Interfaces;
 
 namespace Repositories.Tests;

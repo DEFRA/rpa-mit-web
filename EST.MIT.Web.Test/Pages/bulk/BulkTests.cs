@@ -5,9 +5,7 @@ using System.Net;
 using EST.MIT.Web.Services;
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
-using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Pages.bulk.BulkUpload;
-using EST.MIT.Web.Shared;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 

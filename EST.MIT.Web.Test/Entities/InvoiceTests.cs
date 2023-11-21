@@ -58,6 +58,44 @@ public class InvoiceTests
     }
 
     [Fact]
+    public void JsonConstructor_Should_Initialize_Properties_Correctly()
+    {
+        var id = Guid.NewGuid();
+        var paymentType = "Credit Card";
+        var accountType = "Personal";
+        var organisation = "OrgName";
+        var schemeType = "TypeA";
+        var paymentRequests = new List<PaymentRequest>();
+        var status = "Pending";
+        var reference = "Ref123";
+        var created = DateTimeOffset.Now;
+        var updated = DateTimeOffset.Now;
+        var approverId = "ApproverId";
+        var approverEmail = "email@example.com";
+        var approvedBy = "ApprovedBy";
+        DateTime approved = DateTime.Now;
+
+        var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, approverId, approverEmail, approvedBy, approved);
+
+        invoice.Id.Should().Be(id);
+        invoice.PaymentType.Should().Be(paymentType);
+        invoice.AccountType.Should().Be(accountType);
+        invoice.Organisation.Should().Be(organisation);
+        invoice.SchemeType.Should().Be(schemeType);
+        invoice.PaymentRequests.Should().BeEquivalentTo(paymentRequests);
+        invoice.Status.Should().Be(status);
+        invoice.Reference.Should().Be(reference);
+        invoice.Created.Should().Be(created);
+        invoice.Updated.Should().Be(updated);
+        invoice.ApproverId.Should().Be(approverId);
+        invoice.ApproverEmail.Should().Be(approverEmail);
+        invoice.ApprovedBy.Should().Be(approvedBy);
+        invoice.Approved.Should().Be(approved);
+    }
+
+
+
+    [Fact]
     public void Properties_Should_Be_Set_Correctly()
     {
         var id = new Guid("12345678-1234-1234-1234-123456789012");
@@ -79,6 +117,19 @@ public class InvoiceTests
         Assert.Equal(accountType, invoice.AccountType);
         Assert.Equal(organisation, invoice.Organisation);
         Assert.Equal(schemeType, invoice.SchemeType);
+    }
+
+    [Fact]
+    public void Update_Should_Update_Fields_Correctly()
+    {
+        var invoice = new Invoice();
+        var newStatus = "updated";
+
+        invoice.Update(newStatus);
+
+        invoice.Updated.Should().BeCloseTo(DateTimeOffset.Now, TimeSpan.FromMinutes(1));
+        invoice.UpdatedBy.Should().Be("user");
+        invoice.Status.Should().Be(newStatus);
     }
 
     private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)

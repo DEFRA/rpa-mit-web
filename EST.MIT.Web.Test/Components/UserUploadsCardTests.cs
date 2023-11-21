@@ -36,7 +36,7 @@ public class UserUploadsCardTests : TestContext
             CreatedBy = "test@example.com",
             Status = UploadStatus.Uploaded,
             BlobFileName = "testblob",
-            BlobFolder= "archive"
+            BlobFolder = "archive"
         };
 
         var importRequests = new List<ImportRequest> { importRequest };

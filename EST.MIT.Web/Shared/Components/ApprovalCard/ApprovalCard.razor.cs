@@ -12,7 +12,7 @@ public partial class ApprovalCard : ComponentBase
 
     private string backLink = "/approval/mine";
 
-	protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }

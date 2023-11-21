@@ -25,7 +25,7 @@ public class UploadService : IUploadService
 
         var importRequest = new ImportRequest()
         {
-            FileName =  file.Name,
+            FileName = file.Name,
             FileSize = file.Size,
             FileType = file.Name?.Split('.').Last() ?? string.Empty,
             Timestamp = DateTimeOffset.Now,

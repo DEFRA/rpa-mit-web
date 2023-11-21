@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Entities;
-using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Pages.bulk.BulkUpload;
 

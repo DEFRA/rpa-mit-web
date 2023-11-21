@@ -45,7 +45,7 @@ public class Invoice : Validatable
     }
 
     [JsonConstructor]
-    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approverId, string approverEmail, string approvedBy, DateTime approved)
+    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string approverId, string approverEmail, string approvedBy, DateTime approved)
     {
         Id = id;
         PaymentType = paymentType;
@@ -57,8 +57,6 @@ public class Invoice : Validatable
         Reference = reference;
         Created = created;
         Updated = updated;
-        CreatedBy = createdBy;
-        UpdatedBy = updatedBy;
         ApproverId = approverId;
         ApproverEmail = approverEmail;
         ApprovedBy = approvedBy;

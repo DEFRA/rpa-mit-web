@@ -1,7 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.invoice.ReadonlyInvoiceSummary;
-using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
