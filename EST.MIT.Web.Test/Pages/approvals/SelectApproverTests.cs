@@ -1,7 +1,6 @@
 using System.Net;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Pages.approvals.SelectApprover;
-using EST.MIT.Web.Shared;
 using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
@@ -111,7 +110,7 @@ public class SelectApproverTests : TestContext
 
         errorMessages.Count.Should().Be(1);
 
-        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(),It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.BadRequest) { Data = new BoolRef(true), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
+        _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.BadRequest) { Data = new BoolRef(true), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
         component = RenderComponent<SelectApprover>();
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
         component.FindAll("button[type=submit]")[0].Click();

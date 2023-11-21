@@ -2,7 +2,6 @@ using Microsoft.Extensions.Logging;
 using Azure;
 using Azure.Storage.Queues;
 using EST.MIT.Web.Services;
-using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Test.Services;
 

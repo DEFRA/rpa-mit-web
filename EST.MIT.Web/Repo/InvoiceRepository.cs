@@ -59,7 +59,7 @@ public class InvoiceRepository : IInvoiceRepository
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.DeleteAsync($"/invoice/header/{paymentRequestDto.PaymentRequestId}");
+        var response = await client.DeleteAsync($"/invoice/header/{paymentRequestDto.Id}");
 
         await HandleHttpResponseError(response);
 
@@ -106,48 +106,21 @@ public class InvoiceRepository : IInvoiceRepository
 
     public async Task<HttpResponseMessage> GetInvoicesAsync()
     {
-        //placeholder until the API is ready
-
-        var client = _clientFactory.CreateClient("InvoiceAPI");
-
-        var response = new HttpResponseMessage();
-
-        var invoices = new List<Invoice>();
-        invoices.Add(new Invoice
+        try
         {
-            SchemeType = "scheme",
-            ApproverEmail = "approverEmail",
-            PaymentType = "invoice",
-            AccountType = "account",
-            Organisation = "organisation",
-            PaymentRequests = new List<PaymentRequest> {
-                new PaymentRequest {
-                    FRN = "1234567890",
-                    Value = 420
-                }
-            }
-        });
+            var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        invoices.Add(new Invoice
+            var response = await client.GetAsync($"/invoices/user/xxx");
+
+            await HandleHttpResponseError(response);
+
+            return response;
+        }
+        catch (Exception e)
         {
-            SchemeType = "scheme",
-            ApproverEmail = "approverEmail",
-            PaymentType = "invoice",
-            AccountType = "account",
-            Organisation = "organisation",
-            PaymentRequests = new List<PaymentRequest> {
-                new PaymentRequest {
-                    FRN = "1122334455",
-                    Value = 6969
-                }
-            }
-        });
+            Console.WriteLine(e);
+            throw;
+        }
 
-        response.Content = new StringContent(JsonSerializer.Serialize(invoices));
-        response.StatusCode = HttpStatusCode.OK;
-
-        await HandleHttpResponseError(response);
-
-        return response;
     }
 }

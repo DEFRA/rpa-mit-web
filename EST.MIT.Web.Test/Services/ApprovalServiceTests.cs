@@ -193,69 +193,69 @@ public class ApprovalServiceTests
         response.Result.Count.Should().Be(0);
     }
 
-	//[Fact]
-	//public void GetApprovalAsync_Returns_Invoice()
-	//{
-	//    var _invoice = new Invoice();
-	//    _invoice.Update(InvoiceStatuses.AwaitingApproval);
+    //[Fact]
+    //public void GetApprovalAsync_Returns_Invoice()
+    //{
+    //    var _invoice = new Invoice();
+    //    _invoice.Update(InvoiceStatuses.AwaitingApproval);
 
-	//    _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+    //    _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
 
-	//    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+    //    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-	//    var response = service.GetApprovalAsync("123", "BPS");
+    //    var response = service.GetApprovalAsync("123", "BPS");
 
-	//    response.Result.Should().NotBeNull();
+    //    response.Result.Should().NotBeNull();
 
-	//}
+    //}
 
-	//[Fact]
-	//public void GetApprovalAsync_Invoice_Not_Found()
-	//{
-	//    _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
-	//        .Returns(Task.FromResult<Invoice>(null));
+    //[Fact]
+    //public void GetApprovalAsync_Invoice_Not_Found()
+    //{
+    //    _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
+    //        .Returns(Task.FromResult<Invoice>(null));
 
-	//    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+    //    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-	//    var response = service.GetApprovalAsync("123", "BPS");
+    //    var response = service.GetApprovalAsync("123", "BPS");
 
-	//    response.Result.Should().BeNull();
+    //    response.Result.Should().BeNull();
 
-	////}
+    ////}
 
-	//[Fact]
-	//public void GetApprovalAsync_Invoice_Not_Approval_Status()
-	//{
-	//    var _invoice = new Invoice();
-	//    _invoice.Update("notapproval");
+    //[Fact]
+    //public void GetApprovalAsync_Invoice_Not_Approval_Status()
+    //{
+    //    var _invoice = new Invoice();
+    //    _invoice.Update("notapproval");
 
-	//    _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
-	//        .ReturnsAsync(_invoice);
+    //    _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
+    //        .ReturnsAsync(_invoice);
 
-	//    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+    //    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-	//    var response = service.GetApprovalAsync("123", "BPS");
+    //    var response = service.GetApprovalAsync("123", "BPS");
 
-	//    response.Result.Should().BeNull();
+    //    response.Result.Should().BeNull();
 
-	//}
+    //}
 
-	//[Fact]
-	//public void GetOutstandingApprovalsAsync_Returns_Invoices()
-	//{
-	//    var _invoice = new Invoice();
-	//    _invoice.Update(InvoiceStatuses.AwaitingApproval);
+    //[Fact]
+    //public void GetOutstandingApprovalsAsync_Returns_Invoices()
+    //{
+    //    var _invoice = new Invoice();
+    //    _invoice.Update(InvoiceStatuses.AwaitingApproval);
 
-	//    _mockApiService.Setup(x => x.GetAllApprovalInvoicesAsync()).ReturnsAsync(new List<Invoice> { _invoice });
+    //    _mockApiService.Setup(x => x.GetAllApprovalInvoicesAsync()).ReturnsAsync(new List<Invoice> { _invoice });
 
-	//    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
-	//    var response = service.GetOutstandingApprovalsAsync();
+    //    var service = new ApprovalService(_mockQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
+    //    var response = service.GetOutstandingApprovalsAsync();
 
-	//    response.Result.Should().NotBeNull();
-	//    response.Result.Count().Should().Be(1);
-	//}
+    //    response.Result.Should().NotBeNull();
+    //    response.Result.Count().Should().Be(1);
+    //}
 
-	[Fact]
+    [Fact]
     public void ValidateApproverAsync_Returns_True()
     {
         _mockApprovalApi.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });

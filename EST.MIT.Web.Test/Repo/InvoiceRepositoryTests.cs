@@ -1,7 +1,5 @@
 using System.Net;
-using AutoMapper;
 using EST.MIT.Web.DTOs;
-using EST.MIT.Web.Entities;
 using EST.MIT.Web.Repositories;
 using Moq.Contrib.HttpClient;
 
@@ -167,15 +165,46 @@ public class InvoiceRepositoryTests : TestContext
     [Fact]
     public async Task GetInvoicesAsync_Returns_200()
     {
-        var clientFactoryMock = new Mock<IHttpClientFactory>();
-        clientFactoryMock.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(new HttpClient());
+        _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);
 
-        var invoiceRepository = new InvoiceRepository(clientFactoryMock.Object);
+        var factory = _mockHttpMessageHandler.CreateClientFactory();
 
-        var response = await invoiceRepository.GetInvoicesAsync();
+        Mock.Get(factory).Setup(x => x.CreateClient(It.IsAny<string>())).Returns(() =>
+        {
+            var client = _mockHttpMessageHandler.CreateClient();
+            client.BaseAddress = new Uri("https://localhost");
+            return client;
+        });
+
+        var repo = new InvoiceRepository(factory);
+
+        var response = await repo.GetInvoicesAsync();
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var responseContent = await response.Content.ReadAsStringAsync();
         responseContent.Should().NotBeNull();
+    }
+
+    [Fact]
+    public async Task GetInvoiceAsync_Returns_Correct_Content()
+    {
+        var expectedContent = "{\"id\":\"BLK-1234567\",\"status\":\"Approved\"}";
+        _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK, expectedContent);
+
+        var factory = new Mock<IHttpClientFactory>();
+
+        factory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(() =>
+        {
+            var client = _mockHttpMessageHandler.CreateClient();
+            client.BaseAddress = new Uri("https://localhost");
+            return client;
+        });
+
+        var invoiceRepository = new InvoiceRepository(factory.Object);
+
+        var response = await invoiceRepository.GetInvoiceAsync("BLK-1234567", "test");
+        var content = await response.Content.ReadAsStringAsync();
+
+        content.Should().Be(expectedContent);
     }
 }
