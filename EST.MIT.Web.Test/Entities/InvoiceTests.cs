@@ -74,8 +74,10 @@ public class InvoiceTests
         var approverEmail = "email@example.com";
         var approvedBy = "ApprovedBy";
         DateTime approved = DateTime.Now;
+        var createdBy = "CreatedBy";
+        var updatedBy = "UpdatedBy";
 
-        var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, approverId, approverEmail, approvedBy, approved);
+        var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, createdBy, updatedBy, approverId, approverEmail, approvedBy, approved);
 
         invoice.Id.Should().Be(id);
         invoice.PaymentType.Should().Be(paymentType);
@@ -91,6 +93,8 @@ public class InvoiceTests
         invoice.ApproverEmail.Should().Be(approverEmail);
         invoice.ApprovedBy.Should().Be(approvedBy);
         invoice.Approved.Should().Be(approved);
+        invoice.CreatedBy.Should().Be(createdBy);
+        invoice.UpdatedBy.Should().Be(updatedBy);
     }
 
 

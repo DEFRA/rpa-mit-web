@@ -18,6 +18,7 @@
     },
     "https": {
       "commandName": "Project",
+      "launchBrowser": true,
       "launchUrl": "https://localhost:7265",
       "applicationUrl": "https://localhost:7265;http://localhost:5021",
       "environmentVariables": {
