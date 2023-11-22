@@ -8,16 +8,13 @@ namespace EST.MIT.Web.DTOs;
 public class PaymentRequestDTO
 {
     [JsonProperty("paymentRequestId")]
-    public string Id { get; init; } = default!;
+    public string PaymentRequestId { get; init; } = default!;
 
     [JsonProperty("sourceSystem")]
     public string SourceSystem { get; init; } = default!;
 
     [JsonProperty("frn")]
     public long FRN { get; init; } = default!;
-
-    [JsonProperty("schemeType")]
-    public string SchemeType { get; set; }
 
     [JsonProperty("value")]
     public decimal Value { get; init; }

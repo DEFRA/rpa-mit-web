@@ -42,18 +42,18 @@ else
 				<InvoiceMetaData invoice="@invoice" />
 			</div>
 			<dl class="govuk-summary-list">
-				<div class="govuk-summary-list__row">
+@* 				<div class="govuk-summary-list__row">
 					<dt class="govuk-summary-list__key govuk-!-width-one-third">FRN</dt>
 					<dd class="govuk-summary-list__value">@invoice.PaymentRequests[0].FRN</dd>
-				</div>
+				</div> *@
 				<div class="govuk-summary-list__row">
 					<dt class="govuk-summary-list__key govuk-!-width-one-third">Included Payment Requests</dt>
 					<dd class="govuk-summary-list__value">@invoice.PaymentRequests.Count()</dd>
 				</div>
-				<div class="govuk-summary-list__row">
+@* 				<div class="govuk-summary-list__row">
 					<dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value</dt>
 					<dd class="govuk-summary-list__value">@invoice.PaymentRequests[0].Value @invoice.PaymentRequests[0].Currency</dd>
-				</div>
+				</div> *@
 				<div class="govuk-summary-list__row">
 					<dt class="govuk-summary-list__key govuk-!-width-one-third">Submitted By</dt>
 					<dd class="govuk-summary-list__value">@invoice.UpdatedBy</dd>

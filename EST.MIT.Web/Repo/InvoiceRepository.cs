@@ -59,7 +59,7 @@ public class InvoiceRepository : IInvoiceRepository
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
-        var response = await client.DeleteAsync($"/invoice/header/{paymentRequestDto.Id}");
+        var response = await client.DeleteAsync($"/invoice/header/{paymentRequestDto.PaymentRequestId}");
 
         await HandleHttpResponseError(response);
 
