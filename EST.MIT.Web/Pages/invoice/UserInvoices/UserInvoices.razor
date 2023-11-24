@@ -1,6 +1,6 @@
 ﻿@page "/user-invoices"
 @using EST.MIT.Web.Shared.Components.GDSInputText
-@using EST.MIT.Web.Shared.Components.ApprovalCard
+@using EST.MIT.Web.Shared.Components.UserInvoicesCard
 @using Entities
 
 <section class="page__header-wrapper govuk-!-margin-bottom-6">
@@ -29,7 +29,7 @@
 
         @foreach (var invoice in invoices)
         {
-            <ApprovalCard invoice=invoice />
+            <UserInvoicesCard invoice=invoice />
         }
     </section>
 }
