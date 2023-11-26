@@ -50,7 +50,7 @@ public static partial class ServiceCollectionExtensions
             {
                 return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, eventQueueName), logger);
             }
-        });
+        });       
 
         services.AddSingleton<IImporterQueueService>(_ =>
         {
@@ -70,6 +70,27 @@ public static partial class ServiceCollectionExtensions
             else
             {
                 return new ImporterQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, importerQueueName), logger);
+            }
+        });
+
+        services.AddSingleton<INotificationQueueService>(_ =>
+        {
+            var notificationQueueName = configuration.GetSection("NotificationQueueName").Value;
+            var queueStorageAccountCredential = configuration.GetSection("QueueConnectionString:Credential").Value;
+            var logger = _.GetService<ILogger<INotificationQueueService>>();
+            if (logger is null)
+            {
+                return null;
+            }
+            if (IsManagedIdentity(queueStorageAccountCredential))
+            {
+                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
+                var queueUrl = new Uri($"{queueServiceUri}{notificationQueueName}");
+                return new NotificationQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()), logger);
+            }
+            else
+            {
+                return new NotificationQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, notificationQueueName), logger);
             }
         });
 
