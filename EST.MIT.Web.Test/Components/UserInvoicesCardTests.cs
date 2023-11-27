@@ -60,25 +60,22 @@ namespace EST.MIT.Web.Test.Components
             var navigationManager = Services.GetService<NavigationManager>();
 
             //Assert
-            navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{WebUtility.UrlEncode(backUrl)}");
-
+            navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{WebUtility.UrlEncode("/user-invoices")}");
         }
 
         [Fact]
         public void When_Back_Link_IsClicked_On_InvoiceSummary_Page_Then_MyInvoices_Page_Is_Display()
         {
             //Arrange
-            var summaryComponent = RenderComponent<Summary>(parameters =>
+            var component = RenderComponent<Summary>(parameters =>
             {
                 parameters.Add(x => x.backUrl, backUrl);
             });
 
-            summaryComponent.FindAll("a.govuk-back-link")[0].GetAttribute("Back");
-
-            var summaryNavigationManager = Services.GetService<NavigationManager>();
+            var userInvoicesUrl = component.FindAll("a")[0].GetAttribute("href");
 
             //Assert
-            summaryNavigationManager?.Uri.Should().Be($"http://localhost/{WebUtility.UrlEncode(backUrl)}");
+            Assert.Equal(userInvoicesUrl, backUrl);
         }
     }
 }
