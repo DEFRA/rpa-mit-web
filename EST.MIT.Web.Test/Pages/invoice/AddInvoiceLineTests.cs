@@ -62,6 +62,9 @@ public class AddInvoiceLineTests : TestContext
     public void AfterRender_Redirects_When_Null_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
+        _mockReferenceDataServices.Setup(x => x.GetAccountsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK));
+
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<AddInvoiceLine>();
@@ -78,6 +81,8 @@ public class AddInvoiceLineTests : TestContext
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<PaymentRequest>(), It.IsAny<InvoiceLine>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
         _mockPageServices.Setup(x => x.Validation(It.IsAny<InvoiceLine>(), out IsErrored, out Errors)).Returns(true);
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+        _mockReferenceDataServices.Setup(x => x.GetAccountsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK));
 
         var component = RenderComponent<AddInvoiceLine>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
@@ -92,7 +97,9 @@ public class AddInvoiceLineTests : TestContext
     public void SaveInvoiceLine_Navigates_To_Add_AmendHeader_On_Cancel()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
-
+        _mockReferenceDataServices.Setup(x => x.GetAccountsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK));
+       
         var component = RenderComponent<AddInvoiceLine>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
 
