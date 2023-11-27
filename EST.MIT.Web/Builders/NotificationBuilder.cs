@@ -7,6 +7,7 @@ public class NotificationBuilder
     private string _id = default!;
     private string _scheme = default!;
     private string _action = default!;
+    private string _emailRecipient = default!;
     private object _data = default!;
 
     public NotificationBuilder WithId(string id)
@@ -24,6 +25,12 @@ public class NotificationBuilder
     public NotificationBuilder WithAction(Enum action)
     {
         _action = action.ToString();
+        return this;
+    }
+
+    public NotificationBuilder WithEmailRecipient(string emailRecipient)
+    {
+        _emailRecipient = emailRecipient;
         return this;
     }
 
@@ -50,6 +57,11 @@ public class NotificationBuilder
             throw new InvalidOperationException("Action cannot be null.");
         }
 
-        return new Notification(_id, _scheme, _action, _data);
+        if (_emailRecipient == null)
+        {
+            throw new InvalidOperationException("Email recipient cannot be null.");
+        }
+
+        return new Notification(_id, _scheme, _action, _emailRecipient, _data);
     }
 }

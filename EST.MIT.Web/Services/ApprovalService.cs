@@ -91,6 +91,7 @@ public class ApprovalService : IApprovalService
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
                                 .WithAction(NotificationType.approval)
+                                .WithEmailRecipient(invoice.ApproverEmail)
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
@@ -144,7 +145,7 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Added to queue");
 
-            var addedToNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync("invoicenotification", notification.ToMessage());
+            var addedToNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(notification);
             if (!addedToNotificationQueue)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");

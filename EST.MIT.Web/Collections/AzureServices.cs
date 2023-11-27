@@ -50,7 +50,7 @@ public static partial class ServiceCollectionExtensions
             {
                 return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, eventQueueName), logger);
             }
-        });       
+        });
 
         services.AddSingleton<IImporterQueueService>(_ =>
         {
