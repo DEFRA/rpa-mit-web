@@ -12,7 +12,7 @@ public partial class UserInvoicesCard : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
-    private string backUrl = "/user-invoices";
+    public string backUrl = "/user-invoices";
 
     protected override async Task OnInitializedAsync()
     {
@@ -23,7 +23,7 @@ public partial class UserInvoicesCard : ComponentBase
         await base.OnParametersSetAsync();
     }
 
-    private void View()
+    public void View()
     {
         _invoiceStateContainer.SetValue(invoice);
         _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}/{WebUtility.UrlEncode(backUrl)}");
