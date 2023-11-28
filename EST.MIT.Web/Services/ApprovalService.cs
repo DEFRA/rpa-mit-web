@@ -147,8 +147,8 @@ public class ApprovalService : IApprovalService
             var addedToNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(notification);
             if (!addedToNotificationQueue)
             {
-                _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");
-                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to queue" });
+                _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
+                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
                 response.IsSuccess = false;
                 return response;
             }
