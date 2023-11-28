@@ -15,6 +15,7 @@ public partial class AmendPaymentRequest : ComponentBase
 
     private Invoice invoice;
     private PaymentRequest paymentRequest;
+    public string backUrl = "/user-invoices";
     protected override void OnInitialized()
     {
         base.OnInitialized();
