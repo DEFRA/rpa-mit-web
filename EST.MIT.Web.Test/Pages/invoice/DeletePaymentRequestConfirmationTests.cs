@@ -12,6 +12,7 @@ public class DeletePaymentRequestConfirmationTests : TestContext
     private readonly Invoice _invoice;
     private readonly Mock<IInvoiceAPI> _mockApiService;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
+    public string backUrl = "/user-invoices";
 
     public DeletePaymentRequestConfirmationTests()
     {
@@ -84,6 +85,6 @@ public class DeletePaymentRequestConfirmationTests : TestContext
         link.Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
+        navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{backUrl}");
     }
 }
