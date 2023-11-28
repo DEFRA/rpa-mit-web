@@ -9,14 +9,17 @@ namespace EST.MIT.Web.Services;
 public class ApprovalService : IApprovalService
 {
     private readonly IEventQueueService _eventQueueService;
+    private readonly INotificationQueueService _notificationQueueService;
     private readonly IInvoiceAPI _invoiceAPI;
     private readonly IApprovalAPI _approvalAPI;
     private readonly ILogger<ApprovalService> _logger;
     private readonly IHttpContextAccessor _context;
 
-    public ApprovalService(IEventQueueService queueService, IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, ILogger<ApprovalService> logger, IHttpContextAccessor context)
+    public ApprovalService(IEventQueueService queueService, INotificationQueueService notificationQueueService,
+        IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, ILogger<ApprovalService> logger, IHttpContextAccessor context)
     {
         _eventQueueService = queueService;
+        _notificationQueueService = notificationQueueService;
         _invoiceAPI = invoiceAPI;
         _approvalAPI = approvalAPI;
         _logger = logger;
@@ -28,8 +31,7 @@ public class ApprovalService : IApprovalService
     public async Task<bool> RejectInvoiceAsync(Invoice invoice, string justification) => await RejectInvoice(invoice, justification);
     public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice) => await SubmitApproval(invoice);
     public async Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value) => await GetApprovers();
-    //public async Task<Invoice> GetApprovalAsync(string id, string scheme) => await GetApproval(id, scheme);
-    // public async Task<IEnumerable<Invoice>> GetOutstandingApprovalsAsync() => await GetOutstandingApprovals();
+
     public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme) => await ValidateApprover(approver, scheme);
 
     private async Task<bool> ApproveInvoice(Invoice invoice)
@@ -44,7 +46,7 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotify("approved", invoice, notification).ContinueWith(x =>
+        return await UpdateAndNotify(InvoiceStatuses.Approved, invoice, notification).ContinueWith(x =>
         {
             if (!x.Result.IsSuccess)
             {
@@ -69,7 +71,7 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotify("rejected", invoice, notification).ContinueWith(x =>
+        return await UpdateAndNotify(InvoiceStatuses.Rejected, invoice, notification).ContinueWith(x =>
         {
             if (!x.Result.IsSuccess)
             {
@@ -88,6 +90,7 @@ public class ApprovalService : IApprovalService
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
                                 .WithAction(NotificationType.approval)
+                                .WithEmailRecipient(invoice.ApproverEmail)
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
@@ -140,6 +143,16 @@ public class ApprovalService : IApprovalService
                 return response;
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Added to queue");
+
+            var addedToNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(notification);
+            if (!addedToNotificationQueue)
+            {
+                _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
+                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
+                response.IsSuccess = false;
+                return response;
+            }
+
             return response;
         }
         catch (Exception ex)
@@ -160,12 +173,6 @@ public class ApprovalService : IApprovalService
         }
         return approvers;
     }
-
-    //private async Task<IEnumerable<Invoice>> GetOutstandingApprovals()
-    //{
-    //    var invoices = await _invoiceAPI.GetApprovalsAsync();
-    //    return invoices;
-    //}
 
     private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver, scheme);
 

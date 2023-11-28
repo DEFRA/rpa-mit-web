@@ -2,9 +2,9 @@ using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components;
 
-namespace EST.MIT.Web.Pages.approvals.ApprovalConfirm;
+namespace EST.MIT.Web.Pages.approvals.ApprovalRejectionConfirmation;
 
-public partial class ApprovalConfirm : ComponentBase
+public partial class ApprovalRejectionConfirmation : ComponentBase
 {
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IPageServices _pageServices { get; set; }
@@ -28,7 +28,7 @@ public partial class ApprovalConfirm : ComponentBase
         {
             if (x.Result)
             {
-                _nav.NavigateTo($"/approval/confirmation/approved");
+                _nav.NavigateTo($"/approval/confirmation/{invoice.Id.ToString()}");
             }
             else
             {
@@ -44,7 +44,7 @@ public partial class ApprovalConfirm : ComponentBase
         {
             if (x.Result)
             {
-                _nav.NavigateTo($"/approval/confirmation/rejected");
+                _nav.NavigateTo($"/approval/confirmation/{invoice.Id.ToString()}");
             }
             else
             {
@@ -64,7 +64,7 @@ public partial class ApprovalConfirm : ComponentBase
         get
         {
             var uri = _nav.ToAbsoluteUri(_nav.Uri);
-            return uri.AbsolutePath.EndsWith("reject", StringComparison.OrdinalIgnoreCase);
+            return uri.AbsolutePath.EndsWith("rejected", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
