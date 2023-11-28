@@ -57,11 +57,6 @@ public class NotificationBuilder
             throw new InvalidOperationException("Action cannot be null.");
         }
 
-        if (_emailRecipient == null)
-        {
-            throw new InvalidOperationException("Email recipient cannot be null.");
-        }
-
         return new Notification(_id, _scheme, _action, _emailRecipient, _data);
     }
 }
