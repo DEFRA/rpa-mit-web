@@ -6,34 +6,38 @@
         <div class="govuk-grid-row">
             <div class="govuk-grid-column-full">
                 <h2 class="page__heading govuk-heading-l">Invoice Approvals</h2>
-                <p class="page__heading govuk-body">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ea, consectetur!</p>
+                <p class="page__heading govuk-body">Any invoices that you need to approve are displayed on this page.</p>
             </div>
         </div>
     </div>
 </section>
 
-<section class="govuk-width-container">
+<div class="govuk-width-container govuk-!-padding-top-1">
+    <h1 class="govuk-label-wrapper">
+        <a href="/" class="govuk-back-link">Back</a>
+    </h1>      
+</div>
+
+<section class="govuk-width-container govuk-!-padding-top-5">
     
-    @if (_approvals != null)
+    @if (_approvals == null || !_approvals.Any())
     {
-        @if(!_approvals.Any())
-        {
-            <div class="govuk-warning-text">
-                <span class="govuk-warning-text__icon" aria-hidden="true">ℹ️</span>
-                <strong class="govuk-warning-text__text">
-                    <span class="govuk-warning-text__assistive">Warning</span>
-                    You have no invoices to approve
-                </strong>
-            </div>
-        }
-        else
-        {
+        <div class="govuk-warning-text">
+            <span class="govuk-warning-text__icon" aria-hidden="true">ℹ️</span>
+            <strong class="govuk-warning-text__text">
+                <span class="govuk-warning-text__assistive">Warning</span>
+                You have no invoices to approve
+            </strong>
+        </div>
+    }
+    else
+    {
+        <div>
             @foreach (var invoice in _approvals)
             {
                 <ApprovalCard invoice=invoice />
             }
-        }
+        </div>
     }
-
 
 </section >
