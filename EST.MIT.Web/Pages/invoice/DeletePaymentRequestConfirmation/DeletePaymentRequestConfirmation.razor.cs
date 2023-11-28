@@ -10,7 +10,7 @@ public partial class DeletePaymentRequestConfirmation : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
 
     [Parameter] public string PaymentRequestId { get; set; } = default!;
-    public string backUrl = "/user-invoices";
+    private readonly string backUrl = "/user-invoices";
 
     private async Task ConfirmDelete()
     {
