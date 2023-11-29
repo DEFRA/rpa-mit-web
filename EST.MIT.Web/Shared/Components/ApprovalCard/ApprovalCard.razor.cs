@@ -40,5 +40,4 @@ public partial class ApprovalCard : ComponentBase
         _invoiceStateContainer.SetValue(invoice);
         _nav.NavigateTo("/approval/confirm/reject");
     }
-
 }

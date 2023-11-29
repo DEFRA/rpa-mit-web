@@ -15,6 +15,7 @@ public partial class ReadonlyInvoiceSummary : ComponentBase
     [Inject] private IInvoiceAPI _invoiceApi { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
+    private readonly string backUrl = "/user-invoices";
     private Invoice invoice = default!;
     private bool IsErrored = false;
     private Dictionary<string, string> Errors = new Dictionary<string, string>();

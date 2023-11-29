@@ -4,7 +4,7 @@ using EST.MIT.Web.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Shared.Components.ApprovalCard;
-
+using EST.MIT.Web.Shared.Components.UserInvoicesCard;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -47,6 +47,6 @@ public class UserInvoicesTests : TestContext
         var component = RenderComponent<UserInvoices>();
         component.WaitForElements("div.govuk-summary-card");
 
-        component.FindComponents<ApprovalCard>().Count.Should().Be(1);
+        component.FindComponents<UserInvoicesCard>().Count.Should().Be(1);
     }
 }
