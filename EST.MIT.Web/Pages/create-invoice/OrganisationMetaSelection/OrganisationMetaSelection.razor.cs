@@ -11,6 +11,7 @@ public partial class OrganisationMetaSelection : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] public IPageServices _pageServices { get; set; } = default!;
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
+    [Inject] private ILogger<OrganisationMetaSelection> Logger { get; set; }
 
     private Invoice invoice = default!;
     private OrganisationSelect organisationSelect = new();
@@ -21,38 +22,62 @@ public partial class OrganisationMetaSelection : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        invoice = _invoiceStateContainer.Value;
-
-        if (invoice != null)
+        try
         {
-            await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
+            await base.OnInitializedAsync();
+            invoice = _invoiceStateContainer.Value;
+
+            if (invoice != null)
             {
-                if (x.Result.IsSuccess)
+                await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
                 {
-                    foreach (var org in x.Result.Data)
+                    if (x.Result.IsSuccess)
                     {
-                        organisations.Add(org.code, org.description);
+                        foreach (var org in x.Result.Data)
+                        {
+                            organisations.Add(org.code, org.description);
+                        }
                     }
-                }
-            });
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error initializing OrganisationMetaSelection page");
+            _nav.NavigateTo("/error");
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+        try
         {
-            _nav.NavigateTo("/create-invoice");
+            await base.OnAfterRenderAsync(firstRender);
+            if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+            {
+                _nav.NavigateTo("/create-invoice");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of OrganisationMetaSelection page");
+            _nav.NavigateTo("/error");
         }
     }
 
     private void SaveAndContinue()
     {
-        invoice.Organisation = organisationSelect.Organisation;
-        _invoiceStateContainer.SetValue(invoice);
-        _nav.NavigateTo("/create-invoice/scheme");
+        try
+        {
+            invoice.Organisation = organisationSelect.Organisation;
+            _invoiceStateContainer.SetValue(invoice);
+            _nav.NavigateTo("/create-invoice/scheme");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in SaveAndContinue of OrganisationMetaSelection page");
+            _nav.NavigateTo("/error");
+        }
     }
 
     private void ValidationFailed()

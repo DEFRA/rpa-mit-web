@@ -11,6 +11,7 @@ public partial class SchemeMetaSelection : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] public IPageServices _pageServices { get; set; }
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
+    [Inject] private ILogger<SchemeMetaSelection> Logger { get; set; }
 
     private Invoice invoice = default!;
     private SchemeSelect schemeSelect = new();
@@ -21,21 +22,29 @@ public partial class SchemeMetaSelection : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        invoice = _invoiceStateContainer.Value;
-
-        if (invoice != null && !invoice.IsNull())
+        try
         {
-            await _referenceDataAPI.GetSchemeTypesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
+            await base.OnInitializedAsync();
+            invoice = _invoiceStateContainer.Value;
+
+            if (invoice != null && !invoice.IsNull())
             {
-                if (x.Result.IsSuccess)
+                await _referenceDataAPI.GetSchemeTypesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
                 {
-                    foreach (var scheme in x.Result.Data)
+                    if (x.Result.IsSuccess)
                     {
-                        schemes.Add(scheme.code, scheme.description);
+                        foreach (var scheme in x.Result.Data)
+                        {
+                            schemes.Add(scheme.code, scheme.description);
+                        }
                     }
-                }
-            });
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error initializing SchemeMetaSelection page");
+            _nav.NavigateTo("/error");
         }
     }
 
@@ -51,9 +60,17 @@ public partial class SchemeMetaSelection : ComponentBase
 
     private void SaveAndContinue()
     {
-        invoice.SchemeType = schemeSelect.Scheme;
-        _invoiceStateContainer.SetValue(invoice);
-        _nav.NavigateTo("/create-bulk/payment-type");
+        try
+        {
+            invoice.SchemeType = schemeSelect.Scheme;
+            _invoiceStateContainer.SetValue(invoice);
+            _nav.NavigateTo("/create-bulk/payment-type");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelection page");
+            _nav.NavigateTo("/error");
+        }
     }
 
     private void ValidationFailed()

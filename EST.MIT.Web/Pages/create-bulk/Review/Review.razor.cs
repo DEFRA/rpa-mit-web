@@ -1,7 +1,6 @@
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components;
-using EST.MIT.Web.Helpers;
 
 namespace EST.MIT.Web.Pages.create_bulk.Review;
 
@@ -11,6 +10,7 @@ public partial class Review : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private IPageServices _pageServices { get; set; }
     [Inject] private IInvoiceAPI _api { get; set; }
+    [Inject] private ILogger<Review> Logger { get; set; }
 
     private Invoice invoice { get; set; }
     private bool IsErrored = false;
@@ -18,19 +18,37 @@ public partial class Review : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        invoice = _invoiceStateContainer.Value;
+        try
+        {
+            await base.OnInitializedAsync();
+            invoice = _invoiceStateContainer.Value;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error initializing Review page");
+            _nav.NavigateTo("/error");
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+        try
         {
-            _invoiceStateContainer.SetValue(null);
-            _nav.NavigateTo("/create-bulk");
+            await base.OnAfterRenderAsync(firstRender);
+            invoice = _invoiceStateContainer.Value;
+
+            if (invoice == null)
+            {
+                _nav.NavigateTo("/create-bulk");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error rendering Review page");
+            _nav.NavigateTo("/error");
         }
     }
+
 
     private void ValidationFailed()
     {

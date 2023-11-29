@@ -1,8 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
-using System.Net;
-using EST.MIT.Web.Entities;
-using System.Text.Json;
-using AutoMapper;
 using EST.MIT.Web.DTOs;
 using EST.MIT.Web.Interfaces;
 

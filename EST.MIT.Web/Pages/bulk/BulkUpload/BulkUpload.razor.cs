@@ -40,20 +40,28 @@ public partial class BulkUpload : ComponentBase
 
     private async Task UploadFile()
     {
-        if (fileToLoadSummary.IsValidFile)
+        try
         {
-            fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, invoice.CreatedBy);
-            fileToLoadSummary.IsUploaded = fileToLoadSummary.UploadResponse.IsSuccessStatusCode;
-
-            if (!fileToLoadSummary.IsUploaded)
+            if (fileToLoadSummary.IsValidFile)
             {
-                error = true;
-                errorMessage = string.Join(",", await fileToLoadSummary.UploadResponse.Content.ReadAsStringAsync());
-                _logger.LogError(errorMessage);
-            }
+                fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, invoice.CreatedBy);
+                fileToLoadSummary.IsUploaded = fileToLoadSummary.UploadResponse.IsSuccessStatusCode;
 
-            var confirmationNumber = await fileToLoadSummary.UploadResponse.Content.ReadAsStringAsync();
-            _nav.NavigateTo($"/bulk/confirmation/{confirmationNumber}");
+                if (!fileToLoadSummary.IsUploaded)
+                {
+                    error = true;
+                    errorMessage = string.Join(",", await fileToLoadSummary.UploadResponse.Content.ReadAsStringAsync());
+                    _logger.LogError(errorMessage);
+                }
+
+                var confirmationNumber = await fileToLoadSummary.UploadResponse.Content.ReadAsStringAsync();
+                _nav.NavigateTo($"/bulk/confirmation/{confirmationNumber}");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred during file upload");
+            _nav.NavigateTo("/error");
         }
     }
 }

@@ -59,21 +59,19 @@ public class AddInvoiceLineTests : TestContext
     }
 
     [Fact(Timeout = 100000)]
-    public void AfterRender_Redirects_When_Null_Invoice()
+    public async void AfterRender_Redirects_When_Null_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
-        _mockReferenceDataServices.Setup(x => x.GetAccountsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK));
-
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<AddInvoiceLine>();
+        await Task.Delay(1000);
 
         navigationManager?.Uri.Should().Be("http://localhost/");
     }
 
     [Fact(Timeout = 100000)]
-    public void SaveInvoiceLine_Navigates_To_Add_AmendHeader()
+    public async void SaveInvoiceLine_Navigates_To_Add_AmendHeader()
     {
         var IsErrored = false;
         var Errors = new Dictionary<string, List<string>>();
@@ -81,11 +79,10 @@ public class AddInvoiceLineTests : TestContext
         _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>(), It.IsAny<PaymentRequest>(), It.IsAny<InvoiceLine>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
         _mockPageServices.Setup(x => x.Validation(It.IsAny<InvoiceLine>(), out IsErrored, out Errors)).Returns(true);
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
-        _mockReferenceDataServices.Setup(x => x.GetAccountsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK));
 
         var component = RenderComponent<AddInvoiceLine>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
+        await Task.Delay(1000);
 
         component.FindAll("button.govuk-button")[0].Click();
 
@@ -93,15 +90,14 @@ public class AddInvoiceLineTests : TestContext
         navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/1");
     }
 
-    [Fact]
-    public void SaveInvoiceLine_Navigates_To_Add_AmendHeader_On_Cancel()
+    [Fact(Timeout = 100000)]
+    public async void SaveInvoiceLine_Navigates_To_Add_AmendHeader_On_Cancel()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
-        _mockReferenceDataServices.Setup(x => x.GetAccountsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK));
-       
+
         var component = RenderComponent<AddInvoiceLine>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
+        await Task.Delay(1000);
 
         component.FindAll("a.govuk-link")[0].Click();
 

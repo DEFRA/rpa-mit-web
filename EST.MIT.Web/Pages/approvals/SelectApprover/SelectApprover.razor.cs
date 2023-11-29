@@ -10,6 +10,7 @@ public partial class SelectApprover : ComponentBase
     [Inject] public IPageServices _pageServices { get; set; } = default!;
     [Inject] public IApprovalService _approvalService { get; set; } = default!;
     [Inject] public NavigationManager _nav { get; set; } = default!;
+    [Inject] public ILogger<SelectApprover> Logger { get; set; } = default!;
 
     private Invoice invoice = default!;
     private readonly ApproverSelect approverSelect = new();
@@ -19,8 +20,16 @@ public partial class SelectApprover : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        invoice ??= _invoiceStateContainer.Value;
+        try
+        {
+            await base.OnInitializedAsync();
+            invoice ??= _invoiceStateContainer.Value;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error initializing SelectApprover page");
+            _nav.NavigateTo("/error");
+        }
     }
 
     private void ValidationFailed()
@@ -46,27 +55,35 @@ public partial class SelectApprover : ComponentBase
 
     private async Task SubmitApproval()
     {
-        IsErrored = false;
-        var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail, invoice.SchemeType);
-
-        if (!validate.IsSuccess || !validate.Data.Value)
+        try
         {
-            ShowErrorSummary = IsErrored == false;
-            errors = validate.Errors;
-            return;
+            IsErrored = false;
+            var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail, invoice.SchemeType);
+
+            if (!validate.IsSuccess || !validate.Data.Value)
+            {
+                ShowErrorSummary = IsErrored == false;
+                errors = validate.Errors;
+                return;
+            }
+
+            invoice.ApproverId = "1"; //TODO: fxs this needs to be the approver id, for now hard coded to 1
+            invoice.ApproverEmail = approverSelect.ApproverEmail;
+
+            var response = await _approvalService.SubmitApprovalAsync(invoice);
+            if (!response.IsSuccess)
+            {
+                ShowErrorSummary = true;
+                errors = response.Errors;
+                return;
+            }
+
+            _nav.NavigateTo($"/approval/confirmation/{invoice.Id}");
         }
-
-        invoice.ApproverId = "1"; //TODO: fxs this needs to be the approver id, for now hard coded to 1
-        invoice.ApproverEmail = approverSelect.ApproverEmail;
-
-        var response = await _approvalService.SubmitApprovalAsync(invoice);
-        if (!response.IsSuccess)
+        catch (Exception ex)
         {
-            ShowErrorSummary = true;
-            errors = response.Errors;
-            return;
+            Logger.LogError(ex, "Error during SubmitApproval");
+            _nav.NavigateTo("/error");
         }
-
-        _nav.NavigateTo($"/approval/confirmation/{invoice.Id}");
     }
 }

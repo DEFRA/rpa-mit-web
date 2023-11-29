@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace EST.MIT.Web.Pages;
 
 [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-[IgnoreAntiforgeryToken]
 public class ErrorModel : PageModel
 {
     public string? RequestId { get; set; }
@@ -22,5 +21,9 @@ public class ErrorModel : PageModel
     public void OnGet()
     {
         RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        if (!string.IsNullOrEmpty(RequestId))
+        {
+            _logger.LogError($"Error occurred. RequestId: {RequestId}");
+        }
     }
 }
