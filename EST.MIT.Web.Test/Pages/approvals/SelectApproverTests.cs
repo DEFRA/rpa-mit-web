@@ -5,6 +5,7 @@ using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace EST.MIT.Web.Tests.Pages;
 

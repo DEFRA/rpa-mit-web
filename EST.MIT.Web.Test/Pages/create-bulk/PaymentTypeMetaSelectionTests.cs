@@ -42,7 +42,11 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
+
+        component.WaitForAssertion(() =>
+        {
+            navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
+        });
     }
 
     // [Fact]
@@ -121,8 +125,12 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
         selectPaymentTypeRadioButton[0].Change("DOMESTIC");
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
+        component.WaitForAssertion(() =>
+        {
+            navigationManager?.Uri.Should().Be("http://localhost/create-bulk/review");
+        });
     }
+
 
     [Fact]
     public void Cancels_Invoice_Navigates_To_HomePage()
@@ -144,6 +152,9 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() =>
+        {
+            navigationManager?.Uri.Should().Be("http://localhost/");
+        });
     }
 }

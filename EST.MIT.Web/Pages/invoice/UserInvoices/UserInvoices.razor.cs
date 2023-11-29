@@ -5,6 +5,7 @@ using EST.MIT.Web.Interfaces;
 namespace EST.MIT.Web.Pages.invoice.UserInvoices;
 public partial class UserInvoices : ComponentBase
 {
+    [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceAPI _API { get; set; }
 
     private IEnumerable<Invoice> invoices = new List<Invoice>();
@@ -12,6 +13,15 @@ public partial class UserInvoices : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        invoices = await _API.GetInvoicesAsync();
+        try
+        {
+            invoices = await _API.GetInvoicesAsync();
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine($"Error retrieving invoices: {ex.Message}");
+            _nav.NavigateTo("/error");
+        }
     }
 }

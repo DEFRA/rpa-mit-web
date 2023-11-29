@@ -2,7 +2,6 @@ using System.Net;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Shared.Components;
 
 namespace EST.MIT.Web.Pages.invoice.Summary;
 
@@ -11,15 +10,15 @@ public partial class Summary : ComponentBase
     [Inject] private IInvoiceAPI _api { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
-    
-	[Parameter] public string invoiceId { get; set; } = "";
+
+    [Parameter] public string invoiceId { get; set; } = "";
 
     [Parameter] public string scheme { get; set; } = "";
 
     [Parameter] public string backUrl { get; set; } = "";
 
-	private Invoice invoice;
-    
+    private Invoice invoice;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,10 +40,10 @@ public partial class Summary : ComponentBase
 
     private string GetBackUrl()
     {
-	    if (!string.IsNullOrWhiteSpace(this.backUrl))
-	    {
-		    return WebUtility.UrlDecode(this.backUrl);
-	    }
-	    return "/";
-	}
+        if (!string.IsNullOrWhiteSpace(this.backUrl))
+        {
+            return WebUtility.UrlDecode(this.backUrl);
+        }
+        return "/";
+    }
 }

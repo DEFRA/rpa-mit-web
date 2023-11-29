@@ -10,6 +10,7 @@ public partial class AccountMetaSelection : ComponentBase
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] public IPageServices _pageServices { get; set; }
+    [Inject] private ILogger<AccountMetaSelection> Logger { get; set; }
 
     private Invoice invoice = default!;
     private AccountSelect accountSelect = new();
@@ -24,25 +25,50 @@ public partial class AccountMetaSelection : ComponentBase
 
     protected override void OnInitialized()
     {
-        base.OnInitialized();
-        invoice = _invoiceStateContainer.Value;
+        try
+        {
+            base.OnInitialized();
+            invoice = _invoiceStateContainer.Value;
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error initializing AccountMetaSelection page");
+            _nav.NavigateTo("/error");
+        }
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+        try
         {
-            _invoiceStateContainer.SetValue(null);
-            _nav.NavigateTo("/create-bulk");
+            await base.OnAfterRenderAsync(firstRender);
+            if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+            {
+                _invoiceStateContainer.SetValue(null);
+                _nav.NavigateTo("/create-bulk");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of AccountMetaSelection page");
+            _nav.NavigateTo("/error");
         }
     }
 
     private void SaveAndContinue()
     {
-        invoice.AccountType = accountSelect.Account;
-        _invoiceStateContainer.SetValue(invoice);
-        _nav.NavigateTo("/create-bulk/organisation");
+        try
+        {
+            invoice.AccountType = accountSelect.Account;
+            _invoiceStateContainer.SetValue(invoice);
+            _nav.NavigateTo("/create-bulk/organisation");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in SaveAndContinue of AccountMetaSelection page");
+            _nav.NavigateTo("/error");
+        }
     }
 
     private void ValidationFailed()

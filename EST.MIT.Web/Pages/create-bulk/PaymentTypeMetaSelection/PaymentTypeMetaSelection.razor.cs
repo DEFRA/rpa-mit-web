@@ -11,6 +11,7 @@ public partial class PaymentTypeMetaSelection : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] public IPageServices _pageServices { get; set; }
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
+    [Inject] private ILogger<PaymentTypeMetaSelection> Logger { get; set; }
 
     private Invoice invoice = default!;
     private PaymentTypeSelect paymentTypeSelect = new();
@@ -21,38 +22,63 @@ public partial class PaymentTypeMetaSelection : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        invoice = _invoiceStateContainer.Value;
-
-        if (invoice != null && !invoice.IsNull())
+        try
         {
-            await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType).ContinueWith(x =>
+            await base.OnInitializedAsync();
+            invoice = _invoiceStateContainer.Value;
+
+            if (invoice != null && !invoice.IsNull())
             {
-                if (x.Result.IsSuccess)
+                await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType).ContinueWith(x =>
                 {
-                    foreach (var paymentType in x.Result.Data)
+                    if (x.Result.IsSuccess)
                     {
-                        paymentTypes.Add(paymentType.code, paymentType.description);
+                        foreach (var paymentType in x.Result.Data)
+                        {
+                            paymentTypes.Add(paymentType.code, paymentType.description);
+                        }
                     }
-                }
-            });
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error initializing PaymentTypeMetaSelection page");
+            _nav.NavigateTo("/error");
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+        try
         {
-            _invoiceStateContainer.SetValue(null);
-            _nav.NavigateTo("/create-bulk");
+            await base.OnAfterRenderAsync(firstRender);
+            if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+            {
+                _invoiceStateContainer.SetValue(null);
+                _nav.NavigateTo("/create-bulk");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of PaymentTypeMetaSelection page");
+            _nav.NavigateTo("/error");
         }
     }
+
     private void SaveAndContinue()
     {
-        invoice.PaymentType = paymentTypeSelect.PaymentType;
-        _invoiceStateContainer.SetValue(invoice);
-        _nav.NavigateTo("/create-bulk/review");
+        try
+        {
+            invoice.PaymentType = paymentTypeSelect.PaymentType;
+            _invoiceStateContainer.SetValue(invoice);
+            _nav.NavigateTo("/create-bulk/review");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in SaveAndContinue of PaymentTypeMetaSelection page");
+            _nav.NavigateTo("/error");
+        }
     }
 
     private void ValidationFailed()

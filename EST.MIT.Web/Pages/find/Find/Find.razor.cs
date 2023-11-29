@@ -11,6 +11,7 @@ public partial class Find : ComponentBase
     [Inject] private IFindService _findService { get; set; }
     [Inject] private IPageServices _pageService { get; set; }
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
+    [Inject] private ILogger<Find> Logger { get; set; }
 
     private Dictionary<string, List<string>> errors = new();
     private bool IsErrored, NotFound = false;
@@ -20,18 +21,27 @@ public partial class Find : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        await _referenceDataAPI.GetSchemeTypesAsync().ContinueWith(x =>
+        try
         {
-            if (x.Result.IsSuccess)
+            await base.OnInitializedAsync();
+            await _referenceDataAPI.GetSchemeTypesAsync().ContinueWith(x =>
             {
-                foreach (var schemeType in x.Result.Data)
+                if (x.Result.IsSuccess)
                 {
-                    allSchemeTypes.Add(schemeType.code, schemeType.description);
+                    foreach (var schemeType in x.Result.Data)
+                    {
+                        allSchemeTypes.Add(schemeType.code, schemeType.description);
+                    }
                 }
-            }
-        });
+            });
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error initializing Find page");
+            _nav.NavigateTo("/error");
+        }
     }
+
     public async Task Search()
     {
         invoice = await _findService.FetchInvoiceAsync(_searchCriteria.InvoiceNumber, _searchCriteria.Scheme);
