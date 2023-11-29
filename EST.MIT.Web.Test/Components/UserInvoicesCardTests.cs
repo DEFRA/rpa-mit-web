@@ -60,11 +60,11 @@ namespace EST.MIT.Web.Test.Components
             var navigationManager = Services.GetService<NavigationManager>();
 
             //Assert
-            navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{WebUtility.UrlEncode("/user-invoices")}");
+            navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{WebUtility.UrlEncode(backUrl)}");
         }
 
         [Fact]
-        public void When_Back_Link_IsClicked_On_InvoiceSummary_Page_Then_MyInvoices_Page_Is_Display()
+        public void When_Back_Link_On_InvoiceSummary_Page_Navigates_To_MyInvoices_Page()
         {
             //Arrange
             var component = RenderComponent<Summary>(parameters =>
