@@ -62,9 +62,9 @@ public class ApprovalServiceTests
 
         var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-        var response = service.RejectInvoiceAsync(new Invoice() { SchemeType = "BPS" }, "Justification");
+        var response = await service.RejectInvoiceAsync(new Invoice() { SchemeType = "BPS" }, "Justification");
 
-        response.Result.Should().BeTrue();
+        response.Should().BeTrue();
     }
 
     [Fact]
@@ -168,9 +168,9 @@ public class ApprovalServiceTests
 
         var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-        var response = service.SubmitApprovalAsync(new Invoice() { SchemeType = "BPS" });
+        var response = await service.SubmitApprovalAsync(new Invoice() { SchemeType = "BPS" });
 
-        response.Result.IsSuccess.Should().BeFalse();
+        response.IsSuccess.Should().BeFalse();
     }
 
     [Fact]
