@@ -11,6 +11,9 @@ public partial class ApprovalCard : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
+    public decimal TotalValueOfPayments => invoice.PaymentRequests.Sum(x => x.Value);
+
+
     private string backUrl = "/approval/mine";
 
     protected override async Task OnInitializedAsync()

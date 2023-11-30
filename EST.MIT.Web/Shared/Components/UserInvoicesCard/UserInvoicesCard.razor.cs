@@ -12,6 +12,10 @@ public partial class UserInvoicesCard : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
+    public int  NumberOfPaymentRequests => invoice.PaymentRequests.Count;
+
+    public decimal TotalValueOfPayments => invoice.PaymentRequests.Sum(x => x.Value);    
+
     private readonly string backUrl = "/user-invoices";
 
     protected override async Task OnInitializedAsync()
