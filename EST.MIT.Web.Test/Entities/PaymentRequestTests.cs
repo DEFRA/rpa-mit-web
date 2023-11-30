@@ -110,7 +110,23 @@ public class PaymentRequestTests : TestContext
         validationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.Currency)));
     }
 
+    [Fact]
+    public void AR_Specific_Fields_Are_Required()
+    {
+        var ARpaymentRequest = new PaymentRequest() { AccountType = "AR" };
+        var ARvalidationResults = ValidateModel(ARpaymentRequest);
+        ARvalidationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.OriginalInvoiceNumber)));
+        ARvalidationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.OriginalSettlementDate)));
+        ARvalidationResults.Should().ContainSingle(vr => vr.MemberNames.Contains(nameof(PaymentRequest.RecoveryDate)));
+        ARvalidationResults.Should().NotContain(vr => vr.MemberNames.Contains(nameof(PaymentRequest.InvoiceCorrectionReference)));
 
+        var APpaymentRequest = new PaymentRequest() { AccountType = "AP" };
+        var APvalidationResults = ValidateModel(APpaymentRequest);
+        APvalidationResults.Should().NotContain(vr => vr.MemberNames.Contains(nameof(PaymentRequest.OriginalInvoiceNumber)));
+        APvalidationResults.Should().NotContain(vr => vr.MemberNames.Contains(nameof(PaymentRequest.OriginalSettlementDate)));
+        APvalidationResults.Should().NotContain(vr => vr.MemberNames.Contains(nameof(PaymentRequest.RecoveryDate)));
+        APvalidationResults.Should().NotContain(vr => vr.MemberNames.Contains(nameof(PaymentRequest.InvoiceCorrectionReference)));
+    }
 
     [Fact]
     public void Validate_ShouldGenerateError_WhenFRNSBIAndVendorAreEmpty()
