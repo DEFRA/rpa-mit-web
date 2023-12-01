@@ -441,6 +441,100 @@ public class InvoiceAPITests
     }
 
     [Fact]
+    public async Task GetInvoicesAsync_Returns_Only_Invoices_With_PaymentsRequests()
+    {
+        //Arrange
+        var mockInvoices = new List<Invoice>()
+        {
+            new Invoice()
+            {
+                Id = new Guid(),
+                AccountType = "AR",
+                Organisation = "NE",
+                SchemeType = "CS",
+                PaymentType = "GBP",
+                PaymentRequests = new List<PaymentRequest>()
+                {
+                    new PaymentRequest()
+                    {
+                        FRN = "9999999987",
+                        MarketingYear = "2023",
+                        Currency = "GBP",
+                        SBI = "1"
+                    }
+                }
+            },
+            new Invoice()
+            {
+                 Id=new Guid(),
+                 AccountType = "AP",
+                 Organisation = "FC",
+                 SchemeType="CS",
+                 PaymentType="GBP"
+            },
+            new Invoice()
+            {
+                Id = new Guid(),
+                AccountType = "AP",
+                Organisation = "NE",
+                SchemeType = "CS",
+                PaymentType = "GBP",
+                PaymentRequests = new List<PaymentRequest>()
+                {
+                    new PaymentRequest()
+                    {
+                        FRN = "7779999987",
+                        MarketingYear = "2028",
+                        Currency = "GBP",
+                        SBI = "5"
+                    }
+                }
+            },
+
+            new Invoice()
+            {
+                Id = new Guid(),
+                AccountType = "AccountType",
+                Organisation = "Organisation",
+                SchemeType = "CS",
+                PaymentType = "EU",
+                PaymentRequests = new List<PaymentRequest>()
+                {
+                    new PaymentRequest()
+                    {
+                        FRN = "8889999987",
+                        MarketingYear = "2029",
+                        Currency = "GBP",
+                        SBI = "8"
+                    }
+                }
+            }
+        };
+
+        _mockRepository.Setup(x => x.GetInvoicesAsync())
+        .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent(JsonSerializer.Serialize(mockInvoices))
+        });
+
+        var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
+
+        //Act
+        var result = await service.GetInvoicesAsync();
+        var invoices = result.ToArray();
+
+        //Assert
+        Assert.NotNull(result);
+        Assert.Equal(3, invoices.Length);
+        Assert.Equal("AR", invoices[0].AccountType);
+        Assert.Equal("AP", invoices[1].AccountType);
+        Assert.Equal("AccountType", invoices[2].AccountType);
+        Assert.Equal("8", invoices[2].PaymentRequests[0].SBI);
+        Assert.Equal("1", invoices[0].PaymentRequests[0].SBI);
+        Assert.Equal("5", invoices[1].PaymentRequests[0].SBI);
+    }
+
+    [Fact]
     public async Task GetInvoicesAsync_HandlesException()
     {
         _mockRepository.Setup(x => x.GetInvoicesAsync())
