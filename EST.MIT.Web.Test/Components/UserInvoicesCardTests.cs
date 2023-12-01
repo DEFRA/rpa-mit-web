@@ -13,7 +13,7 @@ namespace EST.MIT.Web.Test.Components
         private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
         private readonly Mock<IInvoiceAPI> _mockApiService;
         private readonly Invoice _invoice;
-       
+
         public UserInvoicesCardTests()
         {
             _invoice = new Invoice()
