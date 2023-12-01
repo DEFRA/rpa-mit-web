@@ -7,18 +7,16 @@ namespace EST.MIT.Web.Services;
 public class FindService : IFindService
 {
     private readonly IInvoiceAPI _apiService;
-    private readonly IReferenceDataRepository _referenceDataRepository;
 
-    public FindService(IInvoiceAPI apiService, IReferenceDataRepository referenceDataRepository)
+    public FindService(IInvoiceAPI apiService)
     {
         _apiService = apiService;
-        _referenceDataRepository = referenceDataRepository;
     }
 
-    public async Task<Invoice> FetchInvoiceAsync(string invoiceNumber, string scheme)
+    public async Task<Invoice> FindInvoiceAsync(SearchCriteria criteria)
     {
 
-        var invoice = await _apiService.FindInvoiceAsync(invoiceNumber, scheme);
+        var invoice = await _apiService.FindInvoiceAsync(criteria);
         if (invoice.IsNull())
         {
             return null;
