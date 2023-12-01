@@ -3,6 +3,7 @@ using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Services;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
 namespace EST.MIT.Web.Test.Services;
@@ -13,6 +14,8 @@ public class UploadServiceTests : TestContext
     private Mock<IAzureBlobService> _blobServiceMock;
     private Mock<IEventQueueService> _EventQueueServiceMock;
     private Mock<IImporterQueueService> _ImporterQueueServiceMock;
+    private Mock<INotificationQueueService> _NotificationQueueServiceMock;
+    private Mock<IHttpContextAccessor> _ContextAccessor;
     private Mock<ILogger<UploadService>> _logger;
 
     Invoice routeFields = new()
@@ -29,6 +32,8 @@ public class UploadServiceTests : TestContext
         _blobServiceMock = new Mock<IAzureBlobService>();
         _EventQueueServiceMock = new Mock<IEventQueueService>();
         _ImporterQueueServiceMock = new Mock<IImporterQueueService>();
+        _NotificationQueueServiceMock = new Mock<INotificationQueueService>();
+        _ContextAccessor = new Mock<IHttpContextAccessor>();
         _logger = new Mock<ILogger<UploadService>>();
     }
 
@@ -42,9 +47,9 @@ public class UploadServiceTests : TestContext
         _EventQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult<bool>(true));
         _ImporterQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<ImportRequest>())).Returns(Task.FromResult<bool>(true));
 
-        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object);
+        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object, _NotificationQueueServiceMock.Object, _ContextAccessor.Object);
 
-        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user");
+        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -57,9 +62,9 @@ public class UploadServiceTests : TestContext
         _blobServiceMock.Setup(x => x.AddFileToBlobAsync(It.IsAny<string>(), It.IsAny<IBrowserFile>())).ThrowsAsync(new Exception("Blob Test Error"));
         _ImporterQueueServiceMock.Setup(x => x.AddMessageToQueueAsync(It.IsAny<ImportRequest>())).Returns(Task.FromResult<bool>(true));
 
-        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object);
+        var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object, _NotificationQueueServiceMock.Object, _ContextAccessor.Object);
 
-        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user");
+        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields);
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
     }

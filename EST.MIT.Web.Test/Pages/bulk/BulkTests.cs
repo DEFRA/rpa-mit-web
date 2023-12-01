@@ -122,7 +122,7 @@ public class BulkUploadPageTests : TestContext
     public void Validated_File_Not_Added_To_Blob()
     {
         Mock<IUploadService> uploadServiceMock = new Mock<IUploadService>();
-        uploadServiceMock.Setup(x => x.UploadFileAsync(It.IsAny<IBrowserFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }));
+        uploadServiceMock.Setup(x => x.UploadFileAsync(It.IsAny<IBrowserFile>(), It.IsAny<Invoice>())).Returns(Task.FromResult(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }));
 
         Services.AddSingleton<IConfiguration>(_configuration);
         Services.AddSingleton<IUploadService>(uploadServiceMock.Object);
