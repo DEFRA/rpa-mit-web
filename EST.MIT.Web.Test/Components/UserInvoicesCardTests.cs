@@ -13,8 +13,7 @@ namespace EST.MIT.Web.Test.Components
         private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
         private readonly Mock<IInvoiceAPI> _mockApiService;
         private readonly Invoice _invoice;
-
-        private string backUrl = "/user-invoices";
+       
         public UserInvoicesCardTests()
         {
             _invoice = new Invoice()
@@ -64,18 +63,18 @@ namespace EST.MIT.Web.Test.Components
         }
 
         [Fact]
-        public void When_Back_Link_IsClicked_On_InvoiceSummary_Page_Then_MyInvoices_Page_Is_Display()
+        public void Back_Link_On_InvoiceSummary_Page_Navigates_To_MyInvoices_Page_()
         {
             //Arrange
             var component = RenderComponent<Summary>(parameters =>
             {
-                parameters.Add(x => x.backUrl, backUrl);
+                parameters.Add(x => x.backUrl, "/user-invoices");
             });
 
             var userInvoicesUrl = component.FindAll("a")[0].GetAttribute("href");
 
             //Assert
-            Assert.Equal(userInvoicesUrl, backUrl);
+            Assert.Equal("/user-invoices", userInvoicesUrl);
         }
     }
 }
