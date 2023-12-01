@@ -21,12 +21,62 @@ public class InvoiceAPI : IInvoiceAPI
         _invoiceRepository = invoiceRepository;
     }
 
+    public async Task<Invoice> FindInvoiceAsync(SearchCriteria criteria) => await GetInvoice(criteria);
     public async Task<Invoice> FindInvoiceAsync(string id, string scheme) => await GetInvoice(id, scheme);
     public async Task<ApiResponse<Invoice>> SaveInvoiceAsync(Invoice invoice) => await SaveInvoice(invoice);
     public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice) => await UpdateInvoice(invoice);
     public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest) => await UpdateInvoice(invoice, paymentRequest);
     public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine) => await UpdateInvoice(invoice, paymentRequest, invoiceLine);
     public async Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice invoice, string paymentRequestId) => await DeletePaymentRequest(invoice, paymentRequestId);
+
+    private async Task<Invoice> GetInvoice(SearchCriteria criteria)
+    {
+
+        HttpResponseMessage? response = new HttpResponseMessage(HttpStatusCode.BadRequest);
+
+        if (criteria is not null)
+        {
+            if (!string.IsNullOrEmpty(criteria.InvoiceNumber))
+            {
+                response = await _invoiceRepository.GetInvoiceByIdAsync(criteria.InvoiceNumber);
+            }
+        }
+
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            if (response.Content.Headers.ContentLength == 0)
+            {
+                _logger.LogWarning("API returned no data");
+                return null;
+            }
+
+            try
+            {
+                var dto = await response.Content.ReadFromJsonAsync<PaymentRequestsBatchDTO>();
+
+                return this._autoMapper.Map<Invoice>(dto);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error deserializing API response");
+                return null;
+            }
+        }
+
+        if (response.StatusCode == HttpStatusCode.BadRequest)
+        {
+            _logger.LogError("Get Invoice by Criteria bad request");
+            return null;
+        }
+
+        if (response.StatusCode == HttpStatusCode.NotFound)
+        {
+            return null;
+        }
+
+        _logger.LogError("Unknown response from API");
+        return null;
+    }
 
     private async Task<Invoice> GetInvoice(string id, string scheme)
     {

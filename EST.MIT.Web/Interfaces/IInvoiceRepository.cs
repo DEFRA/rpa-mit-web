@@ -4,6 +4,7 @@ namespace EST.MIT.Web.Interfaces;
 
 public interface IInvoiceRepository
 {
+    Task<HttpResponseMessage> GetInvoiceByIdAsync(string id);
     Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme);
     Task<HttpResponseMessage> PostInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto);
     Task<HttpResponseMessage> PutInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto);

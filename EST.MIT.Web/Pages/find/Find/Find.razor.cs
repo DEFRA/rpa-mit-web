@@ -17,23 +17,12 @@ public partial class Find : ComponentBase
     private bool IsErrored, NotFound = false;
     private Invoice invoice = default!;
     public SearchCriteria _searchCriteria = new();
-    private readonly Dictionary<string, string> allSchemeTypes = new();
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             await base.OnInitializedAsync();
-            await _referenceDataAPI.GetSchemeTypesAsync().ContinueWith(x =>
-            {
-                if (x.Result.IsSuccess)
-                {
-                    foreach (var schemeType in x.Result.Data)
-                    {
-                        allSchemeTypes.Add(schemeType.code, schemeType.description);
-                    }
-                }
-            });
         }
         catch (Exception ex)
         {
@@ -44,7 +33,7 @@ public partial class Find : ComponentBase
 
     public async Task Search()
     {
-        invoice = await _findService.FetchInvoiceAsync(_searchCriteria.InvoiceNumber, _searchCriteria.Scheme);
+        invoice = await _findService.FindInvoiceAsync(_searchCriteria);
 
         if (invoice.IsNull())
         {
