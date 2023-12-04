@@ -9,13 +9,16 @@ public partial class Find : ComponentBase
 {
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IFindService _findService { get; set; }
-    [Inject] private IPageServices _pageService { get; set; }
-    [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
+    [Inject] private IPageServices _pageServices { get; set; }
     [Inject] private ILogger<Find> Logger { get; set; }
 
     private Dictionary<string, List<string>> errors = new();
-    private bool IsErrored, NotFound = false;
-    private Invoice invoice = default!;
+    private bool IsErrored = false;
+    private bool NotFound = false;
+    public Invoice Invoice { get { return _invoice; } }
+
+    private Invoice _invoice = default!;
+
     public SearchCriteria _searchCriteria = new();
 
     protected override async Task OnInitializedAsync()
@@ -33,20 +36,22 @@ public partial class Find : ComponentBase
 
     public async Task Search()
     {
-        invoice = await _findService.FindInvoiceAsync(_searchCriteria);
+        if (!_pageServices.Validation(_searchCriteria, out IsErrored, out errors)) return;
 
-        if (invoice.IsNull())
+        errors = new();
+        _invoice = await _findService.FindInvoiceAsync(_searchCriteria);
+
+        if (Invoice.IsNull())
         {
             NotFound = true;
             IsErrored = false;
-            errors = new();
             return;
         }
-        _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
+        _nav.NavigateTo($"/invoice/summary/{Invoice.SchemeType}/{Invoice.Id}");
     }
 
     private void ValidationFailed()
     {
-        _pageService.Validation(_searchCriteria, out IsErrored, out errors);
+        _pageServices.Validation(_searchCriteria, out IsErrored, out errors);
     }
 }
