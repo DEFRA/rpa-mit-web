@@ -77,8 +77,7 @@ public class UpdatePaymentRequestTests : TestContext
         button[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/{component.Instance.PaymentRequestId}");
-
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/{component.Instance.PaymentRequestId}"));
     }
 
     [Fact]
@@ -95,6 +94,6 @@ public class UpdatePaymentRequestTests : TestContext
         link[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/{component.Instance.PaymentRequestId}");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/{component.Instance.PaymentRequestId}"));
     }
 }

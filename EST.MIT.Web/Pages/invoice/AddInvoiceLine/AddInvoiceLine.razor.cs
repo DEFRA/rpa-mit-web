@@ -2,6 +2,7 @@ using EST.MIT.Web.Entities;
 using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Interfaces;
+using System.Linq.Expressions;
 
 namespace EST.MIT.Web.Pages.invoice.AddInvoiceLine;
 
@@ -12,6 +13,8 @@ public partial class AddInvoiceLine : ComponentBase
     [Inject] private IPageServices _pageServices { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
+    [Inject] private ILogger<AddInvoiceLine> Logger { get; set; }
+
 
     [Parameter] public string PaymentRequestId { get; set; } = "";
 
@@ -28,73 +31,108 @@ public partial class AddInvoiceLine : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
-        invoice ??= _invoiceStateContainer.Value;
-        paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
-
-        await _referenceDataAPI.GetAccountsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        try
         {
-            if (x.Result.IsSuccess)
-            {
-                foreach (var account in x.Result.Data)
-                {
-                    allAccounts.Add(account.code, account.description);
-                }
-            }
-        });
+            await base.OnInitializedAsync();
+            invoice ??= _invoiceStateContainer.Value;
+            paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
 
-        await _referenceDataAPI.GetDeliveryBodiesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
-        {
-            if (x.Result.IsSuccess)
+            if (invoice != null)
             {
-                foreach (var deliveryBody in x.Result.Data)
-                {
-                    allDeliveryBodies.Add(deliveryBody.code, deliveryBody.description);
-                }
+                await PopulateReferenceDataAsync();
             }
-        });
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in OnInitializedAsync of AddInvoiceLine page");
+            _nav.NavigateTo("/error");
+        }
+    }
 
-        await _referenceDataAPI.GetSchemesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
-        {
-            if (x.Result.IsSuccess)
-            {
-                foreach (var scheme in x.Result.Data)
-                {
-                    allSchemeCodes.Add(scheme.code, scheme.description);
-                }
-            }
-        });
+    private async Task PopulateReferenceDataAsync()
+    {
+        await PopulateAccountsAsync();
+        await PopulateDeliveryBodiesAsync();
+        await PopulateSchemesAsync();
+        await PopulateMarketingYearsAsync();
+        await PopulateFundsAsync();
+    }
 
-        await _referenceDataAPI.GetMarketingYearsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+    private async Task PopulateAccountsAsync()
+    {
+        var result = await _referenceDataAPI.GetAccountsAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
+        if (result.IsSuccess)
         {
-            if (x.Result.IsSuccess)
+            foreach (var account in result.Data)
             {
-                foreach (var marketingYear in x.Result.Data)
-                {
-                    allMarketingYears.Add(marketingYear.code, marketingYear.description);
-                }
+                allAccounts.Add(account.code, account.description);
             }
-        });
+        }
+    }
 
-        await _referenceDataAPI.GetFundsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+    private async Task PopulateMarketingYearsAsync()
+    {
+        var result = await _referenceDataAPI.GetMarketingYearsAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
+        if (result.IsSuccess)
         {
-            if (x.Result.IsSuccess)
+            foreach (var marketingYear in result.Data)
             {
-                foreach (var fund in x.Result.Data)
-                {
-                    allFundCodes.Add(fund.code, fund.description);
-                }
+                allMarketingYears.Add(marketingYear.code, marketingYear.description);
             }
-        });
+        }
+    }
+
+    private async Task PopulateFundsAsync()
+    {
+        var result = await _referenceDataAPI.GetFundsAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
+        if (result.IsSuccess)
+        {
+            foreach (var fund in result.Data)
+            {
+                allFundCodes.Add(fund.code, fund.description);
+            }
+        }
+    }
+
+    private async Task PopulateSchemesAsync()
+    {
+        var result = await _referenceDataAPI.GetSchemesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
+        if (result.IsSuccess)
+        {
+            foreach (var scheme in result.Data)
+            {
+                allSchemeCodes.Add(scheme.code, scheme.description);
+            }
+        }
+    }
+
+    private async Task PopulateDeliveryBodiesAsync()
+    {
+        var result = await _referenceDataAPI.GetDeliveryBodiesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
+        if (result.IsSuccess)
+        {
+            foreach (var deliveryBody in result.Data)
+            {
+                allDeliveryBodies.Add(deliveryBody.code, deliveryBody.description);
+            }
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (paymentRequest.IsNull() || invoice.IsNull())
+        try
         {
-            _invoiceStateContainer.SetValue(null);
-            _nav.NavigateTo("/");
+            await base.OnAfterRenderAsync(firstRender);
+            if (paymentRequest.IsNull() || invoice.IsNull())
+            {
+                _invoiceStateContainer.SetValue(null);
+                _nav.NavigateTo("/");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of AddInvoiceLine page");
+            _nav.NavigateTo("/error");
         }
     }
 
@@ -105,21 +143,29 @@ public partial class AddInvoiceLine : ComponentBase
 
     private async Task SaveInvoiceLine()
     {
-        if (!_pageServices.Validation(invoiceLine, out IsErrored, out errors)) return;
-
-        var response = await _api.UpdateInvoiceAsync(invoice, paymentRequest, invoiceLine);
-
-        if (response.IsSuccess)
+        try
         {
-            IsErrored = false;
-            errors.Clear();
-            _invoiceStateContainer.SetValue(response.Data);
-            _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+            if (!_pageServices.Validation(invoiceLine, out IsErrored, out errors)) return;
+
+            var response = await _api.UpdateInvoiceAsync(invoice, paymentRequest, invoiceLine);
+
+            if (response.IsSuccess)
+            {
+                IsErrored = false;
+                errors.Clear();
+                _invoiceStateContainer.SetValue(response.Data);
+                _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+            }
+            else
+            {
+                IsErrored = true;
+                errors = invoiceLine.Errors;
+            }
         }
-        else
+        catch (Exception ex)
         {
             IsErrored = true;
-            errors = invoiceLine.Errors;
+            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelection page");
         }
     }
 

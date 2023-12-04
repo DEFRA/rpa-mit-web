@@ -14,7 +14,7 @@ public class ReferenceDataRepositoryTests
     }
 
     [Fact]
-    public void GetOrganisationsListAsync_Returns_200()
+    public async Task GetOrganisationsListAsync_Returns_200()
     {
         _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);
 
@@ -29,13 +29,13 @@ public class ReferenceDataRepositoryTests
 
         var repo = new ReferenceDataRepository(factory);
 
-        var response = repo.GetOrganisationsListAsync();
+        var response = await repo.GetOrganisationsListAsync();
 
-        response.Result.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
-    public void GetSchemeTypesListAsync_Returns_200()
+    public async Task GetSchemeTypesListAsync_Returns_200()
     {
         _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);
 
@@ -50,13 +50,13 @@ public class ReferenceDataRepositoryTests
 
         var repo = new ReferenceDataRepository(factory);
 
-        var response = repo.GetSchemeTypesListAsync("test", "test");
+        var response = await repo.GetSchemeTypesListAsync("test", "test");
 
-        response.Result.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
-    public void GetFundListAsync_Returns_200()
+    public async Task GetFundListAsync_Returns_200()
     {
         _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);
 
@@ -71,13 +71,13 @@ public class ReferenceDataRepositoryTests
 
         var repo = new ReferenceDataRepository(factory);
 
-        var response = repo.GetFundsListAsync("test", "test", "test", "test");
+        var response = await repo.GetFundsListAsync("test", "test", "test", "test");
 
-        response.Result.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
     }
 
     [Fact]
-    public void HandleHttpResponseError_Handed_FailCode()
+    public async Task HandleHttpResponseError_Handed_FailCode()
     {
         _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.BadRequest, "Test BadRequest");
 
@@ -92,10 +92,10 @@ public class ReferenceDataRepositoryTests
 
         var repo = new ReferenceDataRepository(factory);
 
-        var response = repo.GetSchemeTypesListAsync("test", "test");
+        var response = await repo.GetSchemeTypesListAsync("test", "test");
 
-        response.Result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        response.Result.Content.ReadAsStringAsync().Result.Should().Be("Test BadRequest");
-
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        var content = await response.Content.ReadAsStringAsync();
+        content.Should().Be("Test BadRequest");
     }
 }

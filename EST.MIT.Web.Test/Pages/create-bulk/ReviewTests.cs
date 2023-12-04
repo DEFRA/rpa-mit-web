@@ -72,7 +72,7 @@ public class ReviewPageBulkTests : TestContext
         var saveAndContinueButton = component.FindAll("button[type='submit']");
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be($"http://localhost/bulk/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be($"http://localhost/bulk/"));
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public class ReviewPageBulkTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 
     [Fact]

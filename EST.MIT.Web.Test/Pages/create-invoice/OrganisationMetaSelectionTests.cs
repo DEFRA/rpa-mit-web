@@ -32,7 +32,7 @@ public class OrganisationMetaSelectionPageTests : TestContext
 
         var component = RenderComponent<OrganisationMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
 
     // [Fact]
@@ -124,7 +124,7 @@ public class OrganisationMetaSelectionPageTests : TestContext
         selectOrganisationRadioButton[0].Change("RPA");
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice/scheme");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice/scheme"));
     }
 
     [Fact]
@@ -151,6 +151,6 @@ public class OrganisationMetaSelectionPageTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

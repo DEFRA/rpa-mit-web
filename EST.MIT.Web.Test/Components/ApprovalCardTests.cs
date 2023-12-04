@@ -50,10 +50,11 @@ public class ApprovalCardTests : TestContext
 
         component.FindAll("a#approve-approval-link")[0].Click();
 
-        var navMan = Services.GetService<NavigationManager>();
+        var navigationManager = Services.GetService<NavigationManager>();
 
         _mockInvoiceStateContainer.Verify(x => x.SetValue(It.IsAny<Invoice>()), Times.Once);
-        navMan.Uri.Should().EndWith("/approval/confirm/approve");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().EndWith("/approval/confirm/approve"));
+
 
     }
 
@@ -67,10 +68,10 @@ public class ApprovalCardTests : TestContext
 
         component.FindAll("a#reject-approval-link")[0].Click();
 
-        var navMan = Services.GetService<NavigationManager>();
+        var navigationManager = Services.GetService<NavigationManager>();
 
         _mockInvoiceStateContainer.Verify(x => x.SetValue(It.IsAny<Invoice>()), Times.Once);
-        navMan.Uri.Should().EndWith("/approval/confirm/reject");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().EndWith("/approval/confirm/reject"));
 
     }
 

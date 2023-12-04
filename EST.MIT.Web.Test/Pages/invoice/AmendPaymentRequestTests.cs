@@ -51,7 +51,7 @@ public class AmendPaymentRequestTests : TestContext
 
         var component = RenderComponent<AmendPaymentRequest>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 
     [Fact]
@@ -79,7 +79,7 @@ public class AmendPaymentRequestTests : TestContext
         button[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be("http://localhost/invoice/add-invoice-line/1");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/add-invoice-line/1"));
     }
 
     [Fact]
@@ -95,6 +95,6 @@ public class AmendPaymentRequestTests : TestContext
         button[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be("http://localhost/invoice/update-payment-request/1");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/update-payment-request/1"));
     }
 }
