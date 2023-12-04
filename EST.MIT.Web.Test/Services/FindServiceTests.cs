@@ -22,7 +22,7 @@ public class FindServiceTests : TestContext
     public async Task FetchInvoiceReturnsNull()
     {
         var mockAPIService = new Mock<IInvoiceAPI>();
-        mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<SearchCriteria>())).Returns(Task.FromResult<Invoice>(null));
+        mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<SearchCriteria>())).Returns(Task.FromResult<Invoice>(null!));
 
         var service = new FindService(mockAPIService.Object);
 
