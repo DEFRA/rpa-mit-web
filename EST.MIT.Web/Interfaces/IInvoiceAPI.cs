@@ -4,6 +4,7 @@ namespace EST.MIT.Web.Interfaces;
 
 public interface IInvoiceAPI
 {
+    Task<Invoice> FindInvoiceAsync(SearchCriteria criteria);
     Task<Invoice> FindInvoiceAsync(string id, string scheme);
     Task<ApiResponse<Invoice>> SaveInvoiceAsync(Invoice invoice);
     Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice);

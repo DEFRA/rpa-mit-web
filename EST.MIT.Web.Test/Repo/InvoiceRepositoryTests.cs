@@ -14,6 +14,47 @@ public class InvoiceRepositoryTests : TestContext
     }
 
     [Fact]
+    public async void GetInvoiceById_Returns_200()
+    {
+        _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);
+
+        var factory = _mockHttpMessageHandler.CreateClientFactory();
+
+        Mock.Get(factory).Setup(x => x.CreateClient(It.IsAny<string>())).Returns(() =>
+        {
+            var client = _mockHttpMessageHandler.CreateClient();
+            client.BaseAddress = new Uri("https://localhost");
+            return client;
+        });
+
+        var repo = new InvoiceRepository(factory);
+
+        var response = await repo.GetInvoiceByIdAsync(Guid.NewGuid().ToString());
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+
+    [Fact]
+    public async void GetInvoiceByPaymentRequestId_Returns_200()
+    {
+        _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);
+
+        var factory = _mockHttpMessageHandler.CreateClientFactory();
+
+        Mock.Get(factory).Setup(x => x.CreateClient(It.IsAny<string>())).Returns(() =>
+        {
+            var client = _mockHttpMessageHandler.CreateClient();
+            client.BaseAddress = new Uri("https://localhost");
+            return client;
+        });
+
+        var repo = new InvoiceRepository(factory);
+
+        var response = await repo.GetInvoiceByPaymentRequestIdAsync(Guid.NewGuid().ToString());
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+    }
+    [Fact]
     public async void GetInvoice_Returns_200()
     {
         _mockHttpMessageHandler.SetupAnyRequest().ReturnsResponse(HttpStatusCode.OK);

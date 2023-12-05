@@ -42,7 +42,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
 
         var component = RenderComponent<PaymentTypeMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
 
     [Fact]
@@ -94,7 +94,7 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
 
         component.WaitForState(() => component.Instance.IsDataLoaded);
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice/review");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice/review"));
     }
 
     [Fact]
@@ -117,6 +117,6 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

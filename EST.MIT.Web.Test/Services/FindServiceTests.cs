@@ -10,11 +10,11 @@ public class FindServiceTests : TestContext
     public void FetchInvoiceAsync()
     {
         var mockAPIService = new Mock<IInvoiceAPI>();
-        mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new Invoice());
+        mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<SearchCriteria>())).ReturnsAsync(new Invoice());
 
-        var service = new FindService(mockAPIService.Object, Mock.Of<IReferenceDataRepository>());
+        var service = new FindService(mockAPIService.Object);
 
-        var response = service.FetchInvoiceAsync("", "");
+        var response = service.FindInvoiceAsync(new SearchCriteria());
         response.Should().NotBeNull();
     }
 
@@ -22,11 +22,11 @@ public class FindServiceTests : TestContext
     public async Task FetchInvoiceReturnsNull()
     {
         var mockAPIService = new Mock<IInvoiceAPI>();
-        mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult<Invoice>(null));
+        mockAPIService.Setup(x => x.FindInvoiceAsync(It.IsAny<SearchCriteria>())).Returns(Task.FromResult<Invoice>(null!));
 
-        var service = new FindService(mockAPIService.Object, Mock.Of<IReferenceDataRepository>());
+        var service = new FindService(mockAPIService.Object);
 
-        var response = await service.FetchInvoiceAsync("", "");
+        var response = await service.FindInvoiceAsync(new SearchCriteria());
         response.Should().BeNull();
     }
 }

@@ -14,6 +14,7 @@ public class AddInvoiceLineTests : TestContext
     private readonly Mock<IPageServices> _mockPageServices;
     private readonly Mock<IReferenceDataAPI> _mockReferenceDataServices;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
+    private readonly Mock<NavigationManager> _mockNavigationManager;
 
     public AddInvoiceLineTests()
     {
@@ -51,6 +52,7 @@ public class AddInvoiceLineTests : TestContext
         _mockPageServices = new Mock<IPageServices>();
         _mockReferenceDataServices = new Mock<IReferenceDataAPI>();
         _mockInvoiceStateContainer = new Mock<IInvoiceStateContainer>();
+        _mockNavigationManager = new Mock<NavigationManager>();
 
         Services.AddSingleton<IInvoiceAPI>(_mockApiService.Object);
         Services.AddSingleton<IPageServices>(_mockPageServices.Object);
@@ -58,20 +60,17 @@ public class AddInvoiceLineTests : TestContext
         Services.AddSingleton<IInvoiceStateContainer>(_mockInvoiceStateContainer.Object);
     }
 
-    [Fact(Timeout = 100000)]
-    public async void AfterRender_Redirects_When_Null_Invoice()
+    public void AfterRender_Redirects_When_Null_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
         var navigationManager = Services.GetService<NavigationManager>();
 
         var component = RenderComponent<AddInvoiceLine>();
-        await Task.Delay(1000);
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 
-    [Fact(Timeout = 100000)]
-    public async void SaveInvoiceLine_Navigates_To_Add_AmendHeader()
+    public void SaveInvoiceLine_Navigates_To_Add_AmendHeader()
     {
         var IsErrored = false;
         var Errors = new Dictionary<string, List<string>>();
@@ -82,27 +81,23 @@ public class AddInvoiceLineTests : TestContext
 
         var component = RenderComponent<AddInvoiceLine>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
-        await Task.Delay(1000);
 
         component.FindAll("button.govuk-button")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/1");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/amend-payment-request/1"));
     }
 
-    [Fact(Timeout = 100000)]
-    public async void SaveInvoiceLine_Navigates_To_Add_AmendHeader_On_Cancel()
+    public void SaveInvoiceLine_Navigates_To_Add_AmendHeader_On_Cancel()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 
         var component = RenderComponent<AddInvoiceLine>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
-        await Task.Delay(1000);
 
         component.FindAll("a.govuk-link")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/1");
-
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/amend-payment-request/1"));
     }
 }

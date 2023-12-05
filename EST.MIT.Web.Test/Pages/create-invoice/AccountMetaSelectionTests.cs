@@ -27,7 +27,7 @@ public class AccountMetaSelectionPageTests : TestContext
 
         var component = RenderComponent<AccountMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
 
     // [Fact]
@@ -91,7 +91,7 @@ public class AccountMetaSelectionPageTests : TestContext
 
         invoiceStateContainer?.Value.Should().NotBeNull();
         invoiceStateContainer?.Value.AccountType.Should().Be("AR");
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice/organisation");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice/organisation"));
     }
 
     [Fact]
@@ -108,6 +108,6 @@ public class AccountMetaSelectionPageTests : TestContext
 
         invoiceStateContainer?.Value.Should().NotBeNull();
         invoiceStateContainer?.Value.AccountType.Should().BeNullOrEmpty();
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

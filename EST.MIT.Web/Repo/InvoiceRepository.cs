@@ -12,10 +12,34 @@ public class InvoiceRepository : IInvoiceRepository
         _clientFactory = clientFactory;
     }
 
+    public async Task<HttpResponseMessage> GetInvoiceByIdAsync(string id) => await GetInvoiceById(id);
+    public async Task<HttpResponseMessage> GetInvoiceByPaymentRequestIdAsync(string paymentRequestId) => await GetInvoiceByPaymentRequestId(paymentRequestId);
     public async Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme) => await GetInvoice(id, scheme);
     public async Task<HttpResponseMessage> PostInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto) => await PostInvoice(paymentRequestsBatchDto);
     public async Task<HttpResponseMessage> PutInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto) => await PutInvoice(paymentRequestsBatchDto);
     public async Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequestDTO paymentRequestDto) => await DeleteHeader(paymentRequestDto);
+
+    private async Task<HttpResponseMessage> GetInvoiceById(string id)
+    {
+        var client = _clientFactory.CreateClient("InvoiceAPI");
+
+        var response = await client.GetAsync($"/invoice/{id}");
+
+        await HandleHttpResponseError(response);
+
+        return response;
+    }
+
+    private async Task<HttpResponseMessage> GetInvoiceByPaymentRequestId(string paymentRequestId)
+    {
+        var client = _clientFactory.CreateClient("InvoiceAPI");
+
+        var response = await client.GetAsync($"/invoice/paymentrequest/{paymentRequestId}");
+
+        await HandleHttpResponseError(response);
+
+        return response;
+    }
 
     private async Task<HttpResponseMessage> GetInvoice(string id, string scheme)
     {

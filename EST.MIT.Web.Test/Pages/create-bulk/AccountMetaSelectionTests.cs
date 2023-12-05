@@ -27,7 +27,7 @@ public class AccountMetaSelectionPageBulkTests : TestContext
 
         var component = RenderComponent<AccountMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk"));
     }
 
     // [Fact]
@@ -91,7 +91,8 @@ public class AccountMetaSelectionPageBulkTests : TestContext
 
         invoiceStateContainer?.Value.Should().NotBeNull();
         invoiceStateContainer?.Value.AccountType.Should().Be("AR");
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/organisation");
+        
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk/organisation"));
     }
 
     [Fact]
@@ -108,6 +109,7 @@ public class AccountMetaSelectionPageBulkTests : TestContext
 
         invoiceStateContainer?.Value.Should().NotBeNull();
         invoiceStateContainer?.Value.AccountType.Should().BeNullOrEmpty();
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

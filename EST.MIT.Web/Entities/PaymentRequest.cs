@@ -71,7 +71,6 @@ public class PaymentRequest : Validatable, IValidatableObject
     [DisplayName("Earliest date possible recovery first identified")]
     public DateTime RecoveryDate { get; set; } = default!;
 
-    [RequiredIfAR]
     [DisplayName("Correction Reference - Previous AR Invoice ID")]
     public string InvoiceCorrectionReference { get; set; } = string.Empty;
 

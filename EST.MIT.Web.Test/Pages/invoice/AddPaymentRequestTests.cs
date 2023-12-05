@@ -65,7 +65,7 @@ public class AddPaymentRequestTests : TestContext
 
         var component = RenderComponent<AddPaymentRequest>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class AddPaymentRequestTests : TestContext
         component.FindAll("button.govuk-button")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{component.Instance.invoice.SchemeType}/{component.Instance.invoice.Id}");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{component.Instance.invoice.SchemeType}/{component.Instance.invoice.Id}"));
     }
 
     [Fact]
@@ -99,6 +99,6 @@ public class AddPaymentRequestTests : TestContext
         link[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{component.Instance.invoice.SchemeType}/{component.Instance.invoice.Id}");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{component.Instance.invoice.SchemeType}/{component.Instance.invoice.Id}"));
     }
 }
