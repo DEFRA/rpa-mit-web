@@ -36,6 +36,11 @@ public class InvoiceAPITests
             {
                 Content = new StringContent(JsonSerializer.Serialize(new Invoice()), Encoding.UTF8, "application/json")
             });
+        _mockRepository.Setup(x => x.GetInvoiceByPaymentRequestIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonSerializer.Serialize(new Invoice()), Encoding.UTF8, "application/json")
+            });
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
 
@@ -47,6 +52,9 @@ public class InvoiceAPITests
 
         var findWithNullCriteriaResponse = await service.FindInvoiceAsync(null!);
         findWithNullCriteriaResponse.Should().BeNull();
+
+        var findByPaymentRequestIdResponse = await service.FindInvoiceAsync(new SearchCriteria() { PaymentRequestId = "abcd_12345" });
+        findByInvoiceIdResponse.Should().NotBeNull();
     }
 
     [Fact]
@@ -57,11 +65,18 @@ public class InvoiceAPITests
             {
                 Content = new StringContent(JsonSerializer.Serialize(""), Encoding.UTF8, "application/json")
             });
+        _mockRepository.Setup(x => x.GetInvoiceByPaymentRequestIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(JsonSerializer.Serialize(""), Encoding.UTF8, "application/json")
+            });
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
         var findByInvoiceIdResponse = await service.FindInvoiceAsync(new SearchCriteria() { InvoiceNumber = Guid.NewGuid().ToString() });
-
         findByInvoiceIdResponse.Should().BeNull();
+
+        var findByInvoicePaymentRequestIdResponse = await service.FindInvoiceAsync(new SearchCriteria() { PaymentRequestId = "abcd_12345" });
+        findByInvoicePaymentRequestIdResponse.Should().BeNull();
     }
 
     [Fact]
@@ -69,11 +84,16 @@ public class InvoiceAPITests
     {
         _mockRepository.Setup(x => x.GetInvoiceByIdAsync(It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
+        _mockRepository.Setup(x => x.GetInvoiceByPaymentRequestIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK));
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
 
         var findByInvoiceIdResponse = await service.FindInvoiceAsync(new SearchCriteria() { InvoiceNumber = Guid.NewGuid().ToString() });
         findByInvoiceIdResponse.Should().BeNull();
+
+        var findByPaymentRequestIdResponse = await service.FindInvoiceAsync(new SearchCriteria() { PaymentRequestId = "abcd_12345" });
+        findByPaymentRequestIdResponse.Should().BeNull();
     }
 
     [Fact]
@@ -81,10 +101,15 @@ public class InvoiceAPITests
     {
         _mockRepository.Setup(x => x.GetInvoiceByIdAsync(It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
+        _mockRepository.Setup(x => x.GetInvoiceByPaymentRequestIdAsync(It.IsAny<string>()))
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
 
         var service = new InvoiceAPI(_mockRepository.Object, new Mock<ILogger<InvoiceAPI>>().Object, _autoMapper);
 
         var findByInvoiceIdResponse = await service.FindInvoiceAsync(new SearchCriteria() { InvoiceNumber = Guid.NewGuid().ToString() });
+        findByInvoiceIdResponse.Should().BeNull();
+
+        var findByPaymentRequestIdResponse = await service.FindInvoiceAsync(new SearchCriteria() { PaymentRequestId = "abcd_12345" });
         findByInvoiceIdResponse.Should().BeNull();
     }
 

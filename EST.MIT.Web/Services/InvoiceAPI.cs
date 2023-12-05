@@ -40,6 +40,10 @@ public class InvoiceAPI : IInvoiceAPI
             {
                 response = await _invoiceRepository.GetInvoiceByIdAsync(criteria.InvoiceNumber);
             }
+            if (!string.IsNullOrEmpty(criteria.PaymentRequestId))
+            {
+                response = await _invoiceRepository.GetInvoiceByPaymentRequestIdAsync(criteria.PaymentRequestId);
+            }
         }
 
         if (response.StatusCode == HttpStatusCode.OK)
