@@ -139,8 +139,6 @@ namespace EST.MIT.Web.Test.Components
                                 }
                         }
                     }
-
-
                 }
             };
 
