@@ -9,12 +9,7 @@ public partial class ApprovalCard : ComponentBase
 {
     [Parameter] public Invoice invoice { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
-    [Inject] private NavigationManager _nav { get; set; }  
-
-    public decimal TotalValueOfPaymentsGBP => invoice.PaymentRequests.Where(x => x.Currency == "GBP").Sum(x => x.Value);
-    public decimal TotalValueOfPaymentsEU => invoice.PaymentRequests.Where(x => x.Currency == "EUR").Sum(x => x.Value);
-    public string PaymentRequestsCurrencyGBP => invoice.PaymentRequests.Any(x => x.Currency == "GBP" && x.AgreementNumber != string.Empty) ? "GBR" : "";
-    public string PaymentRequestsCurrencyEU => invoice.PaymentRequests.Any(x => x.Currency == "EUR") ? "EUR" : "";
+    [Inject] private NavigationManager _nav { get; set; }
 
     private string backUrl = "/approval/mine";
 

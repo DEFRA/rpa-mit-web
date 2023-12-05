@@ -39,6 +39,13 @@ public class Invoice : Validatable
     public string CreatedBy { get; private set; } = default!;
 
     public string UpdatedBy { get; set; } = default!;
+
+    [JsonIgnore]
+    public int NumberOfPaymentRequests => PaymentRequests.Count;
+    [JsonIgnore]
+    public decimal TotalValueOfPaymentsGBP => PaymentRequests.Where(x => x.Currency == "GBP").Sum(x => x.Value);
+    [JsonIgnore]
+    public decimal TotalValueOfPaymentsEUR => PaymentRequests.Where(x => x.Currency == "EUR").Sum(x => x.Value);
     public Invoice()
     {
         Id = Guid.NewGuid();
