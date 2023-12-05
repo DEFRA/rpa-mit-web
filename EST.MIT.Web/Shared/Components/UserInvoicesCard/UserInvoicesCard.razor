@@ -38,23 +38,8 @@ else
             <dl class="govuk-summary-list">
 
                 <div class="govuk-summary-list__row">
-                <dt class="govuk-summary-list__key govuk-!-width-one-third">FRN</dt>
-                <dd class="govuk-summary-list__value">@(invoice.PaymentRequests[0].FRN )</dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-one-third">Marketing Year</dt>
-            <dd class="govuk-summary-list__value">@invoice.PaymentRequests[0].MarketingYear</dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value</dt>
-            <dd class="govuk-summary-list__value">@invoice.PaymentRequests[0].Value @invoice.PaymentRequests[0].Currency</dd>
-        </div>
-
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-one-third">Created</dt>
-            <dd class="govuk-summary-list__value">@invoice.Created.ToString("dd-MM-yyyy HH:mm tt")</dd>
+                <dt class="govuk-summary-list__key govuk-!-width-one-third">Created</dt>
+                <dd class="govuk-summary-list__value">@invoice.Created.ToString("dd-MM-yyyy HH:mm tt")</dd>
         </div>
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-!-width-one-third">Status</dt>
@@ -65,10 +50,15 @@ else
             <dd class="govuk-summary-list__value">@NumberOfPaymentRequests</dd>
         </div>
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value of Payments</dt>
-            <dd class="govuk-summary-list__value">@TotalValueOfPayments @invoice.PaymentRequests[0].Currency</dd>
+            <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value of Payments GBP</dt>
+            <dd class="govuk-summary-list__value">@(TotalValueOfPaymentsGBP == 0 ? "" : TotalValueOfPaymentsGBP) @(TotalValueOfPaymentsGBP == 0 ? "" : PaymentRequestsCurrencyGBP)</dd>
         </div>
-        </dl>        
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value of Payments EU</dt>
+            <dd class="govuk-summary-list__value">@(TotalValueOfPaymentsEUR == 0 ? "" : TotalValueOfPaymentsEUR) @(TotalValueOfPaymentsEUR == 0 ? "" : PaymentRequestsCurrencyEUR)</dd>
+        </div>
+
+        </dl>
     </div>
-        </div>
+                </div>
 }
