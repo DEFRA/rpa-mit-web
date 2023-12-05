@@ -41,7 +41,7 @@ public class ReviewPageTests : TestContext
 
         var component = RenderComponent<Review>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class ReviewPageTests : TestContext
 
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}"));
     }
 
     [Fact]
@@ -87,7 +87,7 @@ public class ReviewPageTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 
     [Fact]

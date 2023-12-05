@@ -32,7 +32,7 @@ public class SchemeMetaSelectionPageBulkTests : TestContext
 
         var component = RenderComponent<SchemeMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk"));
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public class SchemeMetaSelectionPageBulkTests : TestContext
         selectSchemeRadioButton[0].Change("Milk");
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/payment-type");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk/payment-type"));
     }
 
     [Fact]
@@ -163,6 +163,6 @@ public class SchemeMetaSelectionPageBulkTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

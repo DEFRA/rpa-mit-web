@@ -32,7 +32,7 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
 
         var component = RenderComponent<OrganisationMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk"));
     }
 
     [Fact]
@@ -122,7 +122,7 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
         selectOrganisationRadioButton[0].Change("RPA");
         saveAndContinueButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-bulk/scheme");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk/scheme"));
     }
 
     [Fact]
@@ -149,6 +149,6 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

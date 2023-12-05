@@ -115,7 +115,7 @@
                                 <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.MainAccount))
                             </p>
                         }
-                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MainAccount))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="mainaccount" @bind-Value="invoiceLine.MainAccount">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MainAccount))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" id="main-account-select" for="mainaccount" @bind-Value="invoiceLine.MainAccount">
                             <option value="">Select</option>
                             @foreach (var mainAccount in allAccounts)
                             {

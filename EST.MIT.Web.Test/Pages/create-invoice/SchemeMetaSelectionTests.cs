@@ -32,7 +32,7 @@ public class SchemeMetaSelectionPageTests : TestContext
 
         var component = RenderComponent<SchemeMetaSelection>();
 
-        navigationManager?.Uri.Should().Be("http://localhost/create-invoice");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
 
     [Fact]
@@ -165,6 +165,6 @@ public class SchemeMetaSelectionPageTests : TestContext
 
         cancelButton[0].Click();
 
-        navigationManager?.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

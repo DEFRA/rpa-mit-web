@@ -47,7 +47,7 @@ public class DeletePaymentRequestConfirmationTests : TestContext
         confirmButton.Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
+        component.WaitForAssertion(() => navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}"));
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class DeletePaymentRequestConfirmationTests : TestContext
         confirmButton.Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
+        component.WaitForAssertion(() => navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}"));
     }
 
     [Fact]
@@ -85,6 +85,6 @@ public class DeletePaymentRequestConfirmationTests : TestContext
         link.Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{backUrl}");
+        component.WaitForAssertion(() => navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{backUrl}"));
     }
 }

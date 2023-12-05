@@ -32,7 +32,7 @@ public class SelectApproverTests : TestContext
         var component = RenderComponent<SelectApprover>();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager.Uri.Should().Be("http://localhost/");
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 
     [Fact]
@@ -74,7 +74,7 @@ public class SelectApproverTests : TestContext
         component.FindAll("a.govuk-link")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}");
+        component.WaitForAssertion(() => navigationManager.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}"));
     }
 
     [Fact]
@@ -91,7 +91,7 @@ public class SelectApproverTests : TestContext
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
         component.FindAll("button[type=submit]")[0].Click();
 
-        navigationManager.Uri.Should().Be($"http://localhost/approval/confirmation/{testInvoice.Id}");
+        component.WaitForAssertion(() => navigationManager.Uri.Should().Be($"http://localhost/approval/confirmation/{testInvoice.Id}"));
     }
 
     [Fact]

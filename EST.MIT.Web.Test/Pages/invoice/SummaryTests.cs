@@ -84,7 +84,9 @@ public class SummaryTests : TestContext
         button[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be("http://localhost/invoice/add-payment-request");
+        component.WaitForAssertion(() => 
+            navigationManager?.Uri.Should().Be("http://localhost/invoice/add-payment-request")
+        );
     }
 
     [Fact]
@@ -98,7 +100,8 @@ public class SummaryTests : TestContext
         component.FindAll("button#send-approval")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        navigationManager?.Uri.Should().Be("http://localhost/approval/select");
-
+        component.WaitForAssertion(() => 
+            navigationManager?.Uri.Should().Be("http://localhost/approval/select")
+        );
     }
 }

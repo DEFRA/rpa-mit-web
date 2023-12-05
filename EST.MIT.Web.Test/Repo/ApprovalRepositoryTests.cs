@@ -73,6 +73,8 @@ public class ApprovalRepositoryTests : TestContext
         var response = await repo.GetApproversAsync("BPS", "123");
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        response.Content.ReadAsStringAsync().Result.Should().Be("Test BadRequest");
+        
+        var content = await response.Content.ReadAsStringAsync();
+        content.Should().Be("Test BadRequest");
     }
 }
