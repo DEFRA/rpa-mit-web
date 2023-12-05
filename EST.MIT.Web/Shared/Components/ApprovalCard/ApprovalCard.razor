@@ -58,13 +58,17 @@ else
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-!-width-one-third">Status</dt>
             <dd class="govuk-summary-list__value">@invoice.Status</dd>
-        </div> 
+        </div>
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value of Payments</dt>
-            <dd class="govuk-summary-list__value">@TotalValueOfPayments.ToString("c")</dd>
+            <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value of Payments GBP</dt>
+            <dd class="govuk-summary-list__value">@(TotalValueOfPaymentsGBP == 0 ? "" : TotalValueOfPaymentsGBP) @(TotalValueOfPaymentsGBP == 0 ? "" : PaymentRequestsCurrencyGBP)</dd>
+        </div>
+        <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value of Payments EU</dt>
+            <dd class="govuk-summary-list__value">@(TotalValueOfPaymentsEU == 0 ? "" : TotalValueOfPaymentsEU) @(TotalValueOfPaymentsEU == 0 ? "" : PaymentRequestsCurrencyEU)</dd>
         </div>
 
         </dl>
     </div>
-        </div>
+            </div>
 }
