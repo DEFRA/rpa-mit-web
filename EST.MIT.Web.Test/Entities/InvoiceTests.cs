@@ -136,6 +136,92 @@ public class InvoiceTests
         invoice.Status.Should().Be(newStatus);
     }
 
+    [Fact]
+    public void When_Invoice_Has_PaymentRequests_With_InvoiceLines_Values_Then_TotalValues_Is_Displayed()
+    {
+        //Arrange
+        var invoice = new Invoice()
+        {
+            Id = new Guid(),
+            AccountType = "AR",
+            Organisation = "NE",
+            SchemeType = "CS",
+            PaymentType = "GBP",
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "9999999987",
+                    MarketingYear = "2023",
+                    Currency = "GBP",
+                    SBI = "1",
+                    AgreementNumber = "EXT345",
+                    Value = 30.67M,
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                            new InvoiceLine()
+                            {
+                                Value = 30.67M
+                            }
+                    }
+                },
+                new PaymentRequest()
+                {
+                    FRN = "4599999987",
+                    MarketingYear = "2023",
+                    Currency = "GBP",
+                    SBI = "1",
+                    AgreementNumber = "DE34",
+                    Value = 305.34M,
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                            new InvoiceLine()
+                            {
+                                Value = 305.34M
+                            }
+                    }
+                },
+                new PaymentRequest()
+                {
+                    FRN = "9999999987",
+                    MarketingYear = "2023",
+                    Currency = "EUR",
+                    SBI = "1",
+                    AgreementNumber = "CC4",
+                    Value = 555.67M,
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                            new InvoiceLine()
+                            {
+                                Value = 555.67M
+                            }
+                    }
+                },
+                new PaymentRequest()
+                {
+                    FRN = "9999999911",
+                    MarketingYear = "2023",
+                    Currency = "EUR",
+                    SBI = "4",
+                    AgreementNumber = "CD4",
+                    Value = 2.00M,
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                            new InvoiceLine()
+                            {
+                                Value = 2.00M
+                            }
+                    }
+                }
+            }
+        };
+
+        //Assert
+        Assert.Equal(557.67M, invoice.TotalValueOfPaymentsEUR);
+        Assert.Equal(336.01M, invoice.TotalValueOfPaymentsGBP);
+        Assert.Equal(4, invoice.NumberOfPaymentRequests);
+    }
+
     private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
     {
         var validationResults = new System.Collections.Generic.List<ValidationResult>();
