@@ -63,6 +63,104 @@ namespace EST.MIT.Web.Test.Components
         }
 
         [Fact]
+        public void When_Invoice_Has_PaymentRequests_With_InvoiceLines_Values_Then_TotalValues_Plus_CurrencyType_Is_Displayed()
+        {
+            //Arrange
+            var invoice = new Invoice()
+            {
+                Id = new Guid(),
+                AccountType = "AR",
+                Organisation = "NE",
+                SchemeType = "CS",
+                PaymentType = "GBP",
+                PaymentRequests = new List<PaymentRequest>()
+                {
+                    new PaymentRequest()
+                    {
+                        FRN = "9999999987",
+                        MarketingYear = "2023",
+                        Currency = "GBP",
+                        SBI = "1",
+                        AgreementNumber = "EXT345",
+                        Value = 30.67M,
+                        InvoiceLines = new List<InvoiceLine>()
+                        {
+                                new InvoiceLine()
+                                {
+                                    Value = 30.67M
+                                }
+                        }
+                    },
+                    new PaymentRequest()
+                    {
+                        FRN = "4599999987",
+                        MarketingYear = "2023",
+                        Currency = "GBP",
+                        SBI = "1",
+                        AgreementNumber = "DE34",
+                        Value = 305.34M,
+                        InvoiceLines = new List<InvoiceLine>()
+                        {
+                                new InvoiceLine()
+                                {
+                                    Value = 305.34M
+                                }
+                        }
+                    },
+                    new PaymentRequest()
+                    {
+                        FRN = "9999999987",
+                        MarketingYear = "2023",
+                        Currency = "EUR",
+                        SBI = "1",
+                        AgreementNumber = "CC4",
+                        Value = 555.67M,
+                        InvoiceLines = new List<InvoiceLine>()
+                        {
+                                new InvoiceLine()
+                                {
+                                    Value = 555.67M
+                                }
+                        }
+                    },
+                    new PaymentRequest()
+                    {
+                        FRN = "9999999911",
+                        MarketingYear = "2023",
+                        Currency = "EUR",
+                        SBI = "4",
+                        AgreementNumber = "CD4",
+                        Value = 2.00M,
+                        InvoiceLines = new List<InvoiceLine>()
+                        {
+                                new InvoiceLine()
+                                {
+                                    Value = 2.00M
+                                }
+                        }
+                    }
+
+
+                }
+            };
+
+            var component = RenderComponent<UserInvoicesCard>(parameters =>
+            {
+                parameters.Add(x => x.invoice, invoice);
+            });
+
+            //Act
+            var TotalValueGBP = component.FindAll("dd.govuk-summary-list__value")[3];
+            var TotalValueEUR = component.FindAll("dd.govuk-summary-list__value")[4];
+            var TotalPaymentRequests = component.FindAll("dd.govuk-summary-list__value")[2];
+
+            //Assert
+            Assert.Equal("336.01 GBP", TotalValueGBP.InnerHtml);
+            Assert.Equal("557.67 EUR", TotalValueEUR.InnerHtml);
+            Assert.Equal("4", TotalPaymentRequests.InnerHtml);
+        }
+
+        [Fact]
         public void Back_Link_On_InvoiceSummary_Page_Navigates_To_MyInvoices_Page_()
         {
             //Arrange
