@@ -325,7 +325,7 @@ public class InvoiceAPI : IInvoiceAPI
             try
             {
                 var dtoList = await response.Content.ReadFromJsonAsync<IEnumerable<PaymentRequestsBatchDTO>>();
-                return _autoMapper.Map<IEnumerable<Invoice>>(dtoList).Where(x => x.PaymentRequests.Any());
+                return _autoMapper.Map<IEnumerable<Invoice>>(dtoList);
             }
             catch (Exception ex)
             {
