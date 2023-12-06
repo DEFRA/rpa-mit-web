@@ -46,6 +46,19 @@ public class Invoice : Validatable
     public decimal TotalValueOfPaymentsGBP => PaymentRequests.Where(x => x.Currency == "GBP").Sum(x => x.Value);
     [JsonIgnore]
     public decimal TotalValueOfPaymentsEUR => PaymentRequests.Where(x => x.Currency == "EUR").Sum(x => x.Value);
+
+    public string ApprovalGroup
+    {
+        get
+        {
+            if (Organisation == "RPA")
+            {
+                return SchemeType;
+            }
+            return Organisation;
+        }
+    }
+
     public Invoice()
     {
         Id = Guid.NewGuid();
