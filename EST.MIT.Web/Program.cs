@@ -5,9 +5,15 @@ using EST.MIT.Web.Shared;
 using EST.MIT.Web.Repositories;
 using EST.MIT.Web.Services;
 using EST.MIT.Web.Interfaces;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.Identity.Web;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+
+builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -24,6 +30,11 @@ builder.Services.AddSingleton<IFindService, FindService>();
 builder.Services.AddSingleton<IApprovalService, ApprovalService>();
 builder.Services.AddSingleton<IUploadAPI, UploadAPI>();
 builder.Services.AddSingleton<IUploadRepository, UploadRepository>();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireRole("rpa-mit-readonly").Build();
+});
 
 var mappingConfig = new MapperConfiguration(mc =>
 {
@@ -73,6 +84,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
