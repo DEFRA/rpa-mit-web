@@ -48,18 +48,18 @@ else
                 <dd class="govuk-summary-list__value">@invoice.PaymentRequests.Count()</dd>
         </div>
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-one-third">Approval requested By</dt>
+            <dt class="govuk-summary-list__key govuk-!-width-one-third">Approval Requested By</dt>
             <dd class="govuk-summary-list__value">@invoice.UpdatedBy</dd>
         </div>
         <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key govuk-!-width-one-third">Approval requested on</dt>
+            <dt class="govuk-summary-list__key govuk-!-width-one-third">Approval Requested On</dt>
             <dd class="govuk-summary-list__value">@invoice.Updated.ToString("dd-MM-yyyy HH:mm tt")</dd>
         </div>
         <div class="govuk-summary-list__row">
             <dt class="govuk-summary-list__key govuk-!-width-one-third">Status</dt>
             <dd class="govuk-summary-list__value">@invoice.Status</dd>
         </div>
-               @if (invoice.TotalValueOfPaymentsGBP > 0)
+                @if (invoice.TotalValueOfPaymentsGBP > 0)
                 {
             <div class="govuk-summary-list__row">
                 <dt class="govuk-summary-list__key govuk-!-width-one-third">Total Value of GBP Payments</dt>
@@ -76,5 +76,5 @@ else
 
         </dl>
     </div>
-            </div>
+                </div>
 }
