@@ -30,7 +30,8 @@ public class UserUploadsTests : TestContext
                 CreatedBy = "test@example.com",
                 Status = UploadStatus.Uploaded,
                 BlobFileName = "testblob",
-                BlobFolder = "import"
+                BlobFolder = "import",
+                Email = "email@defra.gov.uk"
             }
         };
 
@@ -58,11 +59,11 @@ public class UserUploadsTests : TestContext
 
         var cellTexts = userUploadsCard.FindAll(".govuk-table__cell").Select(cell => cell.TextContent).ToArray();
         Assert.Equal(_mockUploads.First().Timestamp?.ToString("dd/MM/yyyy HH:mm:ss"), cellTexts[0]);
-        Assert.Equal("Uploaded", cellTexts[1]);
-        Assert.Equal("First Payment", cellTexts[2]);
-        Assert.Equal("RDT", cellTexts[3]);
-        Assert.Equal("CP", cellTexts[4]);
-        Assert.Equal("AR", cellTexts[5]);
+        Assert.Equal("First Payment", cellTexts[1]);
+        Assert.Equal("RDT", cellTexts[2]);
+        Assert.Equal("CP", cellTexts[3]);
+        Assert.Equal("AR", cellTexts[4]);
+        Assert.Equal("Uploaded", cellTexts[5]);
     }
 
     [Fact]

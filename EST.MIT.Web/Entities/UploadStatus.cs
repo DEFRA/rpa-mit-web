@@ -1,21 +1,19 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace EST.MIT.Web.Entities;
 
 public enum UploadStatus
 {
-    [Display(Name = "REQUIRED")]
-    Required,
+    [Display(Name = "Upload successful")]
+    Upload_successful,
 
-    [Display(Name = "UPLOADED")]
-    Uploaded,
+    [Display(Name = "Upload failed")]
+    Upload_failed,
 
-    [Display(Name = "UPLOADING")]
-    Uploading,
+    [Display(Name = "Upload validated")]
+    Upload_validated,
 
-    [Display(Name = "VALIDATING")]
-    Validating,
-
-    [Display(Name = "REJECTED")]
-    Rejected,
+    [Display(Name = "Uploaded")]
+    Uploaded
 }
