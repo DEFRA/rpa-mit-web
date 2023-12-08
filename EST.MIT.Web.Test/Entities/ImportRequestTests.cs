@@ -21,7 +21,8 @@ public class ImportRequestTests
             CreatedBy = "test@example.com",
             Status = UploadStatus.Uploaded,
             BlobFileName = "BlobFileName",
-            BlobFolder = "BlobFolder"
+            BlobFolder = "BlobFolder",
+            Email = "email@defra.gov.uk"
         };
 
         Assert.Equal(Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296"), importRequest.ImportRequestId);
@@ -38,5 +39,6 @@ public class ImportRequestTests
         Assert.Equal("test.xlsx", importRequest.FileName);
         Assert.Equal("BlobFileName", importRequest.BlobFileName);
         Assert.Equal("BlobFolder", importRequest.BlobFolder);
+        Assert.Equal("email@defra.gov.uk", importRequest.Email);
     }
 }
