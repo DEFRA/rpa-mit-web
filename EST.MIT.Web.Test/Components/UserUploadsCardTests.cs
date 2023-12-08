@@ -34,7 +34,7 @@ public class UserUploadsCardTests : TestContext
             SchemeType = "CP",
             AccountType = "First Payment",
             CreatedBy = "test@example.com",
-            Status = UploadStatus.Upload_success,
+            Status = UploadStatus.Uploaded,
             BlobFileName = "testblob",
             BlobFolder = "archive",
             Email = "email@defra.gov.uk"
@@ -50,7 +50,7 @@ public class UserUploadsCardTests : TestContext
         cellTexts[2].Should().Be("RDT");
         cellTexts[3].Should().Be("CP");
         cellTexts[4].Should().Be("AR");
-        cellTexts[5].Should().Be("Upload_success");
+        cellTexts[5].Should().Be("Uploaded");
 
         var downloadLinkCell = component.FindAll(".govuk-table__cell")[6];
         var downloadLink = downloadLinkCell.QuerySelector("a");
@@ -72,7 +72,7 @@ public class UserUploadsCardTests : TestContext
             SchemeType = "CP",
             AccountType = "First Payment",
             CreatedBy = "test@example.com",
-            Status = UploadStatus.Upload_success,
+            Status = UploadStatus.Uploaded,
             BlobFileName = "testblob",
             BlobFolder = "archive",
             Email = "email@defra.gov.uk"
@@ -85,6 +85,66 @@ public class UserUploadsCardTests : TestContext
         var statusCell = component.FindAll(".govuk-table__cell")[5];
         var statusTag = statusCell.QuerySelector("strong");
         statusTag.ClassName.Should().Contain("govuk-tag govuk-tag--green");
+    }
+
+    [Fact]
+    public void Status_Tag_Yellow_On_Upload_Validated()
+    {
+        var importRequest = new ImportRequest
+        {
+            ImportRequestId = Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296"),
+            FileName = "test.xlsx",
+            FileSize = 1024,
+            FileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            Timestamp = DateTimeOffset.Now,
+            PaymentType = "AR",
+            Organisation = "RDT",
+            SchemeType = "CP",
+            AccountType = "First Payment",
+            CreatedBy = "test@example.com",
+            Status = UploadStatus.Upload_validated,
+            BlobFileName = "testblob",
+            BlobFolder = "archive",
+            Email = "email@defra.gov.uk"
+        };
+
+        var importRequests = new List<ImportRequest> { importRequest };
+
+        var component = RenderComponent<UserUploadsCard>(parameters => parameters.Add(p => p.importRequests, importRequests));
+
+        var statusCell = component.FindAll(".govuk-table__cell")[5];
+        var statusTag = statusCell.QuerySelector("strong");
+        statusTag.ClassName.Should().Contain("govuk-tag govuk-tag--yellow");
+    }
+
+    [Fact]
+    public void Status_Tag_Blue_On_Upload_Successful()
+    {
+        var importRequest = new ImportRequest
+        {
+            ImportRequestId = Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296"),
+            FileName = "test.xlsx",
+            FileSize = 1024,
+            FileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            Timestamp = DateTimeOffset.Now,
+            PaymentType = "AR",
+            Organisation = "RDT",
+            SchemeType = "CP",
+            AccountType = "First Payment",
+            CreatedBy = "test@example.com",
+            Status = UploadStatus.Upload_successful,
+            BlobFileName = "testblob",
+            BlobFolder = "archive",
+            Email = "email@defra.gov.uk"
+        };
+
+        var importRequests = new List<ImportRequest> { importRequest };
+
+        var component = RenderComponent<UserUploadsCard>(parameters => parameters.Add(p => p.importRequests, importRequests));
+
+        var statusCell = component.FindAll(".govuk-table__cell")[5];
+        var statusTag = statusCell.QuerySelector("strong");
+        statusTag.ClassName.Should().Contain("govuk-tag govuk-tag--blue");
     }
 
     [Fact]

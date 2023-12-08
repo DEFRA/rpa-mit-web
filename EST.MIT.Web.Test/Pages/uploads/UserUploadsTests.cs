@@ -28,7 +28,7 @@ public class UserUploadsTests : TestContext
                 SchemeType = "CP",
                 AccountType = "First Payment",
                 CreatedBy = "test@example.com",
-                Status = UploadStatus.Upload_success,
+                Status = UploadStatus.Uploaded,
                 BlobFileName = "testblob",
                 BlobFolder = "import",
                 Email = "email@defra.gov.uk"
@@ -63,7 +63,7 @@ public class UserUploadsTests : TestContext
         Assert.Equal("RDT", cellTexts[2]);
         Assert.Equal("CP", cellTexts[3]);
         Assert.Equal("AR", cellTexts[4]);
-        Assert.Equal("Upload_success", cellTexts[5]);
+        Assert.Equal("Uploaded", cellTexts[5]);
     }
 
     [Fact]
