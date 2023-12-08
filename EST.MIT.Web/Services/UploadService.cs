@@ -35,7 +35,8 @@ public class UploadService : IUploadService
             PaymentType = paymentType,
             CreatedBy = createdBy,
             BlobFileName = Path.GetRandomFileName().Split('.')[0],
-            BlobFolder = "import"
+            BlobFolder = "import",
+            Email = "" //TODO: get logged in user email
         };
 
         var importRequestSummary = new ImportRequestSummary(importRequest, GenerateConfirmationNumber());

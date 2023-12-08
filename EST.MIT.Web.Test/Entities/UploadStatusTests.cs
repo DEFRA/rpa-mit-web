@@ -6,11 +6,8 @@ namespace EST.MIT.Web.Test.Entities;
 public class UploadStatusTests
 {
     [Theory]
-    [InlineData(UploadStatus.Required, "REQUIRED")]
-    [InlineData(UploadStatus.Uploaded, "UPLOADED")]
-    [InlineData(UploadStatus.Uploading, "UPLOADING")]
-    [InlineData(UploadStatus.Validating, "VALIDATING")]
-    [InlineData(UploadStatus.Rejected, "REJECTED")]
+    [InlineData(UploadStatus.Upload_success, "Upload success")]
+    [InlineData(UploadStatus.Upload_failed, "Upload failed")]
     public void DisplayAttributeIsCorrect(UploadStatus status, string expectedName)
     {
         var memberInfo = status.GetType().GetMember(status.ToString());

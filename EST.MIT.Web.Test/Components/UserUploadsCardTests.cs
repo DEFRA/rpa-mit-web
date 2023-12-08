@@ -34,9 +34,10 @@ public class UserUploadsCardTests : TestContext
             SchemeType = "CP",
             AccountType = "First Payment",
             CreatedBy = "test@example.com",
-            Status = UploadStatus.Uploaded,
+            Status = UploadStatus.Upload_success,
             BlobFileName = "testblob",
-            BlobFolder = "archive"
+            BlobFolder = "archive",
+            Email = "email@defra.gov.uk"
         };
 
         var importRequests = new List<ImportRequest> { importRequest };
@@ -44,12 +45,12 @@ public class UserUploadsCardTests : TestContext
         var component = RenderComponent<UserUploadsCard>(parameters => parameters.Add(p => p.importRequests, importRequests));
 
         var cellTexts = component.FindAll(".govuk-table__cell").Select(cell => cell.TextContent).ToArray();
-        cellTexts[0].Should().Be(importRequest.Timestamp.Value.ToString("dd/MM/yyyy HH:mm:ss"));
-        cellTexts[1].Should().Be("Uploaded");
-        cellTexts[2].Should().Be("First Payment");
-        cellTexts[3].Should().Be("RDT");
-        cellTexts[4].Should().Be("CP");
-        cellTexts[5].Should().Be("AR");
+        cellTexts[0].Should().Be(importRequest.Timestamp.Value.ToString("dd/MM/yyyy HH:mm:ss"));       
+        cellTexts[1].Should().Be("First Payment");
+        cellTexts[2].Should().Be("RDT");
+        cellTexts[3].Should().Be("CP");
+        cellTexts[4].Should().Be("AR");
+        cellTexts[5].Should().Be("Upload_success");
 
         var downloadLinkCell = component.FindAll(".govuk-table__cell")[6];
         var downloadLink = downloadLinkCell.QuerySelector("a");

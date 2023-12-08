@@ -19,7 +19,7 @@ public class ImportRequestTests
             SchemeType = "CP",
             AccountType = "First Payment",
             CreatedBy = "test@example.com",
-            Status = UploadStatus.Uploaded,
+            Status = UploadStatus.Upload_success,
             BlobFileName = "BlobFileName",
             BlobFolder = "BlobFolder"
         };
@@ -34,7 +34,7 @@ public class ImportRequestTests
         Assert.Equal("CP", importRequest.SchemeType);
         Assert.Equal("First Payment", importRequest.AccountType);
         Assert.Equal("test@example.com", importRequest.CreatedBy);
-        Assert.Equal(UploadStatus.Uploaded, importRequest.Status);
+        Assert.Equal(UploadStatus.Upload_success, importRequest.Status);
         Assert.Equal("test.xlsx", importRequest.FileName);
         Assert.Equal("BlobFileName", importRequest.BlobFileName);
         Assert.Equal("BlobFolder", importRequest.BlobFolder);

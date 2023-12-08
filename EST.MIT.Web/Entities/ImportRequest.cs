@@ -17,6 +17,7 @@ public class ImportRequest
     public UploadStatus Status { get; init; }
     public string BlobFileName { get; set; }
     public string BlobFolder { get; set; }
+    public string Email { get; set; }
 }
 
 public static class ImportRequestExtentions
