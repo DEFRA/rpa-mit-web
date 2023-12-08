@@ -45,30 +45,9 @@ else
                     <td class="govuk-table__cell">@importRequest.SchemeType</td>
                     <td class="govuk-table__cell">@importRequest.PaymentType</td>
                     <td class="govuk-table__cell">
-                        @if (importRequest.Status == Entities.UploadStatus.Upload_successful)
-                        {
-                            <strong class="govuk-tag govuk-tag--blue">
-                                @importRequest.Status
-                            </strong>
-                        }
-                        else if (importRequest.Status == Entities.UploadStatus.Upload_failed)
-                        {
-                            <strong class="govuk-tag govuk-tag--red">
-                                @importRequest.Status
-                            </strong>
-                        }
-                        else if (importRequest.Status == Entities.UploadStatus.Upload_validated)
-                        {
-                            <strong class="govuk-tag govuk-tag--yellow">
-                                @importRequest.Status
-                            </strong>
-                        }
-                        else if (importRequest.Status == Entities.UploadStatus.Uploaded)
-                        {
-                            <strong class="govuk-tag govuk-tag--green">
-                                @importRequest.Status
-                            </strong>
-                        }
+                        <strong class="govuk-tag @importRequest.StatusTag">
+                            @importRequest.Status
+                        </strong>
                     </td>
                     <td class="govuk-table__cell">
                         <p class="govuk-body">
