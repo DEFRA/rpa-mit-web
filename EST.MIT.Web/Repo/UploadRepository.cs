@@ -17,36 +17,12 @@ public class UploadRepository : IUploadRepository
 
     public async Task<HttpResponseMessage> GetUploads()
     {
-        return await Task.Run(() =>
-        {
-            var mockImportRequests = new List<ImportRequest>
-            {
-            new ImportRequest
-            {
-                ImportRequestId = Guid.NewGuid(),
-                FileName = "mockfile1.xlsx",
-                FileSize = 2048,
-                FileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                Timestamp = DateTimeOffset.Now,
-                PaymentType = "MockType1",
-                Organisation = "MockOrg1",
-                SchemeType = "MockScheme1",
-                AccountType = "MockAccount1",
-                CreatedBy = "mockuser1@example.com",
-                Status = UploadStatus.Uploaded,
-                BlobFileName = "MockBlobFileName1",
-                BlobFolder = "MockBlobFolder1"
-            },
-                // Add more mock ImportRequest objects as needed
-            };
+        var client = _clientFactory.CreateClient("InvoiceImporterAPI");
 
-            var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = new StringContent(JsonSerializer.Serialize(mockImportRequests))
-            };
 
-            return mockResponse;
-        });
+        var response = await client.GetAsync($"/Uploads/userid");
+        await HandleHttpResponseError(response);
+        return response;
     }
 
     private async static Task HandleHttpResponseError(HttpResponseMessage response)
