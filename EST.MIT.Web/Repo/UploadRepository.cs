@@ -1,4 +1,6 @@
-using System.Diagnostics.CodeAnalysis;
+using System.Net;
+using System.Text.Json;
+using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Repositories;
@@ -13,16 +15,13 @@ public class UploadRepository : IUploadRepository
     }
 
 
-    [ExcludeFromCodeCoverage]
     public async Task<HttpResponseMessage> GetUploads()
     {
         var client = _clientFactory.CreateClient("InvoiceImporterAPI");
 
 
         var response = await client.GetAsync($"/Uploads/userid");
-
         await HandleHttpResponseError(response);
-
         return response;
     }
 
