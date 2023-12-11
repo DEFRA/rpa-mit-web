@@ -15,11 +15,7 @@ public class ApprovalAPI : IApprovalAPI
         _logger = logger;
         _approvalRepository = approvalRepository;
     }
-
-    public async Task<ApiResponse> GetApproversAsync(string scheme, string value) => await GetApprovers(scheme, value);
-    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme) => await ValidateApprover(approver, scheme);
-
-    private async Task<ApiResponse> GetApprovers(string scheme, string value)
+    public async Task<ApiResponse> GetApproversAsync(string scheme, string value)
     {
         var response = await _approvalRepository.GetApproversAsync(scheme, value);
         _logger.LogInformation($"ApprovalAPI.GetApproversAsync: response received from approval service: {response.StatusCode}");
@@ -42,7 +38,7 @@ public class ApprovalAPI : IApprovalAPI
         return new ApiResponse(false, response.StatusCode);
     }
 
-    private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver, string scheme)
+    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme)
     {
         approver = approver.Trim().ToLower();
         var response = await _approvalRepository.ValidateApproverAsync(approver, scheme);

@@ -12,14 +12,7 @@ public class InvoiceRepository : IInvoiceRepository
         _clientFactory = clientFactory;
     }
 
-    public async Task<HttpResponseMessage> GetInvoiceByIdAsync(string id) => await GetInvoiceById(id);
-    public async Task<HttpResponseMessage> GetInvoiceByPaymentRequestIdAsync(string paymentRequestId) => await GetInvoiceByPaymentRequestId(paymentRequestId);
-    public async Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme) => await GetInvoice(id, scheme);
-    public async Task<HttpResponseMessage> PostInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto) => await PostInvoice(paymentRequestsBatchDto);
-    public async Task<HttpResponseMessage> PutInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto) => await PutInvoice(paymentRequestsBatchDto);
-    public async Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequestDTO paymentRequestDto) => await DeleteHeader(paymentRequestDto);
-
-    private async Task<HttpResponseMessage> GetInvoiceById(string id)
+    public async Task<HttpResponseMessage> GetInvoiceByIdAsync(string id)
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
@@ -30,7 +23,7 @@ public class InvoiceRepository : IInvoiceRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetInvoiceByPaymentRequestId(string paymentRequestId)
+    public async Task<HttpResponseMessage> GetInvoiceByPaymentRequestIdAsync(string paymentRequestId)
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
@@ -41,7 +34,7 @@ public class InvoiceRepository : IInvoiceRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetInvoice(string id, string scheme)
+    public async Task<HttpResponseMessage> GetInvoiceAsync(string id, string scheme)
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
@@ -52,7 +45,7 @@ public class InvoiceRepository : IInvoiceRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> PostInvoice(PaymentRequestsBatchDTO paymentRequestsBatchDto)
+    public async Task<HttpResponseMessage> PostInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto)
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
@@ -63,7 +56,7 @@ public class InvoiceRepository : IInvoiceRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> PutInvoice(PaymentRequestsBatchDTO paymentRequestsBatchDto)
+    public async Task<HttpResponseMessage> PutInvoiceAsync(PaymentRequestsBatchDTO paymentRequestsBatchDto)
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 
@@ -74,7 +67,7 @@ public class InvoiceRepository : IInvoiceRepository
         return response;
     }
 
-    public async Task<HttpResponseMessage> DeleteHeader(PaymentRequestDTO paymentRequestDto)
+    public async Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequestDTO paymentRequestDto)
     {
         var client = _clientFactory.CreateClient("InvoiceAPI");
 

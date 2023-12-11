@@ -11,10 +11,6 @@ public class ApprovalRepository : IApprovalRepository
     }
 
     public async Task<HttpResponseMessage> GetApproversAsync(string scheme, string value)
-        => await GetApprovers(scheme, value);
-    public async Task<HttpResponseMessage> ValidateApproverAsync(string approver, string scheme) => await ValidateApprover(approver, scheme);
-
-    private async Task<HttpResponseMessage> GetApprovers(string scheme, string value)
     {
         var client = _clientFactory.CreateClient("ApprovalAPI");
 
@@ -25,7 +21,7 @@ public class ApprovalRepository : IApprovalRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> ValidateApprover(string approver, string scheme)
+    public async Task<HttpResponseMessage> ValidateApproverAsync(string approver, string scheme)
     {
         var client = _clientFactory.CreateClient("ApprovalAPI");
 

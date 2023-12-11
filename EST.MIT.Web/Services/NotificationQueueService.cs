@@ -5,7 +5,6 @@ using Azure.Storage.Queues;
 using Azure.Storage.Queues.Models;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Models;
 
 namespace EST.MIT.Web.Services;
 
