@@ -12,28 +12,6 @@ public class ReferenceDataRepository : IReferenceDataRepository
     }
 
     public async Task<HttpResponseMessage> GetOrganisationsListAsync()
-        => await GetOrganisationsList();
-    public async Task<HttpResponseMessage> GetSchemeTypesListAsync(string? InvoiceType, string? Organisation)
-        => await GetSchemeTypesList(InvoiceType, Organisation);
-    public async Task<HttpResponseMessage> GetPaymentTypesListAsync(string? InvoiceType, string? Organisation, string? SchemeType)
-        => await GetPaymentTypesList(InvoiceType, Organisation, SchemeType);
-    public async Task<HttpResponseMessage> GetAccountsListAsync
-        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
-        => await GetAccountsList(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<HttpResponseMessage> GetDeliveryBodiesListAsync
-        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
-        => await GetDeliveryBodiesList(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<HttpResponseMessage> GetFundsListAsync
-       (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
-       => await GetFundsList(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<HttpResponseMessage> GetMarketingYearsListAsync
-       (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
-       => await GetMarketingYearsList(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<HttpResponseMessage> GetSchemesListAsync
-       (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
-       => await GetSchemesList(InvoiceType, Organisation, SchemeType, PaymentType);
-
-    private async Task<HttpResponseMessage> GetOrganisationsList()
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
@@ -44,7 +22,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetSchemeTypesList(string? InvoiceType, string? Organisation)
+    public async Task<HttpResponseMessage> GetSchemeTypesListAsync(string? InvoiceType, string? Organisation)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
@@ -57,7 +35,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetPaymentTypesList(string? InvoiceType, string? Organisation, string? SchemeType)
+    public async Task<HttpResponseMessage> GetPaymentTypesListAsync(string? InvoiceType, string? Organisation, string? SchemeType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
 
@@ -70,7 +48,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetAccountsList
+    public async Task<HttpResponseMessage> GetAccountsListAsync
        (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
@@ -82,7 +60,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetDeliveryBodiesList
+    public async Task<HttpResponseMessage> GetDeliveryBodiesListAsync
         (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
@@ -94,7 +72,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetFundsList
+    public async Task<HttpResponseMessage> GetFundsListAsync
         (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
@@ -106,7 +84,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetMarketingYearsList
+    public async Task<HttpResponseMessage> GetMarketingYearsListAsync
         (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");
@@ -118,7 +96,7 @@ public class ReferenceDataRepository : IReferenceDataRepository
         return response;
     }
 
-    private async Task<HttpResponseMessage> GetSchemesList
+    public async Task<HttpResponseMessage> GetSchemesListAsync
         (string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var client = _clientFactory.CreateClient("ReferenceDataAPI");

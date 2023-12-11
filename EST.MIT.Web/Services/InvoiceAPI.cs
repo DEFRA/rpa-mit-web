@@ -20,16 +20,7 @@ public class InvoiceAPI : IInvoiceAPI
         _autoMapper = autoMapper;
         _invoiceRepository = invoiceRepository;
     }
-
-    public async Task<Invoice> FindInvoiceAsync(SearchCriteria criteria) => await GetInvoice(criteria);
-    public async Task<Invoice> FindInvoiceAsync(string id, string scheme) => await GetInvoice(id, scheme);
-    public async Task<ApiResponse<Invoice>> SaveInvoiceAsync(Invoice invoice) => await SaveInvoice(invoice);
-    public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice) => await UpdateInvoice(invoice);
-    public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest) => await UpdateInvoice(invoice, paymentRequest);
-    public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine) => await UpdateInvoice(invoice, paymentRequest, invoiceLine);
-    public async Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice invoice, string paymentRequestId) => await DeletePaymentRequest(invoice, paymentRequestId);
-
-    private async Task<Invoice> GetInvoice(SearchCriteria criteria)
+    public async Task<Invoice> FindInvoiceAsync(SearchCriteria criteria)
     {
 
         HttpResponseMessage? response = new HttpResponseMessage(HttpStatusCode.BadRequest);
@@ -82,7 +73,7 @@ public class InvoiceAPI : IInvoiceAPI
         return null;
     }
 
-    private async Task<Invoice> GetInvoice(string id, string scheme)
+    public async Task<Invoice> FindInvoiceAsync(string id, string scheme)
     {
         var response = await _invoiceRepository.GetInvoiceAsync(id, scheme);
         if (response.StatusCode == HttpStatusCode.OK)
@@ -115,7 +106,7 @@ public class InvoiceAPI : IInvoiceAPI
         return null;
     }
 
-    private async Task<ApiResponse<Invoice>> SaveInvoice(Invoice invoice)
+    public async Task<ApiResponse<Invoice>> SaveInvoiceAsync(Invoice invoice)
     {
         var errors = new Dictionary<string, List<string>>();
         invoice.Update();
@@ -137,7 +128,7 @@ public class InvoiceAPI : IInvoiceAPI
 
     }
 
-    private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice)
+    public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice)
     {
         if (invoice is null)
         {
@@ -168,7 +159,7 @@ public class InvoiceAPI : IInvoiceAPI
         return new ApiResponse<Invoice>(response.StatusCode, errors);
     }
 
-    private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice, PaymentRequest paymentRequest)
+    public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest)
     {
         var errors = new Dictionary<string, List<string>>();
 
@@ -196,7 +187,7 @@ public class InvoiceAPI : IInvoiceAPI
         return new ApiResponse<Invoice>(response.StatusCode, errors);
     }
 
-    private async Task<ApiResponse<Invoice>> UpdateInvoice(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine)
+    public async Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine)
     {
         var errors = new Dictionary<string, List<string>>();
 
@@ -228,7 +219,7 @@ public class InvoiceAPI : IInvoiceAPI
         return new ApiResponse<Invoice>(response.StatusCode, errors);
     }
 
-    private async Task<ApiResponse<Invoice>> DeletePaymentRequest(Invoice invoice, string paymentRequestId)
+    public async Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice invoice, string paymentRequestId)
     {
         var errors = new Dictionary<string, List<string>>();
         invoice.PaymentRequests.RemoveAll(x => x.PaymentRequestId == paymentRequestId);

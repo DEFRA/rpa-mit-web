@@ -25,16 +25,9 @@ public class ApprovalService : IApprovalService
         _logger = logger;
         _context = context;
     }
-
     public async Task<Invoice> GetInvoiceAsync(string id, string scheme) => await _invoiceAPI.FindInvoiceAsync(id, scheme);
-    public async Task<bool> ApproveInvoiceAsync(Invoice invoice) => await ApproveInvoice(invoice);
-    public async Task<bool> RejectInvoiceAsync(Invoice invoice, string justification) => await RejectInvoice(invoice, justification);
-    public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice) => await SubmitApproval(invoice);
-    public async Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value) => await GetApprovers();
 
-    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme) => await ValidateApprover(approver, scheme);
-
-    private async Task<bool> ApproveInvoice(Invoice invoice)
+    public async Task<bool> ApproveInvoiceAsync(Invoice invoice)
     {
         var notification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
@@ -46,7 +39,7 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotify(InvoiceStatuses.Approved, invoice, notification).ContinueWith(x =>
+        return await UpdateAndNotifyAsync(InvoiceStatuses.Approved, invoice, notification).ContinueWith(x =>
         {
             if (!x.Result.IsSuccess)
             {
@@ -58,7 +51,7 @@ public class ApprovalService : IApprovalService
         });
     }
 
-    private async Task<bool> RejectInvoice(Invoice invoice, string justification)
+    public async Task<bool> RejectInvoiceAsync(Invoice invoice, string justification)
     {
         var notification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
@@ -71,7 +64,7 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotify(InvoiceStatuses.Rejected, invoice, notification).ContinueWith(x =>
+        return await UpdateAndNotifyAsync(InvoiceStatuses.Rejected, invoice, notification).ContinueWith(x =>
         {
             if (!x.Result.IsSuccess)
             {
@@ -83,7 +76,7 @@ public class ApprovalService : IApprovalService
         });
     }
 
-    private async Task<ApiResponse<Invoice>> SubmitApproval(Invoice invoice)
+    public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice)
     {
         var errors = new Dictionary<string, List<string>>();
         var notification = new NotificationBuilder()
@@ -101,7 +94,7 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotify(InvoiceStatuses.AwaitingApproval, invoice, notification).ContinueWith(x =>
+        return await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, notification).ContinueWith(x =>
         {
             if (!x.Result.IsSuccess)
             {
@@ -114,7 +107,7 @@ public class ApprovalService : IApprovalService
 
     }
 
-    private async Task<ApiResponse<Invoice>> UpdateAndNotify(string status, Invoice invoice, Notification notification)
+    public async Task<ApiResponse<Invoice>> UpdateAndNotifyAsync(string status, Invoice invoice, Notification notification)
     {
         try
         {
@@ -162,10 +155,10 @@ public class ApprovalService : IApprovalService
         }
     }
 
-    private async Task<Dictionary<string, string>> GetApprovers()
+    public async Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value)
     {
         var approvers = new Dictionary<string, string>();
-        var response = await _approvalAPI.GetApproversAsync("scheme", "value");
+        var response = await _approvalAPI.GetApproversAsync(scheme, value);
 
         if (response.IsSuccess)
         {
@@ -174,6 +167,6 @@ public class ApprovalService : IApprovalService
         return approvers;
     }
 
-    private async Task<ApiResponse<BoolRef>> ValidateApprover(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver, scheme);
+    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver, scheme);
 
 }

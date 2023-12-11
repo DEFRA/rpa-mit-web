@@ -161,8 +161,9 @@ public class ApprovalCardTests : TestContext
         });
 
         //Act
-        var TotalValueGBP = component.FindAll("dd.govuk-summary-list__value")[4];
-        var TotalValueEUR = component.FindAll("dd.govuk-summary-list__value")[5];
+        var TotalValueGBP = component.FindAll("dd.govuk-summary-list__value")[8];
+        var TotalValueEUR = component.FindAll("dd.govuk-summary-list__value")[9];
+        // TODO: Remove index-based selectors in tests, as this is prone to errors and considered bad practice.
 
         //Assert
         Assert.Equal("336.01 GBP", TotalValueGBP.InnerHtml);

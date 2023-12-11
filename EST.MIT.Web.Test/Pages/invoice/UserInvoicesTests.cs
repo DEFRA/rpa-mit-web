@@ -3,7 +3,6 @@ using EST.MIT.Web.Pages.invoice.UserInvoices;
 using EST.MIT.Web.Shared;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Shared.Components.ApprovalCard;
 using EST.MIT.Web.Shared.Components.UserInvoicesCard;
 
 namespace EST.MIT.Web.Tests.Pages;
