@@ -5,15 +5,54 @@ namespace EST.MIT.Web.Test.Entities;
 public class ReferenceDataTests
 {
     [Fact]
+    public void TestOrganisationProperties()
+    {
+        var organisation = new Organisation
+        {
+            code = "RPA",
+            description = "organisation description",
+        };
+
+        Assert.Equal("RPA", organisation.code);
+        Assert.Equal("organisation description", organisation.description);
+    }
+
+    [Fact]
+    public void TestSchemeTypeProperties()
+    {
+        var schemeType = new SchemeType
+        {
+            code = "AZ",
+            description = "scheme type description",
+        };
+
+        Assert.Equal("AZ", schemeType.code);
+        Assert.Equal("scheme type description", schemeType.description);
+    }
+
+    [Fact]
+    public void TestPaymentTypeProperties()
+    {
+        var paymentType = new PaymentType
+        {
+            code = "AZ",
+            description = "payment description",
+        };
+
+        Assert.Equal("AZ", paymentType.code);
+        Assert.Equal("payment description", paymentType.description);
+    }
+    
+    [Fact]
     public void TestMainAccountProperties()
     {
         var mainAccount = new MainAccount
         {
-            code = "AZ",
+            code = "AP",
             description = "main account description",
         };
 
-        Assert.Equal("AZ", mainAccount.code);
+        Assert.Equal("AP", mainAccount.code);
         Assert.Equal("main account description", mainAccount.description);
     }
 
@@ -62,10 +101,10 @@ public class ReferenceDataTests
         var schemeCode = new SchemeCode
         {
             code = "AZ",
-            description = "marketing year description",
+            description = "scheme code description",
         };
 
         Assert.Equal("AZ", schemeCode.code);
-        Assert.Equal("marketing year description", schemeCode.description);
+        Assert.Equal("scheme code description", schemeCode.description);
     }
 }
