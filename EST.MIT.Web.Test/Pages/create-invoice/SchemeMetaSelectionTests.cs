@@ -49,11 +49,11 @@ public class SchemeMetaSelectionPageTests : TestContext
             });
 
         _mockReferenceDataAPI.Setup(x => x.GetSchemeTypesAsync(It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+            .Returns(Task.FromResult<ApiResponse<IEnumerable<SchemeType>>>(new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.OK)
             {
-                Data = new List<PaymentScheme>
+                Data = new List<SchemeType>
                 {
-                    new PaymentScheme { code = "BPS", description = "Basic Payment Scheme" }
+                    new SchemeType { code = "BPS", description = "Basic Payment Scheme" }
                 }
             }));
 
@@ -81,15 +81,15 @@ public class SchemeMetaSelectionPageTests : TestContext
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
         _mockReferenceDataAPI.Setup(x => x.GetSchemeTypesAsync(It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+            .Returns(Task.FromResult<ApiResponse<IEnumerable<SchemeType>>>(new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.OK)
             {
-                Data = new List<PaymentScheme>
+                Data = new List<SchemeType>
                 {
-                    new PaymentScheme { code = "BPS", description = "BPS" },
-                    new PaymentScheme { code = "ES", description = "ES" },
-                    new PaymentScheme { code = "CS", description = "CS" },
-                    new PaymentScheme { code = "SPS", description = "SPS" },
-                    new PaymentScheme { code = "Milk", description = "Milk" }
+                    new SchemeType { code = "BPS", description = "BPS" },
+                    new SchemeType { code = "ES", description = "ES" },
+                    new SchemeType { code = "CS", description = "CS" },
+                    new SchemeType { code = "SPS", description = "SPS" },
+                    new SchemeType { code = "Milk", description = "Milk" }
                 }
             }));
 
@@ -147,15 +147,15 @@ public class SchemeMetaSelectionPageTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
 
         _mockReferenceDataAPI.Setup(x => x.GetSchemeTypesAsync(It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+            .Returns(Task.FromResult<ApiResponse<IEnumerable<SchemeType>>>(new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.OK)
             {
-                Data = new List<PaymentScheme>
+                Data = new List<SchemeType>
                 {
-                    new PaymentScheme { code = "BPS", description = "BPS" },
-                    new PaymentScheme { code = "ES", description = "ES" },
-                    new PaymentScheme { code = "CS", description = "CS" },
-                    new PaymentScheme { code = "SPS", description = "SPS" },
-                    new PaymentScheme { code = "Milk", description = "Milk" }
+                    new SchemeType { code = "BPS", description = "BPS" },
+                    new SchemeType { code = "ES", description = "ES" },
+                    new SchemeType { code = "CS", description = "CS" },
+                    new SchemeType { code = "SPS", description = "SPS" },
+                    new SchemeType { code = "Milk", description = "Milk" }
                 }
             }));
 

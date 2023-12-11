@@ -30,11 +30,11 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
 
         _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentType>>>(new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.OK)
         {
-            Data = new List<PaymentScheme>
+            Data = new List<PaymentType>
             {
-               new PaymentScheme { code = "EU", description = "EU" }
+               new PaymentType { code = "EU", description = "EU" }
             }
         }));
 
@@ -51,11 +51,11 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
         _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentType>>>(new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.OK)
         {
-            Data = new List<PaymentScheme>
+            Data = new List<PaymentType>
             {
-               new PaymentScheme { code = "EU", description = "EU" }
+               new PaymentType { code = "EU", description = "EU" }
             }
         }));
 
@@ -75,12 +75,12 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
 
         _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentType>>>(new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.OK)
         {
-            Data = new List<PaymentScheme>
+            Data = new List<PaymentType>
             {
-              new PaymentScheme { code = "EU", description = "EU"},
-              new PaymentScheme { code = "DOMESTIC", description = "DOMESTIC" }
+              new PaymentType { code = "EU", description = "EU"},
+              new PaymentType { code = "DOMESTIC", description = "DOMESTIC" }
             }
         }));
 
@@ -104,11 +104,11 @@ public class PaymentTypeMetaSelectionPageTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
 
         _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
+        .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentType>>>(new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.OK)
         {
-            Data = new List<PaymentScheme>
+            Data = new List<PaymentType>
             {
-               new PaymentScheme { code = "EU", description = "EU" }
+               new PaymentType { code = "EU", description = "EU" }
             }
         }));
 

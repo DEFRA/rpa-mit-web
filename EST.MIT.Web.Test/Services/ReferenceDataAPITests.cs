@@ -137,9 +137,9 @@ public class ReferenceDataAPITests
         _mockReferenceDataRepository.Setup(x => x.GetSchemeTypesListAsync(It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
-                Content = new StringContent(JsonSerializer.Serialize(new List<PaymentScheme>()
+                Content = new StringContent(JsonSerializer.Serialize(new List<SchemeType>()
                 {
-                    new PaymentScheme()
+                    new SchemeType()
                     {
                         code = "RPA",
                         description = "A nice place to work"
@@ -153,11 +153,11 @@ public class ReferenceDataAPITests
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         response.IsSuccess.Should().BeTrue();
-        response.Data.Should().BeOfType<List<PaymentScheme>>();
+        response.Data.Should().BeOfType<List<SchemeType>>();
         response.Data.Should().HaveCount(1);
-        response.Data.Should().BeEquivalentTo(new List<PaymentScheme>()
+        response.Data.Should().BeEquivalentTo(new List<SchemeType>()
         {
-            new PaymentScheme()
+            new SchemeType()
             {
                 code = "RPA",
                 description = "A nice place to work"
