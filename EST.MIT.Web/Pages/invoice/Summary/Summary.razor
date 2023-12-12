@@ -20,7 +20,7 @@
 		{
 
 			<div id="no-payment-request-warning" class="govuk-form-group--error">
-				<h1 class="govuk-heading-l">This Invoice currently has no payment requests</h1>
+				<h1 class="govuk-heading-l">This invoice currently has no payment requests</h1>
 				<div class="govuk-hint">You can select Add Payment Request to include one with this invoice.</div>
 			</div>
 		}
@@ -28,7 +28,7 @@
 		{
 			@if(invoice.Status == "new")
 			{
-				<button id="send-approval" class="govuk-button govuk-!-margin-left-1" data-prevent-double-click="true" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
+				<button id="send-approval" class="govuk-button govuk-button--secondary govuk-!-margin-left-1" data-prevent-double-click="true" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
 			}
 			
 			@foreach (var request in invoice.PaymentRequests)

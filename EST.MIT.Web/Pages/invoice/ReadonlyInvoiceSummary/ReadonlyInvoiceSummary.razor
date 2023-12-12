@@ -1,5 +1,5 @@
 @page "/invoice/view/{id}"
-@page "/invoice/details/{scheme}/{id}/{approval:bool?}"
+@page "/invoice/details/{scheme}/{id}/{paymentRequestId}/{approval:bool?}"
 
 @using Helpers
 @using EST.MIT.Web.Shared.Components.InvoiceMetaData
@@ -31,24 +31,26 @@
 
 @if (!@invoice.IsNull())
 {
-
     <section class="govuk-width-container govuk-!-padding-top-3">
         <a class="govuk-back-link" href="/invoice/summary/@invoice.SchemeType/@invoice.Id/@backUrl">Back</a>
         <h1 class="govuk-heading-l">
-            Invoice: @invoice.Id
+            Payment Request Summary
         </h1>
+
+        <InvoiceMetaData Invoice=invoice />
+
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">Payment Request Id: @PaymentRequestId</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+                <ReadonlyInvoicePR PaymentRequest=@invoice.PaymentRequests.FirstOrDefault(x =>x.PaymentRequestId == @PaymentRequestId) Invoice=@invoice />
+            </div>
+        </div>
+
+        <h2 class="govuk-heading-m">Invoice Lines</h2>
+        <ReadonlyInvoiceLines PaymentRequest=@invoice.PaymentRequests.FirstOrDefault(x =>x.PaymentRequestId == @PaymentRequestId) />
     </section>
-
-    <InvoiceMetaData Invoice=invoice />
-
-    @foreach (var payment in invoice.PaymentRequests)
-    {
-        <section class="govuk-width-container govuk-!-padding-top-3">
-            <h2 class="govuk-heading-m">@payment.PaymentRequestId</h2>
-            <ReadonlyInvoicePR PaymentRequest=payment Invoice=@invoice />
-            <ReadonlyInvoiceLines PaymentRequest=payment />
-        </section>
-    }
 
     @if (Approval)
     {

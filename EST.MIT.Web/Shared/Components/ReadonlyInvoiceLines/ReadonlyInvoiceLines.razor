@@ -1,36 +1,27 @@
-<details class="govuk-details" data-module="govuk-details">
-    <summary class="govuk-details__summary">
-        <span class="govuk-details__summary-text">
-        Invoice Lines
-        </span>
-    </summary>
-    <div class="govuk-details__text">
-        <table class="govuk-table">
-            <thead class="govuk-table__head">
-                <tr class="govuk-table__row">
-                    <th scope="col" class="govuk-table__header">Fund Code</th>
-                    <th scope="col" class="govuk-table__header">Main Account</th>
-                    <th scope="col" class="govuk-table__header">Scheme Code</th>
-                    <th scope="col" class="govuk-table__header">Marketing Year</th>
-                    <th scope="col" class="govuk-table__header">Delivery Body</th>
-                    <th scope="col" class="govuk-table__header">Line Value</th>
-                    <th scope="col" class="govuk-table__header govuk-!-width-one-half">Description</th>
-                </tr>
-            </thead>
-            <tbody class="govuk-table__body">
-                @foreach(var line in PaymentRequest.InvoiceLines)
-                {
-                <tr class="govuk-table__row">
-                    <td class="govuk-table__cell">@line.FundCode</td>
-                    <td class="govuk-table__cell">@line.MainAccount</td>
-                    <td class="govuk-table__cell">@line.SchemeCode</td>
-                    <td class="govuk-table__cell">@line.MarketingYear</td>
-                    <td class="govuk-table__cell">@line.DeliveryBody</td>
-                    <td class="govuk-table__cell">@line.Value</td>
-                    <td class="govuk-table__cell">@line.Description</td>
-                </tr>
-                }
-            </tbody>
-        </table> 
-    </div>
-</details>
+<table class="govuk-table">
+    <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+            <th scope="col" class="govuk-table__header">Fund Code</th>
+            <th scope="col" class="govuk-table__header">Main Account</th>
+            <th scope="col" class="govuk-table__header">Scheme Code</th>
+            <th scope="col" class="govuk-table__header">Marketing Year</th>
+            <th scope="col" class="govuk-table__header">Delivery Body</th>
+            <th scope="col" class="govuk-table__header">Line Value</th>
+            <th scope="col" class="govuk-table__header govuk-!-width-one-half">Description</th>
+        </tr>
+    </thead>
+    <tbody class="govuk-table__body">
+        @foreach (var line in PaymentRequest.InvoiceLines)
+        {
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell">@line.FundCode</td>
+                <td class="govuk-table__cell">@line.MainAccount</td>
+                <td class="govuk-table__cell">@line.SchemeCode</td>
+                <td class="govuk-table__cell">@line.MarketingYear</td>
+                <td class="govuk-table__cell">@line.DeliveryBody</td>
+                <td class="govuk-table__cell">@line.Value</td>
+                <td class="govuk-table__cell">@line.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>

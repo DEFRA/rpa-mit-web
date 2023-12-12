@@ -9,6 +9,7 @@ public partial class ReadonlyInvoiceSummary : ComponentBase
 {
     [Parameter] public string Scheme { get; set; } = default!;
     [Parameter] public string Id { get; set; } = default!;
+    [Parameter] public string PaymentRequestId { get; set; } = default!;
     [Parameter] public bool Approval { get; set; } = false;
 
     [Inject] private IApprovalService _approvalService { get; set; }
