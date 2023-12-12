@@ -90,7 +90,7 @@ public class AmendPaymentRequestTests : TestContext
         var component = RenderComponent<AmendPaymentRequest>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
 
-        var button = component.FindAll("button#update-payment-request");
+        var button = component.FindAll("a#update-payment-request");
 
         button[0].Click();
 
