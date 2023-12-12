@@ -148,9 +148,9 @@ namespace EST.MIT.Web.Test.Components
             });
 
             //Act
-            var TotalValueGBP = component.FindAll("dd.govuk-summary-list__value")[7];
-            var TotalValueEUR = component.FindAll("dd.govuk-summary-list__value")[8];
-            var TotalPaymentRequests = component.FindAll("dd.govuk-summary-list__value")[6];
+            var TotalValueGBP = component.FindAll("dd.govuk-summary-list__value")[3];
+            var TotalValueEUR = component.FindAll("dd.govuk-summary-list__value")[4];
+            var TotalPaymentRequests = component.FindAll("dd.govuk-summary-list__value")[2];
             // TODO: Remove index-based selectors in tests, as this is prone to errors and considered bad practice.
 
             //Assert

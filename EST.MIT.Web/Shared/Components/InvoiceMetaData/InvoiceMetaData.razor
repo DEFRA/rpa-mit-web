@@ -1,36 +1,42 @@
 <section class="govuk-width-container @Class">
-    <div class="govuk-summary-list govuk-summary-list--border">
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Account Type</dt>
-            <dd class="govuk-summary-list__value">
-                @if (Invoice != null) {
-                        @Invoice.AccountType
-                    }
-                    </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Account Type</dt>
-            <dd class="govuk-summary-list__value">
-                @if (Invoice != null) {
-                        @Invoice.Organisation
-                    }
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Scheme Type</dt>
-            <dd class="govuk-summary-list__value">
-                @if (Invoice != null) {
-                        @Invoice.SchemeType
-                    }
-            </dd>
-        </div>
-        <div class="govuk-summary-list__row">
-            <dt class="govuk-summary-list__key">Payment Type</dt>
-            <dd class="govuk-summary-list__value">
-                @if (Invoice != null) {
-                        @Invoice.PaymentType
-                    }
-            </dd>
-        </div>
+    <div class="govuk-inset-text">
+        <table class="govuk-table">
+            <thead class="govuk-table__head">
+                <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Account Type</th>
+                    <th scope="col" class="govuk-table__header">Organisation</th>
+                    <th scope="col" class="govuk-table__header">Scheme Type</th>
+                    <th scope="col" class="govuk-table__header">Payment Type</th>
+                </tr>
+            </thead>
+            <tbody class="govuk-table__body">
+                <tr class="govuk-table__row">
+                    <th scope="row" class="govuk-table__header">
+                        @if (Invoice != null)
+                        {
+                            @Invoice.AccountType
+                        }
+                    </th>
+                    <td class="govuk-table__cell">
+                        @if (Invoice != null)
+                        {
+                            @Invoice.Organisation
+                        }
+                    </td>
+                    <td class="govuk-table__cell">
+                        @if (Invoice != null)
+                        {
+                            @Invoice.SchemeType
+                        }
+                    </td>
+                    <td class="govuk-table__cell">
+                        @if (Invoice != null)
+                        {
+                            @Invoice.PaymentType
+                        }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </section>
