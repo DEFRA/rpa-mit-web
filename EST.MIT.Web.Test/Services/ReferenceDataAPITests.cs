@@ -821,7 +821,7 @@ public class ReferenceDataAPITests
 
         var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
 
-        var response = await service.GetMarketingYearsAsync("AP", "RPA", "AZ", "AB");
+        var response = await service.GetMarketingYearsAsync("AP", "RPA", "AZ", "AD");
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
         response.IsSuccess.Should().BeFalse();
