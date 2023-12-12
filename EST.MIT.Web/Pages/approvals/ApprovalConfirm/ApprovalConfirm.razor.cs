@@ -26,49 +26,53 @@ public partial class ApprovalConfirm : ComponentBase
     {
         try
         {
-            await _approvalService.ApproveInvoiceAsync(invoice).ContinueWith(x =>
+            var result = await _approvalService.ApproveInvoiceAsync(invoice);
+            if (result)
             {
-                if (x.Result)
-                {
-                    _nav.NavigateTo($"/approval/confirmation/approved");
-                }
-                else
-                {
-                    IsErrored = true;
-                    Errors.Add("Error", new List<string> { x.Exception?.Message ?? "Unknown Error" });
-                }
-            });
+                _nav.NavigateTo($"/approval/confirmation/approved");
+            }
+            else
+            {
+                IsErrored = true;
+                Errors.Add("Error", new List<string> { "Approval failed" });
+            }
         }
-        catch (Exception ex)
-        {
-            IsErrored = true;
-            Errors.Add("Error", new List<string> { ex.Message });
+    catch (Exception ex)
+    {
+        UpdateError(ex.Message);
         }
     }
 
-    private async Task RejectConfirmed()
+private async Task RejectConfirmed()
+{
+    try
     {
-        try
+        var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification);
+        if (result)
         {
-            await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification).ContinueWith(x =>
-            {
-                if (x.Result)
-                {
-                    _nav.NavigateTo($"/approval/confirmation/rejected");
-                }
-                else
-                {
-                    IsErrored = true;
-                    Errors.Add("Error", new List<string> { x.Exception?.Message ?? "Unknown Error" });
-                }
-            });
+            _nav.NavigateTo($"/approval/confirmation/rejected");
         }
-        catch (Exception ex)
+        else
         {
-            IsErrored = true;
-            Errors.Add("Error", new List<string> { ex.Message });
+            UpdateError("Rejection failed");
         }
     }
+    catch (Exception ex)
+    {
+        UpdateError(ex.Message);
+    }
+}
+
+private void UpdateError(string message)
+{
+    IsErrored = true;
+    if (!Errors.ContainsKey("Error"))
+    {
+        Errors.Add("Error", new List<string>());
+    }
+    Errors["Error"].Add(message);
+}
+
 
     private void RejectValidationFailed()
     {
