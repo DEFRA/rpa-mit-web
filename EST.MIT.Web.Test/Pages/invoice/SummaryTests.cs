@@ -50,7 +50,7 @@ public class SummaryTests : TestContext
         var component = RenderComponent<Summary>(parameters =>
             parameters.Add(p => p.invoiceId, _invoice.Id.ToString()));
 
-        var paymentRequests = component.FindAll("div.govuk-summary-card");
+        var paymentRequests = component.FindAll("div.govuk-payment-request-summary");
 
         paymentRequests.Should().NotBeEmpty();
         paymentRequests.Should().HaveCount(1);
