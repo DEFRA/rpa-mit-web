@@ -7,13 +7,13 @@ using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
 
-public class OrganisationMetaSelectionPageTests : TestContext
+public class OrganisationMetaSelectionInvoicePageTests : TestContext
 {
     private readonly Mock<IReferenceDataAPI> _mockReferenceDataAPI;
     private readonly Mock<IPageServices> _mockPageServices;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
 
-    public OrganisationMetaSelectionPageTests()
+    public OrganisationMetaSelectionInvoicePageTests()
     {
         _mockReferenceDataAPI = new Mock<IReferenceDataAPI>();
         _mockPageServices = new Mock<IPageServices>();
