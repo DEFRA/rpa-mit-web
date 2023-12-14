@@ -35,45 +35,6 @@ public class OrganisationMetaSelectionPageTests : TestContext
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
 
-    // [Fact]
-    // public void No_Selection_Fails_Validation()
-    // {
-    //     _mockPageServices.Setup(x => x.Validation(It.IsAny<OrganisationSelect>(), out It.Ref<bool>.IsAny, out It.Ref<Dictionary<string, string>>.IsAny))
-    //         .Callback((object organisationSelect, out bool IsErrored, out Dictionary<string, string> errors) =>
-    //         {
-    //             IsErrored = true;
-    //             errors = new()
-    //             {
-    //                 { "Name", "Please select an organisation" }
-    //             };
-    //         });
-
-    //     _mockReferenceDataAPI.Setup(x => x.GetOrganisationsAsync(It.IsAny<string>()))
-    //         .Returns(Task.FromResult<ApiResponse<IEnumerable<Organisation>>>(new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.OK)
-    //         {
-    //             Data = new List<Organisation>
-    //             {
-    //                 new Organisation { code = "RPA", description = "Rural Payments Agency" }
-    //             }
-    //         }));
-
-    //     _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
-
-    //     var component = RenderComponent<OrganisationMetaSelectionInvoice>();
-    //     component.FindAll("button")[0].Click();
-
-    //     component.WaitForElements("p.govuk-error-message");
-
-    //     var errorMessages = component.FindAll("p.govuk-error-message");
-
-    //     var validation = Services.GetService<IPageServices>();
-
-    //     errorMessages.Should().NotBeEmpty();
-    //     errorMessages.Should().HaveCount(1);
-    //     errorMessages[0].TextContent.Should().Be("Error:Please select an organisation");
-
-    // }
-
     [Fact]
     public void Shows_Organisation_RadioButtons()
     {

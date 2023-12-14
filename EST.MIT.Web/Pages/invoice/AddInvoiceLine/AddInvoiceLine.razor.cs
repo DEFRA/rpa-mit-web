@@ -164,7 +164,7 @@ public partial class AddInvoiceLine : ComponentBase
         catch (Exception ex)
         {
             IsErrored = true;
-            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelectionBulk page");
+            Logger.LogError(ex, "Error in SaveAndContinue of AddInvoiceLine page");
         }
     }
 

@@ -43,7 +43,7 @@ public partial class SchemeMetaSelectionInvoice : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error initializing SchemeMetaSelectionBulk page");
+            Logger.LogError(ex, "Error initializing SchemeMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
@@ -61,7 +61,7 @@ public partial class SchemeMetaSelectionInvoice : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in OnAfterRenderAsync of SchemeMetaSelectionBulk page");
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of SchemeMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
@@ -76,7 +76,7 @@ public partial class SchemeMetaSelectionInvoice : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelectionBulk page");
+            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }

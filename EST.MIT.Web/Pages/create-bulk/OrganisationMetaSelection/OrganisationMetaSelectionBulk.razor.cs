@@ -43,7 +43,7 @@ public partial class OrganisationMetaSelectionBulk : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error initializing OrganisationMetaSelectionInvoice page");
+            Logger.LogError(ex, "Error initializing OrganisationMetaSelectionBulk page");
             _nav.NavigateTo("/error");
         }
     }
@@ -60,7 +60,7 @@ public partial class OrganisationMetaSelectionBulk : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in OnAfterRenderAsync of OrganisationMetaSelectionInvoice page");
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of OrganisationMetaSelectionBulk page");
             _nav.NavigateTo("/error");
         }
     }
@@ -75,7 +75,7 @@ public partial class OrganisationMetaSelectionBulk : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in SaveAndContinue of OrganisationMetaSelectionInvoice page");
+            Logger.LogError(ex, "Error in SaveAndContinue of OrganisationMetaSelectionBulk page");
             _nav.NavigateTo("/error");
         }
     }
