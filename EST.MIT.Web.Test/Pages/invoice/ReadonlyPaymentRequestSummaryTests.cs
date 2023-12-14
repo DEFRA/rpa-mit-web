@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Entities;
-using EST.MIT.Web.Pages.invoice.ReadonlyInvoiceSummary;
+using EST.MIT.Web.Pages.invoice.ReadonlyPaymentRequestSummary;
 using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Pages;
@@ -32,7 +32,7 @@ public class ReadonlyPaymentRequestSummaryTests : TestContext
     {
         _mockApprovalService.Setup(x => x.GetInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
 
-        var component = RenderComponent<ReadonlyInvoiceSummary>();
+        var component = RenderComponent<ReadonlyPaymentRequestSummary>();
 
         var Title = component.FindAll(".govuk-heading-l")[0];
 
@@ -46,7 +46,7 @@ public class ReadonlyPaymentRequestSummaryTests : TestContext
         _mockApprovalService.Setup(x => x.GetInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
             .Returns(Task.FromResult<Invoice>(null));
 
-        var component = RenderComponent<ReadonlyInvoiceSummary>();
+        var component = RenderComponent<ReadonlyPaymentRequestSummary>();
 
         var renderedErrors = component.FindAll("ul.govuk-error-summary__list > li");
 
@@ -59,7 +59,7 @@ public class ReadonlyPaymentRequestSummaryTests : TestContext
         _mockApprovalService.Setup(x => x.GetInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
             .Throws(new Exception("Test Exception"));
 
-        var component = RenderComponent<ReadonlyInvoiceSummary>();
+        var component = RenderComponent<ReadonlyPaymentRequestSummary>();
 
         var renderedErrors = component.FindAll("ul.govuk-error-summary__list > li");
 
