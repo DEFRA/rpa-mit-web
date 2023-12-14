@@ -30,7 +30,7 @@ public class SchemeMetaSelectionPageTests : TestContext
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
         var navigationManager = Services.GetService<NavigationManager>();
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
 
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
@@ -59,7 +59,7 @@ public class SchemeMetaSelectionPageTests : TestContext
 
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
         component.FindAll("button")[0].Click();
 
         component.WaitForElements("p.govuk-error-message");
@@ -93,7 +93,7 @@ public class SchemeMetaSelectionPageTests : TestContext
                 }
             }));
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
         component.WaitForElements("input[type='radio']");
         var radioButtons = component.FindAll("input[type='radio']");
 
@@ -106,38 +106,6 @@ public class SchemeMetaSelectionPageTests : TestContext
         radioButtons[4].GetAttribute("value").Should().Be("Milk");
 
     }
-
-
-    //FLAG: Removed for pipeline build
-    // [Fact]
-    // public void Saves_Selected_Scheme_Navigates_To_PaymentType()
-    // {
-    //     _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
-    //     var navigationManager = Services.GetService<NavigationManager>();
-
-    //     _mockReferenceDataAPI.Setup(x => x.GetSchemesAsync(It.IsAny<string>(), It.IsAny<string>()))
-    //         .Returns(Task.FromResult<ApiResponse<IEnumerable<PaymentScheme>>>(new ApiResponse<IEnumerable<PaymentScheme>>(HttpStatusCode.OK)
-    //         {
-    //             Data = new List<PaymentScheme>
-    //             {
-    //                 new PaymentScheme { code = "BPS", description = "BPS" },
-    //                 new PaymentScheme { code = "ES", description = "ES" },
-    //                 new PaymentScheme { code = "CS", description = "CS" },
-    //                 new PaymentScheme { code = "SPS", description = "SPS" },
-    //                 new PaymentScheme { code = "Milk", description = "Milk" }
-    //             }
-    //         }));
-
-    //     var component = RenderComponent<SchemeMetaSelection>();
-    //     component.WaitForElements("input[type='radio']");
-    //     var selectSchemeRadioButton = component.FindAll("input[type='radio'][value='Milk']");
-    //     var saveAndContinueButton = component.FindAll("button[type='submit']");
-
-    //     selectSchemeRadioButton[0].Change("Milk");
-    //     saveAndContinueButton[0].Click();
-
-    //     navigationManager?.Uri.Should().Be("http://localhost/create-invoice/payment-type");
-    // }
 
     [Fact]
     public void Cancels_Invoice_Navigates_To_HomePage()
@@ -159,7 +127,7 @@ public class SchemeMetaSelectionPageTests : TestContext
                 }
             }));
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
         component.WaitForElements("a.govuk-link");
         var cancelButton = component.FindAll("a.govuk-link");
 
