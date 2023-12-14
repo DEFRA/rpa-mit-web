@@ -3,19 +3,19 @@ using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Helpers;
 
-namespace EST.MIT.Web.Pages.create_invoice.SchemeMetaSelection;
+namespace EST.MIT.Web.Pages.create_invoice.OrganisationMetaSelection;
 
-public partial class SchemeMetaSelection : ComponentBase
+public partial class OrganisationMetaSelectionInvoice : ComponentBase
 {
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
-    [Inject] public IPageServices _pageServices { get; set; }
+    [Inject] public IPageServices _pageServices { get; set; } = default!;
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
-    [Inject] private ILogger<SchemeMetaSelection> Logger { get; set; }
+    [Inject] private ILogger<OrganisationMetaSelectionInvoice> Logger { get; set; }
 
     private Invoice invoice = default!;
-    private SchemeSelect schemeSelect = new();
-    private Dictionary<string, string> schemes = new();
+    private OrganisationSelect organisationSelect = new();
+    private Dictionary<string, string> organisations = new();
     bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
     private List<string> viewErrors = new();
@@ -29,13 +29,13 @@ public partial class SchemeMetaSelection : ComponentBase
 
             if (invoice != null)
             {
-                await _referenceDataAPI.GetSchemeTypesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
+                await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
                 {
                     if (x.Result.IsSuccess)
                     {
-                        foreach (var scheme in x.Result.Data)
+                        foreach (var org in x.Result.Data)
                         {
-                            schemes.Add(scheme.code, scheme.description);
+                            organisations.Add(org.code, org.description);
                         }
                     }
                 });
@@ -43,7 +43,7 @@ public partial class SchemeMetaSelection : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error initializing SchemeMetaSelection page");
+            Logger.LogError(ex, "Error initializing OrganisationMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
@@ -55,13 +55,12 @@ public partial class SchemeMetaSelection : ComponentBase
             await base.OnAfterRenderAsync(firstRender);
             if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
             {
-                _invoiceStateContainer.SetValue(null);
                 _nav.NavigateTo("/create-invoice");
             }
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in OnAfterRenderAsync of SchemeMetaSelection page");
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of OrganisationMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
@@ -70,21 +69,21 @@ public partial class SchemeMetaSelection : ComponentBase
     {
         try
         {
-            invoice.SchemeType = schemeSelect.Scheme;
+            invoice.Organisation = organisationSelect.Organisation;
             _invoiceStateContainer.SetValue(invoice);
-            _nav.NavigateTo("/create-invoice/payment-type");
+            _nav.NavigateTo("/create-invoice/scheme");
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelection page");
+            Logger.LogError(ex, "Error in SaveAndContinue of OrganisationMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
 
     private void ValidationFailed()
     {
-        _pageServices.Validation(schemeSelect, out IsErrored, out errors);
-        viewErrors = errors[nameof(schemeSelect.Scheme).ToLower()];
+        _pageServices.Validation(organisationSelect, out IsErrored, out errors);
+        viewErrors = errors[nameof(organisationSelect.Organisation).ToLower()];
     }
 
     private void Cancel()

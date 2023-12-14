@@ -30,7 +30,7 @@ public class SchemeMetaSelectionPageTests : TestContext
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
         var navigationManager = Services.GetService<NavigationManager>();
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
 
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
@@ -59,7 +59,7 @@ public class SchemeMetaSelectionPageTests : TestContext
 
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
         component.FindAll("button")[0].Click();
 
         component.WaitForElements("p.govuk-error-message");
@@ -93,7 +93,7 @@ public class SchemeMetaSelectionPageTests : TestContext
                 }
             }));
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
         component.WaitForElements("input[type='radio']");
         var radioButtons = component.FindAll("input[type='radio']");
 
@@ -128,7 +128,7 @@ public class SchemeMetaSelectionPageTests : TestContext
     //             }
     //         }));
 
-    //     var component = RenderComponent<SchemeMetaSelection>();
+    //     var component = RenderComponent<SchemeMetaSelectionBulk>();
     //     component.WaitForElements("input[type='radio']");
     //     var selectSchemeRadioButton = component.FindAll("input[type='radio'][value='Milk']");
     //     var saveAndContinueButton = component.FindAll("button[type='submit']");
@@ -159,7 +159,7 @@ public class SchemeMetaSelectionPageTests : TestContext
                 }
             }));
 
-        var component = RenderComponent<SchemeMetaSelection>();
+        var component = RenderComponent<SchemeMetaSelectionInvoice>();
         component.WaitForElements("a.govuk-link");
         var cancelButton = component.FindAll("a.govuk-link");
 

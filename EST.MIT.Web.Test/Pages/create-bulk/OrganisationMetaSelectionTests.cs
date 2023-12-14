@@ -30,7 +30,7 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
         var navigationManager = Services.GetService<NavigationManager>();
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionBulk>();
 
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk"));
     }
@@ -59,7 +59,7 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
 
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionBulk>();
         component.FindAll("button")[0].Click();
 
         component.WaitForElements("p.govuk-error-message");
@@ -88,7 +88,7 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
                 }
             }));
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionBulk>();
         component.WaitForElements("input[type='radio']");
         var radioButtons = component.FindAll("input[type='radio']");
 
@@ -114,7 +114,7 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
                 }
             }));
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionBulk>();
         component.WaitForElements("input[type='radio']");
         var selectOrganisationRadioButton = component.FindAll("input[type='radio'][value='RPA']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
@@ -143,7 +143,7 @@ public class OrganisationMetaSelectionPageBulkTests : TestContext
             }));
 
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionBulk>();
         component.WaitForElements("a.govuk-link");
         var cancelButton = component.FindAll("a.govuk-link");
 

@@ -30,7 +30,7 @@ public class OrganisationMetaSelectionPageTests : TestContext
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);
         var navigationManager = Services.GetService<NavigationManager>();
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionInvoice>();
 
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-invoice"));
     }
@@ -59,7 +59,7 @@ public class OrganisationMetaSelectionPageTests : TestContext
 
     //     _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
-    //     var component = RenderComponent<OrganisationMetaSelection>();
+    //     var component = RenderComponent<OrganisationMetaSelectionInvoice>();
     //     component.FindAll("button")[0].Click();
 
     //     component.WaitForElements("p.govuk-error-message");
@@ -89,7 +89,7 @@ public class OrganisationMetaSelectionPageTests : TestContext
                 }
             }));
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionInvoice>();
         component.WaitForElements("input[type='radio']");
         var radioButtons = component.FindAll("input[type='radio']");
 
@@ -116,7 +116,7 @@ public class OrganisationMetaSelectionPageTests : TestContext
             }));
 
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionInvoice>();
         component.WaitForElements("input[type='radio']");
         var selectOrganisationRadioButton = component.FindAll("input[type='radio'][value='RPA']");
         var saveAndContinueButton = component.FindAll("button[type='submit']");
@@ -145,7 +145,7 @@ public class OrganisationMetaSelectionPageTests : TestContext
             }));
 
 
-        var component = RenderComponent<OrganisationMetaSelection>();
+        var component = RenderComponent<OrganisationMetaSelectionInvoice>();
         component.WaitForElements("a.govuk-link");
         var cancelButton = component.FindAll("a.govuk-link");
 

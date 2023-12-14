@@ -3,15 +3,15 @@ using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Helpers;
 
-namespace EST.MIT.Web.Pages.create_bulk.SchemeMetaSelection;
+namespace EST.MIT.Web.Pages.create_invoice.SchemeMetaSelection;
 
-public partial class SchemeMetaSelection : ComponentBase
+public partial class SchemeMetaSelectionInvoice : ComponentBase
 {
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] public IPageServices _pageServices { get; set; }
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
-    [Inject] private ILogger<SchemeMetaSelection> Logger { get; set; }
+    [Inject] private ILogger<SchemeMetaSelectionInvoice> Logger { get; set; }
 
     private Invoice invoice = default!;
     private SchemeSelect schemeSelect = new();
@@ -27,7 +27,7 @@ public partial class SchemeMetaSelection : ComponentBase
             await base.OnInitializedAsync();
             invoice = _invoiceStateContainer.Value;
 
-            if (invoice != null && !invoice.IsNull())
+            if (invoice != null)
             {
                 await _referenceDataAPI.GetSchemeTypesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
                 {
@@ -43,18 +43,26 @@ public partial class SchemeMetaSelection : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error initializing SchemeMetaSelection page");
+            Logger.LogError(ex, "Error initializing SchemeMetaSelectionBulk page");
             _nav.NavigateTo("/error");
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        await base.OnAfterRenderAsync(firstRender);
-        if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+        try
         {
-            _invoiceStateContainer.SetValue(null);
-            _nav.NavigateTo("/create-bulk");
+            await base.OnAfterRenderAsync(firstRender);
+            if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
+            {
+                _invoiceStateContainer.SetValue(null);
+                _nav.NavigateTo("/create-invoice");
+            }
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of SchemeMetaSelectionBulk page");
+            _nav.NavigateTo("/error");
         }
     }
 
@@ -64,11 +72,11 @@ public partial class SchemeMetaSelection : ComponentBase
         {
             invoice.SchemeType = schemeSelect.Scheme;
             _invoiceStateContainer.SetValue(invoice);
-            _nav.NavigateTo("/create-bulk/payment-type");
+            _nav.NavigateTo("/create-invoice/payment-type");
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelection page");
+            Logger.LogError(ex, "Error in SaveAndContinue of SchemeMetaSelectionBulk page");
             _nav.NavigateTo("/error");
         }
     }

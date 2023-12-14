@@ -3,15 +3,15 @@ using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Helpers;
 
-namespace EST.MIT.Web.Pages.create_invoice.OrganisationMetaSelection;
+namespace EST.MIT.Web.Pages.create_bulk.OrganisationMetaSelection;
 
-public partial class OrganisationMetaSelection : ComponentBase
+public partial class OrganisationMetaSelectionBulk : ComponentBase
 {
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] public IPageServices _pageServices { get; set; } = default!;
     [Inject] private IReferenceDataAPI _referenceDataAPI { get; set; }
-    [Inject] private ILogger<OrganisationMetaSelection> Logger { get; set; }
+    [Inject] private ILogger<OrganisationMetaSelectionBulk> Logger { get; set; }
 
     private Invoice invoice = default!;
     private OrganisationSelect organisationSelect = new();
@@ -27,7 +27,7 @@ public partial class OrganisationMetaSelection : ComponentBase
             await base.OnInitializedAsync();
             invoice = _invoiceStateContainer.Value;
 
-            if (invoice != null)
+            if (invoice != null && !invoice.IsNull())
             {
                 await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
                 {
@@ -43,7 +43,7 @@ public partial class OrganisationMetaSelection : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error initializing OrganisationMetaSelection page");
+            Logger.LogError(ex, "Error initializing OrganisationMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
@@ -55,12 +55,12 @@ public partial class OrganisationMetaSelection : ComponentBase
             await base.OnAfterRenderAsync(firstRender);
             if (_invoiceStateContainer.Value == null || _invoiceStateContainer.Value.IsNull())
             {
-                _nav.NavigateTo("/create-invoice");
+                _nav.NavigateTo("/create-bulk");
             }
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in OnAfterRenderAsync of OrganisationMetaSelection page");
+            Logger.LogError(ex, "Error in OnAfterRenderAsync of OrganisationMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
@@ -71,11 +71,11 @@ public partial class OrganisationMetaSelection : ComponentBase
         {
             invoice.Organisation = organisationSelect.Organisation;
             _invoiceStateContainer.SetValue(invoice);
-            _nav.NavigateTo("/create-invoice/scheme");
+            _nav.NavigateTo("/create-bulk/scheme");
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in SaveAndContinue of OrganisationMetaSelection page");
+            Logger.LogError(ex, "Error in SaveAndContinue of OrganisationMetaSelectionInvoice page");
             _nav.NavigateTo("/error");
         }
     }
