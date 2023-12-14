@@ -3,19 +3,20 @@ using EST.MIT.Web.Entities;
 using EST.MIT.Web.Helpers;
 using EST.MIT.Web.Interfaces;
 
-namespace EST.MIT.Web.Pages.invoice.ReadonlyInvoiceSummary;
+namespace EST.MIT.Web.Pages.invoice.ReadonlyPaymentRequestSummary;
 
-public partial class ReadonlyInvoiceSummary : ComponentBase
+public partial class ReadonlyPaymentRequestSummary : ComponentBase
 {
     [Parameter] public string Scheme { get; set; } = default!;
     [Parameter] public string Id { get; set; } = default!;
+    [Parameter] public string PaymentRequestId { get; set; } = default!;
     [Parameter] public bool Approval { get; set; } = false;
 
     [Inject] private IApprovalService _approvalService { get; set; }
     [Inject] private IInvoiceAPI _invoiceApi { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
-    private readonly string backUrl = "/user-invoices";
+    private readonly string backUrl = "user-invoices";
     private Invoice invoice = default!;
     private bool IsErrored = false;
     private Dictionary<string, string> Errors = new Dictionary<string, string>();
