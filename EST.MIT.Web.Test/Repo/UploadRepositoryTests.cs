@@ -110,5 +110,4 @@ public class UploadRepositoryTests
         var content = await response.Content.ReadAsStringAsync();
         content.Should().BeEmpty();
     }
-
 }

@@ -29,16 +29,15 @@ public partial class PaymentTypeMetaSelection : ComponentBase
 
             if (invoice != null && !invoice.IsNull())
             {
-                await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType).ContinueWith(x =>
+                var result = await _referenceDataAPI.GetPaymentTypesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType);
+
+                if (result.IsSuccess)
                 {
-                    if (x.Result.IsSuccess)
+                    foreach (var paymentType in result.Data)
                     {
-                        foreach (var paymentType in x.Result.Data)
-                        {
-                            paymentTypes.Add(paymentType.code, paymentType.description);
-                        }
+                        paymentTypes.Add(paymentType.code, paymentType.description);
                     }
-                });
+                }
             }
         }
         catch (Exception ex)

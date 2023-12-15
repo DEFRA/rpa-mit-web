@@ -81,7 +81,7 @@ public class ApprovalServiceTests
 
         var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-        var response = await  service.ApproveInvoiceAsync(new Invoice() { SchemeType = "BPS" });
+        var response = await service.ApproveInvoiceAsync(new Invoice() { SchemeType = "BPS" });
 
         response.Should().BeFalse();
     }
@@ -194,7 +194,7 @@ public class ApprovalServiceTests
 
         var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-        var response = await  service.GetApproversAsync("BPS", "123");
+        var response = await service.GetApproversAsync("BPS", "123");
 
         response.Should().NotBeNull();
         response.Count.Should().Be(0);
@@ -273,4 +273,86 @@ public class ApprovalServiceTests
         response.Data.Value.Should().BeTrue();
     }
 
+    [Fact]
+    public async Task ApproveInvoiceAsync_Returns_Failure_When_EventQueue_Fails()
+    {
+        var testInvoice = new Invoice { SchemeType = "TestScheme" };
+        _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>()))
+            .ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
+        _mockQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(false);
+
+        var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object,
+            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(),
+            Mock.Of<IHttpContextAccessor>());
+
+        var response = await service.ApproveInvoiceAsync(testInvoice);
+
+        response.Should().BeFalse();
+    }
+    [Fact]
+    public async Task RejectInvoiceAsync_Returns_Failure_When_NotificationQueue_Fails()
+    {
+        var testInvoice = new Invoice { SchemeType = "TestScheme" };
+        _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>()))
+            .ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
+        _mockNotificationQueueService.Setup(x => x.AddMessageToQueueAsync(It.IsAny<Notification>()))
+            .ReturnsAsync(false);
+
+        var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object,
+            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(),
+            Mock.Of<IHttpContextAccessor>());
+
+        var response = await service.RejectInvoiceAsync(testInvoice, "Justification");
+
+        response.Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task SubmitApprovalAsync_Returns_Failure_On_Exception()
+    {
+        var testInvoice = new Invoice { SchemeType = "TestScheme" };
+        _mockApiService.Setup(x => x.UpdateInvoiceAsync(It.IsAny<Invoice>()))
+            .ThrowsAsync(new Exception("Test exception"));
+
+        var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object,
+            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(),
+            Mock.Of<IHttpContextAccessor>());
+
+        var response = await service.SubmitApprovalAsync(testInvoice);
+
+        response.IsSuccess.Should().BeFalse();
+        response.Errors.Should().ContainKey("Exception");
+        response.Errors["Exception"].Should().Contain("Test exception");
+    }
+
+    [Fact]
+    public async Task GetApproversAsync_Returns_Empty_When_Api_Fails()
+    {
+        _mockApprovalApi.Setup(x => x.GetApproversAsync(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new ApiResponse(false, HttpStatusCode.BadRequest));
+
+        var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object,
+            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(),
+            Mock.Of<IHttpContextAccessor>());
+
+        var approvers = await service.GetApproversAsync("scheme", "value");
+
+        approvers.Should().BeEmpty();
+    }
+
+    [Fact]
+    public async Task ValidateApproverAsync_Returns_False_When_ApiResponse_IsNotFound()
+    {
+        _mockApprovalApi.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.NotFound) { Data = new BoolRef(false) });
+
+        var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object,
+            _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(),
+            Mock.Of<IHttpContextAccessor>());
+
+        var result = await service.ValidateApproverAsync("approver@example.com", "scheme");
+
+        result.Data.Value.Should().BeFalse();
+    }
 }
