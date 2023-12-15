@@ -2,6 +2,7 @@ using System.Net;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.Models;
 
 namespace EST.MIT.Web.Pages.invoice.Summary;
 
@@ -19,13 +20,14 @@ public partial class Summary : ComponentBase
 
     private Invoice invoice;
 
+    private bool readOnly;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         invoice = await _api.FindInvoiceAsync(invoiceId, scheme);
         _invoiceStateContainer.SetValue(invoice);
-
+        readOnly = invoice.Status != InvoiceStatuses.New;
     }
 
     private async Task AddPaymentRequest()

@@ -1,20 +1,20 @@
 <div class="govuk-summary-card govuk-payment-request-summary">
     <div class="govuk-summary-card__title-wrapper">
-         <h2 class="govuk-summary-card__title">Payment Request Id: @PaymentRequest.PaymentRequestId</h2>
-        @if (!HideActions)
-        {
-            <ul class="govuk-summary-card__actions">
-                <li class="govuk-summary-card__action">
-                    <a class="govuk-link govuk-!-padding-left-2" href="/invoice/payment-request/details/@_Parent.scheme/@_Parent.invoiceId/@PaymentRequest.PaymentRequestId">View<span class="govuk-visually-hidden">Payment Request</span></a>
-                </li>
+        <h2 class="govuk-summary-card__title">Payment Request Id: @PaymentRequest.PaymentRequestId</h2>
+        <ul class="govuk-summary-card__actions">
+            <li class="govuk-summary-card__action">
+                <a class="govuk-link govuk-!-padding-left-2" href="/invoice/payment-request/details/@_Parent.scheme/@_Parent.invoiceId/@PaymentRequest.PaymentRequestId">View<span class="govuk-visually-hidden">Payment Request</span></a>
+            </li>
+            @if (!ReadOnly)
+            {
                 <li class="govuk-summary-card__action">
                     <a class="govuk-link govuk-!-padding-left-2" href="/invoice/amend-payment-request/@PaymentRequest.PaymentRequestId">Edit<span class="govuk-visually-hidden">Payment Request</span></a>
                 </li>
                 <li class="govuk-summary-card__action">
                     <a class="govuk-link" href="/payment-request/delete/@PaymentRequest.PaymentRequestId">Delete<span class="govuk-visually-hidden">Payment Request</span></a>
                 </li>
-            </ul>
-        }
+            }
+        </ul>
     </div>
 
     <div class="govuk-summary-card__content">

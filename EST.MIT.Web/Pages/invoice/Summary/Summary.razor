@@ -1,5 +1,6 @@
 @page "/invoice/summary/{scheme}/{invoiceId}"
 @page "/invoice/summary/{scheme}/{invoiceId}/{backUrl}"
+@using EST.MIT.Web.Models;
 @using EST.MIT.Web.Shared.Components.SummaryPaymentRequest
 @using EST.MIT.Web.Shared.Components.InvoiceMetaData
 
@@ -51,7 +52,10 @@
     <h2 class="govuk-heading-m">Payment Requests</h2>
     @if (invoice != null)
     {
-        <button id="add-payment-request" class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="AddPaymentRequest">Add Payment Request</button>
+        @if (!readOnly)
+        {
+            <button id="add-payment-request" class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="AddPaymentRequest">Add Payment Request</button>
+        }
 
         @if (!invoice.PaymentRequests.Any())
         {
@@ -63,7 +67,7 @@
         }
         else
         {
-            @if (invoice.Status == "new")
+            @if (invoice.Status == InvoiceStatuses.New)
             {
                 <button id="send-approval" class="govuk-button govuk-button--secondary govuk-!-margin-left-1" data-prevent-double-click="true" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
             }
@@ -71,7 +75,7 @@
             @foreach (var request in invoice.PaymentRequests)
             {
                 <CascadingValue Value="this">
-                    <SummaryPaymentRequest PaymentRequest=request AccountType=@invoice.AccountType />
+                    <SummaryPaymentRequest PaymentRequest=request AccountType=@invoice.AccountType ReadOnly="@readOnly" />
                 </CascadingValue>
             }
         }
