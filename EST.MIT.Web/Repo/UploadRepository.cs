@@ -1,6 +1,3 @@
-using System.Net;
-using System.Text.Json;
-using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Repositories;

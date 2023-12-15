@@ -24,34 +24,44 @@ public partial class ApprovalRejectionConfirmation : ComponentBase
 
     private async Task ApproveConfirmed()
     {
-        await _approvalService.ApproveInvoiceAsync(invoice).ContinueWith(x =>
+        try
         {
-            if (x.Result)
+            var result = await _approvalService.ApproveInvoiceAsync(invoice);
+
+            if (result)
             {
                 _nav.NavigateTo($"/approval/confirmation/{invoice.Id.ToString()}");
             }
             else
             {
-                IsErrored = true;
-                Errors.Add("Error", new List<string> { x.Exception?.Message ?? "Unknown Error" });
+                UpdateError("Unknown Error");
             }
-        });
+        }
+        catch (Exception ex)
+        {
+            UpdateError(ex.Message);
+        }
     }
 
     private async Task RejectConfirmed()
     {
-        await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification).ContinueWith(x =>
+        try
         {
-            if (x.Result)
+            var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification);
+
+            if (result)
             {
                 _nav.NavigateTo($"/approval/confirmation/{invoice.Id.ToString()}");
             }
             else
             {
-                IsErrored = true;
-                Errors.Add("Error", new List<string> { x.Exception?.Message ?? "Unknown Error" });
+                UpdateError("Unknown Error");
             }
-        });
+        }
+        catch (Exception ex)
+        {
+            UpdateError(ex.Message);
+        }
     }
 
     private void RejectValidationFailed()
@@ -66,5 +76,15 @@ public partial class ApprovalRejectionConfirmation : ComponentBase
             var uri = _nav.ToAbsoluteUri(_nav.Uri);
             return uri.AbsolutePath.EndsWith("rejected", StringComparison.OrdinalIgnoreCase);
         }
+    }
+
+    private void UpdateError(string message)
+    {
+        IsErrored = true;
+        if (!Errors.ContainsKey("Error"))
+        {
+            Errors.Add("Error", new List<string>());
+        }
+        Errors["Error"].Add(message);
     }
 }

@@ -19,24 +19,31 @@ public class ApprovalAPI : IApprovalAPI
     {
         var response = await _approvalRepository.GetApproversAsync(scheme, value);
         _logger.LogInformation($"ApprovalAPI.GetApproversAsync: response received from approval service: {response.StatusCode}");
+
         if (response.IsSuccessStatusCode)
         {
-            return new ApiResponse(true, HttpStatusCode.OK)
+            try
             {
-                Data = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>().ContinueWith(x =>
+                var approversDictionary = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                if (approversDictionary == null || approversDictionary.Count == 0)
                 {
-                    if (x.Result.IsNull())
-                    {
-                        _logger.LogError("ApprovalAPI.GetApproversAsync: approvers dictionary is null");
-                        return new Dictionary<string, string>();
-                    }
-                    return x.Result;
-                })
-            };
+                    _logger.LogError("ApprovalAPI.GetApproversAsync: approvers dictionary is null");
+                    approversDictionary = new Dictionary<string, string>();
+                }
+
+                return new ApiResponse(true, HttpStatusCode.OK) { Data = approversDictionary };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ApprovalAPI.GetApproversAsync: Error reading JSON content");
+                // Handle the exception as per your error handling policy
+                // For example, you might want to return a different ApiResponse here
+            }
         }
 
         return new ApiResponse(false, response.StatusCode);
     }
+
 
     public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme)
     {

@@ -42,7 +42,7 @@ public class ReferenceDataTests
         Assert.Equal("AZ", paymentType.code);
         Assert.Equal("payment description", paymentType.description);
     }
-    
+
     [Fact]
     public void TestMainAccountProperties()
     {
@@ -106,5 +106,181 @@ public class ReferenceDataTests
 
         Assert.Equal("AZ", schemeCode.code);
         Assert.Equal("scheme code description", schemeCode.description);
+    }
+
+    [Fact]
+    public void TestOrganisation_MissingCode()
+    {
+        var organisation = new Organisation
+        {
+            description = "description"
+        };
+
+        Assert.Null(organisation.code);
+    }
+
+    [Fact]
+    public void TestOrganisation_MissingDescription()
+    {
+        var organisation = new Organisation
+        {
+            code = "ABC"
+        };
+
+        Assert.Null(organisation.description);
+    }
+
+    [Fact]
+    public void TestSchemeType_MissingCode()
+    {
+        var schemeType = new SchemeType
+        {
+            description = "description"
+        };
+
+        Assert.Null(schemeType.code);
+    }
+
+    [Fact]
+    public void TestSchemeType_MissingDescription()
+    {
+        var schemeType = new SchemeType
+        {
+            code = "XYZ"
+        };
+
+        Assert.Null(schemeType.description);
+    }
+
+    [Fact]
+    public void TestPaymentType_MissingCode()
+    {
+        var paymentType = new PaymentType
+        {
+            description = "description"
+        };
+
+        Assert.Null(paymentType.code);
+    }
+
+    [Fact]
+    public void TestPaymentType_MissingDescription()
+    {
+        var paymentType = new PaymentType
+        {
+            code = "XYZ"
+        };
+
+        Assert.Null(paymentType.description);
+    }
+
+    [Fact]
+    public void TestMainAccount_MissingCode()
+    {
+        var mainAccount = new MainAccount
+        {
+            description = "description"
+        };
+
+        Assert.Null(mainAccount.code);
+    }
+
+    [Fact]
+    public void TestMainAccount_MissingDescription()
+    {
+        var mainAccount = new MainAccount
+        {
+            code = "ABC"
+        };
+
+        Assert.Null(mainAccount.description);
+    }
+
+    [Fact]
+    public void TestDeliveryBody_MissingCode()
+    {
+        var deliveryBody = new DeliveryBody
+        {
+            description = "description"
+        };
+
+        Assert.Null(deliveryBody.code);
+    }
+
+    [Fact]
+    public void TestDeliveryBody_MissingDescription()
+    {
+        var deliveryBody = new DeliveryBody
+        {
+            code = "123"
+        };
+
+        Assert.Null(deliveryBody.description);
+    }
+
+    [Fact]
+    public void TestFundCode_MissingCode()
+    {
+        var fundCode = new FundCode
+        {
+            description = "description"
+        };
+
+        Assert.Null(fundCode.code);
+    }
+
+    [Fact]
+    public void TestFundCode_MissingDescription()
+    {
+        var fundCode = new FundCode
+        {
+            code = "456"
+        };
+
+        Assert.Null(fundCode.description);
+    }
+
+    [Fact]
+    public void TestMarketingYear_MissingCode()
+    {
+        var marketingYear = new MarketingYear
+        {
+            description = "description"
+        };
+
+        Assert.Null(marketingYear.code);
+    }
+
+    [Fact]
+    public void TestMarketingYear_MissingDescription()
+    {
+        var marketingYear = new MarketingYear
+        {
+            code = "2023"
+        };
+
+        Assert.Null(marketingYear.description);
+    }
+
+    [Fact]
+    public void TestSchemeCode_MissingCode()
+    {
+        var schemeCode = new SchemeCode
+        {
+            description = "description"
+        };
+
+        Assert.Null(schemeCode.code);
+    }
+
+    [Fact]
+    public void TestSchemeCode_MissingDescription()
+    {
+        var schemeCode = new SchemeCode
+        {
+            code = "XYZ"
+        };
+
+        Assert.Null(schemeCode.description);
     }
 }

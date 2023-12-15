@@ -91,7 +91,7 @@ public class AccountMetaSelectionPageBulkTests : TestContext
 
         invoiceStateContainer?.Value.Should().NotBeNull();
         invoiceStateContainer?.Value.AccountType.Should().Be("AR");
-        
+
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/create-bulk/organisation"));
     }
 
@@ -109,7 +109,7 @@ public class AccountMetaSelectionPageBulkTests : TestContext
 
         invoiceStateContainer?.Value.Should().NotBeNull();
         invoiceStateContainer?.Value.AccountType.Should().BeNullOrEmpty();
-        
+
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }
