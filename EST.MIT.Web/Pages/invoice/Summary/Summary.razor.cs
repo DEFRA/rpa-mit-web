@@ -27,7 +27,7 @@ public partial class Summary : ComponentBase
         await base.OnInitializedAsync();
         invoice = await _api.FindInvoiceAsync(invoiceId, scheme);
         _invoiceStateContainer.SetValue(invoice);
-        readOnly = invoice.Status != InvoiceStatuses.New;
+        readOnly = invoice?.Status != InvoiceStatuses.New;
     }
 
     private async Task AddPaymentRequest()
