@@ -146,4 +146,20 @@ public class ApprovalAPITests
             }
         });
     }
+
+    [Fact]
+    public async Task GetApproversAsync_HandlesInvalidJsonResponse()
+    {
+        var invalidJsonResponse = new HttpResponseMessage(HttpStatusCode.OK)
+        {
+            Content = new StringContent("Invalid JSON", Encoding.UTF8, "application/json")
+        };
+        _mockApprovalRepository.Setup(x => x.GetApproversAsync(It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(invalidJsonResponse);
+
+        var result = await _approvalAPI.GetApproversAsync("testScheme", "testValue");
+
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.Should().NotContainKey("deserializing");
+    }
 }

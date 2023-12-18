@@ -16,23 +16,6 @@ public class ReferenceDataAPI : IReferenceDataAPI
     }
 
     public async Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisationsAsync(string InvoiceType)
-        => await GetOrganisations(InvoiceType);
-    public async Task<ApiResponse<IEnumerable<SchemeType>>> GetSchemeTypesAsync(string? InvoiceType, string? Organisation)
-        => await GetSchemeTypes(InvoiceType, Organisation);
-    public async Task<ApiResponse<IEnumerable<PaymentType>>> GetPaymentTypesAsync(string? InvoiceType, string? Organisation, string? SchemeType)
-       => await GetPaymentTypes(InvoiceType, Organisation, SchemeType);
-    public async Task<ApiResponse<IEnumerable<MainAccount>>> GetAccountsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
-       => await GetAccounts(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<ApiResponse<IEnumerable<DeliveryBody>>> GetDeliveryBodiesAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
-       => await GetDeliveryBodies(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<ApiResponse<IEnumerable<FundCode>>> GetFundsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
-       => await GetFunds(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<ApiResponse<IEnumerable<MarketingYear>>> GetMarketingYearsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
-       => await GetMarketingYears(InvoiceType, Organisation, SchemeType, PaymentType);
-    public async Task<ApiResponse<IEnumerable<SchemeCode>>> GetSchemesAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
-       => await GetSchemes(InvoiceType, Organisation, SchemeType, PaymentType);
-
-    private async Task<ApiResponse<IEnumerable<Organisation>>> GetOrganisations(string InvoiceType)
     {
         var error = new Dictionary<string, List<string>>();
 
@@ -49,26 +32,17 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<Organisation>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var organisations = await response.Content.ReadFromJsonAsync<IEnumerable<Organisation>>();
+                return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.OK) { Data = organisations };
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error deserializing Organisations: {ex.Message}");
                 error.Add("deserializing", new List<string>() { ex.Message });
                 return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.InternalServerError, error)
                 {
                     Data = new List<Organisation>()
-                };
+                }; ;
             }
         }
 
@@ -81,16 +55,16 @@ public class ReferenceDataAPI : IReferenceDataAPI
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             _logger.LogError("Invalid request was sent to API");
-            error.Add($"{HttpStatusCode.BadRequest}", new List<string>() { "Invalid request was sent to API" });
+            error.Add("BadRequest", new List<string>() { "Invalid request was sent to API" });
             return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.BadRequest, error);
         }
 
         _logger.LogError("Unknown response from API");
-        error.Add($"{HttpStatusCode.InternalServerError}", new List<string>() { "Unknown response from API" });
+        error.Add("InternalServerError", new List<string>() { "Unknown response from API" });
         return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<SchemeType>>> GetSchemeTypes(string? InvoiceType, string? Organisation)
+    public async Task<ApiResponse<IEnumerable<SchemeType>>> GetSchemeTypesAsync(string? InvoiceType, string? Organisation)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetSchemeTypesListAsync(InvoiceType, Organisation);
@@ -107,21 +81,12 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<SchemeType>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var schemeTypes = await response.Content.ReadFromJsonAsync<IEnumerable<SchemeType>>();
+                return new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.OK) { Data = schemeTypes };
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error deserializing Scheme Types: {ex.Message}");
                 error.Add("deserializing", new List<string>() { ex.Message });
                 return new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.InternalServerError, error)
                 {
@@ -139,17 +104,16 @@ public class ReferenceDataAPI : IReferenceDataAPI
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             _logger.LogError("Invalid request was sent to API");
-            error.Add($"{HttpStatusCode.BadRequest}", new List<string>() { "Invalid request was sent to API" });
-
+            error.Add("BadRequest", new List<string>() { "Invalid request was sent to API" });
             return new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.BadRequest, error);
         }
 
         _logger.LogError("Unknown response from API");
-        error.Add($"{HttpStatusCode.InternalServerError}", new List<string>() { "Unknown response from API" });
+        error.Add("InternalServerError", new List<string>() { "Unknown response from API" });
         return new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<PaymentType>>> GetPaymentTypes(string? InvoiceType, string? Organisation, string? SchemeType)
+    public async Task<ApiResponse<IEnumerable<PaymentType>>> GetPaymentTypesAsync(string? InvoiceType, string? Organisation, string? SchemeType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetPaymentTypesListAsync(InvoiceType, Organisation, SchemeType);
@@ -166,18 +130,8 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<PaymentType>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var paymentType = await response.Content.ReadFromJsonAsync<IEnumerable<PaymentType>>();
+                return new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.OK) { Data = paymentType };
             }
             catch (Exception ex)
             {
@@ -208,7 +162,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<MainAccount>>> GetAccounts(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<MainAccount>>> GetAccountsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetAccountsListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -225,18 +179,8 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<MainAccount>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<MainAccount>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var mainAccount = await response.Content.ReadFromJsonAsync<IEnumerable<MainAccount>>();
+                return new ApiResponse<IEnumerable<MainAccount>>(HttpStatusCode.OK) { Data = mainAccount };
             }
             catch (Exception ex)
             {
@@ -267,7 +211,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<MainAccount>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<DeliveryBody>>> GetDeliveryBodies(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<DeliveryBody>>> GetDeliveryBodiesAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetDeliveryBodiesListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -284,18 +228,8 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<DeliveryBody>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<DeliveryBody>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var deliveryBody = await response.Content.ReadFromJsonAsync<IEnumerable<DeliveryBody>>();
+                return new ApiResponse<IEnumerable<DeliveryBody>>(HttpStatusCode.OK) { Data = deliveryBody };
             }
             catch (Exception ex)
             {
@@ -326,7 +260,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<DeliveryBody>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<FundCode>>> GetFunds(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<FundCode>>> GetFundsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetFundsListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -343,18 +277,8 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<FundCode>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<FundCode>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var fundCode = await response.Content.ReadFromJsonAsync<IEnumerable<FundCode>>();
+                return new ApiResponse<IEnumerable<FundCode>>(HttpStatusCode.OK) { Data = fundCode };
             }
             catch (Exception ex)
             {
@@ -385,7 +309,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<FundCode>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<MarketingYear>>> GetMarketingYears(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<MarketingYear>>> GetMarketingYearsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetMarketingYearsListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -402,18 +326,8 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<MarketingYear>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<MarketingYear>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var marketingYears = await response.Content.ReadFromJsonAsync<IEnumerable<MarketingYear>>();
+                return new ApiResponse<IEnumerable<MarketingYear>>(HttpStatusCode.OK) { Data = marketingYears };
             }
             catch (Exception ex)
             {
@@ -444,7 +358,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<MarketingYear>>(HttpStatusCode.InternalServerError, error);
     }
 
-    private async Task<ApiResponse<IEnumerable<SchemeCode>>> GetSchemes(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<SchemeCode>>> GetSchemesAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetSchemesListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -461,26 +375,14 @@ public class ReferenceDataAPI : IReferenceDataAPI
 
             try
             {
-                return new ApiResponse<IEnumerable<SchemeCode>>(HttpStatusCode.OK)
-                {
-                    Data = await response.Content.ReadFromJsonAsync<IEnumerable<SchemeCode>>().ContinueWith(x =>
-                    {
-                        if (x.IsFaulted)
-                        {
-                            _logger.LogError(x.Exception?.Message);
-                            throw new Exception(x.Exception?.Message);
-                        }
-                        return x.Result;
-                    })
-                };
+                var schemeCodes = await response.Content.ReadFromJsonAsync<IEnumerable<SchemeCode>>();
+                return new ApiResponse<IEnumerable<SchemeCode>>(HttpStatusCode.OK) { Data = schemeCodes };
             }
             catch (Exception ex)
             {
+                _logger.LogError($"Error deserializing Scheme Codes: {ex.Message}");
                 error.Add("deserializing", new List<string>() { ex.Message });
-                return new ApiResponse<IEnumerable<SchemeCode>>(HttpStatusCode.InternalServerError, error)
-                {
-                    Data = new List<SchemeCode>()
-                };
+                return new ApiResponse<IEnumerable<SchemeCode>>(HttpStatusCode.InternalServerError, error) { Data = new List<SchemeCode>() };
             }
         }
 
@@ -493,13 +395,13 @@ public class ReferenceDataAPI : IReferenceDataAPI
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
             _logger.LogError("Invalid request was sent to API");
-            error.Add($"{HttpStatusCode.BadRequest}", new List<string>() { "Invalid request was sent to API" });
-
+            error.Add("BadRequest", new List<string>() { "Invalid request was sent to API" });
             return new ApiResponse<IEnumerable<SchemeCode>>(HttpStatusCode.BadRequest, error);
         }
 
         _logger.LogError("Unknown response from API");
-        error.Add($"{HttpStatusCode.InternalServerError}", new List<string>() { "Unknown response from API" });
+        error.Add("InternalServerError", new List<string>() { "Unknown response from API" });
         return new ApiResponse<IEnumerable<SchemeCode>>(HttpStatusCode.InternalServerError, error);
     }
+
 }

@@ -27,18 +27,16 @@ public partial class SchemeMetaSelectionInvoice : ComponentBase
             await base.OnInitializedAsync();
             invoice = _invoiceStateContainer.Value;
 
-            if (invoice != null)
+            if (invoice != null && !invoice.IsNull())
             {
-                await _referenceDataAPI.GetSchemeTypesAsync(invoice.AccountType, invoice.Organisation).ContinueWith(x =>
+                var result = await _referenceDataAPI.GetSchemeTypesAsync(invoice.AccountType, invoice.Organisation);
+                if (result.IsSuccess)
                 {
-                    if (x.Result.IsSuccess)
+                    foreach (var scheme in result.Data)
                     {
-                        foreach (var scheme in x.Result.Data)
-                        {
-                            schemes.Add(scheme.code, scheme.description);
-                        }
+                        schemes.Add(scheme.code, scheme.description);
                     }
-                });
+                }
             }
         }
         catch (Exception ex)

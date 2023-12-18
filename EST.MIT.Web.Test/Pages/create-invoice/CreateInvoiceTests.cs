@@ -42,6 +42,6 @@ public class CreateInvoiceTests : TestContext
         var component = RenderComponent<CreateInvoice>();
         component.FindAll("a.govuk-link")[0].Click();
 
-       component.WaitForAssertion(() =>  navigationManager?.Uri.Should().Be("http://localhost/"));
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 }

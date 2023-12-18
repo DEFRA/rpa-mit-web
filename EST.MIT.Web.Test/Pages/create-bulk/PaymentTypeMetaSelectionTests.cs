@@ -25,6 +25,25 @@ public class PaymentTypeMetaSelectionPageBulkTests : TestContext
     }
 
     [Fact]
+    public void LoadPaymentTypes_Successfully()
+    {
+        var paymentTypes = new List<PaymentType>
+        {
+            new PaymentType { code = "PT1", description = "Payment Type 1" },
+            new PaymentType { code = "PT2", description = "Payment Type 2" }
+        };
+
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
+        _mockReferenceDataAPI.Setup(x => x.GetPaymentTypesAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+            .ReturnsAsync(new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.OK) { Data = paymentTypes });
+
+        var component = RenderComponent<PaymentTypeMetaSelection>();
+
+        var radioButtons = component.FindAll("input[type='radio']");
+        radioButtons.Should().HaveCount(paymentTypes.Count);
+    }
+
+    [Fact]
     public void AfterRender_Redirects_When_Null_Invoice()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns((Invoice?)null);

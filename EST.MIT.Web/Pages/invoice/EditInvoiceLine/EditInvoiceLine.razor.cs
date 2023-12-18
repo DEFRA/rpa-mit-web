@@ -34,60 +34,50 @@ public partial class EditInvoiceLine : ComponentBase
         paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
         invoiceLine ??= paymentRequest?.InvoiceLines.First(x => x.Id.ToString() == InvoiceLineId);
 
-        await _referenceDataAPI.GetAccountsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        var accountsResult = await _referenceDataAPI.GetAccountsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+        if (accountsResult.IsSuccess)
         {
-            if (x.Result.IsSuccess)
+            foreach (var account in accountsResult.Data)
             {
-                foreach (var account in x.Result.Data)
-                {
-                    allAccounts.Add(account.code, account.description);
-                }
+                allAccounts.Add(account.code, account.description);
             }
-        });
+        }
 
-        await _referenceDataAPI.GetDeliveryBodiesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        var deliveryBodiesResult = await _referenceDataAPI.GetDeliveryBodiesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+        if (deliveryBodiesResult.IsSuccess)
         {
-            if (x.Result.IsSuccess)
+            foreach (var deliveryBody in deliveryBodiesResult.Data)
             {
-                foreach (var deliveryBody in x.Result.Data)
-                {
-                    allDeliveryBodies.Add(deliveryBody.code, deliveryBody.description);
-                }
+                allDeliveryBodies.Add(deliveryBody.code, deliveryBody.description);
             }
-        });
+        }
 
-        await _referenceDataAPI.GetSchemesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        var schemesResult = await _referenceDataAPI.GetSchemesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+        if (schemesResult.IsSuccess)
         {
-            if (x.Result.IsSuccess)
+            foreach (var scheme in schemesResult.Data)
             {
-                foreach (var scheme in x.Result.Data)
-                {
-                    allSchemeCodes.Add(scheme.code, scheme.description);
-                }
+                allSchemeCodes.Add(scheme.code, scheme.description);
             }
-        });
+        }
 
-        await _referenceDataAPI.GetMarketingYearsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        var marketingYearsResult = await _referenceDataAPI.GetMarketingYearsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+        if (marketingYearsResult.IsSuccess)
         {
-            if (x.Result.IsSuccess)
+            foreach (var marketingYear in marketingYearsResult.Data)
             {
-                foreach (var marketingYear in x.Result.Data)
-                {
-                    allMarketingYears.Add(marketingYear.code, marketingYear.description);
-                }
+                allMarketingYears.Add(marketingYear.code, marketingYear.description);
             }
-        });
+        }
 
-        await _referenceDataAPI.GetFundsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType).ContinueWith(x =>
+        var fundsResult = await _referenceDataAPI.GetFundsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+        if (fundsResult.IsSuccess)
         {
-            if (x.Result.IsSuccess)
+            foreach (var fund in fundsResult.Data)
             {
-                foreach (var fund in x.Result.Data)
-                {
-                    allFundCodes.Add(fund.code, fund.description);
-                }
+                allFundCodes.Add(fund.code, fund.description);
             }
-        });
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

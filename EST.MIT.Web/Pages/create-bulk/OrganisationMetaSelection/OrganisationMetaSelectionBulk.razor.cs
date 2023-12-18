@@ -29,16 +29,14 @@ public partial class OrganisationMetaSelectionBulk : ComponentBase
 
             if (invoice != null && !invoice.IsNull())
             {
-                await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
+                var result = await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType);
+                if (result.IsSuccess)
                 {
-                    if (x.Result.IsSuccess)
+                    foreach (var org in result.Data)
                     {
-                        foreach (var org in x.Result.Data)
-                        {
-                            organisations.Add(org.code, org.description);
-                        }
+                        organisations.Add(org.code, org.description);
                     }
-                });
+                }
             }
         }
         catch (Exception ex)
