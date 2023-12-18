@@ -19,12 +19,12 @@ public static class InvoiceStatuses
             return "Awaiting Approval";
         }
 
-        if (status == Approved)
+        if (status == "APPROVED")
         {
             return "Approved";
         }
 
-        if (status == Rejected)
+        if (status == "REJECTED")
         {
             return "Rejected";
         }
