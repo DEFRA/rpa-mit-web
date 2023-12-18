@@ -7,7 +7,6 @@ public static class InvoiceStatuses
     public static readonly string Approved = "APPROVED";
     public static readonly string Rejected = "REJECTED";
 
-
     public static string DisplayNameFor(string status)
     {
         return status switch
