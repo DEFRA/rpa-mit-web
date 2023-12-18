@@ -945,4 +945,23 @@ public class ReferenceDataAPITests
         response.Data.Should().BeNull();
         response.Errors.Should().ContainKey($"{HttpStatusCode.InternalServerError}");
     }
+
+    [Fact]
+    public async Task GetOrganisationsAsync_InvalidJsonStructure()
+    {
+        var invalidJson = "{\"invalidField\":\"invalidValue\"}";
+        _mockReferenceDataRepository.Setup(x => x.GetOrganisationsListAsync())
+            .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(invalidJson)
+            });
+
+        var service = new ReferenceDataAPI(_mockReferenceDataRepository.Object, Mock.Of<ILogger<ReferenceDataAPI>>());
+
+        var response = await service.GetOrganisationsAsync("AP");
+
+        response.IsSuccess.Should().BeFalse();
+        response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        response.Errors.Should().ContainKey("deserializing");
+    }
 }

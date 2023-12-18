@@ -1,3 +1,4 @@
+using System.Net;
 using EST.MIT.Web.Builders;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Helpers;
@@ -39,17 +40,23 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotifyAsync(InvoiceStatuses.Approved, invoice, notification).ContinueWith(x =>
+        try
         {
-            if (!x.Result.IsSuccess)
+            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Approved, invoice, notification);
+            if (!result.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Approval failed");
                 return false;
             }
             return true;
-
-        });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Invoice {invoice.Id}: Error during approval process");
+            return false;
+        }
     }
+
 
     public async Task<bool> RejectInvoiceAsync(Invoice invoice, string justification)
     {
@@ -63,17 +70,22 @@ public class ApprovalService : IApprovalService
                                     Approver = "user"
                                 })
                             .Build();
-
-        return await UpdateAndNotifyAsync(InvoiceStatuses.Rejected, invoice, notification).ContinueWith(x =>
+        try
         {
-            if (!x.Result.IsSuccess)
+            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Rejected, invoice, notification);
+
+            if (!result.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Approval failed");
                 return false;
             }
             return true;
-
-        });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Invoice {invoice.Id}: Error during rejection process");
+            return false;
+        }
     }
 
     public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice)
@@ -94,17 +106,24 @@ public class ApprovalService : IApprovalService
                                 })
                             .Build();
 
-        return await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, notification).ContinueWith(x =>
+        try
         {
-            if (!x.Result.IsSuccess)
+            var result = await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, notification);
+            if (!result.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Submission failed");
-                errors = x.Result.Errors;
-                return x.Result;
+                errors = result.Errors;
             }
-            return x.Result;
-        });
-
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Invoice {invoice.Id}: Error during submission process");
+            return new ApiResponse<Invoice>(HttpStatusCode.InternalServerError)
+            {
+                Errors = errors
+            };
+        }
     }
 
     public async Task<ApiResponse<Invoice>> UpdateAndNotifyAsync(string status, Invoice invoice, Notification notification)

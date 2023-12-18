@@ -27,18 +27,16 @@ public partial class OrganisationMetaSelectionInvoice : ComponentBase
             await base.OnInitializedAsync();
             invoice = _invoiceStateContainer.Value;
 
-            if (invoice != null)
+            if (invoice != null && !invoice.IsNull())
             {
-                await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType).ContinueWith(x =>
+                var result = await _referenceDataAPI.GetOrganisationsAsync(invoice.AccountType);
+                if (result.IsSuccess)
                 {
-                    if (x.Result.IsSuccess)
+                    foreach (var org in result.Data)
                     {
-                        foreach (var org in x.Result.Data)
-                        {
-                            organisations.Add(org.code, org.description);
-                        }
+                        organisations.Add(org.code, org.description);
                     }
-                });
+                }
             }
         }
         catch (Exception ex)

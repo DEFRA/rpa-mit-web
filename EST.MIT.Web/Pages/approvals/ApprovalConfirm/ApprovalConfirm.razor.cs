@@ -37,41 +37,41 @@ public partial class ApprovalConfirm : ComponentBase
                 Errors.Add("Error", new List<string> { "Approval failed" });
             }
         }
-    catch (Exception ex)
-    {
-        UpdateError(ex.Message);
+        catch (Exception ex)
+        {
+            UpdateError(ex.Message);
         }
     }
 
-private async Task RejectConfirmed()
-{
-    try
+    private async Task RejectConfirmed()
     {
-        var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification);
-        if (result)
+        try
         {
-            _nav.NavigateTo($"/approval/confirmation/rejected");
+            var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification);
+            if (result)
+            {
+                _nav.NavigateTo($"/approval/confirmation/rejected");
+            }
+            else
+            {
+                UpdateError("Rejection failed");
+            }
         }
-        else
+        catch (Exception ex)
         {
-            UpdateError("Rejection failed");
+            UpdateError(ex.Message);
         }
     }
-    catch (Exception ex)
-    {
-        UpdateError(ex.Message);
-    }
-}
 
-private void UpdateError(string message)
-{
-    IsErrored = true;
-    if (!Errors.ContainsKey("Error"))
+    private void UpdateError(string message)
     {
-        Errors.Add("Error", new List<string>());
+        IsErrored = true;
+        if (!Errors.ContainsKey("Error"))
+        {
+            Errors.Add("Error", new List<string>());
+        }
+        Errors["Error"].Add(message);
     }
-    Errors["Error"].Add(message);
-}
 
 
     private void RejectValidationFailed()
