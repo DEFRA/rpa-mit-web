@@ -9,13 +9,25 @@ public static class InvoiceStatuses
 
     public static string DisplayNameFor(string status)
     {
-        return status switch
+        if (status == New)
         {
-            "new" => New,
-            "AwaitingApproval" => "Awaiting approval",
-            "Approved" => Approved,
-            "Rejected" => Rejected,
-            _ => status,
-        };
+            return "New";
+        }
+
+        if (status == AwaitingApproval)
+        {
+            return "Awaiting Approval";
+        }
+
+        if (status == Approved)
+        {
+            return "Approved";
+        }
+
+        if (status == Rejected)
+        {
+            return "Rejected";
+        }
+        return status;
     }
 }
