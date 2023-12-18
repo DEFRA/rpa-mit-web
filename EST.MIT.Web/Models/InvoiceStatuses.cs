@@ -9,12 +9,12 @@ public static class InvoiceStatuses
 
     public static string DisplayNameFor(string status)
     {
-        if (status == New)
+        if (status == "new")
         {
             return "New";
         }
 
-        if (status == AwaitingApproval)
+        if (status == "AWAITING_APPROVAL")
         {
             return "Awaiting Approval";
         }
