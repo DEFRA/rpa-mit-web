@@ -1,7 +1,7 @@
 ﻿using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Pages.invoice.Summary;
-using EST.MIT.Web.Shared.Components.UserInvoicesCard;
+using EST.MIT.Web.Pages.invoice.ViewInvoiceSummary;
+using EST.MIT.Web.Shared.Components.InvoiceCard;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net;
@@ -30,14 +30,14 @@ namespace EST.MIT.Web.Test.Components
         [Fact]
         public void Nothing_Displayed_When_Invoice_Not_Set()
         {
-            var component = RenderComponent<UserInvoicesCard>();
+            var component = RenderComponent<InvoiceCard>();
             component.Markup.Should().Contain("<h4 class=\"govuk-heading-s\">Nothing to Display</h4>");
         }
 
         [Fact]
         public void Parameters_Are_Set()
         {
-            var component = RenderComponent<UserInvoicesCard>(parameters =>
+            var component = RenderComponent<InvoiceCard>(parameters =>
             {
                 parameters.Add(x => x.invoice, _invoice);
             });
@@ -50,7 +50,7 @@ namespace EST.MIT.Web.Test.Components
         public void When_View_Link_Is_Click_InvoiceSummary_Page_Is_Display()
         {
             //Arrange
-            var component = RenderComponent<UserInvoicesCard>(parameters =>
+            var component = RenderComponent<InvoiceCard>(parameters =>
             {
                 parameters.Add(x => x.invoice, _invoice);
             });
@@ -142,7 +142,7 @@ namespace EST.MIT.Web.Test.Components
                 }
             };
 
-            var component = RenderComponent<UserInvoicesCard>(parameters =>
+            var component = RenderComponent<InvoiceCard>(parameters =>
             {
                 parameters.Add(x => x.invoice, invoice);
             });
@@ -163,7 +163,7 @@ namespace EST.MIT.Web.Test.Components
         public void Back_Link_On_InvoiceSummary_Page_Navigates_To_MyInvoices_Page_()
         {
             //Arrange
-            var component = RenderComponent<Summary>(parameters =>
+            var component = RenderComponent<ViewInvoiceSummary>(parameters =>
             {
                 parameters.Add(x => x.backUrl, "/user-invoices");
             });

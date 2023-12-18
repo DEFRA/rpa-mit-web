@@ -153,7 +153,7 @@ public partial class AddInvoiceLine : ComponentBase
                 IsErrored = false;
                 errors.Clear();
                 _invoiceStateContainer.SetValue(response.Data);
-                _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+                _nav.NavigateTo($"/invoice/edit-payment-request/{PaymentRequestId}");
             }
             else
             {
@@ -170,6 +170,6 @@ public partial class AddInvoiceLine : ComponentBase
 
     private void Cancel()
     {
-        _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+        _nav.NavigateTo($"/invoice/edit-payment-request/{PaymentRequestId}");
     }
 }

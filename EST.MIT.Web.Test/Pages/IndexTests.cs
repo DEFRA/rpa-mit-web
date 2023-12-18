@@ -60,7 +60,7 @@ public class IndexTests : TestContext
 
         Assert.Equal("Show invoices awaiting your approval.", chevronCardParagraph.InnerHtml.Trim());
         Assert.Equal("My Approvals", chevronCardLink.InnerHtml);
-        Assert.Equal("/approval/mine", chevronCardLink.GetAttribute("href"));
+        Assert.Equal("user-approvals", chevronCardLink.GetAttribute("href"));
     }
 
     [Fact]

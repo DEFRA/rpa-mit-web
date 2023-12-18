@@ -1,16 +1,17 @@
-@page "/invoice/add-invoice-line/{PaymentRequestId}"
+@page "/invoice/edit-invoice-line/{PaymentRequestId}/{InvoiceLineId}"
 @using EST.MIT.Web.Shared.Components.PaymentRequestCard
 @using EST.MIT.Web.Shared.Components.GDSInputDecimal
 @using EST.MIT.Web.Shared.Components.GDSInputText
 @using Helpers
 
-@if (!paymentRequest.IsNull())
+@if(!paymentRequest.IsNull())
 {
     <section class="govuk-width-container govuk-!-padding-top-9">
         <h1 class="govuk-heading-l">
-            Add Invoice Line
+            Edit Invoice Line
         </h1>
     </section>
+
 
     <section class="govuk-width-container">
 
@@ -28,7 +29,7 @@
                                 @foreach (var value in error.Value.Distinct())
                                 {
                                     <li>
-                                        <a href="/invoice/add-invoice-line/@PaymentRequestId/#@error.Key">@value</a>
+                                        <a href="/invoice/edit-invoice-line/@PaymentRequestId/@InvoiceLineId/#@error.Key">@value</a>
                                     </li>
                                 }
                             }
@@ -115,7 +116,7 @@
                                 <span class="govuk-visually-hidden">Error:</span> @ErrorMessagesForField(nameof(invoiceLine.MainAccount))
                             </p>
                         }
-                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MainAccount))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" id="main-account-select" for="mainaccount" @bind-Value="invoiceLine.MainAccount">
+                        <InputSelect class="@(String.IsNullOrEmpty(ErrorMessagesForField(nameof(invoiceLine.MainAccount))) ? "govuk-select govuk-!-width-full" : "govuk-select govuk-!-width-full govuk-select--error")" for="mainaccount" @bind-Value="invoiceLine.MainAccount">
                             <option value="">Select</option>
                             @foreach (var mainAccount in allAccounts)
                             {
@@ -167,10 +168,10 @@
 
             <div class="govuk-form-group">
                 <div class="govuk-button-group">
-                    <button type=submit class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="SaveInvoiceLine">Save and Continue</button>
+                    <button type=submit class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="UpdateInvoiceLine">Save and Continue</button>
                     <a class="govuk-link" @onclick="Cancel" href>Cancel</a>
                 </div>
-            </div>
+            </div>    
 
         </EditForm>
 
