@@ -1,4 +1,5 @@
-﻿@using Helpers
+﻿@using EST.MIT.Web.Models
+@using Helpers
 @using EST.MIT.Web.Shared.Components.InvoiceMetaData
 
 
@@ -40,7 +41,7 @@ else
                     <dt class="govuk-summary-list__key govuk-!-width-one-third">Status</dt>
                     <dd class="govuk-summary-list__value">
                         <div class="govuk-tag">
-                            @invoice.Status
+                            @InvoiceStatuses.DisplayNameFor(invoice.Status)
                         </div>
                     </dd>
                 </div>
