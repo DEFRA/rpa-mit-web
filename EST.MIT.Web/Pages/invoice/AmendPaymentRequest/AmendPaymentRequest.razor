@@ -13,6 +13,30 @@
 
     <section class="govuk-width-container govuk-!-padding-top-3">
 
+        @if (errors.Count > 0)
+        {
+            <div class="govuk-error-summary" data-module="govuk-error-summary" autofocus="autofocus">
+                <div role="alert">
+                    <h2 class="govuk-error-summary__title">
+                        There is a problem
+                    </h2>
+                    <div class="govuk-error-summary__body">
+                        <ul class="govuk-list govuk-error-summary__list">
+                            @foreach (var error in errors)
+                            {
+                                @foreach (var value in error.Value.Distinct())
+                                {
+                                    <li>
+                                        <a href="#">@value</a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        }
+
         <button id="update-payment-request" class="govuk-button" @onclick="UpdatePaymentRequest">
             Update Payment Request
         </button>
@@ -112,6 +136,7 @@
                             <a id="update-invoice-line" class="govuk-link" href=""
                             @onclick="@(() => UpdateInvoiceLine(@line.Id))">Amend</a> |
                             <a id="delete-invoice-line" class="govuk-link" href=""
+                            @onclick:preventDefault="true"
                             @onclick="@(() => DeleteInvoiceLine(@line.Id))">Delete</a>
                         </td>
                     </tr>
