@@ -82,7 +82,7 @@ public class ApprovalAPITests
         };
         _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schemeType");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "approvalGroup");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.OK)
         {
@@ -99,14 +99,14 @@ public class ApprovalAPITests
         };
         _mockApprovalRepository.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(response);
 
-        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "schemeType");
+        var result = await _approvalAPI.ValidateApproverAsync("testApprover", "approvalGroup");
 
         result.Should().BeEquivalentTo(new ApiResponse<BoolRef>(HttpStatusCode.NotFound)
         {
             Data = new BoolRef(false),
             Errors = new Dictionary<string, List<string>>
             {
-                {$"ApproverEmail", new List<string> { "testapprover is not a valid approver" } }
+                {$"ApproverEmail", new List<string> { "testapprover is not a valid approver for the approvalGroup group" } }
             }
         });
     }
@@ -124,7 +124,7 @@ public class ApprovalAPITests
         {
             Errors = new Dictionary<string, List<string>>()
             {
-                {$"{HttpStatusCode.BadRequest}", new List<string> { "Invalid request was sent to API" }}
+                {$"{HttpStatusCode.BadRequest}", new List<string> { "Invalid request was sent to Approval API" }}
             }
         });
     }
