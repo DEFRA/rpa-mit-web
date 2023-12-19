@@ -33,6 +33,7 @@ public class Invoice : Validatable
 
     public string ApproverId { get; set; } = default!;
     public string ApproverEmail { get; set; } = default!;
+    public string ApprovalRequestedByEmail { get; set; } = default!;    
     public string ApprovedBy { get; set; } = default!;
     public DateTime? Approved { get; set; }
 
