@@ -33,7 +33,7 @@ builder.Services.AddSingleton<IUploadRepository, UploadRepository>();
 
 builder.Services.AddAuthorization(options =>
 {
-    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireRole("rpa-mit-readonly").Build();
+    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireRole("ReadOnly").Build();
 });
 
 var mappingConfig = new MapperConfiguration(mc =>
