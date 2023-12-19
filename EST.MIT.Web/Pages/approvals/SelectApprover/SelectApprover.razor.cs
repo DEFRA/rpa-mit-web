@@ -73,9 +73,12 @@ public partial class SelectApprover : ComponentBase
             var response = await _approvalService.SubmitApprovalAsync(invoice);
             if (!response.IsSuccess)
             {
-                ShowErrorSummary = true;
-                errors = response.Errors;
-                return;
+                if (invoice.AllErrors.Count > 0)
+                {
+                    ShowErrorSummary = true;
+                    errors = invoice.AllErrors;
+                    return;
+                }
             }
 
             _nav.NavigateTo($"/approval/confirmation/{invoice.Id}");
