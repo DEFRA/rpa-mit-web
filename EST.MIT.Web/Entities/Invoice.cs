@@ -104,4 +104,23 @@ public class Invoice : Validatable
         }
         return base.AddErrors(errors);
     }
+
+    public override Dictionary<string, List<string>> AllErrors
+    {
+        get
+        {
+            Dictionary<string, List<string>> allErrors = Errors;
+            foreach (var paymentRequest in PaymentRequests)
+            {
+                foreach (var error in paymentRequest.Errors)
+                {
+                    if (!allErrors.ContainsKey(error.Key))
+                    {
+                        allErrors.Add(error.Key, error.Value);
+                    }
+                }
+            }
+            return allErrors;
+        }
+    }
 }
