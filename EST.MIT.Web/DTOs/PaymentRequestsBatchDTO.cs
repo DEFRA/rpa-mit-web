@@ -33,7 +33,7 @@ public class PaymentRequestsBatchDTO
     [JsonProperty("approverEmail")]
     public string ApproverEmail { get; set; } = default!;
 
-    [JsonProperty("approvalRequestByEmail")]
+    [JsonProperty("approvalRequestedByEmail")]
     public string ApprovalRequestedByEmail { get; set; } = default!;    
 
     [JsonProperty("approverId")]
