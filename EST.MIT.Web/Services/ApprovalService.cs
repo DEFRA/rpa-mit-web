@@ -108,13 +108,13 @@ public class ApprovalService : IApprovalService
 
         try
         {
-            var result = await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, notification);
-            if (!result.IsSuccess)
+            var response = await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, notification);
+            if (!response.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Submission failed");
-                errors = result.Errors;
+                errors = response.Errors;
             }
-            return result;
+            return response;
         }
         catch (Exception ex)
         {
@@ -186,6 +186,6 @@ public class ApprovalService : IApprovalService
         return approvers;
     }
 
-    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme) => await _approvalAPI.ValidateApproverAsync(approver, scheme);
+    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string approvalGroup) => await _approvalAPI.ValidateApproverAsync(approver, approvalGroup);
 
 }

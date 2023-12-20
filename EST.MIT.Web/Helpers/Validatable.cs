@@ -4,7 +4,11 @@ namespace EST.MIT.Web.Helpers;
 
 public class Validatable : IValidatable
 {
+
     public Dictionary<string, List<string>> Errors { get; set; } = new Dictionary<string, List<string>>();
+
+    public virtual Dictionary<string, List<string>> AllErrors => Errors;
+
     private string _errorPath = string.Empty;
     public string ErrorPath
     {

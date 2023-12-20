@@ -158,7 +158,7 @@ public partial class AddInvoiceLine : ComponentBase
             else
             {
                 IsErrored = true;
-                errors = invoiceLine.Errors;
+                errors = invoice.AllErrors;
             }
         }
         catch (Exception ex)
@@ -168,8 +168,10 @@ public partial class AddInvoiceLine : ComponentBase
         }
     }
 
-    private void Cancel()
+    private async Task Cancel()
     {
+        var invoiceBeforeEdit = await _api.FindInvoiceAsync(invoice.Id.ToString(), invoice.SchemeType);
+        _invoiceStateContainer.SetValue(invoiceBeforeEdit);
         _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
     }
 }

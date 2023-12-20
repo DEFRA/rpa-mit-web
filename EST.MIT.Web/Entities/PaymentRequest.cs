@@ -97,6 +97,25 @@ public class PaymentRequest : Validatable, IValidatableObject
         return base.AddErrors(errors);
     }
 
+    public override Dictionary<string, List<string>> AllErrors
+    {
+        get
+        {
+            Dictionary<string, List<string>> allErrors = Errors;
+            foreach (var invoiceLine in InvoiceLines)
+            {
+                foreach (var error in invoiceLine.Errors)
+                {
+                    if (!allErrors.ContainsKey(error.Key))
+                    {
+                        allErrors.Add(error.Key, error.Value);
+                    }
+                }
+            }
+            return allErrors;
+        }
+    }
+
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
         var populatedFields = new List<string>();

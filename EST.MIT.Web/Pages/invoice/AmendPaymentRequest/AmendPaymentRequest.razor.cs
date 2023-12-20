@@ -16,6 +16,9 @@ public partial class AmendPaymentRequest : ComponentBase
     private Invoice invoice;
     private PaymentRequest paymentRequest;
     private readonly string backUrl = "/user-invoices";
+    private bool IsErrored = false;
+    private Dictionary<string, List<string>> errors = new();
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -57,8 +60,16 @@ public partial class AmendPaymentRequest : ComponentBase
         if (response.IsSuccess)
         {
             _invoiceStateContainer.SetValue(response.Data);
+            _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
         }
-
-        _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+        else
+        {
+            IsErrored = true;
+            errors = invoice.AllErrors;
+            var invoiceBeforeEdit = await _api.FindInvoiceAsync(invoice.Id.ToString(), invoice.SchemeType);
+            _invoiceStateContainer.SetValue(invoiceBeforeEdit);
+            invoice = _invoiceStateContainer.Value;
+            paymentRequest = invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
+        }
     }
 }

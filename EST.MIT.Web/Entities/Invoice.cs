@@ -46,6 +46,19 @@ public class Invoice : Validatable
     public decimal TotalValueOfPaymentsGBP => PaymentRequests.Where(x => x.Currency == "GBP").Sum(x => x.Value);
     [JsonIgnore]
     public decimal TotalValueOfPaymentsEUR => PaymentRequests.Where(x => x.Currency == "EUR").Sum(x => x.Value);
+
+    public string ApprovalGroup
+    {
+        get
+        {
+            if (Organisation == "RPA")
+            {
+                return SchemeType;
+            }
+            return Organisation;
+        }
+    }
+
     public Invoice()
     {
         Id = Guid.NewGuid();
@@ -90,5 +103,24 @@ public class Invoice : Validatable
             paymentRequest.AddErrors(errors);
         }
         return base.AddErrors(errors);
+    }
+
+    public override Dictionary<string, List<string>> AllErrors
+    {
+        get
+        {
+            Dictionary<string, List<string>> allErrors = Errors;
+            foreach (var paymentRequest in PaymentRequests)
+            {
+                foreach (var error in paymentRequest.Errors)
+                {
+                    if (!allErrors.ContainsKey(error.Key))
+                    {
+                        allErrors.Add(error.Key, error.Value);
+                    }
+                }
+            }
+            return allErrors;
+        }
     }
 }
