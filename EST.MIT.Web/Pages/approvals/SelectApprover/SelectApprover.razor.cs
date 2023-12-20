@@ -58,7 +58,7 @@ public partial class SelectApprover : ComponentBase
         try
         {
             IsErrored = false;
-            var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail, invoice.SchemeType);
+            var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail, invoice.ApprovalGroup);
 
             if (!validate.IsSuccess || !validate.Data.Value)
             {
@@ -67,16 +67,19 @@ public partial class SelectApprover : ComponentBase
                 return;
             }
 
-            invoice.ApproverId = "1"; //TODO: fxs this needs to be the approver id, for now hard coded to 1
+            invoice.ApproverId = "user"; //TODO: fxs this needs to be the approver id, for now hard coded to 1
             invoice.ApproverEmail = approverSelect.ApproverEmail;
             invoice.ApprovalRequestedByEmail = "user"; //TODO: fxs this needs to be email address for the requestor until Auth. work is implemented
 
             var response = await _approvalService.SubmitApprovalAsync(invoice);
             if (!response.IsSuccess)
             {
-                ShowErrorSummary = true;
-                errors = response.Errors;
-                return;
+                if (invoice.AllErrors.Count > 0)
+                {
+                    ShowErrorSummary = true;
+                    errors = invoice.AllErrors;
+                    return;
+                }
             }
 
             _nav.NavigateTo($"/approval/confirmation/{invoice.Id}");

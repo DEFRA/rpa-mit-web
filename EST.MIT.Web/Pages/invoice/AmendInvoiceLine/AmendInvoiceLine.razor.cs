@@ -114,12 +114,14 @@ public partial class AmendInvoiceLine : ComponentBase
         else
         {
             IsErrored = true;
-            errors = invoiceLine.Errors;
+            errors = invoice.AllErrors;
         }
     }
 
-    private void Cancel()
+    private async Task Cancel()
     {
+        var invoiceBeforeEdit = await _api.FindInvoiceAsync(invoice.Id.ToString(), invoice.SchemeType);
+        _invoiceStateContainer.SetValue(invoiceBeforeEdit);
         _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
     }
 }
