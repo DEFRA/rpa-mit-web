@@ -1,7 +1,6 @@
-namespace EST.MIT.Web.Entities;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
+namespace EST.MIT.Web.Entities;
 public class ImportRequest
 {
     public Guid ImportRequestId { get; set; }
@@ -32,9 +31,4 @@ public class ImportRequest
             _ => null
         };
     }
-}
-
-public static class ImportRequestExtentions
-{
-    public static string ToMessage(this ImportRequest entity) => JsonSerializer.Serialize<ImportRequest>(entity);
 }

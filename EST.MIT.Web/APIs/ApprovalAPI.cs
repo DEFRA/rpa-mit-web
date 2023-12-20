@@ -2,10 +2,8 @@ using System.Net;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Helpers;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Pages;
-using Microsoft.AspNetCore.Mvc;
 
-namespace EST.MIT.Web.Services;
+namespace EST.MIT.Web.APIs;
 
 public class ApprovalAPI : IApprovalAPI
 {
@@ -47,10 +45,10 @@ public class ApprovalAPI : IApprovalAPI
     }
 
 
-    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string approvalGroup)
+    public async Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme)
     {
         approver = approver.Trim().ToLower();
-        var response = await _approvalRepository.ValidateApproverAsync(approver, approvalGroup);
+        var response = await _approvalRepository.ValidateApproverAsync(approver, scheme);
         _logger.LogInformation($"ApprovalAPI.ValidateApprover: response received from approval service: {response.StatusCode}");
 
         var reply = new ApiResponse<BoolRef>(response.StatusCode) { Data = new BoolRef(true) };
@@ -66,34 +64,15 @@ public class ApprovalAPI : IApprovalAPI
         {
             _logger.LogError($"ApprovalAPI.ValidateApprover: {approver} is not a valid approver");
             reply.Data = new BoolRef(false);
-            reply.Errors.Add("ApproverEmail", new List<string> { $"{approver} is not a valid approver for the {approvalGroup} group" });
+            reply.Errors.Add("ApproverEmail", new List<string> { $"{approver} is not a valid approver" });
             return reply;
         }
 
         if (response.StatusCode == HttpStatusCode.BadRequest)
         {
-            var errors = new List<string>();
-            var message = await response.Content.ReadAsStringAsync();
-            var validationErrors = Newtonsoft.Json.JsonConvert.DeserializeObject<ValidationProblemDetails>(message);
             _logger.LogError($"Invalid request was sent to API");
-
             reply.Data = default!;
-
-            if (validationErrors != null)
-            {
-                foreach (var error in validationErrors.Errors)
-                {
-                    foreach (var errorValue in error.Value)
-                    {
-                        errors.Add(errorValue);
-                    }
-                }
-                reply.Errors.Add($"{HttpStatusCode.BadRequest}", errors);
-            }
-            else
-            {
-                reply.Errors.Add($"{HttpStatusCode.BadRequest}", new List<string> { $"Invalid request was sent to Approval API" });
-            }
+            reply.Errors.Add($"{HttpStatusCode.BadRequest}", new List<string> { $"Invalid request was sent to API" });
             return reply;
         }
 
@@ -101,5 +80,6 @@ public class ApprovalAPI : IApprovalAPI
         reply.Data = default!;
         reply.Errors.Add($"{response.StatusCode}", new List<string> { $"Unknown response from API" });
         return reply;
+
     }
 }

@@ -7,7 +7,7 @@ using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using EST.MIT.Web.Interfaces;
 
-namespace EST.MIT.Web.Services;
+namespace EST.MIT.Web.APIs;
 public class InvoiceAPI : IInvoiceAPI
 {
     private readonly ILogger<InvoiceAPI> _logger;

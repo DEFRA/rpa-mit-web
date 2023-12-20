@@ -23,7 +23,7 @@ public class ImporterQueueService : IImporterQueueService
         try
         {
             var bytes = Encoding.UTF8.GetBytes(request.ToMessage());
-            await _queueClient.SendMessageAsync(Convert.ToBase64String(bytes));
+            var result = await _queueClient.SendMessageAsync(Convert.ToBase64String(bytes));
 
             return true;
 
@@ -40,6 +40,5 @@ public class ImporterQueueService : IImporterQueueService
             _logger.LogError($"Error {ex.Message} sending message for File {request.FileName} from {request.CreatedBy} to Invoice Importer Queue.");
             return false;
         }
-
     }
 }
