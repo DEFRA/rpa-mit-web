@@ -24,7 +24,6 @@ public class InvoiceStatusesTests
     {
         var status = InvoiceStatuses.AwaitingApproval;
 
-        // 
         var result = InvoiceStatuses.DisplayNameFor(status);
 
         Assert.Equal("Awaiting Approval", result);
