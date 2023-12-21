@@ -64,7 +64,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<Organisation>>(HttpStatusCode.InternalServerError, error);
     }
 
-    public async Task<ApiResponse<IEnumerable<SchemeType>>> GetSchemeTypesAsync(string? InvoiceType, string? Organisation)
+    public async Task<ApiResponse<IEnumerable<SchemeType>>> GetSchemeTypesAsync(string? InvoiceType = null, string? Organisation = null)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetSchemeTypesListAsync(InvoiceType, Organisation);
@@ -113,7 +113,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<SchemeType>>(HttpStatusCode.InternalServerError, error);
     }
 
-    public async Task<ApiResponse<IEnumerable<PaymentType>>> GetPaymentTypesAsync(string? InvoiceType, string? Organisation, string? SchemeType)
+    public async Task<ApiResponse<IEnumerable<PaymentType>>> GetPaymentTypesAsync(string? InvoiceType = null, string? Organisation = null, string? SchemeType = null)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetPaymentTypesListAsync(InvoiceType, Organisation, SchemeType);
@@ -162,7 +162,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<PaymentType>>(HttpStatusCode.InternalServerError, error);
     }
 
-    public async Task<ApiResponse<IEnumerable<MainAccount>>> GetAccountsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<MainAccount>>> GetAccountsAsync(string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetAccountsListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -211,7 +211,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<MainAccount>>(HttpStatusCode.InternalServerError, error);
     }
 
-    public async Task<ApiResponse<IEnumerable<DeliveryBody>>> GetDeliveryBodiesAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<DeliveryBody>>> GetDeliveryBodiesAsync(string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetDeliveryBodiesListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -260,7 +260,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<DeliveryBody>>(HttpStatusCode.InternalServerError, error);
     }
 
-    public async Task<ApiResponse<IEnumerable<FundCode>>> GetFundsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<FundCode>>> GetFundsAsync(string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetFundsListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -309,7 +309,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<FundCode>>(HttpStatusCode.InternalServerError, error);
     }
 
-    public async Task<ApiResponse<IEnumerable<MarketingYear>>> GetMarketingYearsAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<MarketingYear>>> GetMarketingYearsAsync(string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetMarketingYearsListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
@@ -358,7 +358,7 @@ public class ReferenceDataAPI : IReferenceDataAPI
         return new ApiResponse<IEnumerable<MarketingYear>>(HttpStatusCode.InternalServerError, error);
     }
 
-    public async Task<ApiResponse<IEnumerable<SchemeCode>>> GetSchemesAsync(string? InvoiceType, string? Organisation, string? SchemeType, string? PaymentType)
+    public async Task<ApiResponse<IEnumerable<SchemeCode>>> GetSchemesAsync(string InvoiceType, string Organisation, string SchemeType, string PaymentType)
     {
         var error = new Dictionary<string, List<string>>();
         var response = await _referenceDataRepository.GetSchemesListAsync(InvoiceType, Organisation, SchemeType, PaymentType);
