@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace EST.MIT.Web.Entities;
 
 public class ImportRequestSummary
@@ -28,9 +26,4 @@ public class ImportRequestSummary
         PaymentType = importRequest.PaymentType;
         CreatedBy = importRequest.CreatedBy;
     }
-}
-
-public static class UploadFileSummaryExtentions
-{
-    public static string ToMessage(this ImportRequestSummary entity) => JsonSerializer.Serialize<ImportRequestSummary>(entity);
 }

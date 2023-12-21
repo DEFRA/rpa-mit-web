@@ -83,7 +83,6 @@ public class UpdatePaymentRequestTests : TestContext
     [Fact]
     public void SavePaymentRequest_Navigates_To_Amend_On_Cancel()
     {
-
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 
         var component = RenderComponent<UpdatePaymentRequest>(parameters =>
@@ -95,5 +94,22 @@ public class UpdatePaymentRequestTests : TestContext
 
         var navigationManager = Services.GetService<NavigationManager>();
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be($"http://localhost/invoice/amend-payment-request/{component.Instance.PaymentRequestId}"));
+    }
+
+    [Fact]
+    public void ComponentRendersWithRequiredFields()
+    {
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+
+        var component = RenderComponent<UpdatePaymentRequest>(parameters =>
+            parameters.Add(p => p.PaymentRequestId, "1"));
+
+        Assert.NotNull(component.FindAll("input#frn")[0]);
+        Assert.NotNull(component.FindAll("input#sbi")[0]);
+        Assert.NotNull(component.FindAll("input#vendor")[0]);
+        Assert.NotNull(component.FindAll("input#marketingyear")[0]);
+        Assert.NotNull(component.FindAll("input#agreementnumber")[0]);
+        Assert.NotNull(component.FindAll("select#currency")[0]);
+        Assert.NotNull(component.FindAll("input#description")[0]);
     }
 }

@@ -97,4 +97,41 @@ public class AmendPaymentRequestTests : TestContext
         var navigationManager = Services.GetService<NavigationManager>();
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/update-payment-request/1"));
     }
+
+    [Fact]
+    public void UpdateInvoiceLine_Navigates_To_AmendInvoiceLine()
+    {
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+
+        var component = RenderComponent<AmendPaymentRequest>(parameters =>
+            parameters.Add(p => p.PaymentRequestId, "1"));
+
+        var button = component.FindAll("a#update-invoice-line");
+        button[0].Click();
+
+        var navigationManager = Services.GetService<NavigationManager>();
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/amend-invoice-line/1/00000000-0000-0000-0000-000000000000"));
+    }
+
+    [Fact]
+    public void Click_DeleteInvoiceLine_RemovesLine()
+    {
+        _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
+
+        _mockInvoiceApi.Setup(x =>
+            x.UpdateInvoiceAsync(It.IsAny<Invoice>()))
+            .ReturnsAsync(new ApiResponse<Invoice>(true)
+            {
+                Data = new Invoice()
+            });
+
+        var component = RenderComponent<AmendPaymentRequest>(parameters =>
+            parameters.Add(p => p.PaymentRequestId, "1"));
+
+        var button = component.FindAll("a#delete-invoice-line");
+
+        button[0].Click();
+
+        _mockInvoiceApi.Verify(x => x.UpdateInvoiceAsync(It.Is<Invoice>(i => !i.PaymentRequests[0].InvoiceLines.Any())), Times.Once());
+    }
 }
