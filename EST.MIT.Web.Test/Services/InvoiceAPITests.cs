@@ -5,10 +5,10 @@ using AutoMapper;
 using EST.MIT.Web.AutoMapperProfiles;
 using EST.MIT.Web.DTOs;
 using EST.MIT.Web.Entities;
-using EST.MIT.Web.Services;
 using Microsoft.Extensions.Logging;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Models;
+using EST.MIT.Web.APIs;
 
 namespace EST.MIT.Web.Test.Services;
 

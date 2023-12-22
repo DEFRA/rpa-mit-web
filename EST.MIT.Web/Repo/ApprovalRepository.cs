@@ -21,14 +21,14 @@ public class ApprovalRepository : IApprovalRepository
         return response;
     }
 
-    public async Task<HttpResponseMessage> ValidateApproverAsync(string approver, string scheme)
+    public async Task<HttpResponseMessage> ValidateApproverAsync(string approver, string approvalGroup)
     {
         var client = _clientFactory.CreateClient("ApprovalAPI");
 
         var body = new ValidateBody
         {
-            scheme = scheme,
-            approverEmailAddress = approver
+            ApproverEmailAddress = approver,
+            ApprovalGroup = approvalGroup
         };
 
         var response = await client.PostAsJsonAsync("/approvals/approver/validate", body);
@@ -48,7 +48,7 @@ public class ApprovalRepository : IApprovalRepository
 
     private struct ValidateBody
     {
-        public string scheme { get; set; }
-        public string approverEmailAddress { get; set; }
+        public string ApproverEmailAddress { get; set; }
+        public string ApprovalGroup { get; set; }
     }
 }

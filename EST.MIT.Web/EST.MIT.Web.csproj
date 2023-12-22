@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>1.0.57</Version>
+    <Version>1.0.60</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
@@ -16,6 +16,8 @@
     <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.17.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.Identity.Web" Version="1.26.0" />
+		<PackageReference Include="Microsoft.Identity.Web.UI" Version="1.26.0" />
     <Compile Update="Program.cs">
 	    <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
     </Compile>

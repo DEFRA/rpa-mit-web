@@ -10,7 +10,7 @@ public interface IInvoiceAPI
     Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice);
     Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest);
     Task<ApiResponse<Invoice>> UpdateInvoiceAsync(Invoice invoice, PaymentRequest paymentRequest, InvoiceLine invoiceLine);
-    Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice? invoice, string paymentRequestId);
+    Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice invoice, string paymentRequestId);
     Task<Invoice> GetApprovalInvoiceAsync(string id);
     Task<IEnumerable<Invoice>> GetAllApprovalInvoicesAsync();
     Task<IEnumerable<Invoice>> GetInvoicesAsync();

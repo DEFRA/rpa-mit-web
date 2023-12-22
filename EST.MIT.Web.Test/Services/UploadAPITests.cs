@@ -1,8 +1,8 @@
 using System.Net;
 using EST.MIT.Web.Entities;
 using Microsoft.Extensions.Logging;
-using EST.MIT.Web.Services;
 using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.APIs;
 
 namespace EST.MIT.Web.Test.Services;
 

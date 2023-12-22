@@ -126,9 +126,12 @@ public class SelectApproverTests : TestContext
     [Fact]
     public void SubmitApproval_Submit_Fails()
     {
-        _mockInvoiceStateContainer.Setup(x => x.Value).Returns(new Invoice());
+        Invoice invoice = new Invoice();
+        Dictionary<string, List<string>> errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } };
+        invoice.AddErrors(errors);
+        _mockInvoiceStateContainer.Setup(x => x.Value).Returns(invoice);
         _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
-        _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.BadRequest) { Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
+        _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.BadRequest) { Errors = errors });
 
         var component = RenderComponent<SelectApprover>();
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
