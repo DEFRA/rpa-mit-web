@@ -12,7 +12,7 @@ public class DeletePaymentRequestTests : TestContext
     private readonly Invoice _invoice;
     private readonly Mock<IInvoiceAPI> _mockApiService;
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
-    public string backUrl = "/user-invoices";
+    public string backUrl = "user-invoices";
 
     public DeletePaymentRequestTests()
     {

@@ -10,13 +10,13 @@ public partial class ViewInvoiceLineList : ComponentBase
     [Inject] private IInvoiceAPI _api { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
-    [Inject] private ILogger<AmendPaymentRequest> Logger { get; set; }
+    [Inject] private ILogger<ViewInvoiceLineList> Logger { get; set; }
 
     [Parameter] public string PaymentRequestId { get; set; } = default!;
 
     private Invoice invoice;
     private PaymentRequest paymentRequest;
-    private readonly string backUrl = "/user-invoices";
+    private readonly string backUrl = "user-invoices";
     private bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
 
@@ -30,7 +30,7 @@ public partial class ViewInvoiceLineList : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error initializing AmendPaymentRequest page");
+            Logger.LogError(ex, "Error initializing EditPaymentRequest page");
             _nav.NavigateTo("/error");
         }
     }
@@ -48,7 +48,7 @@ public partial class ViewInvoiceLineList : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error rendering AmendPaymentRequest page");
+            Logger.LogError(ex, "Error rendering EditPaymentRequest page");
             _nav.NavigateTo("/error");
         }
     }
@@ -79,7 +79,7 @@ public partial class ViewInvoiceLineList : ComponentBase
             if (response.IsSuccess)
             {
                 _invoiceStateContainer.SetValue(response.Data);
-                _nav.NavigateTo($"/invoice/amend-payment-request/{PaymentRequestId}");
+                _nav.NavigateTo($"/invoice/edit-payment-request/{PaymentRequestId}");
             }
             else
             {
@@ -94,7 +94,7 @@ public partial class ViewInvoiceLineList : ComponentBase
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error initializing AmendPaymentRequest page");
+            Logger.LogError(ex, "Error initializing EditPaymentRequest page");
             _nav.NavigateTo("/error");
         }
     }

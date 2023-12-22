@@ -12,7 +12,7 @@ public partial class InvoiceCard : ComponentBase
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
 
-    private readonly string backUrl = "/user-invoices";
+    private readonly string backUrl = "user-invoices";
 
     protected override async Task OnInitializedAsync()
     {

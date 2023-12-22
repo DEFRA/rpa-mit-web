@@ -99,18 +99,18 @@ public class EditPaymentRequestTests : TestContext
     }
 
     [Fact]
-    public void UpdateInvoiceLine_Navigates_To_AmendInvoiceLine()
+    public void UpdateInvoiceLine_Navigates_To_EditInvoiceLine()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 
-        var component = RenderComponent<AmendPaymentRequest>(parameters =>
+        var component = RenderComponent<ViewInvoiceLineList>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
 
         var button = component.FindAll("a#update-invoice-line");
         button[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/amend-invoice-line/1/00000000-0000-0000-0000-000000000000"));
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/edit-invoice-line/1/00000000-0000-0000-0000-000000000000"));
     }
 
     [Fact]
@@ -125,7 +125,7 @@ public class EditPaymentRequestTests : TestContext
                 Data = new Invoice()
             });
 
-        var component = RenderComponent<AmendPaymentRequest>(parameters =>
+        var component = RenderComponent<ViewInvoiceLineList>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
 
         var button = component.FindAll("a#delete-invoice-line");

@@ -59,7 +59,7 @@ namespace EST.MIT.Web.Test.Components
             var navigationManager = Services.GetService<NavigationManager>();
 
             //Assert
-            navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{WebUtility.UrlEncode("/user-invoices")}");
+            navigationManager?.Uri.Should().Be($"http://localhost/invoice/summary/{_invoice.SchemeType}/{_invoice.Id}/{WebUtility.UrlEncode("user-invoices")}");
         }
 
         [Fact]
@@ -165,13 +165,13 @@ namespace EST.MIT.Web.Test.Components
             //Arrange
             var component = RenderComponent<ViewInvoiceSummary>(parameters =>
             {
-                parameters.Add(x => x.backUrl, "/user-invoices");
+                parameters.Add(x => x.backUrl, "user-invoices");
             });
 
             var userInvoicesUrl = component.FindAll("a")[0].GetAttribute("href");
 
             //Assert
-            Assert.Equal("/user-invoices", userInvoicesUrl);
+            Assert.Equal("user-invoices", userInvoicesUrl);
         }
     }
 }
