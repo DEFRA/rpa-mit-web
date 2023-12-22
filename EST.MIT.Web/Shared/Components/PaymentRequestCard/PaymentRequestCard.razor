@@ -8,10 +8,10 @@
             @if (!ReadOnly)
             {
                 <li class="govuk-summary-card__action">
-                    <a class="govuk-link govuk-!-padding-left-2" href="/invoice/edit-payment-request/@PaymentRequest.PaymentRequestId">Edit<span class="govuk-visually-hidden">Payment Request</span></a>
+                    <a class="govuk-link govuk-!-padding-left-2" href="/invoice/view-invoice-lines/@PaymentRequest.PaymentRequestId">Edit<span class="govuk-visually-hidden">Payment Request</span></a>
                 </li>
                 <li class="govuk-summary-card__action">
-                    <a class="govuk-link" href="/payment-request/delete/@PaymentRequest.PaymentRequestId">Delete<span class="govuk-visually-hidden">Payment Request</span></a>
+                    <a class="govuk-link" href="/invoice/delete-payment-request/@PaymentRequest.PaymentRequestId">Delete<span class="govuk-visually-hidden">Payment Request</span></a>
                 </li>
             }
         </ul>

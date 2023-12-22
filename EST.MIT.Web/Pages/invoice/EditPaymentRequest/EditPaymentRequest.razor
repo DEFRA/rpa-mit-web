@@ -1,4 +1,4 @@
-@page "/invoice/update-payment-request/{PaymentRequestId}"
+@page "/invoice/edit-payment-request/{PaymentRequestId}"
 @using EST.MIT.Web.Shared.Components.GDSInputInt
 @using EST.MIT.Web.Shared.Components.GDSInputText
 @using EST.MIT.Web.Shared.Components.GDSInputDate
@@ -7,7 +7,7 @@
 
 <section class="govuk-width-container govuk-!-padding-top-9">
     <h1 class="govuk-heading-l">
-        Update Payment Request
+        Edit Payment Request
     </h1>
 </section>
 
@@ -29,7 +29,7 @@
                             @foreach (var value in error.Value.Distinct())
                             {
                                 <li>
-                                    <a href="/invoice/update-payment-request/@PaymentRequestId/#@error.Key">@value</a>
+                                    <a href="/invoice/edit-payment-request/@PaymentRequestId/#@error.Key">@value</a>
                                 </li>
                             }
                         }

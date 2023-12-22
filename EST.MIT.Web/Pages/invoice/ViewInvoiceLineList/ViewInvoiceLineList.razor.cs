@@ -55,7 +55,7 @@ public partial class ViewInvoiceLineList : ComponentBase
 
     private void UpdatePaymentRequest()
     {
-        _nav.NavigateTo($"/invoice/update-payment-request/{PaymentRequestId}");
+        _nav.NavigateTo($"/invoice/edit-payment-request/{PaymentRequestId}");
     }
 
     private void AddInvoiceLine()
@@ -79,7 +79,7 @@ public partial class ViewInvoiceLineList : ComponentBase
             if (response.IsSuccess)
             {
                 _invoiceStateContainer.SetValue(response.Data);
-                _nav.NavigateTo($"/invoice/edit-payment-request/{PaymentRequestId}");
+                _nav.NavigateTo($"/invoice/view-invoice-lines/{PaymentRequestId}");
             }
             else
             {

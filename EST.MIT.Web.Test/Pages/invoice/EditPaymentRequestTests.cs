@@ -90,12 +90,12 @@ public class EditPaymentRequestTests : TestContext
         var component = RenderComponent<ViewInvoiceLineList>(parameters =>
             parameters.Add(p => p.PaymentRequestId, "1"));
 
-        var button = component.FindAll("a#update-payment-request");
+        var button = component.FindAll("a#edit-payment-request");
 
         button[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/update-payment-request/1"));
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/invoice/edit-payment-request/1"));
     }
 
     [Fact]

@@ -85,7 +85,7 @@ public class AddInvoiceLineTests : TestContext
         component.FindAll("button.govuk-button")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/edit-payment-request/1"));
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/view-invoice-lines/1"));
     }
 
     public void SaveInvoiceLine_Navigates_To_Add_EditHeader_On_Cancel()
@@ -98,6 +98,6 @@ public class AddInvoiceLineTests : TestContext
         component.FindAll("a.govuk-link")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/edit-payment-request/1"));
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/view-invoice-lines/1"));
     }
 }

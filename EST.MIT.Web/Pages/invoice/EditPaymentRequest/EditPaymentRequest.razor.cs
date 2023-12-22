@@ -49,7 +49,7 @@ public partial class EditPaymentRequest : ComponentBase
             IsErrored = false;
             errors.Clear();
             _invoiceStateContainer.SetValue(invoice);
-            _nav.NavigateTo($"/invoice/edit-payment-request/{PaymentRequestId}");
+            _nav.NavigateTo($"/invoice/view-invoice-lines/{PaymentRequestId}");
         }
         else
         {
@@ -62,6 +62,6 @@ public partial class EditPaymentRequest : ComponentBase
     {
         var invoiceBeforeEdit = await _api.FindInvoiceAsync(invoice.Id.ToString(), invoice.SchemeType);
         _invoiceStateContainer.SetValue(invoiceBeforeEdit);
-        _nav.NavigateTo($"/invoice/edit-payment-request/{PaymentRequestId}");
+        _nav.NavigateTo($"/invoice/view-invoice-lines/{PaymentRequestId}");
     }
 }

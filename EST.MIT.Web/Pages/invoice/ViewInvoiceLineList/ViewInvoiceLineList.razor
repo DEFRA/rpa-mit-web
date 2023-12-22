@@ -1,4 +1,4 @@
-@page "/invoice/edit-payment-request/{PaymentRequestId}"
+@page "/invoice/view-invoice-lines/{PaymentRequestId}"
 @using Helpers
 
 @if (!paymentRequest.IsNull())
@@ -16,7 +16,7 @@
                 <h2 class="govuk-summary-card__title">Payment Request Id: @PaymentRequestId</h2>
                 <ul class="govuk-summary-card__actions">
                     <li class="govuk-summary-card__action">
-                        <a class="govuk-link" href="/invoice/update-payment-request/@PaymentRequestId" id="update-payment-request" @onclick="UpdatePaymentRequest">Edit</a>
+                        <a class="govuk-link" href="/invoice/edit-payment-request/@PaymentRequestId" id="edit-payment-request" @onclick="UpdatePaymentRequest">Edit</a>
                     </li>
                 </ul>
             </div>
