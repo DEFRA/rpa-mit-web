@@ -2,10 +2,9 @@ using System.Net;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Helpers;
 using EST.MIT.Web.Interfaces;
-using EST.MIT.Web.Pages;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EST.MIT.Web.Services;
+namespace EST.MIT.Web.APIs;
 
 public class ApprovalAPI : IApprovalAPI
 {

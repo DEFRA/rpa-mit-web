@@ -8,6 +8,7 @@ using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authorization;
+using EST.MIT.Web.APIs;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;

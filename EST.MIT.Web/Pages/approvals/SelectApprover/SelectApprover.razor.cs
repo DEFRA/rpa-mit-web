@@ -69,6 +69,7 @@ public partial class SelectApprover : ComponentBase
 
             invoice.ApproverId = "user"; //TODO: fxs this needs to be the approver id, for now hard coded to 1
             invoice.ApproverEmail = approverSelect.ApproverEmail;
+            invoice.ApprovalRequestedByEmail = "user"; //TODO: fxs this needs to be email address for the requestor until Auth. work is implemented
 
             var response = await _approvalService.SubmitApprovalAsync(invoice);
             if (!response.IsSuccess)
