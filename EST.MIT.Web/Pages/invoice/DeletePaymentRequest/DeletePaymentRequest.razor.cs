@@ -14,23 +14,30 @@ public partial class DeletePaymentRequest : ComponentBase
 
     private async Task ConfirmDelete()
     {
-        var response = await _api.DeletePaymentRequestAsync(_invoiceStateContainer.Value, PaymentRequestId);
-
-        if (response.IsSuccess)
+        var invoice = _invoiceStateContainer.Value;
+        if (invoice is not null)
         {
-            if (response.Data != null)
+            var response = await _api.DeletePaymentRequestAsync(invoice, PaymentRequestId);
+
+            if (response.IsSuccess)
             {
-                _invoiceStateContainer.SetValue(response.Data);
-                _nav.NavigateTo($"/invoice/summary/{_invoiceStateContainer.Value.SchemeType}/{_invoiceStateContainer.Value.Id}");
+                if (response.Data != null)
+                {
+                    _invoiceStateContainer.SetValue(response.Data);
+                    _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
+                }
+
+                _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}");
             }
-
-            _nav.NavigateTo($"/invoice/summary/{_invoiceStateContainer.Value.SchemeType}/{_invoiceStateContainer.Value.Id}");
         }
-
     }
 
     private void CancelDelete()
     {
-        _nav.NavigateTo($"/invoice/summary/{_invoiceStateContainer.Value.SchemeType}/{_invoiceStateContainer.Value.Id}/{backUrl}");
+        var invoice = _invoiceStateContainer.Value;
+        if (invoice is not null)
+        {
+            _nav.NavigateTo($"/invoice/summary/{invoice.SchemeType}/{invoice.Id}/{backUrl}");
+        }
     }
 }

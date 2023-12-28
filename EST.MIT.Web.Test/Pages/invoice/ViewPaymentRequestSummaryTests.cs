@@ -44,7 +44,7 @@ public class ViewPaymentRequestSummaryTests : TestContext
     public void Invoice_Is_Not_Found()
     {
         _mockApprovalService.Setup(x => x.GetInvoiceAsync(It.IsAny<string>(), It.IsAny<string>()))
-            .Returns(Task.FromResult<Invoice>(null));
+            .Returns(Task.FromResult<Invoice>(null!));
 
         var component = RenderComponent<ViewPaymentRequestSummary>();
 

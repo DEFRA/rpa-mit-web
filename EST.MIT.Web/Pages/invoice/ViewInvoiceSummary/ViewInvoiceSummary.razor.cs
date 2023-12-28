@@ -30,12 +30,12 @@ public partial class ViewInvoiceSummary : ComponentBase
         readOnly = invoice?.Status != InvoiceStatuses.New;
     }
 
-    private async Task AddPaymentRequest()
+    private void AddPaymentRequest()
     {
         _nav.NavigateTo("/invoice/add-payment-request");
     }
 
-    private async Task SendForApproval()
+    private void SendForApproval()
     {
         _nav.NavigateTo("/approval/select");
     }

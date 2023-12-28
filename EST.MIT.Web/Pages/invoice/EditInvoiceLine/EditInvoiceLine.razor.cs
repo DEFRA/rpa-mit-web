@@ -31,10 +31,21 @@ public partial class EditInvoiceLine : ComponentBase
     {
         await base.OnInitializedAsync();
         invoice ??= _invoiceStateContainer.Value;
-        paymentRequest ??= invoice?.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
+        if (invoice is null) return;
+
+        paymentRequest ??= invoice.PaymentRequests.First(x => x.PaymentRequestId == PaymentRequestId);
         invoiceLine ??= paymentRequest?.InvoiceLines.First(x => x.Id.ToString() == InvoiceLineId);
 
-        var accountsResult = await _referenceDataAPI.GetAccountsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+        await PopulateAccountsDropdown(invoice);
+        await PopulateDeliveryBodiesDropdown(invoice);
+        await PopulateSchemesDropdown(invoice);
+        await PopulateMarketingYearsDropdown(invoice);
+        await PopulateFundsDropdown(invoice);
+    }
+
+    private async Task PopulateAccountsDropdown(Invoice invoice)
+    {
+        var accountsResult = await _referenceDataAPI.GetAccountsAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
         if (accountsResult.IsSuccess)
         {
             foreach (var account in accountsResult.Data)
@@ -42,8 +53,11 @@ public partial class EditInvoiceLine : ComponentBase
                 allAccounts.Add(account.code, account.description);
             }
         }
+    }
 
-        var deliveryBodiesResult = await _referenceDataAPI.GetDeliveryBodiesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+    private async Task PopulateDeliveryBodiesDropdown(Invoice invoice)
+    {
+        var deliveryBodiesResult = await _referenceDataAPI.GetDeliveryBodiesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
         if (deliveryBodiesResult.IsSuccess)
         {
             foreach (var deliveryBody in deliveryBodiesResult.Data)
@@ -51,8 +65,11 @@ public partial class EditInvoiceLine : ComponentBase
                 allDeliveryBodies.Add(deliveryBody.code, deliveryBody.description);
             }
         }
+    }
 
-        var schemesResult = await _referenceDataAPI.GetSchemesAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+    private async Task PopulateSchemesDropdown(Invoice invoice)
+    {
+        var schemesResult = await _referenceDataAPI.GetSchemesAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
         if (schemesResult.IsSuccess)
         {
             foreach (var scheme in schemesResult.Data)
@@ -61,7 +78,11 @@ public partial class EditInvoiceLine : ComponentBase
             }
         }
 
-        var marketingYearsResult = await _referenceDataAPI.GetMarketingYearsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+    }
+
+    private async Task PopulateMarketingYearsDropdown(Invoice invoice)
+    {
+        var marketingYearsResult = await _referenceDataAPI.GetMarketingYearsAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
         if (marketingYearsResult.IsSuccess)
         {
             foreach (var marketingYear in marketingYearsResult.Data)
@@ -69,8 +90,11 @@ public partial class EditInvoiceLine : ComponentBase
                 allMarketingYears.Add(marketingYear.code, marketingYear.description);
             }
         }
+    }
 
-        var fundsResult = await _referenceDataAPI.GetFundsAsync(invoice?.AccountType, invoice?.Organisation, invoice?.SchemeType, invoice?.PaymentType);
+    private async Task PopulateFundsDropdown(Invoice invoice)
+    {
+        var fundsResult = await _referenceDataAPI.GetFundsAsync(invoice.AccountType, invoice.Organisation, invoice.SchemeType, invoice.PaymentType);
         if (fundsResult.IsSuccess)
         {
             foreach (var fund in fundsResult.Data)

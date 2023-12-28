@@ -11,7 +11,7 @@
     </section>
 
     <section class="govuk-width-container govuk-!-padding-top-3">
-        @if (errors.Count > 0)
+        @if (IsErrored && errors.Count > 0)
         {
             <div class="govuk-error-summary" data-module="govuk-error-summary" autofocus="autofocus">
                 <div role="alert">

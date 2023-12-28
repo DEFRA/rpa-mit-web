@@ -37,7 +37,7 @@ public class PaymentRequestCardTests : TestContext
         var component = RenderComponent<PaymentRequestCard>(parameters =>
         {
             parameters.Add(p => p.PaymentRequest, _paymentRequest);
-            parameters.Add(p => p._Parent, new ViewInvoiceSummary() { invoiceId = "testid", scheme = "testscheme" });
+            parameters.Add(p => p._Parent, new ViewInvoiceSummary());
         });
 
 

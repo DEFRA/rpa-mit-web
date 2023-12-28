@@ -15,7 +15,7 @@
 
 <section class="govuk-width-container">
 
-    @if (errors.Count > 0)
+    @if (IsErrored && errors.Count > 0)
     {
         <div class="govuk-error-summary" data-module="govuk-error-summary" autofocus="autofocus">
             <div role="alert">
