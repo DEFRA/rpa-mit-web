@@ -1,4 +1,5 @@
 using EST.MIT.Web.Helpers;
+using EST.MIT.Web.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -23,7 +24,7 @@ public class Invoice : Validatable
 
     public List<PaymentRequest> PaymentRequests { get; set; } = new List<PaymentRequest>();
 
-    public string Status { get; private set; } = "new";
+    public string Status { get; private set; } = InvoiceStatuses.New;
 
     public string Reference { get; set; } = default!;
 
