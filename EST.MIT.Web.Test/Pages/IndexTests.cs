@@ -5,7 +5,7 @@ public class IndexTests : TestContext
     [Fact]
     public void CreateNewInvoice_RendersSuccessfully()
     {
-        var component = RenderComponent<EST.MIT.Web.Pages.Index>();
+        var component = RenderComponent<Web.Pages.Index>();
 
         var title = component.FindAll("h2.govuk-heading-l")[0];
         var heading = component.FindAll("p.govuk-body")[0];
@@ -17,7 +17,7 @@ public class IndexTests : TestContext
     [Fact]
     public void Index_Sections_RendersSuccessfully()
     {
-        var component = RenderComponent<EST.MIT.Web.Pages.Index>();
+        var component = RenderComponent<Web.Pages.Index>();
         var chevronCards = component.FindAll("div.chevron-card__wrapper");
         var chevronCardLinks = component.FindAll("a.chevron-card__link");
         var chevronCardParagraphs = component.FindAll("p.chevron-card__description");
@@ -30,7 +30,7 @@ public class IndexTests : TestContext
     [Fact]
     public void FindInvoice_RendersSuccessfully()
     {
-        var component = RenderComponent<EST.MIT.Web.Pages.Index>();
+        var component = RenderComponent<Web.Pages.Index>();
         var chevronCardLink = component.FindAll("a.chevron-card__link")[2];
         var chevronCardParagraph = component.FindAll("p.chevron-card__description")[2];
 
@@ -42,7 +42,7 @@ public class IndexTests : TestContext
     [Fact]
     public void MyInvoices_RendersSuccessfully()
     {
-        var component = RenderComponent<EST.MIT.Web.Pages.Index>();
+        var component = RenderComponent<Web.Pages.Index>();
         var chevronCardLink = component.FindAll("a.chevron-card__link")[3];
         var chevronCardParagraph = component.FindAll("p.chevron-card__description")[3];
 
@@ -54,19 +54,19 @@ public class IndexTests : TestContext
     [Fact]
     public void MyApprovals_RendersSuccessfully()
     {
-        var component = RenderComponent<EST.MIT.Web.Pages.Index>();
+        var component = RenderComponent<Web.Pages.Index>();
         var chevronCardLink = component.FindAll("a.chevron-card__link")[4];
         var chevronCardParagraph = component.FindAll("p.chevron-card__description")[4];
 
         Assert.Equal("Show invoices awaiting your approval.", chevronCardParagraph.InnerHtml.Trim());
         Assert.Equal("My Approvals", chevronCardLink.InnerHtml);
-        Assert.Equal("/approval/mine", chevronCardLink.GetAttribute("href"));
+        Assert.Equal("user-approvals", chevronCardLink.GetAttribute("href"));
     }
 
     [Fact]
     public void MyUploads_RendersSuccessfully()
     {
-        var component = RenderComponent<EST.MIT.Web.Pages.Index>();
+        var component = RenderComponent<Web.Pages.Index>();
         var chevronCardLink = component.FindAll("a.chevron-card__link")[5];
         var chevronCardParagraph = component.FindAll("p.chevron-card__description")[5];
 

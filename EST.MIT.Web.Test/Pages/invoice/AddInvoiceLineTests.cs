@@ -70,7 +70,7 @@ public class AddInvoiceLineTests : TestContext
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
     }
 
-    public void SaveInvoiceLine_Navigates_To_Add_AmendHeader()
+    public void SaveInvoiceLine_Navigates_To_Add_EditHeader()
     {
         var IsErrored = false;
         var Errors = new Dictionary<string, List<string>>();
@@ -85,10 +85,10 @@ public class AddInvoiceLineTests : TestContext
         component.FindAll("button.govuk-button")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/amend-payment-request/1"));
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/view-invoice-lines/1"));
     }
 
-    public void SaveInvoiceLine_Navigates_To_Add_AmendHeader_On_Cancel()
+    public void SaveInvoiceLine_Navigates_To_Add_EditHeader_On_Cancel()
     {
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 
@@ -98,6 +98,6 @@ public class AddInvoiceLineTests : TestContext
         component.FindAll("a.govuk-link")[0].Click();
 
         var navigationManager = Services.GetService<NavigationManager>();
-        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/amend-payment-request/1"));
+        component.WaitForAssertion(() => navigationManager?.Uri.Should().Contain("/invoice/view-invoice-lines/1"));
     }
 }

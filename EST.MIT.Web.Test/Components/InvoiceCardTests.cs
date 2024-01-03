@@ -5,12 +5,12 @@ using EST.MIT.Web.Interfaces;
 
 namespace EST.MIT.Web.Tests.Components;
 
-public class UserInvoicesCardTests : TestContext
+public class InvoiceCardTests : TestContext
 {
     private readonly Mock<IInvoiceStateContainer> _mockInvoiceStateContainer;
     private readonly Invoice _invoice;
 
-    public UserInvoicesCardTests()
+    public InvoiceCardTests()
     {
         _invoice = new Invoice()
         {

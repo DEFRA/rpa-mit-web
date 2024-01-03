@@ -327,7 +327,7 @@ public class InvoiceAPITests
         savedInvoice = response.Data;
         savedInvoice.PaymentRequests.First(x => x.PaymentRequestId == "1").Value.Should().Be(3.45M);
 
-        // Amend Second Line (1.11 => 2.22)
+        // Edit Second Line (1.11 => 2.22)
         invoiceLine2.Value = 2.22M;
         response = await service.UpdateInvoiceAsync(invoice, paymentRequest, invoiceLine2);
         savedInvoice = response.Data;

@@ -1,0 +1,65 @@
+@page "/invoice/payment-request/details/{scheme}/{id}/{paymentRequestId}"
+
+@using Helpers
+@using EST.MIT.Web.Shared.Components.InvoiceMetaData
+@using EST.MIT.Web.Shared.Components.PaymentRequestDetails
+@using EST.MIT.Web.Shared.Components.InvoiceLineList
+
+@if (IsErrored)
+{
+    <section class="govuk-width-container govuk-!-padding-top-3">
+        <div class="govuk-error-summary" data-module="govuk-error-summary">
+            <div role="alert">
+                <h2 class="govuk-error-summary__title">
+                    There is a problem
+                </h2>
+                <div class="govuk-error-summary__body">
+                    <ul class="govuk-list govuk-error-summary__list">
+                        @foreach (var error in Errors)
+                        {
+                            <li>
+                                <a href="#@(error.Key)">@error.Value</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@if (!@invoice.IsNull())
+{
+    <section class="govuk-width-container govuk-!-padding-top-3">
+        <a class="govuk-back-link" href="/invoice/summary/@invoice.SchemeType/@invoice.Id/@backUrl">Back</a>
+        <h1 class="govuk-heading-l">
+            Payment Request Summary
+        </h1>
+
+        <InvoiceMetaData Invoice=invoice />
+
+        <div class="govuk-summary-card">
+            <div class="govuk-summary-card__title-wrapper">
+                <h2 class="govuk-summary-card__title">Payment Request Id: @PaymentRequestId</h2>
+            </div>
+            <div class="govuk-summary-card__content">
+                <PaymentRequestDetails PaymentRequest=@invoice.PaymentRequests.FirstOrDefault(x =>x.PaymentRequestId == @PaymentRequestId) Invoice=@invoice />
+            </div>
+        </div>
+
+        <h2 class="govuk-heading-m">Invoice Lines</h2>
+        <InvoiceLineList PaymentRequest=@invoice.PaymentRequests.FirstOrDefault(x =>x.PaymentRequestId == @PaymentRequestId) />
+    </section>
+
+    @if (Approval)
+    {
+        <section class="govuk-width-container govuk-!-padding-top-3">
+            <div class="govuk-form-group">
+                <div class="govuk-button-group">
+                    <button id="ApproveInvoice" type=submit class="govuk-button" data-prevent-double-click="true" data-module="govuk-button" @onclick="ApproveInvoice">Approve</button>
+                    <button id="RejectInvoice" type=submit class="govuk-button" data-module="govuk-button" data-prevent-double-click="true" @onclick="RejectInvoice">Reject</button>
+                </div>
+            </div>
+        </section>
+    }
+}
