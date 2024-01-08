@@ -8,12 +8,28 @@ using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.Identity.Web.TokenCacheProviders.InMemory;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
 
+
+//.AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
+
+// options.Configuration = new Microsoft.IdentityModel.Protocols.OpenIdConnect.OpenIdConnectConfiguration(builder.Configuration.GetSection("AzureAd").;
+
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+
+
+//builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+//    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+//    .EnableTokenAcquisitionToCallDownstreamApi(new string[] { $"https://test.api.crm.dynamics.com/user_impersonation" })
+//    .AddInMemoryTokenCaches();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
@@ -24,17 +40,21 @@ builder.Services.AddRepoServices();
 
 builder.Services.AddScoped<IInvoiceStateContainer, InvoiceStateContainer>();
 builder.Services.AddScoped<INavigationStateContainer, NavigationStateContainer>();
-builder.Services.AddSingleton<IUploadService, UploadService>();
-builder.Services.AddSingleton<IPageServices, PageServices>();
-builder.Services.AddSingleton<IFindService, FindService>();
-builder.Services.AddSingleton<IApprovalService, ApprovalService>();
-builder.Services.AddSingleton<IUploadAPI, UploadAPI>();
-builder.Services.AddSingleton<IUploadRepository, UploadRepository>();
+builder.Services.AddScoped<IUploadService, UploadService>();
+builder.Services.AddScoped<IPageServices, PageServices>();
+builder.Services.AddScoped<IFindService, FindService>();
+builder.Services.AddScoped<IApprovalService, ApprovalService>();
+builder.Services.AddScoped<IUploadAPI, UploadAPI>();
+builder.Services.AddScoped<IUploadRepository, UploadRepository>();
 
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireRole("ReadOnly").Build();
 });
+
+//builder.Services.AddTokenAcquisition()
+//    .AddInMemoryTokenCaches();
+
 
 var mappingConfig = new MapperConfiguration(mc =>
 {

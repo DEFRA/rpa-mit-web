@@ -1,6 +1,9 @@
 ﻿<CascadingAuthenticationState>
     <Router AppAssembly="@typeof(App).Assembly">
     <Found Context="routeData">
+
+   <AuthorizeView Roles="Administrator">User is an Administrator</AuthorizeView>
+
         <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>

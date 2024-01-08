@@ -6,6 +6,14 @@ using EST.MIT.Web.DTOs;
 using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using EST.MIT.Web.Interfaces;
+using Microsoft.Identity.Client;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Abstractions;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Authentication;
 
 namespace EST.MIT.Web.Services;
 public class InvoiceAPI : IInvoiceAPI
@@ -14,12 +22,17 @@ public class InvoiceAPI : IInvoiceAPI
     private readonly IMapper _autoMapper;
     private readonly IInvoiceRepository _invoiceRepository;
 
-    public InvoiceAPI(IInvoiceRepository invoiceRepository, ILogger<InvoiceAPI> logger, IMapper autoMapper)
+    private ITokenAcquisition _tokenAcquisition;
+    private IHttpContextAccessor _context;
+    private IAuthorizationHeaderProvider _authHeaderProvider;
+
+    public InvoiceAPI(IInvoiceRepository invoiceRepository, ILogger<InvoiceAPI> logger, IMapper autoMapper, ClaimsPrincipal p)
     {
         _logger = logger;
         _autoMapper = autoMapper;
         _invoiceRepository = invoiceRepository;
     }
+
     public async Task<Invoice> FindInvoiceAsync(SearchCriteria criteria)
     {
 
@@ -357,6 +370,21 @@ public class InvoiceAPI : IInvoiceAPI
 
     public async Task<IEnumerable<Invoice>> GetInvoicesAsync()
     {
+
+
+        //IPublicClientApplication app = PublicClientApplicationBuilder.Create("8f951190-7f12-4070-b579-f9a487470a56")
+        //    .Build();
+        //var t = app.AcquireTokenSilent(null, _account);
+
+        string[] scopes = new string[] { "openid" };
+
+      
+        string authorizationHeader = await _authHeaderProvider.CreateAuthorizationHeaderForUserAsync(scopes);
+
+
+        var accessToken = await _tokenAcquisition.GetAccessTokenForUserAsync(new[] { "openid" });
+
+
         var response = await _invoiceRepository.GetInvoicesAsync();
 
         if (response.StatusCode == HttpStatusCode.OK)

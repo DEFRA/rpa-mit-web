@@ -15,9 +15,12 @@
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
     <PackageReference Include="Azure.Storage.Blobs" Version="12.19.1" />
     <PackageReference Include="Azure.Storage.Queues" Version="12.17.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Identity.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.0" />
+    <PackageReference Include="Microsoft.Identity.Web.DownstreamApi" Version="2.16.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="Microsoft.Identity.Web" Version="1.26.0" />
-		<PackageReference Include="Microsoft.Identity.Web.UI" Version="1.26.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.4.0" />
     <Compile Update="Program.cs">
 	    <ExcludeFromCodeCoverage>true</ExcludeFromCodeCoverage>
     </Compile>

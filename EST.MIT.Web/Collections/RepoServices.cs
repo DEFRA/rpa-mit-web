@@ -7,9 +7,9 @@ public static partial class ServiceCollectionExtensions
 {
     public static IServiceCollection AddRepoServices(this IServiceCollection services)
     {
-        services.AddSingleton<IInvoiceRepository, InvoiceRepository>();
-        services.AddSingleton<IReferenceDataRepository, ReferenceDataRepository>();
-        services.AddSingleton<IApprovalRepository, ApprovalRepository>();
+        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        services.AddScoped<IReferenceDataRepository, ReferenceDataRepository>();
+        services.AddScoped<IApprovalRepository, ApprovalRepository>();
         return services;
     }
 }
