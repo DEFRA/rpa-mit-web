@@ -192,4 +192,20 @@ public class ViewInvoiceSummaryTests : TestContext
         value.Count.Should().Be(1);
         innerHtml.Should().Be("Send For Approval");
     }
+
+    [Fact]
+    public void When_Invoice_Has_InvoiceLines_With_Total_Value_Equals_Zero_Then_SendForApproval_Button_Is_Disabled()
+    {
+        //Arrange
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+
+        var component = RenderComponent<ViewInvoiceSummary>();
+
+        //Act
+        var value = component.FindAll("button#send-approval");
+
+        //Assert
+        value.Should().BeEmpty();
+        value.Should().HaveCount(0);
+    }
 }
