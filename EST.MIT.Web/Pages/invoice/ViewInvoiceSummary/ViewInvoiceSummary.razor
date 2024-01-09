@@ -67,9 +67,9 @@
         }
         else
         {
-            @if (invoice.Status == InvoiceStatuses.New)
+            @if (invoice.Status == InvoiceStatuses.New && invoice.PaymentRequests.Any(x => x.InvoiceLines.Sum(y => y.Value) > 0)) 
             {
-                <button id="send-approval" class="govuk-button govuk-button--secondary govuk-!-margin-left-1" data-prevent-double-click="true" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
+                <button id="send-approval" class="govuk-button govuk-button--secondary govuk-!-margin-left-1" data-prevent-double-click="true" data-module="govuk-button" @onclick="SendForApproval"> Send For Approval </button>
             }
 
             @foreach (var request in invoice.PaymentRequests)
