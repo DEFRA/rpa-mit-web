@@ -92,6 +92,14 @@ public class ViewInvoiceSummaryTests : TestContext
     [Fact]
     public void SendForApproval_Navigates_To_Select_Approval_Page()
     {
+        _invoice.PaymentRequests[0].InvoiceLines.Add(new InvoiceLine()
+        {
+            Value = 34.67M,
+            DeliveryBody = "RP00",
+            SchemeCode = "BPS",
+            Description = "G00 - Gross Value"
+        });
+
         _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
 
         var component = RenderComponent<ViewInvoiceSummary>(parameters =>
@@ -103,5 +111,101 @@ public class ViewInvoiceSummaryTests : TestContext
         component.WaitForAssertion(() =>
             navigationManager?.Uri.Should().Be("http://localhost/approval/select")
         );
+    }
+
+    [Fact]
+    public void When_Invoice_Has_No_Invoicelines_Then_SendForApproval_Button_Is_Disabled()
+    {
+        //Arrange
+        var invoice = new Invoice()
+        {
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "1234567890",
+                    SourceSystem = "",
+                    MarketingYear = "0",
+                    PaymentRequestNumber = 0,
+                    AgreementNumber = "",
+                    Value = 0,
+                    DueDate = "",
+                    Currency = "GBP"
+                }
+            }
+        };
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(invoice);
+
+        var component = RenderComponent<ViewInvoiceSummary>();
+
+        //Act
+        var value = component.FindAll("button#send-approval");
+
+        //Assert
+        value.Should().BeEmpty();
+        value.Should().HaveCount(0);
+    }
+
+    [Fact]
+    public void When_Invoice_Has_At_Least_One_InvoiceLine_With_Total_Value_Greater_Than_Zero_Then_SendForApproval_Button_Is_Enaabled()
+    {
+        //Arrange
+        var invoice = new Invoice()
+        {
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "1234567890",
+                    SourceSystem = "",
+                    MarketingYear = "0",
+                    PaymentRequestNumber = 0,
+                    AgreementNumber = "",
+                    Value = 0,
+                    DueDate = "",
+                    Currency = "GBP",
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                        new InvoiceLine()
+                        {
+                             Value = 34.89M
+                        },
+                        new InvoiceLine()
+                        {
+                            Value= 23.90M
+                        }
+                    }
+                }
+            }
+        };
+
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(invoice);
+
+        var component = RenderComponent<ViewInvoiceSummary>();
+
+        //Act
+        var value = component.FindAll("button#send-approval");
+        var innerHtml = value[0].InnerHtml;
+
+        //Assert
+        value.Should().NotBeEmpty();
+        value.Count.Should().Be(1);
+        innerHtml.Should().Be("Send For Approval");
+    }
+
+    [Fact]
+    public void When_Invoice_Has_InvoiceLines_With_Total_Value_Equals_Zero_Then_SendForApproval_Button_Is_Disabled()
+    {
+        //Arrange
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+
+        var component = RenderComponent<ViewInvoiceSummary>();
+
+        //Act
+        var value = component.FindAll("button#send-approval");
+
+        //Assert
+        value.Should().BeEmpty();
+        value.Should().HaveCount(0);
     }
 }
