@@ -30,11 +30,11 @@ public class ApprovalService : IApprovalService
 
     public async Task<bool> ApproveInvoiceAsync(Invoice invoice)
     {
-        var creatorNotification = new NotificationBuilder()
+        var requestorNotification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
-                                .WithAction(NotificationType.creatorApproved)
-                                .WithEmailRecipient(invoice.CreatedBy)
+                                .WithAction(NotificationType.requestorApproved)
+                                .WithEmailRecipient(invoice.ApprovalRequestedByEmail)
                                 .WithData(new NotificationInvoiceApprove
                                 {
                                     ApproverEmail = invoice.ApproverEmail
@@ -54,7 +54,7 @@ public class ApprovalService : IApprovalService
 
         try
         {
-            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Approved, invoice, creatorNotification, approverNotification);
+            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Approved, invoice, requestorNotification, approverNotification);
             if (!result.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Approval failed");
@@ -72,11 +72,11 @@ public class ApprovalService : IApprovalService
 
     public async Task<bool> RejectInvoiceAsync(Invoice invoice, string reason)
     {
-        var creatorNotification = new NotificationBuilder()
+        var requestorNotification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
-                                .WithAction(NotificationType.creatorRejected)
-                                .WithEmailRecipient(invoice.CreatedBy)
+                                .WithAction(NotificationType.requestorRejected)
+                                .WithEmailRecipient(invoice.ApprovalRequestedByEmail)
                                 .WithData(new NotificationInvoiceReject
                                 {
                                     Reason = reason
@@ -96,7 +96,7 @@ public class ApprovalService : IApprovalService
 
         try
         {
-            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Rejected, invoice, creatorNotification, approverNotification);
+            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Rejected, invoice, requestorNotification, approverNotification);
 
             if (!result.IsSuccess)
             {
@@ -115,11 +115,11 @@ public class ApprovalService : IApprovalService
     public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice)
     {
         var errors = new Dictionary<string, List<string>>();
-        var creatorNotification = new NotificationBuilder()
+        var requestorNotification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
-                                .WithAction(NotificationType.creatorApproval)
-                                .WithEmailRecipient(invoice.CreatedBy)
+                                .WithAction(NotificationType.requestorApproval)
+                                .WithEmailRecipient(invoice.ApprovalRequestedByEmail)
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
@@ -147,7 +147,7 @@ public class ApprovalService : IApprovalService
 
         try
         {
-            var response = await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, creatorNotification, approverNotification);
+            var response = await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, requestorNotification, approverNotification);
             if (!response.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Submission failed");
@@ -164,7 +164,7 @@ public class ApprovalService : IApprovalService
             };
         }
     }
-    public async Task<ApiResponse<Invoice>> UpdateAndNotifyAsync(string status, Invoice invoice, Notification creatorNotification, Notification approverNotification)
+    public async Task<ApiResponse<Invoice>> UpdateAndNotifyAsync(string status, Invoice invoice, Notification requestorNotification, Notification approverNotification)
     {
         try
         {
@@ -184,7 +184,7 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Updated");
 
-            var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", creatorNotification.ToMessage());
+            var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", requestorNotification.ToMessage());
             if (!addedToQueue)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");
@@ -194,8 +194,8 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Added to queue");
 
-            var addedToCreatorNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(creatorNotification);
-            if (!addedToCreatorNotificationQueue)
+            var addedToRequestorNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(requestorNotification);
+            if (!addedToRequestorNotificationQueue)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
                 response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
