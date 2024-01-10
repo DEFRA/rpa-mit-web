@@ -27,7 +27,7 @@ public class NotificationQueueServiceTests
     [Fact]
     public async Task AddInvoiceApprovalNotification_ReturnsSuccess()
     {
-        var notification = new Notification(Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296").ToString(), "CP", "approval", "email@defra.gov.uk", new NotificationInvoiceApprove { ApproverEmail = "approver@example.com" });
+        var notification = new Notification(Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296").ToString(), "CP", "approval", "approver@defra.gov.uk", "creator@defra.gov.uk", new NotificationInvoiceApprove { ApproverEmail = "approver@example.com" });
 
         mockQueueClient.Setup(q => q.SendMessageAsync(It.IsAny<string>(), null, null, CancellationToken.None))
             .ReturnsAsync(Response.FromValue(It.IsAny<SendReceipt>(), new Mock<Response>().Object));
@@ -40,7 +40,7 @@ public class NotificationQueueServiceTests
     [Fact]
     public async Task AddOutstandingApprovalNotification_ReturnsSuccess()
     {
-        var notification = new Notification(Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296").ToString(), "CS", "approval", "email@defra.gov.uk", new NotificationOutstandingApproval { Name = "Invoice Name", Link = "http://defra.gov.uk", Value = "1000", InvoiceId = Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296").ToString(), SchemeType = "CS" });
+        var notification = new Notification(Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296").ToString(), "CS", "approval", "approver@defra.gov.uk", "creator@defra.gov.uk", new NotificationOutstandingApproval { Name = "Invoice Name", Link = "http://defra.gov.uk", Value = "1000", InvoiceId = Guid.Parse("f3939c6a-3527-4c0a-a649-f662f116d296").ToString(), SchemeType = "CS" });
 
         mockQueueClient.Setup(q => q.SendMessageAsync(It.IsAny<string>(), null, null, CancellationToken.None))
             .ReturnsAsync(Response.FromValue(It.IsAny<SendReceipt>(), new Mock<Response>().Object));

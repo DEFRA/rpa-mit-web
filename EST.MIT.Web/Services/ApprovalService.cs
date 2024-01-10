@@ -34,9 +34,12 @@ public class ApprovalService : IApprovalService
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
                                 .WithAction(NotificationType.approved)
+                                .WithApproverEmail(invoice.ApproverEmail)
+                                .WithCreatorEmail(invoice.CreatedBy)
                                 .WithData(new NotificationInvoiceApprove
                                 {
-                                    ApproverEmail = "user"
+                                    ApproverEmail = invoice.ApproverEmail,
+                                    CreatorEmail = invoice.CreatedBy
                                 })
                             .Build();
 
@@ -58,16 +61,19 @@ public class ApprovalService : IApprovalService
     }
 
 
-    public async Task<bool> RejectInvoiceAsync(Invoice invoice, string justification)
+    public async Task<bool> RejectInvoiceAsync(Invoice invoice, string reason)
     {
         var notification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
                                 .WithAction(NotificationType.rejected)
+                                .WithApproverEmail(invoice.ApproverEmail)
+                                .WithCreatorEmail(invoice.CreatedBy)
                                 .WithData(new NotificationInvoiceReject
                                 {
-                                    Justification = justification,
-                                    Approver = "user"
+                                    ApproverEmail = invoice.ApproverEmail,
+                                    CreatorEmail = invoice.CreatedBy,
+                                    Reason = reason
                                 })
                             .Build();
         try
@@ -95,14 +101,15 @@ public class ApprovalService : IApprovalService
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
                                 .WithAction(NotificationType.approval)
-                                .WithEmailRecipient(invoice.ApproverEmail)
+                                .WithApproverEmail(invoice.ApproverEmail)
+                                .WithCreatorEmail(invoice.CreatedBy)
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
                                     Link = $"{_context.HttpContext.GetBaseURI()}/invoice/details/{invoice.SchemeType}/{invoice.Id}/true",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),
-                                    SchemeType = invoice.SchemeType
+                                    SchemeType = invoice.SchemeType,
                                 })
                             .Build();
 
@@ -126,6 +133,24 @@ public class ApprovalService : IApprovalService
         }
     }
 
+    public enum UserType
+    {
+        Approver,
+        Creator
+    }
+    public string GetAction(string action, UserType userType)
+    {
+        return (action, userType) switch
+        {
+            ("approval", UserType.Approver) => "approverApproval",
+            ("approved", UserType.Approver) => "approverApproved",
+            ("rejected", UserType.Approver) => "approverRejected",
+            ("approval", UserType.Creator) => "creatorApproval",
+            ("approved", UserType.Creator) => "creatorApproved",
+            ("rejected", UserType.Creator) => "creatorRejected",
+            _ => null
+        };
+    }
     public async Task<ApiResponse<Invoice>> UpdateAndNotifyAsync(string status, Invoice invoice, Notification notification)
     {
         try
@@ -156,13 +181,18 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Added to queue");
 
-            var addedToNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(notification);
-            if (!addedToNotificationQueue)
+            var notificationAction = notification.Action;
+            foreach (UserType userType in (UserType[])Enum.GetValues(typeof(UserType)))
             {
-                _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
-                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
-                response.IsSuccess = false;
-                return response;
+                notification.Action = GetAction(notificationAction, userType);
+                var addedToNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(notification);
+                if (!addedToNotificationQueue)
+                {
+                    _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
+                    response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
+                    response.IsSuccess = false;
+                    return response;
+                }
             }
 
             return response;

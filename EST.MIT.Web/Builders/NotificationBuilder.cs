@@ -7,7 +7,8 @@ public class NotificationBuilder
     private string _id = default!;
     private string _scheme = default!;
     private string _action = default!;
-    private string _emailRecipient = default!;
+    private string _approverEmail = default!;
+    private string _creatorEmail = default!;
     private object _data = default!;
 
     public NotificationBuilder WithId(string id)
@@ -28,9 +29,15 @@ public class NotificationBuilder
         return this;
     }
 
-    public NotificationBuilder WithEmailRecipient(string emailRecipient)
+    public NotificationBuilder WithApproverEmail(string approverEmail)
     {
-        _emailRecipient = emailRecipient;
+        _approverEmail = approverEmail;
+        return this;
+    }
+
+    public NotificationBuilder WithCreatorEmail(string creatorEmail)
+    {
+        _creatorEmail = creatorEmail;
         return this;
     }
 
@@ -57,6 +64,6 @@ public class NotificationBuilder
             throw new InvalidOperationException("Action cannot be null.");
         }
 
-        return new Notification(_id, _scheme, _action, _emailRecipient, _data);
+        return new Notification(_id, _scheme, _action, _approverEmail, _creatorEmail, _data);
     }
 }
