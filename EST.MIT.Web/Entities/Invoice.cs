@@ -49,7 +49,7 @@ public class Invoice : Validatable
     [JsonIgnore]
     public decimal TotalValueOfPaymentsEUR => PaymentRequests.Where(x => x.Currency == "EUR").Sum(x => x.Value);
     [JsonIgnore]
-    public bool CanBeApproved => PaymentRequests.All(x => x.InvoiceLines.Sum(x => x.Value) != 0);
+    public bool CanBeApproved => Status == "new" && PaymentRequests.All(x => x.Value != 0 && x.InvoiceLines.Count != 0);    
 
     public string ApprovalGroup
     {

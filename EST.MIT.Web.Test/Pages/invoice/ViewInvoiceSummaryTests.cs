@@ -114,7 +114,7 @@ public class ViewInvoiceSummaryTests : TestContext
     }
 
     [Fact]
-    public void When_Invoice_Has_No_Invoicelines_Then_SendForApproval_Button_Is_Disabled()
+    public void When_Invoice_Has_PaymentRequest_With_No_Invoicelines_Then_SendForApproval_Button_Is_Disabled()
     {
         //Arrange
         var invoice = new Invoice()
@@ -147,7 +147,7 @@ public class ViewInvoiceSummaryTests : TestContext
     }
 
     [Fact]
-    public void When_Invoice_Has_At_Least_One_InvoiceLine_With_Total_Value_Greater_Than_Zero_Then_SendForApproval_Button_Is_Enaabled()
+    public void When_Invoice_Has_PaymentRequest_With_At_Least_One_InvoiceLine_With_Value_Not_Zero_Then_SendForApproval_Button_Is_Enaabled()
     {
         //Arrange
         var invoice = new Invoice()
@@ -169,11 +169,7 @@ public class ViewInvoiceSummaryTests : TestContext
                         new InvoiceLine()
                         {
                              Value = 34.89M
-                        },
-                        new InvoiceLine()
-                        {
-                            Value= 23.90M
-                        }
+                        } 
                     }
                 }
             }
@@ -194,7 +190,7 @@ public class ViewInvoiceSummaryTests : TestContext
     }
 
     [Fact]
-    public void When_Invoice_Has_InvoiceLines_With_Total_Value_Equals_Zero_Then_SendForApproval_Button_Is_Disabled()
+    public void When_Invoice_Has_PaymentRequest_With__InvoiceLines_With_Total_Value_Equals_Zero_Then_SendForApproval_Button_Is_Disabled()
     {
         //Arrange
         _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
