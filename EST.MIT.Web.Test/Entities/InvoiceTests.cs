@@ -245,7 +245,7 @@ public class InvoiceTests
         };
 
         //Assert
-        Assert.Equal(false, invoice.CanBeApproved);
+        Assert.Equal(false, invoice.CanBeSentForApproval);
     }
 
     [Fact]
@@ -278,7 +278,7 @@ public class InvoiceTests
         };
 
         //Assert
-        Assert.Equal(true, invoice.CanBeApproved);
+        Assert.Equal(true, invoice.CanBeSentForApproval);
     }
 
     [Fact]
@@ -327,7 +327,7 @@ public class InvoiceTests
         };
 
         //Assert
-        Assert.Equal(false, invoice.CanBeApproved);
+        Assert.Equal(false, invoice.CanBeSentForApproval);
     }
 
     private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
