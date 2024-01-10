@@ -30,22 +30,31 @@ public class ApprovalService : IApprovalService
 
     public async Task<bool> ApproveInvoiceAsync(Invoice invoice)
     {
-        var notification = new NotificationBuilder()
+        var creatorNotification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
-                                .WithAction(NotificationType.approved)
-                                .WithApproverEmail(invoice.ApproverEmail)
-                                .WithCreatorEmail(invoice.CreatedBy)
+                                .WithAction(NotificationType.creatorApproved)
+                                .WithEmailRecipient(invoice.CreatedBy)
                                 .WithData(new NotificationInvoiceApprove
                                 {
-                                    ApproverEmail = invoice.ApproverEmail,
-                                    CreatorEmail = invoice.CreatedBy
+                                    ApproverEmail = invoice.ApproverEmail
+                                })
+                            .Build();
+
+        var approverNotification = new NotificationBuilder()
+                                .WithId(invoice.Id.ToString())
+                                .WithScheme(invoice.SchemeType)
+                                .WithAction(NotificationType.approverApproved)
+                                .WithEmailRecipient(invoice.ApproverEmail)
+                                .WithData(new NotificationInvoiceApprove
+                                {
+                                    ApproverEmail = invoice.ApproverEmail
                                 })
                             .Build();
 
         try
         {
-            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Approved, invoice, notification);
+            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Approved, invoice, creatorNotification, approverNotification);
             if (!result.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Approval failed");
@@ -63,22 +72,31 @@ public class ApprovalService : IApprovalService
 
     public async Task<bool> RejectInvoiceAsync(Invoice invoice, string reason)
     {
-        var notification = new NotificationBuilder()
+        var creatorNotification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
-                                .WithAction(NotificationType.rejected)
-                                .WithApproverEmail(invoice.ApproverEmail)
-                                .WithCreatorEmail(invoice.CreatedBy)
+                                .WithAction(NotificationType.creatorRejected)
+                                .WithEmailRecipient(invoice.CreatedBy)
                                 .WithData(new NotificationInvoiceReject
                                 {
-                                    ApproverEmail = invoice.ApproverEmail,
-                                    CreatorEmail = invoice.CreatedBy,
                                     Reason = reason
                                 })
                             .Build();
+
+        var approverNotification = new NotificationBuilder()
+                                .WithId(invoice.Id.ToString())
+                                .WithScheme(invoice.SchemeType)
+                                .WithAction(NotificationType.approverRejected)
+                                .WithEmailRecipient(invoice.ApproverEmail)
+                                .WithData(new NotificationInvoiceReject
+                                {
+                                    Reason = reason
+                                })
+                            .Build();
+
         try
         {
-            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Rejected, invoice, notification);
+            var result = await UpdateAndNotifyAsync(InvoiceStatuses.Rejected, invoice, creatorNotification, approverNotification);
 
             if (!result.IsSuccess)
             {
@@ -97,12 +115,26 @@ public class ApprovalService : IApprovalService
     public async Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice)
     {
         var errors = new Dictionary<string, List<string>>();
-        var notification = new NotificationBuilder()
+        var creatorNotification = new NotificationBuilder()
                                 .WithId(invoice.Id.ToString())
                                 .WithScheme(invoice.SchemeType)
-                                .WithAction(NotificationType.approval)
-                                .WithApproverEmail(invoice.ApproverEmail)
-                                .WithCreatorEmail(invoice.CreatedBy)
+                                .WithAction(NotificationType.creatorApproval)
+                                .WithEmailRecipient(invoice.CreatedBy)
+                                .WithData(new NotificationOutstandingApproval
+                                {
+                                    Name = invoice.ApproverEmail,
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/details/{invoice.SchemeType}/{invoice.Id}/true",
+                                    Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
+                                    InvoiceId = invoice.Id.ToString(),
+                                    SchemeType = invoice.SchemeType,
+                                })
+                            .Build();
+
+        var approverNotification = new NotificationBuilder()
+                                .WithId(invoice.Id.ToString())
+                                .WithScheme(invoice.SchemeType)
+                                .WithAction(NotificationType.approverApproval)
+                                .WithEmailRecipient(invoice.ApproverEmail)
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
@@ -115,7 +147,7 @@ public class ApprovalService : IApprovalService
 
         try
         {
-            var response = await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, notification);
+            var response = await UpdateAndNotifyAsync(InvoiceStatuses.AwaitingApproval, invoice, creatorNotification, approverNotification);
             if (!response.IsSuccess)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Submission failed");
@@ -132,26 +164,7 @@ public class ApprovalService : IApprovalService
             };
         }
     }
-
-    public enum UserType
-    {
-        Approver,
-        Creator
-    }
-    public string GetAction(string action, UserType userType)
-    {
-        return (action, userType) switch
-        {
-            ("approval", UserType.Approver) => "approverApproval",
-            ("approved", UserType.Approver) => "approverApproved",
-            ("rejected", UserType.Approver) => "approverRejected",
-            ("approval", UserType.Creator) => "creatorApproval",
-            ("approved", UserType.Creator) => "creatorApproved",
-            ("rejected", UserType.Creator) => "creatorRejected",
-            _ => null
-        };
-    }
-    public async Task<ApiResponse<Invoice>> UpdateAndNotifyAsync(string status, Invoice invoice, Notification notification)
+    public async Task<ApiResponse<Invoice>> UpdateAndNotifyAsync(string status, Invoice invoice, Notification creatorNotification, Notification approverNotification)
     {
         try
         {
@@ -171,7 +184,7 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Updated");
 
-            var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", notification.ToMessage());
+            var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", creatorNotification.ToMessage());
             if (!addedToQueue)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");
@@ -181,18 +194,22 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Added to queue");
 
-            var notificationAction = notification.Action;
-            foreach (UserType userType in (UserType[])Enum.GetValues(typeof(UserType)))
+            var addedToCreatorNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(creatorNotification);
+            if (!addedToCreatorNotificationQueue)
             {
-                notification.Action = GetAction(notificationAction, userType);
-                var addedToNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(notification);
-                if (!addedToNotificationQueue)
-                {
-                    _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
-                    response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
-                    response.IsSuccess = false;
-                    return response;
-                }
+                _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
+                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
+                response.IsSuccess = false;
+                return response;
+            }
+
+            var addedToApproverNotificationQueue = await _notificationQueueService.AddMessageToQueueAsync(approverNotification);
+            if (!addedToApproverNotificationQueue)
+            {
+                _logger.LogError($"Invoice {invoice.Id}: Failed to add to notification queue");
+                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to notification queue" });
+                response.IsSuccess = false;
+                return response;
             }
 
             return response;

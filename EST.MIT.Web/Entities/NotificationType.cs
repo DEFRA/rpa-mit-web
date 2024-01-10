@@ -4,5 +4,11 @@ public enum NotificationType
 {
     approval,
     approved,
-    rejected
+    rejected,
+    creatorApproval,
+    creatorApproved,
+    creatorRejected,
+    approverApproval,
+    approverApproved,
+    approverRejected,
 }
