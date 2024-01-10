@@ -229,4 +229,66 @@ public class ViewInvoiceSummaryTests : TestContext
         value.Should().BeEmpty();
         value.Should().HaveCount(0);
     }
+
+    [Fact]
+    public void When_Invoice_Has_PaymentRequests_With_InvoiceLines_Values_Then_TotalValues_Is_Displayed()
+    {
+        //Arrange
+        var invoice = new Invoice()
+        {
+            Id = new Guid(),
+            AccountType = "AR",
+            Organisation = "NE",
+            SchemeType = "CS",
+            PaymentType = "GBP",
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "9999999987",
+                    MarketingYear = "2023",
+                    Currency = "GBP",
+                    SBI = "1",
+                    AgreementNumber = "EXT345",
+                    Value = 30.67M,
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                            new InvoiceLine()
+                            {
+                                Value = 30.67M
+                            }
+                    }
+                },
+                new PaymentRequest()
+                {
+                    FRN = "4599999987",
+                    MarketingYear = "2023",
+                    Currency = "GBP",
+                    SBI = "1",
+                    AgreementNumber = "DE34",
+                    Value = 305.34M,
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                            new InvoiceLine()
+                            {
+                                Value = 305.34M
+                            }
+                    }
+                }
+            }
+        };
+
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(invoice);
+
+        var component = RenderComponent<ViewInvoiceSummary>();
+
+        //Act
+        var value = component.FindAll("dd#total-value-of-payments-gbp");
+        var innerHtml = value[0].InnerHtml;
+
+        //Assert
+        value.Should().NotBeEmpty();
+        value.Count.Should().Be(1);
+        innerHtml.Should().Be("336.01 GBP");
+    }
 }

@@ -67,7 +67,7 @@
         }
         else
         {
-            @if (invoice.Status == InvoiceStatuses.New && invoice.CanBeApproved)
+            @if (invoice.CanBeApproved)
             {
                 <button id="send-approval" class="govuk-button govuk-button--secondary govuk-!-margin-left-1" data-prevent-double-click="true" data-module="govuk-button" @onclick="SendForApproval">Send For Approval</button>
             }
