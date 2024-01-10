@@ -22,7 +22,7 @@ public class ViewInvoiceSummaryTests : TestContext
             MarketingYear = "0",
             PaymentRequestNumber = 0,
             AgreementNumber = "",
-            Value = 0,
+            Value = 4.54M,
             DueDate = "",
             Currency = "GBP",
             InvoiceLines = new List<InvoiceLine>()
@@ -30,7 +30,7 @@ public class ViewInvoiceSummaryTests : TestContext
 
         _invoice.PaymentRequests[0].InvoiceLines.Add(new InvoiceLine()
         {
-            Value = 0,
+            Value = 4.50M,
             DeliveryBody = "RP00",
             SchemeCode = "BPS",
             Description = "G00 - Gross Value"
@@ -161,7 +161,7 @@ public class ViewInvoiceSummaryTests : TestContext
                     MarketingYear = "0",
                     PaymentRequestNumber = 0,
                     AgreementNumber = "",
-                    Value = 0,
+                    Value = 34.89M,
                     DueDate = "",
                     Currency = "GBP",
                     InvoiceLines = new List<InvoiceLine>()
@@ -193,7 +193,32 @@ public class ViewInvoiceSummaryTests : TestContext
     public void When_Invoice_Has_PaymentRequest_With__InvoiceLines_With_Total_Value_Equals_Zero_Then_SendForApproval_Button_Is_Disabled()
     {
         //Arrange
-        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(_invoice);
+        var invoice = new Invoice()
+        {
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "1234567890",
+                    SourceSystem = "",
+                    MarketingYear = "0",
+                    PaymentRequestNumber = 0,
+                    AgreementNumber = "",
+                    Value = 0,
+                    DueDate = "",
+                    Currency = "GBP",
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                        new InvoiceLine()
+                        {
+                            Value = 0.00M
+                        }
+                    }
+                }
+            }
+        };
+
+        _mockApiService.Setup(x => x.FindInvoiceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(invoice);
 
         var component = RenderComponent<ViewInvoiceSummary>();
 

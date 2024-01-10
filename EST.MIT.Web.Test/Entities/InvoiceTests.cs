@@ -223,7 +223,7 @@ public class InvoiceTests
     }
 
     [Fact]
-    public void When_Invoice_Has_No_Invoicelines_Then_Invoice_Cannot_Be_Approved()
+    public void When_Invoice_Has_PaymentRequest_With_No_Invoicelines_Then_Invoice_Cannot_Be_Approved()
     {
         //Arrange
         var invoice = new Invoice()
@@ -249,7 +249,7 @@ public class InvoiceTests
     }
 
     [Fact]
-    public void When_Invoice_Has_At_Least_One_InvoiceLine_With_Total_Value_NotEqualTo_Zero_Then_Invoice_Can_Be_Approved()
+    public void When_Invoice_Has_PaymentRequest_With_At_Least_One_InvoiceLine_With_Value_NotEqualTo_Zero_Then_Invoice_Can_Be_Approved()
     {
         //Arrange
         var invoice = new Invoice()
@@ -263,7 +263,7 @@ public class InvoiceTests
                     MarketingYear = "0",
                     PaymentRequestNumber = 0,
                     AgreementNumber = "",
-                    Value = 0,
+                    Value = 34.89M,
                     DueDate = "",
                     Currency = "GBP",
                     InvoiceLines = new List<InvoiceLine>()
@@ -271,10 +271,6 @@ public class InvoiceTests
                         new InvoiceLine()
                         {
                              Value = 34.89M
-                        },
-                        new InvoiceLine()
-                        {
-                            Value= 23.90M
                         }
                     }
                 }
