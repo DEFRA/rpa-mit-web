@@ -222,6 +222,114 @@ public class InvoiceTests
         Assert.Equal(4, invoice.NumberOfPaymentRequests);
     }
 
+    [Fact]
+    public void When_Invoice_Has_PaymentRequest_With_No_Invoicelines_Then_Invoice_Cannot_Be_Approved()
+    {
+        //Arrange
+        var invoice = new Invoice()
+        {
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "1234567890",
+                    SourceSystem = "",
+                    MarketingYear = "0",
+                    PaymentRequestNumber = 0,
+                    AgreementNumber = "",
+                    Value = 0,
+                    DueDate = "",
+                    Currency = "GBP"
+                }
+            }
+        };
+
+        //Assert
+        Assert.Equal(false, invoice.CanBeSentForApproval);
+    }
+
+    [Fact]
+    public void When_Invoice_Has_PaymentRequest_With_At_Least_One_InvoiceLine_With_Value_NotEqualTo_Zero_Then_Invoice_Can_Be_Approved()
+    {
+        //Arrange
+        var invoice = new Invoice()
+        {
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "1234567890",
+                    SourceSystem = "",
+                    MarketingYear = "0",
+                    PaymentRequestNumber = 0,
+                    AgreementNumber = "",
+                    Value = 34.89M,
+                    DueDate = "",
+                    Currency = "GBP",
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                        new InvoiceLine()
+                        {
+                             Value = 34.89M
+                        }
+                    }
+                }
+            }
+        };
+
+        //Assert
+        Assert.Equal(true, invoice.CanBeSentForApproval);
+    }
+
+    [Fact]
+    public void When_Invoice_Has_PaymentRequest_With_No_InvoiceLines_Then_Invoice_Cannot_Be_Approved()
+    {
+        //Arrange
+        var invoice = new Invoice()
+        {
+            PaymentRequests = new List<PaymentRequest>()
+            {
+                new PaymentRequest()
+                {
+                    FRN = "1234567890",
+                    SourceSystem = "",
+                    MarketingYear = "0",
+                    PaymentRequestNumber = 0,
+                    AgreementNumber = "",
+                    Value = 0,
+                    DueDate = "",
+                    Currency = "GBP",
+                    InvoiceLines = new List<InvoiceLine>()
+                    {
+                        new InvoiceLine()
+                        {
+                             Value = 34.89M
+                        },
+                        new InvoiceLine()
+                        {
+                            Value= 23.90M
+                        }
+                    }
+                },
+
+                new PaymentRequest()
+                {
+                    FRN = "1234567890",
+                    SourceSystem = "",
+                    MarketingYear = "0",
+                    PaymentRequestNumber = 0,
+                    AgreementNumber = "",
+                    Value = 0,
+                    DueDate = "",
+                    Currency = "GBP"
+                }
+            }
+        };
+
+        //Assert
+        Assert.Equal(false, invoice.CanBeSentForApproval);
+    }
+
     private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
     {
         var validationResults = new System.Collections.Generic.List<ValidationResult>();
