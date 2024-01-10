@@ -34,7 +34,7 @@ public class Invoice : Validatable
 
     public string ApproverId { get; set; } = default!;
     public string ApproverEmail { get; set; } = default!;
-    public string ApprovalRequestedByEmail { get; set; } = default!;    
+    public string ApprovalRequestedByEmail { get; set; } = default!;
     public string ApprovedBy { get; set; } = default!;
     public DateTime? Approved { get; set; }
 
@@ -48,7 +48,6 @@ public class Invoice : Validatable
     public decimal TotalValueOfPaymentsGBP => PaymentRequests.Where(x => x.Currency == "GBP").Sum(x => x.Value);
     [JsonIgnore]
     public decimal TotalValueOfPaymentsEUR => PaymentRequests.Where(x => x.Currency == "EUR").Sum(x => x.Value);
-
     [JsonIgnore]
     public bool CanBeApproved => PaymentRequests.All(x => x.InvoiceLines.Sum(x => x.Value) != 0);
 
