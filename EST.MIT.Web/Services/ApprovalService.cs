@@ -184,8 +184,18 @@ public class ApprovalService : IApprovalService
             }
             _logger.LogInformation($"Invoice {invoice.Id}: Updated");
 
-            var addedToQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", requesterNotification.ToMessage());
-            if (!addedToQueue)
+            var addedToRequesterQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", requesterNotification.ToMessage());
+            if (!addedToRequesterQueue)
+            {
+                _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");
+                response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to queue" });
+                response.IsSuccess = false;
+                return response;
+            }
+            _logger.LogInformation($"Invoice {invoice.Id}: Added to queue");
+
+            var addedToApproverQueue = await _eventQueueService.AddMessageToQueueAsync("invoicenotification", approverNotification.ToMessage());
+            if (!addedToApproverQueue)
             {
                 _logger.LogError($"Invoice {invoice.Id}: Failed to add to queue");
                 response.Errors.Add("NotificationQueue", new List<string> { "Failed to add to queue" });
