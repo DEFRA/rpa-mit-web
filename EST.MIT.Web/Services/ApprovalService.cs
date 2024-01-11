@@ -38,7 +38,7 @@ public class ApprovalService : IApprovalService
                                 .WithData(new NotificationInvoiceApprove
                                 {
                                     ApproverEmail = invoice.ApproverEmail,
-                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),
                                     SchemeType = invoice.SchemeType,
@@ -88,7 +88,7 @@ public class ApprovalService : IApprovalService
                                 .WithData(new NotificationInvoiceReject
                                 {
                                     Reason = reason,
-                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),
                                     SchemeType = invoice.SchemeType,
@@ -139,7 +139,7 @@ public class ApprovalService : IApprovalService
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
-                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),
                                     SchemeType = invoice.SchemeType,
