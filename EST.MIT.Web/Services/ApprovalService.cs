@@ -123,7 +123,7 @@ public class ApprovalService : IApprovalService
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
-                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/details/{invoice.SchemeType}/{invoice.Id}/true",
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),
                                     SchemeType = invoice.SchemeType,
@@ -138,7 +138,7 @@ public class ApprovalService : IApprovalService
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
-                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/details/{invoice.SchemeType}/{invoice.Id}/true",
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),
                                     SchemeType = invoice.SchemeType,
