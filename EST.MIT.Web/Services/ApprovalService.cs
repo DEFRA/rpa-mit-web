@@ -37,7 +37,11 @@ public class ApprovalService : IApprovalService
                                 .WithEmailRecipient(invoice.ApprovalRequestedByEmail)
                                 .WithData(new NotificationInvoiceApprove
                                 {
-                                    ApproverEmail = invoice.ApproverEmail
+                                    ApproverEmail = invoice.ApproverEmail,
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
+                                    Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
+                                    InvoiceId = invoice.Id.ToString(),
+                                    SchemeType = invoice.SchemeType,
                                 })
                             .Build();
 
@@ -48,7 +52,11 @@ public class ApprovalService : IApprovalService
                                 .WithEmailRecipient(invoice.ApproverEmail)
                                 .WithData(new NotificationInvoiceApprove
                                 {
-                                    ApproverEmail = invoice.ApproverEmail
+                                    ApproverEmail = invoice.ApproverEmail,
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}",
+                                    Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
+                                    InvoiceId = invoice.Id.ToString(),
+                                    SchemeType = invoice.SchemeType,
                                 })
                             .Build();
 
@@ -79,7 +87,11 @@ public class ApprovalService : IApprovalService
                                 .WithEmailRecipient(invoice.ApprovalRequestedByEmail)
                                 .WithData(new NotificationInvoiceReject
                                 {
-                                    Reason = reason
+                                    Reason = reason,
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
+                                    Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
+                                    InvoiceId = invoice.Id.ToString(),
+                                    SchemeType = invoice.SchemeType,
                                 })
                             .Build();
 
@@ -90,7 +102,11 @@ public class ApprovalService : IApprovalService
                                 .WithEmailRecipient(invoice.ApproverEmail)
                                 .WithData(new NotificationInvoiceReject
                                 {
-                                    Reason = reason
+                                    Reason = reason,
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}",
+                                    Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
+                                    InvoiceId = invoice.Id.ToString(),
+                                    SchemeType = invoice.SchemeType,
                                 })
                             .Build();
 
@@ -138,7 +154,7 @@ public class ApprovalService : IApprovalService
                                 .WithData(new NotificationOutstandingApproval
                                 {
                                     Name = invoice.ApproverEmail,
-                                    Link = $"{_context.HttpContext.GetBaseURI()}/invoice/summary/{invoice.SchemeType}/{invoice.Id}/user-invoices",
+                                    Link = $"{_context.HttpContext.GetBaseURI()}/user-approvals",
                                     Value = invoice.PaymentRequests.Sum(x => x.Value).ToString(),
                                     InvoiceId = invoice.Id.ToString(),
                                     SchemeType = invoice.SchemeType,
