@@ -10,6 +10,7 @@ public partial class ApprovalRejectionConfirmation : ComponentBase
     [Inject] private IPageServices _pageServices { get; set; }
     [Inject] private IApprovalService _approvalService { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
+    [Parameter] public string Id { get; set; }
 
     private Invoice invoice;
     private Approval _approval = new();
