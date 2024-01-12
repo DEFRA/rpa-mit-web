@@ -47,7 +47,7 @@ public partial class ApprovalConfirm : ComponentBase
     {
         try
         {
-            var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification);
+            var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Reason);
             if (result)
             {
                 _nav.NavigateTo($"/approval/confirmation/rejected/{invoice.Id}");

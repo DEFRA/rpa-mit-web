@@ -62,7 +62,7 @@ public class ApprovalServiceTests
 
         var service = new ApprovalService(_mockQueueService.Object, _mockNotificationQueueService.Object, _mockApiService.Object, _mockApprovalApi.Object, Mock.Of<ILogger<ApprovalService>>(), Mock.Of<IHttpContextAccessor>());
 
-        var response = await service.RejectInvoiceAsync(new Invoice() { SchemeType = "BPS" }, "Justification");
+        var response = await service.RejectInvoiceAsync(new Invoice() { SchemeType = "BPS" }, "Reason");
 
         response.Should().BeTrue();
     }
