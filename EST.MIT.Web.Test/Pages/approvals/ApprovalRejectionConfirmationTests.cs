@@ -51,9 +51,10 @@ public class ApprovalRejectionConfirmationTests : TestContext
     private class FakeNavigationManager : NavigationManager, IDisposable
     {
         public string NavigateToLocation { get; private set; } = default!;
+        private const string id = "3f915751-b2fa-49f0-853d-336b031833f8";
         public FakeNavigationManager()
         {
-            Uri = "http://localhost/approval/confirmation/approved";
+            Uri = $"http://localhost/approval/confirmation/approved/{id}";
             EnsureInitialized();
         }
 
@@ -66,7 +67,7 @@ public class ApprovalRejectionConfirmationTests : TestContext
 
         protected sealed override void EnsureInitialized()
         {
-            Initialize("http://localhost/", "http://localhost/approval/confirmation/approved");
+            Initialize("http://localhost/", $"http://localhost/approval/confirmation/approved/{id}");
         }
 
         public void Dispose() { }

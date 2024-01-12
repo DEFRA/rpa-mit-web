@@ -16,7 +16,7 @@ public partial class ApprovalRejectionConfirmation : ComponentBase
     {
         get
         {
-            return ApprovalType.ToLower() == "rejected";
+            return (ApprovalType is not null) && ApprovalType.ToLower() == "rejected";
         }
     }
 }
