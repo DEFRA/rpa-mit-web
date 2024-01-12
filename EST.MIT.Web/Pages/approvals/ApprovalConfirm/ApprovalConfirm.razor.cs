@@ -29,7 +29,7 @@ public partial class ApprovalConfirm : ComponentBase
             var result = await _approvalService.ApproveInvoiceAsync(invoice);
             if (result)
             {
-                _nav.NavigateTo($"/approval/confirmation/approved");
+                _nav.NavigateTo($"/approval/confirmation/approved/{invoice.Id}");
             }
             else
             {
@@ -47,10 +47,10 @@ public partial class ApprovalConfirm : ComponentBase
     {
         try
         {
-            var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Justification);
+            var result = await _approvalService.RejectInvoiceAsync(invoice, _approval.Reason);
             if (result)
             {
-                _nav.NavigateTo($"/approval/confirmation/rejected");
+                _nav.NavigateTo($"/approval/confirmation/rejected/{invoice.Id}");
             }
             else
             {

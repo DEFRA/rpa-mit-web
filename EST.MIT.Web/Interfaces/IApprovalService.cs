@@ -7,7 +7,7 @@ public interface IApprovalService
 {
     Task<Invoice> GetInvoiceAsync(string id, string scheme);
     Task<bool> ApproveInvoiceAsync(Invoice invoice);
-    Task<bool> RejectInvoiceAsync(Invoice invoice, string justification);
+    Task<bool> RejectInvoiceAsync(Invoice invoice, string reason);
     Task<ApiResponse<Invoice>> SubmitApprovalAsync(Invoice invoice);
     Task<Dictionary<string, string>> GetApproversAsync(string scheme, string value);
     Task<ApiResponse<BoolRef>> ValidateApproverAsync(string approver, string scheme);

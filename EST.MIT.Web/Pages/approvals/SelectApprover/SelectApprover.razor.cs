@@ -1,6 +1,7 @@
 using EST.MIT.Web.Entities;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Interfaces;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace EST.MIT.Web.Pages.approvals.SelectApprover;
 
@@ -11,12 +12,14 @@ public partial class SelectApprover : ComponentBase
     [Inject] public IApprovalService _approvalService { get; set; } = default!;
     [Inject] public NavigationManager _nav { get; set; } = default!;
     [Inject] public ILogger<SelectApprover> Logger { get; set; } = default!;
+    [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
 
     private Invoice invoice = default!;
     private readonly ApproverSelect approverSelect = new();
     private bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
     private bool ShowErrorSummary = false;
+    private string userEmail = "user";
 
     protected override async Task OnInitializedAsync()
     {
@@ -24,6 +27,15 @@ public partial class SelectApprover : ComponentBase
         {
             await base.OnInitializedAsync();
             invoice ??= _invoiceStateContainer.Value;
+
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = authState.User;
+
+            if (user.Identity is not null && user.Identity.IsAuthenticated)
+            {
+                userEmail = user.Identity.Name;     // TODO: Is there a way to get the actual email address from AD, rather than rely on the fact that that the User's login Name is their email address?
+            }
+
         }
         catch (Exception ex)
         {
@@ -67,9 +79,9 @@ public partial class SelectApprover : ComponentBase
                 return;
             }
 
-            invoice.ApproverId = "user"; //TODO: fxs this needs to be the approver id, for now hard coded to 1
+            invoice.ApproverId = approverSelect.ApproverEmail; // TODO Can/Should this be a userId rather than the email for the user?
             invoice.ApproverEmail = approverSelect.ApproverEmail;
-            invoice.ApprovalRequestedByEmail = "user"; //TODO: fxs this needs to be email address for the requestor until Auth. work is implemented
+            invoice.ApprovalRequestedByEmail = userEmail;
 
             var response = await _approvalService.SubmitApprovalAsync(invoice);
             if (!response.IsSuccess)

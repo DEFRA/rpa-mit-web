@@ -1,21 +1,18 @@
-@page "/approval/confirmation/approved"
-@page "/approval/confirmation/rejected"
-
-<section class="govuk-width-container govuk-!-padding-top-9 govuk-!-padding-bottom-3">
-    <div class="govuk-panel govuk-panel--confirmation">
-        <h1 class="govuk-panel__title">
-            Invoice was  @(IsRejectEndpoint ? "rejected" : "approved") successfully
-        </h1>
-    </div>
-</section>
-
-<div class="govuk-width-container govuk-!-padding-top-1">
-    <h1 class="govuk-label-wrapper">
-        <a href="/" class="govuk-back-link">Back</a>
-    </h1>
-</div>
+@page "/approval/confirmation/{ApprovalType}/{Id}"
 
 <section class="govuk-width-container">
-    <h2 class="govuk-heading-xl">What next?</h2>
-    <p class="govuk-body">You'll get an email with a copy of the confirmation.</p>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <a href="/" class="govuk-back-link">Back</a>
+            <div class="govuk-panel govuk-panel--confirmation">
+                <h1 class="govuk-panel__title">
+                    Invoice  @(IsRejectEndpoint ? "rejected" : "approved")
+                </h1>
+                <div class="govuk-panel__body">
+                    Invoice number:<br>@Id
+                </div>
+            </div>
+            <p class="govuk-body">We have sent you a confirmation email.</p>
+        </div>
+    </div>
 </section>

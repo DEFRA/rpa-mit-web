@@ -8,12 +8,12 @@ public class Notification
     public string Scheme { get; set; }
     public string EmailRecipient { get; set; }
 
-    public Notification(string id, string scheme, string action, string emailReciepent, object data)
+    public Notification(string id, string scheme, string action, string emailRecipient, object data)
     {
         Id = id;
         Scheme = scheme;
         Action = action;
-        EmailRecipient = emailReciepent;
+        EmailRecipient = emailRecipient;
         Data = data;
     }
 }
