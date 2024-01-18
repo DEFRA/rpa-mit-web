@@ -76,8 +76,9 @@ public class InvoiceTests
         DateTime approved = DateTime.Now;
         var createdBy = "CreatedBy";
         var updatedBy = "UpdatedBy";
+        var userName = "andy.gibbons@defra.gov.uk";
 
-        var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, createdBy, updatedBy, approverId, approverEmail, approvedBy, approved);
+        var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, createdBy, updatedBy, approverId, approverEmail, approvedBy, approved, userName);
 
         invoice.Id.Should().Be(id);
         invoice.PaymentType.Should().Be(paymentType);
@@ -95,6 +96,7 @@ public class InvoiceTests
         invoice.Approved.Should().Be(approved);
         invoice.CreatedBy.Should().Be(createdBy);
         invoice.UpdatedBy.Should().Be(updatedBy);
+        invoice.UserName.Should().Be(userName);
     }
 
 

@@ -1,5 +1,6 @@
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Pages.create_bulk.CreateBulk;
+using EST.MIT.Web.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,10 +26,10 @@ public class CreateBulkTests : TestContext
 
     [Fact]
     public void StartPage_StartButton_Navigates_To_AccountPage()
-    {
+    { 
         var navigationManager = Services.GetService<NavigationManager>();
 
-        var component = RenderComponent<CreateBulk>();
+        var component = RenderComponent<CreateBulk>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         component.FindAll("button.govuk-button")[0].Click();
 
         navigationManager?.Uri.Should().Be("http://localhost/create-bulk/account");
