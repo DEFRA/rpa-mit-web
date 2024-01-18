@@ -44,7 +44,7 @@ public class UploadService : IUploadService
         try
         {
             await _blobService.AddFileToBlobAsync(BlobPath(importRequest), file);
-            await _importerQueueService.AddMessageToQueueAsync(importRequest);////////THIS GOES TO THE INVOICE-IMPORTER
+            await _importerQueueService.AddMessageToQueueAsync(importRequest);
             await _eventQueueService.AddMessageToQueueAsync("invoice-importer", importRequestSummary.ToMessage());
             // TODO: implement bulk upload confirmation await _invoiceRepository.SaveBulkUploadConfirmation(summary);
             await _eventQueueService.AddMessageToQueueAsync("confirmation-notification-queue", importRequestSummary.ToMessage());
