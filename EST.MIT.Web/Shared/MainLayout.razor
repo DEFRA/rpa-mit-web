@@ -3,6 +3,7 @@
 
 <PageTitle>EST.MIT.Web</PageTitle>
 
+<CascadingValue Value="this">
 <div class="page">
 
     <header class="govuk-header " role="banner" data-module="govuk-header">
@@ -45,9 +46,10 @@
         @Body
     </main>
 </div>
+</CascadingValue>
 
 @code {
-    private string userName = "";
+    public string userName = "";
 
     protected override async Task OnInitializedAsync()
     {

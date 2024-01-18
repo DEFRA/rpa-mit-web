@@ -20,7 +20,7 @@ public class UploadService : IUploadService
         _importerQueueService = importerQueueService;
     }
 
-    public async Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy)
+    public async Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy, string userName)
     {
 
         var importRequest = new ImportRequest()
@@ -36,7 +36,7 @@ public class UploadService : IUploadService
             CreatedBy = createdBy,
             BlobFileName = Path.GetRandomFileName().Split('.')[0],
             BlobFolder = "import",
-            Email = "" //TODO: get logged in user email
+            Email = userName //TODO: get logged in user email
         };
 
         var importRequestSummary = new ImportRequestSummary(importRequest, GenerateConfirmationNumber());
@@ -44,7 +44,7 @@ public class UploadService : IUploadService
         try
         {
             await _blobService.AddFileToBlobAsync(BlobPath(importRequest), file);
-            await _importerQueueService.AddMessageToQueueAsync(importRequest);
+            await _importerQueueService.AddMessageToQueueAsync(importRequest);////////THIS GOES TO THE INVOICE-IMPORTER
             await _eventQueueService.AddMessageToQueueAsync("invoice-importer", importRequestSummary.ToMessage());
             // TODO: implement bulk upload confirmation await _invoiceRepository.SaveBulkUploadConfirmation(summary);
             await _eventQueueService.AddMessageToQueueAsync("confirmation-notification-queue", importRequestSummary.ToMessage());

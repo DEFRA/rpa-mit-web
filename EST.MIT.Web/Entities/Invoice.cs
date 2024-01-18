@@ -42,6 +42,8 @@ public class Invoice : Validatable
 
     public string UpdatedBy { get; set; } = default!;
 
+    public string UserName { get; set; } = default!;
+
     [JsonIgnore]
     public int NumberOfPaymentRequests => PaymentRequests.Count;
     [JsonIgnore]
@@ -69,7 +71,7 @@ public class Invoice : Validatable
     }
 
     [JsonConstructor]
-    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approverId, string approverEmail, string approvedBy, DateTime approved)
+    public Invoice(Guid id, string paymentType, string accountType, string organisation, string schemeType, List<PaymentRequest> paymentRequests, string status, string reference, DateTimeOffset created, DateTimeOffset updated, string createdBy, string updatedBy, string approverId, string approverEmail, string approvedBy, DateTime approved, string username)
     {
         Id = id;
         PaymentType = paymentType;
@@ -87,6 +89,7 @@ public class Invoice : Validatable
         ApproverEmail = approverEmail;
         ApprovedBy = approvedBy;
         Approved = approved;
+        UserName= username; 
     }
 
     public void Update(string? status = null)
