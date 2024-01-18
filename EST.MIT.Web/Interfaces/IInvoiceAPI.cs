@@ -13,7 +13,7 @@ public interface IInvoiceAPI
     Task<ApiResponse<Invoice>> DeletePaymentRequestAsync(Invoice invoice, string paymentRequestId);
     Task<Invoice> GetApprovalInvoiceAsync(string id);
     Task<IEnumerable<Invoice>> GetAllApprovalInvoicesAsync();
-    Task<IEnumerable<Invoice>> GetInvoicesAsync();
+    Task<IEnumerable<Invoice>> GetInvoicesAsync(string token);
 }
 
 
