@@ -219,7 +219,7 @@ public class InvoiceRepositoryTests : TestContext
 
         var repo = new InvoiceRepository(factory);
 
-        var response = await repo.GetInvoicesAsync();
+        var response = await repo.GetInvoicesAsync(string.Empty);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var responseContent = await response.Content.ReadAsStringAsync();

@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Shared.Components.InvoiceCard;
 using EST.MIT.Web.Pages.invoice.ViewInvoiceList;
+using Microsoft.Identity.Web;
+using AngleSharp;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -14,8 +16,19 @@ public class ViewInvoiceListTests : TestContext
     public ViewInvoiceListTests()
     {
         _mockApiService = new Mock<IInvoiceAPI>();
-        Services.AddSingleton<IInvoiceAPI>(_mockApiService.Object);
+        Services.AddSingleton(_mockApiService.Object);
         Services.AddSingleton<IInvoiceStateContainer, InvoiceStateContainer>();
+
+        var tokenApi = new Mock<ITokenAcquisition>();
+        Services.AddSingleton(tokenApi.Object);
+
+        var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
+        config.Setup(c => c.GetSection("MitWebApi").Value).Returns("api://test_id");
+        Services.AddSingleton(config.Object);
+
+        var serviceProvider = new Mock<IServiceProvider>();
+        var consentHandler = new Mock<MicrosoftIdentityConsentAndConditionalAccessHandler>(serviceProvider.Object);
+        Services.AddSingleton(consentHandler.Object);
     }
 
     [Fact]
@@ -41,7 +54,7 @@ public class ViewInvoiceListTests : TestContext
             }
         };
 
-        _mockApiService.Setup(x => x.GetInvoicesAsync()).ReturnsAsync(invoices);
+        _mockApiService.Setup(x => x.GetInvoicesAsync(null)).ReturnsAsync(invoices);
 
         var component = RenderComponent<ViewInvoiceList>();
         component.WaitForElements("div.govuk-summary-card");
