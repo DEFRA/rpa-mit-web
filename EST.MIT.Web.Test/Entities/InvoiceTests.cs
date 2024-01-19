@@ -99,8 +99,6 @@ public class InvoiceTests
         invoice.UserName.Should().Be(userName);
     }
 
-
-
     [Fact]
     public void Properties_Should_Be_Set_Correctly()
     {
@@ -247,7 +245,7 @@ public class InvoiceTests
         };
 
         //Assert
-        Assert.Equal(false, invoice.CanBeSentForApproval);
+        Assert.False(invoice.CanBeSentForApproval);        
     }
 
     [Fact]
@@ -279,8 +277,8 @@ public class InvoiceTests
             }
         };
 
-        //Assert
-        Assert.Equal(true, invoice.CanBeSentForApproval);
+        //Assert 
+        Assert.True(invoice.CanBeSentForApproval);
     }
 
     [Fact]
@@ -328,8 +326,8 @@ public class InvoiceTests
             }
         };
 
-        //Assert
-        Assert.Equal(false, invoice.CanBeSentForApproval);
+        //Assert 
+        Assert.False(invoice.CanBeSentForApproval); 
     }
 
     private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)
