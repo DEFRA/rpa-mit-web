@@ -37,9 +37,10 @@ public class Invoice : Validatable
     public string ApprovalRequestedByEmail { get; set; } = default!;
     public string ApprovedBy { get; set; } = default!;
     public DateTime? Approved { get; set; }
-    public string CreatedBy { get; private set; } = default!;
-    public string UpdatedBy { get; set; } = default!;
 
+    public string CreatedBy { get; private set; } = default!;
+
+    public string UpdatedBy { get; set; } = default!;
 
     [JsonIgnore]
     public int NumberOfPaymentRequests => PaymentRequests.Count;
