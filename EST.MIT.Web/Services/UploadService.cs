@@ -20,7 +20,7 @@ public class UploadService : IUploadService
         _importerQueueService = importerQueueService;
     }
 
-    public async Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy, string userName)
+    public async Task<HttpResponseMessage> UploadFileAsync(IBrowserFile file, string schemeType, string organisation, string paymentType, string accountType, string createdBy, string userEmail)
     {
 
         var importRequest = new ImportRequest()
@@ -36,7 +36,7 @@ public class UploadService : IUploadService
             CreatedBy = createdBy,
             BlobFileName = Path.GetRandomFileName().Split('.')[0],
             BlobFolder = "import",
-            Email = userName //TODO: get logged in user email
+            Email = userEmail
         };
 
         var importRequestSummary = new ImportRequestSummary(importRequest, GenerateConfirmationNumber());

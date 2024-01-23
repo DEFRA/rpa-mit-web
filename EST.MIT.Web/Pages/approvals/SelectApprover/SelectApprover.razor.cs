@@ -2,6 +2,7 @@ using EST.MIT.Web.Entities;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
+using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Pages.approvals.SelectApprover;
 
@@ -12,14 +13,15 @@ public partial class SelectApprover : ComponentBase
     [Inject] public IApprovalService _approvalService { get; set; } = default!;
     [Inject] public NavigationManager _nav { get; set; } = default!;
     [Inject] public ILogger<SelectApprover> Logger { get; set; } = default!;
-    [Inject] public AuthenticationStateProvider AuthenticationStateProvider { get; set; } = default!;
+
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
 
     private Invoice invoice = default!;
     private readonly ApproverSelect approverSelect = new();
     private bool IsErrored = false;
     private Dictionary<string, List<string>> errors = new();
     private bool ShowErrorSummary = false;
-    private string userEmail = "user";
 
     protected override async Task OnInitializedAsync()
     {
@@ -27,15 +29,6 @@ public partial class SelectApprover : ComponentBase
         {
             await base.OnInitializedAsync();
             invoice ??= _invoiceStateContainer.Value;
-
-            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var user = authState.User;
-
-            if (user.Identity is not null && user.Identity.IsAuthenticated)
-            {
-                userEmail = user.Identity.Name;     // TODO: Is there a way to get the actual email address from AD, rather than rely on the fact that that the User's login Name is their email address?
-            }
-
         }
         catch (Exception ex)
         {
@@ -81,7 +74,7 @@ public partial class SelectApprover : ComponentBase
 
             invoice.ApproverId = approverSelect.ApproverEmail; // TODO Can/Should this be a userId rather than the email for the user?
             invoice.ApproverEmail = approverSelect.ApproverEmail;
-            invoice.ApprovalRequestedByEmail = userEmail;
+            invoice.ApprovalRequestedByEmail = Layout.UserEmail;
 
             var response = await _approvalService.SubmitApprovalAsync(invoice);
             if (!response.IsSuccess)
