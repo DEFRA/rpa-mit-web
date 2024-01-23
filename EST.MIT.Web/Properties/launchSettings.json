@@ -30,12 +30,6 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
-    },
-    "profiles": {
-      "commandName": "Project",
-      "EST.MIT.InvoiceImporter.Function": {
-        "commandLineArgs": "--port 5001"
-      }
     }
   }
 }

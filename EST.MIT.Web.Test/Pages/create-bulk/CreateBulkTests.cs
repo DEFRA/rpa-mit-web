@@ -29,7 +29,7 @@ public class CreateBulkTests : TestContext
     { 
         var navigationManager = Services.GetService<NavigationManager>();
 
-        var component = RenderComponent<CreateBulk>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
+        var component = RenderComponent<CreateBulk>();
         component.FindAll("button.govuk-button")[0].Click();
 
         navigationManager?.Uri.Should().Be("http://localhost/create-bulk/account");

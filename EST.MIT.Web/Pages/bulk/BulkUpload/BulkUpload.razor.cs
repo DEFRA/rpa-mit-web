@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Entities;
+using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Pages.bulk.BulkUpload;
 
@@ -11,6 +12,9 @@ public partial class BulkUpload : ComponentBase
     [Inject] private ILogger<BulkUpload> _logger { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
     [Inject] private NavigationManager _nav { get; set; }
+
+    [CascadingParameter]
+    public MainLayout Layout { get; set; }
 
     public BulkUploadFileSummary fileToLoadSummary = default!;
     public bool error = false;
@@ -44,7 +48,7 @@ public partial class BulkUpload : ComponentBase
         {
             if (fileToLoadSummary.IsValidFile)
             {
-                fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, invoice.CreatedBy, invoice.UserName);
+                fileToLoadSummary.UploadResponse = await _uploadService.UploadFileAsync(fileToLoadSummary.File, invoice.SchemeType, invoice.Organisation, invoice.PaymentType, invoice.AccountType, invoice.CreatedBy, Layout.userName);
                 fileToLoadSummary.IsUploaded = fileToLoadSummary.UploadResponse.IsSuccessStatusCode;
 
                 if (!fileToLoadSummary.IsUploaded)

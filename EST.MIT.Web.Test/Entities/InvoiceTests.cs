@@ -78,7 +78,7 @@ public class InvoiceTests
         var updatedBy = "UpdatedBy";
         var userName = "andy.gibbons@defra.gov.uk";
 
-        var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, createdBy, updatedBy, approverId, approverEmail, approvedBy, approved, userName);
+        var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, createdBy, updatedBy, approverId, approverEmail, approvedBy, approved);
 
         invoice.Id.Should().Be(id);
         invoice.PaymentType.Should().Be(paymentType);
@@ -96,7 +96,6 @@ public class InvoiceTests
         invoice.Approved.Should().Be(approved);
         invoice.CreatedBy.Should().Be(createdBy);
         invoice.UpdatedBy.Should().Be(updatedBy);
-        invoice.UserName.Should().Be(userName);
     }
 
     [Fact]
@@ -245,7 +244,7 @@ public class InvoiceTests
         };
 
         //Assert
-        Assert.False(invoice.CanBeSentForApproval);        
+        Assert.False(invoice.CanBeSentForApproval);
     }
 
     [Fact]
@@ -327,7 +326,7 @@ public class InvoiceTests
         };
 
         //Assert 
-        Assert.False(invoice.CanBeSentForApproval); 
+        Assert.False(invoice.CanBeSentForApproval);
     }
 
     private static System.Collections.Generic.IEnumerable<ValidationResult> ValidateModel(object model)

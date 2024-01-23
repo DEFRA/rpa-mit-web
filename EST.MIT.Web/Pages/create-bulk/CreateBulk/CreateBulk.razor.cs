@@ -9,15 +9,9 @@ public partial class CreateBulk : ComponentBase
     [Inject] private NavigationManager _nav { get; set; }
     [Inject] private IInvoiceStateContainer _invoiceStateContainer { get; set; }
 
-    [CascadingParameter]
-    public MainLayout Layout { get; set; }
-
     private void Start()
     {
-        _invoiceStateContainer.SetValue(new Invoice()
-        {
-            UserName = Layout.userName
-        }); 
+        _invoiceStateContainer.SetValue(new Invoice());
         _nav.NavigateTo("/create-bulk/account");
     }
 
