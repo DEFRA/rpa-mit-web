@@ -13,7 +13,7 @@ public class ApprovalAPI : IApprovalAPI
 
     public ApprovalAPI(IApprovalRepository approvalRepository, ILogger<ApprovalAPI> logger)
     {
-        _logger = logger;
+        _logger = logger; 
         _approvalRepository = approvalRepository;
     }
     public async Task<ApiResponse> GetApproversAsync(string scheme, string value)
