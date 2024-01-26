@@ -6,12 +6,17 @@ using EST.MIT.Web.Shared.Components.InvoiceCard;
 using EST.MIT.Web.Pages.invoice.ViewInvoiceList;
 using Microsoft.Identity.Web;
 using AngleSharp;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace EST.MIT.Web.Tests.Pages;
 
 public class ViewInvoiceListTests : TestContext
 {
     private readonly Mock<IInvoiceAPI> _mockApiService;
+    private readonly Mock<ILogger<ViewInvoiceList>> _mockLogger;
+    private readonly Mock<ITokenAcquisition> _tokenHandler;
+    private readonly Mock<MicrosoftIdentityConsentAndConditionalAccessHandler> _consentHandler;
 
     public ViewInvoiceListTests()
     {
@@ -19,16 +24,22 @@ public class ViewInvoiceListTests : TestContext
         Services.AddSingleton(_mockApiService.Object);
         Services.AddSingleton<IInvoiceStateContainer, InvoiceStateContainer>();
 
-        var tokenApi = new Mock<ITokenAcquisition>();
-        Services.AddSingleton(tokenApi.Object);
+        _mockApiService = new Mock<IInvoiceAPI>();
+        Services.AddSingleton(_mockApiService.Object);
+
+        _tokenHandler = new Mock<ITokenAcquisition>();
+        Services.AddSingleton(_tokenHandler.Object);
 
         var config = new Mock<Microsoft.Extensions.Configuration.IConfiguration>();
         config.Setup(c => c.GetSection("MitWebApi").Value).Returns("api://test_id");
         Services.AddSingleton(config.Object);
 
         var serviceProvider = new Mock<IServiceProvider>();
-        var consentHandler = new Mock<MicrosoftIdentityConsentAndConditionalAccessHandler>(serviceProvider.Object);
-        Services.AddSingleton(consentHandler.Object);
+        _consentHandler = new Mock<MicrosoftIdentityConsentAndConditionalAccessHandler>(serviceProvider.Object);
+        Services.AddSingleton(_consentHandler.Object);
+
+        _mockLogger = new Mock<ILogger<ViewInvoiceList>>();
+        Services.AddSingleton(_mockLogger.Object);
     }
 
     [Fact]
@@ -60,5 +71,35 @@ public class ViewInvoiceListTests : TestContext
         component.WaitForElements("div.govuk-summary-card");
 
         component.FindComponents<InvoiceCard>().Count.Should().Be(1);
+    }
+
+    [Fact]
+    public void GetAccessTokenForUserAsync_NoToken_ThrowsException()
+    {
+        _tokenHandler.Setup(x => x.GetAccessTokenForUserAsync(new string[] { "api://test_id" }, null, null, null, null)).Throws(new Exception());
+
+        var component = RenderComponent<ViewInvoiceList>();
+
+        _mockLogger.Verify(x => x.Log(
+            It.IsAny<LogLevel>(),
+            It.IsAny<EventId>(),
+            It.IsAny<It.IsAnyType>(),
+            It.IsAny<Exception>(),
+            (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()), Times.Once);
+    }
+
+    [Fact]
+    public void GetInvoicesAsync_ApiError_ThrowsException()
+    {
+        _mockApiService.Setup(x => x.GetInvoicesAsync(null)).Throws(new Exception());
+
+        var component = RenderComponent<ViewInvoiceList>();
+
+        _mockLogger.Verify(x => x.Log(
+            It.IsAny<LogLevel>(),
+            It.IsAny<EventId>(),
+            It.IsAny<It.IsAnyType>(),
+            It.IsAny<Exception>(),
+            (Func<It.IsAnyType, Exception, string>)It.IsAny<object>()), Times.Once);
     }
 }

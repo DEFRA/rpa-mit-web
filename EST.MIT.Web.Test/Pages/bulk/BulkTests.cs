@@ -14,7 +14,7 @@ namespace EST.MIT.Web.Tests.Pages;
 
 public class BulkUploadPageTests : TestContext
 {
-    private IConfiguration _configuration;
+    private readonly IConfiguration _configuration;
     private readonly Invoice _invoice;
 
     public BulkUploadPageTests()
@@ -122,7 +122,7 @@ public class BulkUploadPageTests : TestContext
     [Fact]
     public void Validated_File_Not_Added_To_Blob()
     {
-        Mock<IUploadService> uploadServiceMock = new Mock<IUploadService>();
+        Mock<IUploadService> uploadServiceMock = new();
         uploadServiceMock.Setup(x => x.UploadFileAsync(It.IsAny<IBrowserFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }));
 
         Services.AddSingleton<IConfiguration>(_configuration);
