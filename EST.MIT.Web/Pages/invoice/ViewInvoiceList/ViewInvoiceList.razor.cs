@@ -27,8 +27,8 @@ public partial class ViewInvoiceList : ComponentBase
         }
         catch (MicrosoftIdentityWebChallengeUserException ex)
         {
-            ConsentHandler.HandleException(ex);
             Logger.LogError(ex.ToString());
+            ConsentHandler.HandleException(ex);
         }
         catch (Exception ex)
         {

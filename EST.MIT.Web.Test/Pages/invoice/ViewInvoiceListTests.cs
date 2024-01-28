@@ -76,9 +76,18 @@ public class ViewInvoiceListTests : TestContext
     [Fact]
     public void GetAccessTokenForUserAsync_NoToken_ThrowsException()
     {
-        _tokenHandler.Setup(x => x.GetAccessTokenForUserAsync(new string[] { "api://test_id" }, null, null, null, null)).Throws(new Exception());
+        _tokenHandler.Setup(x => x.GetAccessTokenForUserAsync(new string[] { "api://test_id" }, null, null, null, null)).Throws(
+            new MicrosoftIdentityWebChallengeUserException(
+                new Microsoft.Identity.Client.MsalUiRequiredException("Test", "Test"), null, null));
 
-        var component = RenderComponent<ViewInvoiceList>();
+        try
+        {
+            var component = RenderComponent<ViewInvoiceList>();
+        }
+        catch(Exception exc)
+        {
+            // The call to: ConsentHandler.HandleException(ex) throws.
+        }
 
         _mockLogger.Verify(x => x.Log(
             It.IsAny<LogLevel>(),
@@ -93,7 +102,7 @@ public class ViewInvoiceListTests : TestContext
     {
         _mockApiService.Setup(x => x.GetInvoicesAsync(null)).Throws(new Exception());
 
-        var component = RenderComponent<ViewInvoiceList>();
+        RenderComponent<ViewInvoiceList>();
 
         _mockLogger.Verify(x => x.Log(
             It.IsAny<LogLevel>(),
