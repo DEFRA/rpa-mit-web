@@ -26,6 +26,13 @@ namespace EST.MIT.Web.Test.FakeAuthentication
             return new FakeAuthenticationStateProvider(principal);
         }
 
+        public static FakeAuthenticationStateProvider UserNotAuthenticated(params Claim[] claims)
+        {
+            var identity = new ClaimsIdentity(claims);
+            var principal = new ClaimsPrincipal(identity);
+            return new FakeAuthenticationStateProvider(principal);
+        }
+
         public override Task<AuthenticationState> GetAuthenticationStateAsync()
         {
             return Task.FromResult(new AuthenticationState(_principal));

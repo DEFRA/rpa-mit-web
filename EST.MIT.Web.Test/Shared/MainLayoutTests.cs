@@ -15,7 +15,7 @@ namespace EST.MIT.Web.Test.Shared
         }
 
         [Fact]
-        public void MainLayout_Page_Shows_UserName()
+        public void MainLayout_Page_Shows_UserName_If_User_Is_Authenticated()
         {
             //Arrange
             var claims = new[]
@@ -25,20 +25,39 @@ namespace EST.MIT.Web.Test.Shared
             };
 
             var authenticationStateProvider = FakeAuthenticationStateProvider.ThatReturnsClaims(claims);
-
-
             var authenticationState = _mockFakeAuthenticationProvider.Setup(x => x.GetAuthenticationStateAsync()).Returns(Task.FromResult(new AuthenticationState(authenticationStateProvider._principal)));
             Services.AddSingleton<AuthenticationStateProvider>(_mockFakeAuthenticationProvider.Object);
 
             //Act
             var component = RenderComponent<Web.Shared.MainLayout>();
-
             var value = component.FindAll("div.govuk-header__content")[0];
-
             var userName = value.TextContent;
 
             //Assert
             userName.Should().Be("Henry Adetunji");
+        }
+
+        [Fact]
+        public void MainLayout_Page_Does_Not_Show_UserName_If_User_Not_Authenticated()
+        {
+            //Arrange
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, "Henry Adetunji"),
+                new Claim(ClaimTypes.Email, "henry.adetunji@defra.gov.uk"),
+            };
+
+            var authenticationStateProvider = FakeAuthenticationStateProvider.UserNotAuthenticated(claims);
+            var authenticationState = _mockFakeAuthenticationProvider.Setup(x => x.GetAuthenticationStateAsync()).Returns(Task.FromResult(new AuthenticationState(authenticationStateProvider._principal)));
+            Services.AddSingleton<AuthenticationStateProvider>(_mockFakeAuthenticationProvider.Object);
+
+            //Act
+            var component = RenderComponent<Web.Shared.MainLayout>();
+            var value = component.FindAll("div.govuk-header__content")[0];
+            var userName = value.TextContent;
+
+            //Assert
+            userName.Should().Be(string.Empty);
         }
     }
 }
