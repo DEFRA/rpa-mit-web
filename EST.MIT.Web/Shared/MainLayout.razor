@@ -71,7 +71,7 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User;
 
-        if (user is not null && user.Identity is not null && user.Identity.IsAuthenticated)
+        if (user.Identity.IsAuthenticated)
         {
             UserName = user.Claims.FirstOrDefault(c => c.Type == "name")?.Value;
             if (string.IsNullOrEmpty(UserName))
