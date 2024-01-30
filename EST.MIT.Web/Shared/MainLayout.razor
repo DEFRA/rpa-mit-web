@@ -51,8 +51,20 @@
 </CascadingValue>
 
 @code {
-    public string UserName { get; set; } = "";
-    public string UserEmail { get; set; } = "";
+     private string _userName = "";
+     private string _userEmail = "";
+
+     public string UserName
+     {
+        get { return _userName; }
+        set { _userName = value; }
+     }
+
+     public string UserEmail
+     {
+        get { return _userEmail; }
+        set { _userEmail = value; }
+     }
 
     protected override async Task OnInitializedAsync()
     {

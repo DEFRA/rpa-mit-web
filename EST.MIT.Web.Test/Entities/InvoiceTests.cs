@@ -76,7 +76,6 @@ public class InvoiceTests
         DateTime approved = DateTime.Now;
         var createdBy = "CreatedBy";
         var updatedBy = "UpdatedBy";
-        var userName = "andy.gibbons@defra.gov.uk";
 
         var invoice = new Invoice(id, paymentType, accountType, organisation, schemeType, paymentRequests, status, reference, created, updated, createdBy, updatedBy, approverId, approverEmail, approvedBy, approved);
 
