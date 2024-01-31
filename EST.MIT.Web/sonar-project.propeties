@@ -1,1 +1,1 @@
-sonar.exclusions=**/Program.cs,**/*.js
+sonar.exclusions=**/Program.cs,**/*.js,**/*.ts
