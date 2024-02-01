@@ -6,10 +6,6 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Version>1.0.67</Version>
   </PropertyGroup>
-  <PropertyGroup>
-    <!-- Exclude the project from analysis -->
-    <SonarQubeExclude>true</SonarQubeExclude>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
