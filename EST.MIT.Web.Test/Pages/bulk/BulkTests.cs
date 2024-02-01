@@ -8,6 +8,7 @@ using Azure.Storage.Queues;
 using EST.MIT.Web.Pages.bulk.BulkUpload;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -104,7 +105,7 @@ public class BulkUploadPageTests : TestContext
     {
         InputFileContent fileToUpload = InputFileContent.CreateFromText("test file", "TestFile.xlsm", null, "application/vnd.ms-excel.sheet.macroEnabled.12");
 
-        IRenderedComponent<BulkUpload> component = RenderComponent<BulkUpload>();
+        IRenderedComponent<BulkUpload> component = RenderComponent<BulkUpload>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         IRenderedComponent<InputFile> inputFile = component.FindComponent<InputFile>();
 
         inputFile.UploadFiles(fileToUpload);
@@ -122,7 +123,7 @@ public class BulkUploadPageTests : TestContext
     public void Validated_File_Not_Added_To_Blob()
     {
         Mock<IUploadService> uploadServiceMock = new Mock<IUploadService>();
-        uploadServiceMock.Setup(x => x.UploadFileAsync(It.IsAny<IBrowserFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }));
+        uploadServiceMock.Setup(x => x.UploadFileAsync(It.IsAny<IBrowserFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(new HttpResponseMessage { StatusCode = HttpStatusCode.BadRequest }));
 
         Services.AddSingleton<IConfiguration>(_configuration);
         Services.AddSingleton<IUploadService>(uploadServiceMock.Object);
@@ -130,7 +131,7 @@ public class BulkUploadPageTests : TestContext
         Services.AddSingleton<IAzureBlobService, AzureBlobService>();
         Services.AddSingleton<IEventQueueService, EventQueueService>();
 
-        IRenderedComponent<BulkUpload> component = RenderComponent<BulkUpload>();
+        IRenderedComponent<BulkUpload> component = RenderComponent<BulkUpload>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         IRenderedComponent<InputFile> inputFile = component.FindComponent<InputFile>();
 
         component.Instance.fileToLoadSummary.IsValidFile = true;
