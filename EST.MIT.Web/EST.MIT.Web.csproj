@@ -6,13 +6,13 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Version>1.0.67</Version>
   </PropertyGroup>
-
+  <PropertyGroup>
+    <!-- Exclude the project from analysis -->
+    <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
-    <SonarQubeSetting Include="sonar.coverage.exclusions">
-      <Value>**/Program.cs,**/*.js,**/*.ts</Value>
-    </SonarQubeSetting>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
