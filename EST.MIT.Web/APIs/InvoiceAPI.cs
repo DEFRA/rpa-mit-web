@@ -355,9 +355,9 @@ public class InvoiceAPI : IInvoiceAPI
 
     }
 
-    public async Task<IEnumerable<Invoice>> GetInvoicesAsync()
+    public async Task<IEnumerable<Invoice>> GetInvoicesAsync(string token)
     {
-        var response = await _invoiceRepository.GetInvoicesAsync();
+        var response = await _invoiceRepository.GetInvoicesAsync(token);
 
         if (response.StatusCode == HttpStatusCode.OK)
         {

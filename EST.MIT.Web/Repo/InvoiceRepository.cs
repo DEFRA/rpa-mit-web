@@ -116,13 +116,14 @@ public class InvoiceRepository : IInvoiceRepository
         }
     }
 
-    public async Task<HttpResponseMessage> GetInvoicesAsync()
+    public async Task<HttpResponseMessage> GetInvoicesAsync(string token)
     {
         try
         {
             var client = _clientFactory.CreateClient("InvoiceAPI");
 
-            var response = await client.GetAsync($"/invoices/user/xxx");
+            client.DefaultRequestHeaders.Add("Authorization",$"Bearer {token}");
+            var response = await client.GetAsync($"/invoices/user");
 
             await HandleHttpResponseError(response);
 
