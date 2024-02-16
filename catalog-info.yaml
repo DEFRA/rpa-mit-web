@@ -1,7 +1,7 @@
 apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
-  name: RPA-MIT-WEB
+  name: rpa-mit-web
   description: The MIT web site
   annotations:
     github.com/project-slug: defra/est-mit-web
