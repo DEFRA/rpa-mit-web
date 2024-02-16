@@ -1,0 +1,50 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: RPA-MIT-WEB
+  description: The MIT web site
+  annotations:
+    github.com/project-slug: defra/est-mit-web
+    dev.azure.com/project: DEFRA-MIT
+    dev.azure.com/build-definition: RPA-MIT-WEB
+    sonarqube.org/project-key: RPA-MIT-WEB
+    grafana/dashboard-selector: "folderTitle == 'Managed Prometheus'"
+    backstage.io/kubernetes-id: RPA-MIT-WEB
+  links:
+    - url: https://github.com/DEFRA/est-mit-web
+      title: View repository
+      icon: github
+    - url: https://sonarcloud.io/summary/overall?id=RPA-MIT-WEB
+      title: SonarCloud Analysis
+    - url: https://snyk.io/test/github/DEFRA/RPA-MIT-WEB
+      title: Snyk Analysis
+  tags:
+    - dotnet
+    - front-end
+    - internal
+    - service-bus
+    - application-insights
+spec:
+  type: frontend
+  lifecycle: alpha
+  owner: "group:default/lap-mit"
+  system: "system:default/lap-mit-system"
+  dependsOn:
+    - "resource:default/rpa-mit-notification-queue"
+    - "resource:default/ADPINFSB01"
+    - "resource:default/ADPINFAI01"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: rpa-mit-notification-queue
+  description: Notification message queue
+  tags:
+    - azure-service-bus
+    - queue
+spec:
+  type: message-queue
+  owner: "group:default/lap-mit"
+  system: "system:default/lap-mit-system"
+  dependsOn: 
+    - "resource:default/ADPINFSB01"
