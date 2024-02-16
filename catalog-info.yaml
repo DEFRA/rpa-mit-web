@@ -22,7 +22,7 @@ metadata:
     - dotnet
     - front-end
     - internal
-    - service-bus
+    - storage-account
     - application-insights
 spec:
   type: frontend
@@ -30,21 +30,53 @@ spec:
   owner: "group:default/lap-mit"
   system: "system:default/lap-mit-system"
   dependsOn:
-    - "resource:default/rpa-mit-notification-queue"
-    - "resource:default/ADPINFSB01"
+    - "resource:default/rpa-mit-importer-storage-queue"
+    - "resource:default/rpa-mit-event-storage-queue"
+    - "resource:default/rpa-mit-notification-storage-queue"
+    - "resource:default/rpa-mit-invoices-blob-container"
     - "resource:default/ADPINFAI01"
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
 metadata:
-  name: rpa-mit-notification-queue
-  description: Notification message queue
+  name: rpa-mit-importer-storage-queue
+  description: Invoice importer storage queue
   tags:
-    - azure-service-bus
+    - storage-account
     - queue
 spec:
   type: message-queue
   owner: "group:default/lap-mit"
   system: "system:default/lap-mit-system"
   dependsOn: 
-    - "resource:default/ADPINFSB01"
+    - "resource:default/adpinfst01"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: rpa-mit-notification-storage-queue
+  description: Invoice notification storage queue
+  tags:
+    - storage-account
+    - queue
+spec:
+  type: message-queue
+  owner: "group:default/lap-mit"
+  system: "system:default/lap-mit-system"
+  dependsOn: 
+    - "resource:default/adpinfst01"
+---
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: rpa-mit-invoices-blob-container
+  description: Invoices blob container
+  tags:
+    - storage-account
+    - blob-container
+spec:
+  type: blob-container
+  owner: "group:default/lap-mit"
+  system: "system:default/lap-mit-system"
+  dependsOn: 
+    - "resource:default/adpinfst01"
