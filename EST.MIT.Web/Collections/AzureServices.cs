@@ -1,4 +1,5 @@
 using Azure.Identity;
+using Azure.Messaging.ServiceBus;
 using Azure.Storage.Blobs;
 using Azure.Storage.Queues;
 using EST.MIT.Web.Interfaces;
@@ -84,13 +85,16 @@ public static partial class ServiceCollectionExtensions
             }
             if (IsManagedIdentity(queueStorageAccountCredential))
             {
-                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
-                var queueUrl = new Uri($"{queueServiceUri}{notificationQueueName}");
-                return new NotificationQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()), logger);
+                var serviceBusNamespace = configuration.GetSection("QueueConnectionString:FullyQualifiedNamespace").Value;
+                Console.WriteLine($"Startup.ServiceBusClient using Managed Identity with namespace {serviceBusNamespace}");
+                var serviceBusClient = new ServiceBusClient(serviceBusNamespace, new DefaultAzureCredential());
+                return new NotificationQueueService(serviceBusClient, logger);
             }
             else
             {
-                return new NotificationQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, notificationQueueName), logger);
+                var serviceBusConnectionString = configuration.GetSection("QueueConnectionString").Value;
+                var serviceBusClient = new ServiceBusClient(serviceBusConnectionString);
+                return new NotificationQueueService(serviceBusClient, logger);
             }
         });
 

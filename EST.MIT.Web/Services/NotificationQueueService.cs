@@ -1,8 +1,10 @@
 using System.Text;
 using System.Text.Json;
 using Azure;
-using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
+using Azure.Messaging.ServiceBus;
+
+// using Azure.Storage.Queues;
+// using Azure.Storage.Queues.Models;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 
@@ -11,9 +13,9 @@ namespace EST.MIT.Web.Services;
 public class NotificationQueueService : INotificationQueueService
 {
     private readonly ILogger<INotificationQueueService> _logger;
-    private readonly QueueClient _queueClient;
+    private readonly ServiceBusClient _queueClient;
 
-    public NotificationQueueService(QueueClient queueClient, ILogger<INotificationQueueService> logger)
+    public NotificationQueueService(ServiceBusClient queueClient, ILogger<INotificationQueueService> logger)
     {
         _queueClient = queueClient;
         _logger = logger;
@@ -25,7 +27,6 @@ public class NotificationQueueService : INotificationQueueService
         {
             var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(request));
             await _queueClient.SendMessageAsync(Convert.ToBase64String(bytes));
-
             return true;
 
         }
