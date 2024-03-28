@@ -1,23 +1,34 @@
 using Microsoft.Extensions.Logging;
 using Azure;
-using Azure.Storage.Queues;
 using EST.MIT.Web.Services;
+using Microsoft.Extensions.Configuration;
 
 namespace EST.MIT.Web.Test.Services;
 
-public class QueueServiceTests : TestContext
+public class EventQueueServiceTests : TestContext
 {
+
+    private readonly Mock<ILogger<EventQueueService>> _mockLogger;
+    private readonly Mock<IServiceBusProvider> _mockServiceBusProvider;
+    private readonly Mock<IConfiguration> _mockConfiguration;
+
+    public EventQueueServiceTests()
+    {
+        _mockLogger = new Mock<ILogger<EventQueueService>>();
+        _mockServiceBusProvider = new Mock<IServiceBusProvider>();
+        _mockConfiguration = new Mock<IConfiguration>();
+
+        _mockConfiguration.Setup(x => x["EventQueueName"]).Returns("QueueName");
+    }
 
     [Fact]
     public async Task CreateMessage_ValidArguments_CallsSendMessageAsync()
     {
-        Mock<ILogger<EventQueueService>> _mockLogger = new Mock<ILogger<EventQueueService>>();
-        var queueClientMock = new Mock<QueueClient>();
-        var eventQueueService = new EventQueueService(queueClientMock.Object, _mockLogger.Object);
+        var service = new EventQueueService(_mockServiceBusProvider.Object, _mockLogger.Object, _mockConfiguration.Object);
         var expectedMessageContent = "Expected error content";
 
-        queueClientMock
-            .Setup(qc => qc.SendMessageAsync(It.IsAny<string>()))
+        _mockServiceBusProvider
+            .Setup(x => x.SendMessageAsync(It.IsAny<string>(), It.IsAny<string>()))
             .Callback(() => throw new RequestFailedException(expectedMessageContent));
 
         Exception exception = null!;
@@ -25,7 +36,7 @@ public class QueueServiceTests : TestContext
 
         try
         {
-            success = await eventQueueService.AddMessageToQueueAsync("message", "data");
+            success = await service.AddMessageToQueueAsync("message", "data");
         }
         catch (Exception ex)
         {

@@ -1,8 +1,5 @@
-using System.Text;
 using System.Text.Json;
-using Azure;
-using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
+using Azure.Messaging.ServiceBus;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Models;
 
@@ -11,12 +8,14 @@ namespace EST.MIT.Web.Services;
 public class EventQueueService : IEventQueueService
 {
     private readonly ILogger<IEventQueueService> _logger;
-    private readonly QueueClient _queueClient;
+    private readonly IServiceBusProvider _serviceBusProvider;
+    private readonly IConfiguration _configuration;
 
-    public EventQueueService(QueueClient queueClient, ILogger<IEventQueueService> logger)
+    public EventQueueService(IServiceBusProvider serviceBusProvider, ILogger<IEventQueueService> logger, IConfiguration configuration)
     {
-        _queueClient = queueClient;
+        _serviceBusProvider = serviceBusProvider;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task<bool> AddMessageToQueueAsync(string message, string data)
@@ -40,17 +39,13 @@ public class EventQueueService : IEventQueueService
 
         try
         {
-            var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(eventRequest));
-            await _queueClient.SendMessageAsync(Convert.ToBase64String(bytes));
-
+            await _serviceBusProvider.SendMessageAsync(_configuration.GetSection("EventQueueName").Value ,JsonSerializer.Serialize(eventRequest));
             return true;
 
         }
-        catch (RequestFailedException ex)
-                when (ex.ErrorCode == QueueErrorCode.QueueAlreadyExists)
+        catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
         {
             // Ignore any errors if the queue already exists
-
             return false;
         }
         catch (Exception ex)

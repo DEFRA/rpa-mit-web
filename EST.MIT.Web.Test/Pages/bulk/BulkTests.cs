@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using System.Net;
 using EST.MIT.Web.Services;
 using Azure.Storage.Blobs;
-using Azure.Storage.Queues;
 using EST.MIT.Web.Pages.bulk.BulkUpload;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
@@ -42,10 +41,10 @@ public class BulkUploadPageTests : TestContext
 
         var mockEventQueueService = new Mock<IEventQueueService>();
         var mockImporterQueueService = new Mock<IImporterQueueService>();
-        var mockQueueServiceClient = new Mock<QueueServiceClient>();
-        var mockQueueClient = new Mock<QueueClient>();
+        // var mockQueueServiceClient = new Mock<QueueServiceClient>();
+        // var mockQueueClient = new Mock<QueueClient>();
 
-        mockQueueServiceClient.Setup(x => x.GetQueueClient(It.IsAny<string>())).Returns(mockQueueClient.Object);
+        // mockQueueServiceClient.Setup(x => x.GetQueueClient(It.IsAny<string>())).Returns(mockQueueClient.Object);
         mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(_invoice);
 
         Services.AddSingleton<IConfiguration>(_configuration);

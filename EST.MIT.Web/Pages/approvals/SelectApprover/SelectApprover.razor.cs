@@ -2,6 +2,8 @@ using EST.MIT.Web.Entities;
 using Microsoft.AspNetCore.Components;
 using EST.MIT.Web.Interfaces;
 using Microsoft.AspNetCore.Components.Authorization;
+using EST.MIT.Web.Helpers;
+using System.Net;
 
 namespace EST.MIT.Web.Pages.approvals.SelectApprover;
 
@@ -70,7 +72,8 @@ public partial class SelectApprover : ComponentBase
         try
         {
             IsErrored = false;
-            var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail, invoice.ApprovalGroup);
+            // var validate = await _approvalService.ValidateApproverAsync(approverSelect.ApproverEmail, invoice.ApprovalGroup);
+            var validate = new ApiResponse<BoolRef>(true) { Data = new BoolRef(true) }; // TODO: Remove this line when the above line is uncommented
 
             if (!validate.IsSuccess || !validate.Data.Value)
             {

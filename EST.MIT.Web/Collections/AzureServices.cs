@@ -1,7 +1,5 @@
 using Azure.Identity;
-using Azure.Messaging.ServiceBus;
 using Azure.Storage.Blobs;
-using Azure.Storage.Queues;
 using EST.MIT.Web.Interfaces;
 using EST.MIT.Web.Services;
 
@@ -43,13 +41,13 @@ public static partial class ServiceCollectionExtensions
             }
             if (IsManagedIdentity(queueStorageAccountCredential))
             {
-                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
-                var queueUrl = new Uri($"{queueServiceUri}{eventQueueName}");
-                return new EventQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()), logger);
+                var serviceBusNamespace = configuration.GetSection("QueueConnectionString:FullyQualifiedNamespace").Value;
+                Console.WriteLine($"Event Service using Managed Identity with namespace {serviceBusNamespace}");
+                return new EventQueueService(new ServiceBusProvider(configuration), logger, configuration);
             }
             else
             {
-                return new EventQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, eventQueueName), logger);
+                return new EventQueueService(new ServiceBusProvider(configuration), logger, configuration);
             }
         });
 
@@ -64,13 +62,13 @@ public static partial class ServiceCollectionExtensions
             }
             if (IsManagedIdentity(queueStorageAccountCredential))
             {
-                var queueServiceUri = configuration.GetSection("QueueConnectionString:QueueServiceUri").Value;
-                var queueUrl = new Uri($"{queueServiceUri}{importerQueueName}");
-                return new ImporterQueueService(new QueueClient(queueUrl, new DefaultAzureCredential()), logger);
+                var serviceBusNamespace = configuration.GetSection("QueueConnectionString:FullyQualifiedNamespace").Value;
+                Console.WriteLine($"Importer Service using Managed Identity with namespace {serviceBusNamespace}");
+                return new ImporterQueueService(new ServiceBusProvider(configuration), logger, configuration);
             }
             else
             {
-                return new ImporterQueueService(new QueueClient(configuration.GetSection("QueueConnectionString").Value, importerQueueName), logger);
+                return new ImporterQueueService(new ServiceBusProvider(configuration), logger, configuration);
             }
         });
 
@@ -86,15 +84,12 @@ public static partial class ServiceCollectionExtensions
             if (IsManagedIdentity(queueStorageAccountCredential))
             {
                 var serviceBusNamespace = configuration.GetSection("QueueConnectionString:FullyQualifiedNamespace").Value;
-                Console.WriteLine($"Startup.ServiceBusClient using Managed Identity with namespace {serviceBusNamespace}");
-                var serviceBusClient = new ServiceBusClient(serviceBusNamespace, new DefaultAzureCredential());
-                return new NotificationQueueService(serviceBusClient, logger);
+                Console.WriteLine($"Notification Service using Managed Identity with namespace {serviceBusNamespace}");
+                return new NotificationQueueService(new ServiceBusProvider(configuration), logger, configuration);
             }
             else
             {
-                var serviceBusConnectionString = configuration.GetSection("QueueConnectionString").Value;
-                var serviceBusClient = new ServiceBusClient(serviceBusConnectionString);
-                return new NotificationQueueService(serviceBusClient, logger);
+                return new NotificationQueueService(new ServiceBusProvider(configuration), logger, configuration);
             }
         });
 
