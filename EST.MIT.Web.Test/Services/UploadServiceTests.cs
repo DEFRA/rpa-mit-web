@@ -44,7 +44,7 @@ public class UploadServiceTests : TestContext
 
         var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object);
 
-        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user");
+        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user", "userEmail");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -59,7 +59,7 @@ public class UploadServiceTests : TestContext
 
         var uploadService = new UploadService(_logger.Object, _blobServiceMock.Object, _EventQueueServiceMock.Object, _ImporterQueueServiceMock.Object);
 
-        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user");
+        var response = await uploadService.UploadFileAsync(fileMock.Object, routeFields.SchemeType, routeFields.Organisation, routeFields.PaymentType, routeFields.AccountType, "user","userEmail");
 
         response.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
     }

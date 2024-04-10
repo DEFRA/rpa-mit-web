@@ -5,6 +5,7 @@ using EST.MIT.Web.Helpers;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using EST.MIT.Web.Interfaces;
+using EST.MIT.Web.Shared;
 
 namespace EST.MIT.Web.Tests.Pages;
 
@@ -28,7 +29,7 @@ public class SelectApproverTests : TestContext
     [Fact]
     public void AfterRender_Redirects_When_Null_Invoice()
     {
-        var component = RenderComponent<SelectApprover>();
+        var component = RenderComponent<SelectApprover>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
 
         var navigationManager = Services.GetService<NavigationManager>();
         component.WaitForAssertion(() => navigationManager?.Uri.Should().Be("http://localhost/"));
@@ -50,7 +51,7 @@ public class SelectApproverTests : TestContext
 
         _mockInvoiceStateContainer.SetupGet(x => x.Value).Returns(new Invoice());
 
-        var component = RenderComponent<SelectApprover>();
+        var component = RenderComponent<SelectApprover>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         component.FindAll("button[type=submit]")[0].Click();
 
         component.WaitForElements("p.govuk-error-message");
@@ -68,7 +69,7 @@ public class SelectApproverTests : TestContext
         var _invoice = new Invoice() { SchemeType = "BPS" };
         _mockInvoiceStateContainer.Setup(x => x.Value).Returns(_invoice);
 
-        var component = RenderComponent<SelectApprover>();
+        var component = RenderComponent<SelectApprover>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
 
         component.FindAll("a.govuk-link")[0].Click();
 
@@ -86,7 +87,7 @@ public class SelectApproverTests : TestContext
         _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
         _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
 
-        var component = RenderComponent<SelectApprover>();
+        var component = RenderComponent<SelectApprover>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
         component.FindAll("button[type=submit]")[0].Click();
 
@@ -100,7 +101,7 @@ public class SelectApproverTests : TestContext
         _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(false), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
         _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.OK));
 
-        var component = RenderComponent<SelectApprover>();
+        var component = RenderComponent<SelectApprover>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
         component.FindAll("button[type=submit]")[0].Click();
 
@@ -111,7 +112,7 @@ public class SelectApproverTests : TestContext
         errorMessages.Count.Should().Be(1);
 
         _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.BadRequest) { Data = new BoolRef(true), Errors = new Dictionary<string, List<string>>() { { "test", new List<string> { "test" } } } });
-        component = RenderComponent<SelectApprover>();
+        component = RenderComponent<SelectApprover>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
         component.FindAll("button[type=submit]")[0].Click();
 
@@ -133,7 +134,7 @@ public class SelectApproverTests : TestContext
         _mockApprovalService.Setup(x => x.ValidateApproverAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(new ApiResponse<BoolRef>(HttpStatusCode.OK) { Data = new BoolRef(true) });
         _mockApprovalService.Setup(x => x.SubmitApprovalAsync(It.IsAny<Invoice>())).ReturnsAsync(new ApiResponse<Invoice>(HttpStatusCode.BadRequest) { Errors = errors });
 
-        var component = RenderComponent<SelectApprover>();
+        var component = RenderComponent<SelectApprover>(parameters => parameters.Add(p => p.Layout, new MainLayout()));
         component.FindAll("input[type=text]")[0].Change("Loid.Forger@defra.gov.uk");
         component.FindAll("button[type=submit]")[0].Click();
 

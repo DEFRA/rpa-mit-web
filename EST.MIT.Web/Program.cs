@@ -12,12 +12,17 @@ using EST.MIT.Web.APIs;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
+
 //TODO: Uncomment the following line to enable authentication
+var initialScopes = builder.Configuration["MitWebApi"]?.Split(' ');
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"))
+    .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+    .AddInMemoryTokenCaches();
 
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor()
+        .AddMicrosoftIdentityConsentHandler();
 
 builder.Services.AddAzureServices(config);
 builder.Services.AddAPIServices();
@@ -37,7 +42,7 @@ builder.Services.AddSingleton<IPaymentService, PaymentService>();
 //TODO: Uncomment the following line to enable authorization
 builder.Services.AddAuthorization(options =>
 {
-    options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireRole("ReadOnly").Build();
+    options.FallbackPolicy = options.DefaultPolicy;
 });
 
 var mappingConfig = new MapperConfiguration(mc =>

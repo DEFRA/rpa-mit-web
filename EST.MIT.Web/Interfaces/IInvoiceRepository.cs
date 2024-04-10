@@ -12,5 +12,5 @@ public interface IInvoiceRepository
     Task<HttpResponseMessage> DeleteHeaderAsync(PaymentRequestDTO paymentRequestDto);
     Task<HttpResponseMessage> GetApprovalAsync(string id);
     Task<HttpResponseMessage> GetAllApprovalsAsync();
-    Task<HttpResponseMessage> GetInvoicesAsync();
+    Task<HttpResponseMessage> GetInvoicesAsync(string token);
 }

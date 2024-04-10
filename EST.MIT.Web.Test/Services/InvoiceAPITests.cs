@@ -513,14 +513,14 @@ public class InvoiceAPITests
     {
         var mockInvoices = new List<Invoice>();
 
-        _mockRepository.Setup(x => x.GetInvoicesAsync())
+        _mockRepository.Setup(x => x.GetInvoicesAsync(string.Empty))
           .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
           {
               Content = new StringContent(JsonSerializer.Serialize(mockInvoices))
           });
 
         var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
-        var result = await service.GetInvoicesAsync();
+        var result = await service.GetInvoicesAsync(string.Empty);
 
         result.Should().Equal(mockInvoices);
     }
@@ -528,11 +528,11 @@ public class InvoiceAPITests
     [Fact]
     public async Task GetInvoicesAsync_HandlesException()
     {
-        _mockRepository.Setup(x => x.GetInvoicesAsync())
+        _mockRepository.Setup(x => x.GetInvoicesAsync(string.Empty))
           .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.InternalServerError));
 
         var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
-        var result = await service.GetInvoicesAsync();
+        var result = await service.GetInvoicesAsync(string.Empty);
 
         result.Should().BeNull();
     }
@@ -540,14 +540,14 @@ public class InvoiceAPITests
     [Fact]
     public async Task GetInvoicesAsync_HandlesEmptyResponse()
     {
-        _mockRepository.Setup(x => x.GetInvoicesAsync())
+        _mockRepository.Setup(x => x.GetInvoicesAsync(string.Empty))
           .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
           {
               Content = new StringContent("")
           });
 
         var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
-        var result = await service.GetInvoicesAsync();
+        var result = await service.GetInvoicesAsync(string.Empty);
 
         result.Should().BeNull();
     }
@@ -557,14 +557,14 @@ public class InvoiceAPITests
     {
         var mockInvoices = new List<Invoice>();
 
-        _mockRepository.Setup(x => x.GetInvoicesAsync())
+        _mockRepository.Setup(x => x.GetInvoicesAsync(string.Empty))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent(JsonSerializer.Serialize(mockInvoices))
             });
 
         var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
-        var result = await service.GetInvoicesAsync();
+        var result = await service.GetInvoicesAsync(string.Empty);
 
         result.Should().Equal(mockInvoices);
     }
@@ -572,14 +572,14 @@ public class InvoiceAPITests
     [Fact]
     public async Task GetInvoicesAsync_ReturnsNull_WhenDeserializationFails()
     {
-        _mockRepository.Setup(x => x.GetInvoicesAsync())
+        _mockRepository.Setup(x => x.GetInvoicesAsync(string.Empty))
             .ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
             {
                 Content = new StringContent("invalid JSON")
             });
 
         var service = new InvoiceAPI(_mockRepository.Object, Mock.Of<ILogger<InvoiceAPI>>(), _autoMapper);
-        var result = await service.GetInvoicesAsync();
+        var result = await service.GetInvoicesAsync(string.Empty);
 
         result.Should().BeNull();
     }
