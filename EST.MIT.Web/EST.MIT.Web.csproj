@@ -30,6 +30,6 @@
   </PropertyGroup>
       <PropertyGroup>
         <!-- Exclude the project from analysis -->
-        <SonarQubeExclude>true</SonarQubeExclude>
+        <SonarQubeExclude>false</SonarQubeExclude>
     </PropertyGroup>
 </Project>
