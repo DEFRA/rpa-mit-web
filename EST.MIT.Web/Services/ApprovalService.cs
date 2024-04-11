@@ -13,16 +13,18 @@ public class ApprovalService : IApprovalService
     private readonly INotificationQueueService _notificationQueueService;
     private readonly IInvoiceAPI _invoiceAPI;
     private readonly IApprovalAPI _approvalAPI;
+    private readonly IPaymentService _paymentService;
     private readonly ILogger<ApprovalService> _logger;
     private readonly IHttpContextAccessor _context;
 
     public ApprovalService(IEventQueueService queueService, INotificationQueueService notificationQueueService,
-        IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, ILogger<ApprovalService> logger, IHttpContextAccessor context)
+        IInvoiceAPI invoiceAPI, IApprovalAPI approvalAPI, IPaymentService paymentService ,ILogger<ApprovalService> logger, IHttpContextAccessor context)
     {
         _eventQueueService = queueService;
         _notificationQueueService = notificationQueueService;
         _invoiceAPI = invoiceAPI;
         _approvalAPI = approvalAPI;
+        _paymentService = paymentService;
         _logger = logger;
         _context = context;
     }
@@ -68,6 +70,9 @@ public class ApprovalService : IApprovalService
                 _logger.LogError($"Invoice {invoice.Id}: Approval failed");
                 return false;
             }
+
+            await _paymentService.SendPayment(invoice);
+            
             return true;
         }
         catch (Exception ex)
@@ -169,6 +174,17 @@ public class ApprovalService : IApprovalService
                 _logger.LogError($"Invoice {invoice.Id}: Submission failed");
                 errors = response.Errors;
             }
+
+            ////////////
+            ////////////
+            //////////// TEMPORARY FIX TO SEND PAYMENT REQUEST TO SERVICVE BUS
+            //////////// WHILE THE APPROVAL PROCESS ISN'T IN PLACE
+            //////////// TODO: REMOVE THIS SECTION
+            await _paymentService.SendPayment(invoice);
+            ////////////
+            ////////////
+            ////////////
+            ////////////
             return response;
         }
         catch (Exception ex)

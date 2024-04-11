@@ -1,8 +1,5 @@
-using System.Text;
 using System.Text.Json;
-using Azure;
-using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
+using Azure.Messaging.ServiceBus;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
 
@@ -11,29 +8,26 @@ namespace EST.MIT.Web.Services;
 public class NotificationQueueService : INotificationQueueService
 {
     private readonly ILogger<INotificationQueueService> _logger;
-    private readonly QueueClient _queueClient;
+    private readonly IServiceBusProvider _serviceBusProvider;
+    private readonly IConfiguration _configuration;
 
-    public NotificationQueueService(QueueClient queueClient, ILogger<INotificationQueueService> logger)
+    public NotificationQueueService(IServiceBusProvider serviceBusProvider, ILogger<INotificationQueueService> logger, IConfiguration configuration)
     {
-        _queueClient = queueClient;
+        _serviceBusProvider = serviceBusProvider;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task<bool> AddMessageToQueueAsync(Notification request)
     {
         try
         {
-            var bytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(request));
-            await _queueClient.SendMessageAsync(Convert.ToBase64String(bytes));
-
+            await _serviceBusProvider.SendMessageAsync(_configuration.GetSection("NotificationQueueName").Value, JsonSerializer.Serialize(request));
             return true;
-
         }
-        catch (RequestFailedException ex)
-                when (ex.ErrorCode == QueueErrorCode.QueueAlreadyExists)
+        catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
         {
             // Ignore any errors if the queue already exists
-
             return false;
         }
         catch (Exception ex)

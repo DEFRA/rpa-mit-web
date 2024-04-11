@@ -1,38 +1,36 @@
 using System.Text;
 using Azure;
-using Azure.Storage.Queues;
-using Azure.Storage.Queues.Models;
 using EST.MIT.Web.Entities;
 using EST.MIT.Web.Interfaces;
+using Azure.Messaging.ServiceBus;
+using System.Text.Json;
 
 namespace EST.MIT.Web.Services;
 
 public class ImporterQueueService : IImporterQueueService
 {
     private readonly ILogger<IImporterQueueService> _logger;
-    private readonly QueueClient _queueClient;
+    private readonly IServiceBusProvider _serviceBusProvider;
+    private readonly IConfiguration _configuration;
 
-    public ImporterQueueService(QueueClient queueClient, ILogger<IImporterQueueService> logger)
+    public ImporterQueueService(IServiceBusProvider serviceBusProvider, ILogger<IImporterQueueService> logger, IConfiguration configuration)
     {
-        _queueClient = queueClient;
+        _serviceBusProvider = serviceBusProvider;
         _logger = logger;
+        _configuration = configuration;
     }
 
     public async Task<bool> AddMessageToQueueAsync(ImportRequest request)
     {
         try
         {
-            var bytes = Encoding.UTF8.GetBytes(request.ToMessage());
-            var result = await _queueClient.SendMessageAsync(Convert.ToBase64String(bytes));
-
+            await _serviceBusProvider.SendMessageAsync(_configuration.GetSection("ImporterQueueName").Value, JsonSerializer.Serialize<ImportRequest>(request));
             return true;
 
         }
-        catch (RequestFailedException ex)
-                when (ex.ErrorCode == QueueErrorCode.QueueAlreadyExists)
+        catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
         {
             // Ignore any errors if the queue already exists
-
             return false;
         }
         catch (Exception ex)
