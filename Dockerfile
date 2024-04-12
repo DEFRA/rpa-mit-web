@@ -20,9 +20,7 @@ COPY --chown=dotnet:dotnet ./EST.MIT.Web.Test/ ./EST.MIT.Web.Test/
 
 RUN dotnet publish ./EST.MIT.Web/ -c Release -o /home/dotnet/out
 
-ARG PORT=3000
-ENV PORT ${PORT}
-EXPOSE ${PORT}
+EXPOSE 443
 
 CMD dotnet watch --project /home/dotnet/EST.MIT.Web/ run --urls "http://*:${PORT}"
 
@@ -34,10 +32,9 @@ ARG PARENT_REGISTRY
 
 LABEL uk.gov.defra.parent-image=defra-dotnetcore-development:${PARENT_VERSION}
 
-ARG PORT=3000
-ENV ASPNETCORE_URLS=http://*:${PORT}
-EXPOSE ${PORT}
+EXPOSE 443
 
+COPY ./mit.pfx /home/dotnet/out/mit.pfx
 COPY --from=development /home/dotnet/out/ ./
 
 ENTRYPOINT ["dotnet", "EST.MIT.Web.dll"]
