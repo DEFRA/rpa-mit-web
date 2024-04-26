@@ -78,15 +78,35 @@ dotnet run
 ---
 ## Running in Docker
 
-To create the application as a docker container run the following command in the parent directory.
+It is also possible to standup the whole MIT service in docker by following these steps.
 
+### Import Certificate
+
+Add your windows certificate to the local repo to allow the docker network to communicate with the local machine.
+
+**NOTE** This command should be ran in a windows terminal as we need the windows cert.
+```pwsh
+dotnet dev-certs https -ep mit.pfx -p [password]
+```
+
+### Set up environment variables
+
+Create a .env file from the env-template in the root of the repo containing all the necessary environment variables.
+
+### Build and run the container
+
+Create the container with docker compose
 ```bash
-docker compose up
+docker-compose build
 ```
 
-It is also possible to standup the whole MIT service in docker by running
-
+Start the container
+```bash
+docker-compose up
 ```
-A Command
-```
 
+**NOTE** You may need manually create the reference data db in postgres and restart the container.
+
+### Accessing the service
+
+When the container is running you can access the service at on localhost port 8081.
