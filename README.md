@@ -97,12 +97,12 @@ Create a .env file from the env-template in the root of the repo containing all 
 
 Create the container with docker compose
 ```bash
-docker-compose build
+docker-compose -f ./docker-compose-mit.yaml build
 ```
 
 Start the container
 ```bash
-docker-compose up
+docker-compose -f ./docker-compose-mit.yaml up
 ```
 
 **NOTE** You may need manually create the reference data db in postgres and restart the container.
