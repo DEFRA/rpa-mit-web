@@ -1,4 +1,4 @@
-# est-mit-web
+# Web
 
 This repository hosts the frontend for the manual invoice service, designed as a web application. It includes various interactive web pages, API integrations, and services necessary for the invoicing process. Key functionalities involve creating and managing invoices, uploading bulk data, and handling payment requests.
 
@@ -79,7 +79,6 @@ dotnet run
 ## Running in Docker
 
 It is also possible to standup the whole MIT service in docker by following these steps.
-
 ### Import Certificate
 
 Add your windows certificate to the local repo to allow the docker network to communicate with the local machine.
@@ -105,7 +104,7 @@ Start the container
 docker-compose -f ./docker-compose-mit.yaml up
 ```
 
-**NOTE** You may need manually create the reference data db in postgres and restart the container.
+**NOTE** You may need manually create the reference data and invoice db's in postgres and restart the container.
 
 ### Accessing the service
 
