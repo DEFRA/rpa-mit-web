@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Version>1.0.68</Version>
+    <Version>1.0.70</Version>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
@@ -28,5 +28,8 @@
     <NoWarn>CS8618;CS8603;CS8619;CS8601;IDE1006</NoWarn>
     <UserSecretsId>417fd98e-9e39-4b8a-a0b6-8417f3651e33</UserSecretsId>
   </PropertyGroup>
-  
+  <PropertyGroup>
+        <!-- Exclude the project from analysis -->
+        <SonarQubeExclude>true</SonarQubeExclude>
+  </PropertyGroup>
 </Project>

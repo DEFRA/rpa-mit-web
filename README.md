@@ -1,20 +1,111 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# Web
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+This repository hosts the frontend for the manual invoice service, designed as a web application. It includes various interactive web pages, API integrations, and services necessary for the invoicing process. Key functionalities involve creating and managing invoices, uploading bulk data, and handling payment requests.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=rpa-mit-web&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=rpa-mit-web) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=rpa-mit-web&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=rpa-mit-web) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=rpa-mit-web&metric=coverage)](https://sonarcloud.io/summary/new_code?id=rpa-mit-web) [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=rpa-mit-web&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=rpa-mit-web)
+## Requirements
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+Amend as needed for your distribution, this assumes you are using windows with WSL.
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+- <details>
+    <summary> .NET 6 SDK </summary>
+    
+    #### Basic instructions for installing the .NET 6 SDK on a debian based system.
+  
+    Amend as needed for your distribution.
+
+    ```bash
+    wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
+    sudo apt-get update && sudo apt-get install -y dotnet-sdk-6.0
+    ```
+</details>
+
+- [Docker](https://docs.docker.com/desktop/install/linux-install/)
+- Azure AD Credentials
+- Azure Service Bus
+---
+## Local Setup
+
+To run this service locally complete the following steps.
+
+### Set up user secrets
+
+Use the secrets-template to create a secrets.json in the same location.
+
+Setting this key allows you to use local emulation for functions such as blob storage.
+
+```json 
+{
+	"PrimaryConnection": "UseDevelopmentStorage=true"
+}
+```
+
+Once this is done run the following command to add the projects user secrets
+
+```bash
+cat secrets.json | dotnet user-secrets set
+```
+
+These values can also be created as environment variables or as a development app settings file, but the preferred method is via user secrets.
+
+## Create emulated storage
+
+You need to create a local emulation of azure blob storage, this can be done using [azurite](https://github.com/Azure/Azurite).
+
+In your console run the following commands.
+
+```bash
+docker pull mcr.microsoft.com/azure-storage/azurite
+```
+
+```bash
+docker run --name azurite -p 10000:10000 -p 10001:10001 -p 10002:10002 mcr.microsoft.com/azure-storage/azurite
+```
+
+You can view the emulated storage using a tool such as [Azure Storage Explorer](https://github.com/microsoft/AzureStorageExplorer).
+
+## Start the application
+
+```bash
+cd EST.MIT.Web
+```
+
+```bash
+dotnet run
+```
+
+---
+## Running in Docker
+
+It is also possible to standup the whole MIT service in docker by following these steps.
+### Import Certificate
+
+Add your windows certificate to the local repo to allow the docker network to communicate with the local machine.
+
+**NOTE** This command should be ran in a windows terminal as we need the windows cert.
+```pwsh
+dotnet dev-certs https -ep mit.pfx -p [password]
+```
+
+### Set up environment variables
+
+Create a .env file from the env-template in the root of the repo containing all the necessary environment variables.
+
+### Build and run the container
+
+Create the container with docker compose
+```bash
+docker-compose -f ./docker-compose-mit.yaml build
+```
+
+Start the container
+```bash
+docker-compose -f ./docker-compose-mit.yaml up
+```
+
+**NOTE** You may need manually create the reference data and invoice db's in postgres and restart the container.
+
+### Accessing the service
+
+When the container is running you can access the service at on localhost port 8081.

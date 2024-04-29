@@ -1,8 +1,0 @@
-version: '3.8'
-
-services:
-  est-mit-web:
-    build:
-      target: development
-    container_name: est-mit-web
-    entrypoint: dotnet watch --project ./EST.MIT.Web.Test test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput='./test-output/'

@@ -1,0 +1,187 @@
+version: '3.8'
+
+services:
+  est-mit-web:
+    build:
+      context: .
+      target: production
+    image: est-mit-web
+    container_name: est-mit-web
+    depends_on:
+      - azurite
+      - rpa-mit-invoice
+      - rpa-mit-reference-data
+    ports:
+      - "8081:443"
+    environment:
+      ConnectionStrings__PrimaryConnection: ${AzureWebJobsStorage}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+      AzureAd__Instance: https://login.microsoftonline.com/
+      AzureAd__TenantId: ${TenantId}
+      AzureAd__Domain: ${Domain}
+      AzureAd__ClientId: ${ClientId}
+      AzureAd__CallbackPath: /signin-oidc 
+      AzureAd__Scopes: ${Scopes}
+      AzureAd__ClientSecret: ${ClientSecret} 
+      EventQueueName: ${EventQueueName}
+      ImporterQueueName: ${ImporterQueueName}
+      BlobContainerName: ${ImporterQueueName}
+      NotificationQueueName: ${NotificationQueueName}
+      QueueConnectionString:  ${QueueConnectionString}
+      InvoiceAPIBaseURI: ${InvoiceAPIBaseURI}
+      ApprovalAPIBAseURI: ${ApprovalAPIBAseURI}
+      ReferenceDataAPIBaseURI: ${ReferenceDataAPIBaseURI}
+      InvoiceImporterAPIBaseURI: ${InvoiceImporterAPIBaseURI}
+      PaymentGeneratorQueueName: ${PaymentGeneratorQueueName}
+
+      # dotnet dev-certs https -ep mit.pfx -p Password
+      # copy the file across in the docker file
+      ASPNETCORE_URLS: https://+:443
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${CertPassword}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${CertFileName}
+
+  rpa-mit-invoice:
+    build:
+      context: ..\rpa-mit-invoice
+      target: production
+    image: rpa-mit-invoice
+    container_name: rpa-mit-invoice
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - azurite
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      POSTGRES_DB: rpa_mit_invoices
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS:-password}
+      POSTGRES_PORT: "5432"
+      SCHEMA_DEFAULT: ${POSTGRES_SCHEMA_NAME:-public}
+      AzureWebJobsStorage: ${AzureWebJobsStorage} 
+      QueueConnectionString: ${QueueConnectionString}
+      PaymentQueueName: ${PaymentQueueName}
+      EventQueueName: ${EventQueueName}
+      AzureADPostgreSQLResourceID: https://ossrdbms-aad.database.windows.net/.default
+      ReferenceDataAPIBaseURI: ${ReferenceDataAPIBaseURI:-https://localhost:7012} 
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+
+  rpa-mit-events:
+    build:
+      context: ..\est-mit-events
+    image: rpa-mit-events
+    container_name: rpa-mit-events
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      FUNCTIONS_WORKER_RUNTIME: dotnet-isolated
+      AzureWebJobsSecretStorageType: ${AzureWebJobsSecretStorageType}
+      AzureWebJobsStorage: ${AzureWebJobsStorage}
+      TableConnectionString: ${TableConnectionString}      
+      QueueConnectionString: ${QueueConnectionString}      
+      EventTableName: ${EventTableName}
+      EventQueueName: ${EventQueueName}
+    depends_on:
+        - azurite
+
+  rpa-mit-notification:
+    build:
+      context: ..\rpa-mit-notification
+    image: rpa-mit-notification
+    container_name: rpa-mit-notification
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    environment:
+      FUNCTIONS_WORKER_RUNTIME: dotnet-isolated
+      AzureWebJobsStorage: ${AzureWebJobsStorage}
+      QueueConnectionString: ${QueueConnectionString}
+      EventQueueName: ${EventQueueName}
+      NotificationQueueName: ${NotificationQueueName}
+      TableConnectionString: ${TableConnectionString}
+      NotificationTableName: ${NotificationTableName}
+      AzureWebJobsSecretStorageType: ${AzureWebJobsSecretStorageType}
+      NotifyApiKey: ${NotifyApiKey}
+      TriggerTimerInterval: ${TriggerTimerInterval}
+      templatesRequesterApproval: ${templatesRequesterApproval}
+      templatesRequesterApproved: ${templatesRequesterApproved}
+      templatesRequesterRejected: ${templatesRequesterRejected}
+      templatesApproverApproval: ${templatesApproverApproval}
+      templatesApproverApproved: ${templatesApproverApproved}
+      templatesApproverRejected: ${templatesApproverRejected}
+      templatesError: ${templatesError}
+      templatesUploaded: ${templatesUploaded}
+    depends_on:
+        - azurite
+
+  rpa-mit-reference-data:
+    build:
+      context: ..\rpa-mit-reference-data
+      target: production
+    image: rpa-mit-reference-data
+    container_name: rpa-mit-reference-data
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-rpa-mit-reference-data-postgres}
+      POSTGRES_DB: rpa_mit_reference_data
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS:-password}
+      POSTGRES_PORT: "5432"
+      SCHEMA_DEFAULT: ${POSTGRES_SCHEMA_NAME:-public}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+    ports:
+      - "5002:5002"
+
+  # Runs: dotnet ef database update on the rpa_mit_reference_data database 
+  rpa-mit-reference-data-db-migration:
+    build:
+      context: ..\rpa-mit-reference-data
+      target: db_migration
+    image: rpa-mit-reference-data-db-migration
+    container_name: rpa-mit-reference-data-db-migration
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST:-rpa-mit-reference-data-postgres}
+      POSTGRES_DB: rpa_mit_reference_data
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS:-password}
+      POSTGRES_PORT: "5432"
+      SCHEMA_DEFAULT: ${POSTGRES_SCHEMA_NAME:-public}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+
+  postgres:
+    container_name: postgres_mit
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PW:-password}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - "5432:5432"
+    restart: always
+    # command: ./extract-seed-data.sh
+    # volumes:
+    #   - ./extract-seed-data.sh:/extract-seed-data.sh
+
+  # pgadmin:
+  #   depends_on:
+  #     - postgres
+  #   image: dpage/pgadmin4:latest
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=${PGADMIN_MAIL-mit@defra.gov.uk}
+  #     - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PW-password}
+  #   ports:
+  #     - "5050:80"
+  #   restart: always
+  
+  azurite:
+    image: mcr.microsoft.com/azure-storage/azurite
+    restart: always
+    command: "azurite --blobHost 127.0.0.1 --blobPort 10000 --queueHost 127.0.0.1 --queuePort 10001 --tableHost 127.0.0.1 --tablePort 10002 --location /workspace"
+    ports:
+      - "10000:10000"
+      - "10001:10001"
+      - "10002:10002"
+    volumes:
+      - ./azurite:/workspace

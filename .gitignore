@@ -12,6 +12,7 @@
 **/lcov.info
 *.vscode
 secrets.json
+.env
 
 appsettings.Development.json
 

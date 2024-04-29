@@ -7,5 +7,42 @@ services:
       target: production
     image: est-mit-web
     container_name: est-mit-web
+    networks:
+      - mit
+    ports:
+      - "8080:80"
+      - "8081:443"
     environment:
       COMPlus_EnableDiagnostics: 0
+
+      ConnectionStrings__PrimaryConnection: ${AzureWebJobsStorage}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
+
+      AzureAd__Instance: https://login.microsoftonline.com/
+      AzureAd__TenantId: ${TenantId}
+      AzureAd__Domain: ${Domain}
+      AzureAd__ClientId: ${ClientId}
+      AzureAd__CallbackPath: /signin-oidc 
+      AzureAd__Scopes: ${Scopes}
+      AzureAd__ClientSecret: ${ClientSecret} 
+
+      EventQueueName: ${EventQueueName}
+      ImporterQueueName: ${ImporterQueueName}
+      BlobContainerName: ${ImporterQueueName}
+      NotificationQueueName: ${NotificationQueueName}
+      QueueConnectionString:  ${QueueConnectionString}
+      InvoiceAPIBaseURI: ${InvoiceAPIBaseURI}
+      ApprovalAPIBAseURI: ${ApprovalAPIBAseURI}
+      ReferenceDataAPIBaseURI: ${ReferenceDataAPIBaseURI}
+      InvoiceImporterAPIBaseURI: ${InvoiceImporterAPIBaseURI}
+      PaymentGeneratorQueueName: ${PaymentGeneratorQueueName}
+
+      # dotnet dev-certs https -ep mit.pfx -p Password
+      # copy the file across in the docker file
+      ASPNETCORE_URLS: https://+:443
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${CertPassword}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${CertFileName}
+
+networks: 
+  mit:
+    external: true
